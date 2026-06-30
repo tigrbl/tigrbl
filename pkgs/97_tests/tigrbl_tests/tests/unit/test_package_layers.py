@@ -121,3 +121,31 @@ def test_declared_layer_dependency_exceptions_are_still_real_edges() -> None:
     ]
 
     assert stale == []
+
+
+def test_engine_database_sessions_use_engine_session_base_contract() -> None:
+    engine_roots = [
+        root
+        for name, root in _package_roots().items()
+        if name.startswith("tigrbl_engine_")
+    ]
+    allowed_bases = {"EngineSessionBase", "EngineSession"}
+    violations: list[str] = []
+    class_pattern = re.compile(r"^class\s+([A-Za-z][A-Za-z0-9_]*Session)\(([^)]*)\):")
+
+    for root in engine_roots:
+        for source in (root / "src").rglob("*.py"):
+            for line in source.read_text(encoding="utf-8").splitlines():
+                match = class_pattern.match(line.strip())
+                if not match:
+                    continue
+                class_name, bases = match.groups()
+                if class_name.startswith("_") or class_name.startswith("Async"):
+                    continue
+                declared_bases = {
+                    part.strip().split(".")[-1] for part in bases.split(",")
+                }
+                if declared_bases.isdisjoint(allowed_bases):
+                    violations.append(f"{source.relative_to(ROOT)}: {line.strip()}")
+
+    assert violations == []

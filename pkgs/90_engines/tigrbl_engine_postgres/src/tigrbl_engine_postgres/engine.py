@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any, Mapping
 from urllib.parse import quote_plus
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
-from .session import PostgresSession
+from .session import _PostgresAlchemySession, PostgresSession
 
-SessionFactory = sessionmaker
+SessionFactory = Callable[[], PostgresSession]
 
 
 def _postgres_url(mapping: Mapping[str, Any] | None, dsn: str | None) -> str:
@@ -48,7 +50,14 @@ def postgres_engine(
             cur.execute("SET statement_timeout = 0")
             cur.execute("SET lock_timeout = 0")
 
-    return eng, sessionmaker(bind=eng, class_=PostgresSession, expire_on_commit=False)
+    raw_maker = sessionmaker(
+        bind=eng, class_=_PostgresAlchemySession, expire_on_commit=False
+    )
+
+    def make_session() -> PostgresSession:
+        return PostgresSession(raw_maker(), EngineSessionSpec())
+
+    return eng, make_session
 
 
 def postgres_capabilities() -> dict[str, Any]:

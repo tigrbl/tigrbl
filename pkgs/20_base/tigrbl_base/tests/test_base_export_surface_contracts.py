@@ -20,7 +20,6 @@ _BASE_EXPORT_CASES = [
     ("RequestBase", "tigrbl_base._base._request_base"),
     ("RouterBase", "tigrbl_base._base._router_base"),
     ("SchemaBase", "tigrbl_base._base._schema_base"),
-    ("SessionABC", "tigrbl_base._base._session_abc"),
     ("StorageTransformBase", "tigrbl_base._base._storage"),
     ("TableBase", "tigrbl_base._base._table_base"),
     ("TableRegistryBase", "tigrbl_base._base._table_registry_base"),

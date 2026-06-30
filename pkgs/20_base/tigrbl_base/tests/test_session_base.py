@@ -111,3 +111,32 @@ async def test_session_base_batch_impls_default_to_not_implemented() -> None:
 
     with pytest.raises(NotImplementedError):
         await session.executemany("SELECT 1", [])
+
+
+def test_engine_session_base_is_the_session_contract() -> None:
+    expected_methods = {
+        "begin",
+        "commit",
+        "rollback",
+        "in_transaction",
+        "get",
+        "add",
+        "delete",
+        "flush",
+        "refresh",
+        "execute",
+        "executeloop",
+        "executemany",
+        "close",
+        "run_sync",
+    }
+
+    assert expected_methods <= set(dir(EngineSessionBase))
+
+
+def test_engine_session_base_inherits_engine_session_spec() -> None:
+    session = EngineSessionBase(EngineSessionSpec(read_only=True, tag="base"))
+
+    assert isinstance(session, EngineSessionSpec)
+    assert session.read_only is True
+    assert session.tag == "base"

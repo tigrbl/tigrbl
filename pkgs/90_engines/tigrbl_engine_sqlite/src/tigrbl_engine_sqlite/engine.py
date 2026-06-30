@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any, Mapping
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
-from .session import SqliteSession
+from .session import _SqliteAlchemySession, SqliteSession
 
-SessionFactory = sessionmaker
+SessionFactory = Callable[[], SqliteSession]
 
 
 def _sqlite_url(mapping: Mapping[str, Any] | None, dsn: str | None) -> str:
@@ -49,7 +51,14 @@ def sqlite_engine(
         finally:
             cur.close()
 
-    return eng, sessionmaker(bind=eng, class_=SqliteSession, expire_on_commit=False)
+    raw_maker = sessionmaker(
+        bind=eng, class_=_SqliteAlchemySession, expire_on_commit=False
+    )
+
+    def make_session() -> SqliteSession:
+        return SqliteSession(raw_maker(), EngineSessionSpec())
+
+    return eng, make_session
 
 
 def sqlite_capabilities() -> dict[str, Any]:

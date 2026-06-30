@@ -44,7 +44,7 @@ Legend:
 | `RouterSpec` | generated | yes | `RouterBase` | `Router`, `TigrblRouter` | n/a | `include_table` | `include_tables` | `PATHS`, `TAGS`, `PREFIX`, `NAME` | `tigrbl.shortcuts.router` | n/a | `defineRouterSpec` | `deriveRouter` | n/a |
 | `SchemaRef` | generated | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `SchemaSpec` | generated | yes | `SchemaBase` | `Schema` | n/a | n/a | n/a | n/a | `tigrbl.shortcuts.schema`, `schema_spec`, `schema` | `schema_ctx` | n/a | n/a | n/a |
-| `SessionSpec` | generated | yes | `SessionABC`, `TigrblSessionBase` | `DefaultSession` | n/a | n/a | n/a | n/a | `session_spec`, `readonly`, `tx_read_committed`, `tx_repeatable_read`, `tx_serializable` | `session_ctx`, `read_only_session` | n/a | n/a | n/a |
+| `SessionSpec` | generated | yes | `EngineSessionBase` | `EngineSession` | n/a | n/a | n/a | n/a | `session_spec`, `readonly`, `tx_read_committed`, `tx_repeatable_read`, `tx_serializable` | `session_ctx`, `read_only_session` | n/a | n/a | n/a |
 | `SseBindingSpec` | generated | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a | `sse_ctx` | n/a | n/a | n/a |
 | `StorageSpec` | generated | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `StorageTransformSpec` | generated | yes | `StorageTransformBase` | `StorageTransform` | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |

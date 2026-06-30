@@ -23,7 +23,6 @@ _EXPORTS = {
     "OpBase": "_op_base",
     "RequestBase": "_request_base",
     "SchemaBase": "_schema_base",
-    "SessionABC": "_session_abc",
     "TigrblSessionBase": "_session_base",
     "CrudTableBase": "_table_base",
     "RealtimeTableBase": "_table_base",

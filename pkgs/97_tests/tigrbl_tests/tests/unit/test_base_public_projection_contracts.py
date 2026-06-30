@@ -47,7 +47,6 @@ def test_non_projected_base_symbols_remain_out_of_public_facade() -> None:
         "ColumnBase",
         "RequestBase",
         "SchemaBase",
-        "SessionABC",
         "StorageTransformBase",
     ):
         assert symbol not in tigrbl.__all__

@@ -4,9 +4,11 @@ from collections.abc import Iterable, Mapping
 from typing import Any
 
 from sqlalchemy.orm import Session as _SASession
+from tigrbl_concrete._concrete._engine_session import EngineSession
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
 
-class SqliteSession(_SASession):
+class _SqliteAlchemySession(_SASession):
     def executeloop(self, statements: Iterable[Any]) -> list[Any]:
         results: list[Any] = []
         for item in statements:
@@ -22,3 +24,15 @@ class SqliteSession(_SASession):
 
     def executemany(self, stmt: Any, parameter_sets: Iterable[Mapping[str, Any]]) -> Any:
         return self.execute(stmt, list(parameter_sets))
+
+
+class SqliteSession(EngineSession):
+    """SQLite engine session exposed through the shared EngineSession contract."""
+
+    def __init__(
+        self, underlying: _SqliteAlchemySession, spec: EngineSessionSpec | None = None
+    ) -> None:
+        super().__init__(underlying, spec)
+
+
+__all__ = ["SqliteSession"]

@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Iterable
 
+from tigrbl_base._base import EngineSessionBase
+
 from .engine import DatabaseState, InMemoryEngine, TableState
 
 
@@ -21,8 +23,9 @@ class _Tx:
     dirty_tables: set[str]
 
 
-class InMemorySession:
+class InMemorySession(EngineSessionBase):
     def __init__(self, engine: InMemoryEngine) -> None:
+        super().__init__()
         self._engine = engine
         base = engine._get_state()
         self._tx: _Tx | None = _Tx(

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from tigrbl_base._base import EngineSessionBase
+
 from .cache import InMemCache
 
 
-class CacheSession:
+class CacheSession(EngineSessionBase):
     def __init__(self, cache: InMemCache) -> None:
+        super().__init__()
         self._cache = cache
         self._closed = False
 

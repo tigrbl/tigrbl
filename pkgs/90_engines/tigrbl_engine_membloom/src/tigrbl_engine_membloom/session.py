@@ -2,9 +2,12 @@ from __future__ import annotations
 
 from typing import Any
 
+from tigrbl_base._base import EngineSessionBase
 
-class BloomSession:
+
+class BloomSession(EngineSessionBase):
     def __init__(self, engine: Any) -> None:
+        super().__init__()
         self._engine = engine
         self._closed = False
 

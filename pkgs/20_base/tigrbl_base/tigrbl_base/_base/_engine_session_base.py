@@ -2,23 +2,33 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-from dataclasses import dataclass, field
-from typing import Any, Callable, List, Optional
+from dataclasses import fields
+from typing import Any, Callable, List
 
 from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
-from ._session_abc import SessionABC
 
+class EngineSessionBase(EngineSessionSpec):
+    """Base contract and guardrails for engine database sessions."""
 
-@dataclass
-class EngineSessionBase(SessionABC):
-    _spec: Optional[EngineSessionSpec] = None
-    _open: bool = field(default=False, init=False)
-    _dirty: bool = field(default=False, init=False)
-    _pending: List[asyncio.Task] = field(default_factory=list, init=False)
+    def __init__(self, spec: EngineSessionSpec | None = None) -> None:
+        resolved = spec or EngineSessionSpec()
+        super().__init__(
+            **{
+                field.name: getattr(resolved, field.name)
+                for field in fields(EngineSessionSpec)
+            }
+        )
+        self._spec: EngineSessionSpec = self
+        self._open = False
+        self._dirty = False
+        self._pending: List[asyncio.Task] = []
 
     def apply_spec(self, spec: EngineSessionSpec | None) -> None:
-        self._spec = spec
+        resolved = spec or EngineSessionSpec()
+        for field in fields(EngineSessionSpec):
+            object.__setattr__(self, field.name, getattr(resolved, field.name))
+        self._spec = self
 
     async def run_sync(self, fn: Callable[[Any], Any]) -> Any:
         rv = fn(self)

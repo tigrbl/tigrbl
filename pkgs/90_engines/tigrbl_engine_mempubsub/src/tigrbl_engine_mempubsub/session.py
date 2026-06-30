@@ -2,13 +2,25 @@ from __future__ import annotations
 
 from typing import Any
 
+from tigrbl_base._base import EngineSessionBase
+
 from .pubsub import PubSubHub, Subscription
 
 
-class PubSubSession:
+class PubSubSession(EngineSessionBase):
     def __init__(self, engine: PubSubHub) -> None:
+        super().__init__()
         self._engine = engine
         self._closed = False
+
+    async def _tx_begin_impl(self) -> None:
+        return
+
+    async def _tx_commit_impl(self) -> None:
+        return
+
+    async def _tx_rollback_impl(self) -> None:
+        return
 
     def close(self) -> None:
         self._closed = True

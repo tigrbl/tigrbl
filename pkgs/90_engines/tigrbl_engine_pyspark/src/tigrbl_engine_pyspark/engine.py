@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import Any, Callable, Tuple, Optional, Dict
 from pyspark.sql import SparkSession
 
+from .session import PySparkSession
+
 
 def pyspark_engine(
     app_name: str = "tigrbl-pyspark",
@@ -14,21 +16,8 @@ def pyspark_engine(
         builder = builder.config(k, v)
     spark = builder.getOrCreate()
 
-    class _SessionHandle:
-        """Thin wrapper exposing .close() and delegating to SparkSession."""
-
-        def __init__(self, spark_session: SparkSession) -> None:
-            self.spark = spark_session
-
-        def close(self) -> None:
-            # No-op by default; allow the application to manage lifecycle.
-            pass
-
-        def __getattr__(self, name: str) -> Any:
-            return getattr(self.spark, name)
-
-    def session_factory() -> _SessionHandle:
-        return _SessionHandle(spark)
+    def session_factory() -> PySparkSession:
+        return PySparkSession(spark)
 
     return spark, session_factory
 
