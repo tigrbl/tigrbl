@@ -7,7 +7,6 @@ requires-python = ">=3.10,<3.15"
 dependencies = [
   "tigrbl",
   "tigrbl-core",
-  "uvicorn",
 ]
 
 [dependency-groups]
@@ -20,8 +19,8 @@ dev = [
 package = false
 
 [tool.uv.sources]
-tigrbl = { path = "../../pkgs/core/tigrbl", editable = true }
-tigrbl-core = { path = "../../pkgs/core/tigrbl_core", editable = true }
+tigrbl = { path = "../../pkgs/80_facade/tigrbl", editable = true }
+tigrbl-core = { path = "../../pkgs/10_core/tigrbl_core", editable = true }
 
 [tool.pytest.ini_options]
 addopts = [

@@ -308,6 +308,61 @@ def _jsonrpc_result(result: Any, request_id: Any) -> dict[str, Any]:
     return {"jsonrpc": "2.0", "result": result, "id": request_id}
 
 
+def _ctx_get(ctx: Any, key: str, default: Any = None) -> Any:
+    getter = getattr(ctx, "get", None)
+    if callable(getter):
+        try:
+            return getter(key, default)
+        except Exception:
+            pass
+    return getattr(ctx, key, default)
+
+
+def _session_rpc_context(
+    payload: Mapping[str, Any],
+    request_id: Any,
+    session_ctx: Any,
+) -> dict[str, Any]:
+    rpc_ctx: dict[str, Any] = {
+        "jsonrpc": dict(payload),
+        "jsonrpc_request_id": request_id,
+    }
+    if session_ctx is None:
+        return rpc_ctx
+    temp = _ctx_get(session_ctx, "temp", {})
+    if isinstance(temp, Mapping):
+        realtime = temp.get("realtime")
+        websocket = temp.get("websocket")
+        if isinstance(realtime, Mapping):
+            rpc_ctx["realtime"] = realtime
+        if isinstance(websocket, Mapping):
+            rpc_ctx["websocket"] = websocket
+    channel = _ctx_get(session_ctx, "channel")
+    if channel is not None:
+        rpc_ctx["channel"] = channel
+    return rpc_ctx
+
+
+async def _maybe_await(value: Any) -> Any:
+    if hasattr(value, "__await__"):
+        return await value
+    return value
+
+
+async def _cleanup_realtime_session(ctx: Any) -> None:
+    temp = _ctx_get(ctx, "temp", {})
+    if not isinstance(temp, Mapping):
+        return
+    realtime = temp.get("realtime")
+    if not isinstance(realtime, Mapping):
+        return
+    broker = realtime.get("broker")
+    session_id = realtime.get("session_id")
+    unregister = getattr(broker, "unsubscribe_session", None)
+    if callable(unregister) and session_id is not None:
+        await _maybe_await(unregister(str(session_id)))
+
+
 def _resolve_rpc_target(router: Any, method: str) -> tuple[Any, str] | None:
     table_name, sep, alias = method.partition(".")
     if not sep or not table_name or not alias:
@@ -334,7 +389,12 @@ def _op_tx_scope(model: Any, alias: str) -> str:
     return "inherit"
 
 
-async def _dispatch_jsonrpc_payload(router: Any, payload: Any) -> Any:
+async def _dispatch_jsonrpc_payload(
+    router: Any,
+    payload: Any,
+    *,
+    session_ctx: Any = None,
+) -> Any:
     if not isinstance(payload, Mapping) or payload.get("jsonrpc") != "2.0":
         return _jsonrpc_error(-32600, "Invalid Request", None)
     request_id = payload.get("id")
@@ -354,7 +414,7 @@ async def _dispatch_jsonrpc_payload(router: Any, payload: Any) -> Any:
     if not callable(rpc_call):
         return _jsonrpc_error(-32603, "Internal error", request_id)
     kwargs: dict[str, Any] = {
-        "ctx": {"jsonrpc": dict(payload), "jsonrpc_request_id": request_id}
+        "ctx": _session_rpc_context(payload, request_id, session_ctx)
     }
     if _op_tx_scope(model, alias) == "none":
         kwargs["db"] = {}
@@ -374,26 +434,45 @@ async def _dispatch_jsonrpc_payload(router: Any, payload: Any) -> Any:
     return _jsonrpc_result(result, request_id)
 
 
-async def _dispatch_jsonrpc_decoded(router: Any, payload: Any) -> Any:
+async def _dispatch_jsonrpc_decoded(
+    router: Any,
+    payload: Any,
+    *,
+    session_ctx: Any = None,
+) -> Any:
     if isinstance(payload, list):
         responses = []
         for item in payload:
-            response = await _dispatch_jsonrpc_payload(router, item)
+            response = await _dispatch_jsonrpc_payload(
+                router,
+                item,
+                session_ctx=session_ctx,
+            )
             if response is not None:
                 responses.append(response)
         return responses or None
-    return await _dispatch_jsonrpc_payload(router, payload)
+    return await _dispatch_jsonrpc_payload(router, payload, session_ctx=session_ctx)
 
 
 def build_websocket_jsonrpc_session_handler(
     router: Any,
     *,
     subprotocol: str = "jsonrpc",
+    realtime_broker: Any = None,
 ) -> Any:
     """Build a kernel-owned WebSocket JSON-RPC session handler step."""
 
     async def _websocket_jsonrpc_session(ctx: Any) -> None:
         await _websocket_transport.accept(ctx, subprotocol=subprotocol)
+        temp = ctx.get("temp", {})
+        if isinstance(temp, dict):
+            ws_state = temp.setdefault("websocket", {})
+            realtime_state = temp.setdefault("realtime", {})
+            session_id = ws_state.setdefault("session_id", f"ws:{id(ctx)}")
+            realtime_state.setdefault("session_id", session_id)
+            realtime_state.setdefault("sink", ctx.get("channel"))
+            if realtime_broker is not None:
+                realtime_state.setdefault("broker", realtime_broker)
         try:
             while True:
                 await _websocket_transport.receive(ctx)
@@ -402,7 +481,11 @@ def build_websocket_jsonrpc_session_handler(
                     break
                 try:
                     decoded = await _jsonrpc_framing.decode(ctx)
-                    response = await _dispatch_jsonrpc_decoded(router, decoded)
+                    response = await _dispatch_jsonrpc_decoded(
+                        router,
+                        decoded,
+                        session_ctx=ctx,
+                    )
                 except ValueError:
                     response = _jsonrpc_error(-32700, "Parse error", None)
                 if response is None:
@@ -411,6 +494,7 @@ def build_websocket_jsonrpc_session_handler(
                 await _jsonrpc_framing.encode(ctx)
                 await _websocket_transport.emit(ctx)
         finally:
+            await _cleanup_realtime_session(ctx)
             await _websocket_transport.close(ctx)
 
     setattr(

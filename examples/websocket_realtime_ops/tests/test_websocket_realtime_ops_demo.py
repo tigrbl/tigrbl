@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import asyncio
 import json
 import importlib.util
 import sys
@@ -149,9 +150,118 @@ async def test_websocket_realtime_ops_demo_dispatches_jsonrpc_over_websocket() -
             "subscribed": True,
             "channel": "thread:alpha",
             "cursor": "msg-0",
+            "subscription_id": payload["result"]["subscription_id"],
+            "subscriber_count": 1,
         },
         "id": "sub-1",
     }
+
+
+@pytest.mark.asyncio
+async def test_websocket_realtime_ops_demo_fanout_between_clients() -> None:
+    module = _load_example_module()
+    app = module.build_app()
+    subscriber_sent: list[dict] = []
+    publisher_sent: list[dict] = []
+    subscriber_inbound: asyncio.Queue[dict] = asyncio.Queue()
+    publisher_inbound: asyncio.Queue[dict] = asyncio.Queue()
+
+    await subscriber_inbound.put({"type": "websocket.connect"})
+    await subscriber_inbound.put(
+        {
+            "type": "websocket.receive",
+            "text": json.dumps(
+                {
+                    "jsonrpc": "2.0",
+                    "method": "Thread.subscribe",
+                    "params": {"channel": "thread:alpha"},
+                    "id": "sub-1",
+                }
+            ),
+        }
+    )
+    await publisher_inbound.put({"type": "websocket.connect"})
+    await publisher_inbound.put(
+        {
+            "type": "websocket.receive",
+            "text": json.dumps(
+                {
+                    "jsonrpc": "2.0",
+                    "method": "Thread.publish",
+                    "params": {
+                        "channel": "thread:alpha",
+                        "event": {"id": "msg-2", "body": "hi"},
+                    },
+                    "id": "pub-1",
+                }
+            ),
+        }
+    )
+    await publisher_inbound.put({"type": "websocket.disconnect", "code": 1000})
+
+    async def receive_subscriber() -> dict:
+        return await subscriber_inbound.get()
+
+    async def receive_publisher() -> dict:
+        return await publisher_inbound.get()
+
+    async def send_subscriber(message: dict) -> None:
+        subscriber_sent.append(message)
+
+    async def send_publisher(message: dict) -> None:
+        publisher_sent.append(message)
+
+    subscriber_task = asyncio.create_task(
+        app(
+            {
+                "type": "websocket",
+                "scheme": "ws",
+                "path": "/ws/realtime",
+                "query_string": b"",
+                "headers": [],
+            },
+            receive_subscriber,
+            send_subscriber,
+        )
+    )
+
+    for _ in range(50):
+        if len(subscriber_sent) >= 2:
+            break
+        await asyncio.sleep(0.01)
+    assert len(subscriber_sent) >= 2
+
+    await app(
+        {
+            "type": "websocket",
+            "scheme": "ws",
+            "path": "/ws/realtime",
+            "query_string": b"",
+            "headers": [],
+        },
+        receive_publisher,
+        send_publisher,
+    )
+
+    for _ in range(50):
+        if len(subscriber_sent) >= 3:
+            break
+        await asyncio.sleep(0.01)
+    await subscriber_inbound.put({"type": "websocket.disconnect", "code": 1000})
+    await subscriber_task
+
+    fanout = json.loads(subscriber_sent[2]["text"])
+    assert fanout == {
+        "jsonrpc": "2.0",
+        "method": "Thread.publish",
+        "params": {
+            "channel": "thread:alpha",
+            "event": {"id": "msg-2", "body": "hi"},
+        },
+    }
+    publisher_ack = json.loads(publisher_sent[1]["text"])
+    assert publisher_ack["result"]["published"] is True
+    assert publisher_ack["result"]["delivered"] == 1
 
 
 def test_websocket_realtime_ops_demo_has_no_app_local_protocol_loop() -> None:
@@ -164,7 +274,12 @@ def test_websocket_realtime_ops_demo_has_no_app_local_protocol_loop() -> None:
         "send_bytes",
         "close",
     }
-    forbidden_names = {"realtime_publish", "realtime_subscribe"}
+    forbidden_names = {
+        "publish_thread",
+        "realtime_publish",
+        "realtime_subscribe",
+        "subscribe_thread",
+    }
     forbidden_decorators = {"websocket"}
 
     assert not any(isinstance(node, (ast.For, ast.AsyncFor, ast.While)) for node in ast.walk(tree))

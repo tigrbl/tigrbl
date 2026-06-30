@@ -172,7 +172,16 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
                 route_alias = (
                     f"ws_jsonrpc:{str(dispatcher_path).strip('/') or 'root'}"
                 )
-                handler_step = build_websocket_jsonrpc_session_handler(router)
+                broker = getattr(router, "_websocket_realtime_broker", None)
+                if broker is None:
+                    from tigrbl_ops_realtime import InMemoryRealtimeBroker
+
+                    broker = InMemoryRealtimeBroker()
+                    setattr(router, "_websocket_realtime_broker", broker)
+                handler_step = build_websocket_jsonrpc_session_handler(
+                    router,
+                    realtime_broker=broker,
+                )
                 register_runtime_websocket_route(
                     router,
                     path=dispatcher_path,

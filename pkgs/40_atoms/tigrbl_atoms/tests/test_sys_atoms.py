@@ -643,8 +643,10 @@ def test_phase3_handlers_delegate_to_backing_packages(
     payload: dict[str, object],
     expected: dict[str, object],
 ) -> None:
-    async def fake_call(incoming_payload: object) -> dict[str, object]:
+    async def fake_call(incoming_payload: object, **kwargs: object) -> dict[str, object]:
         assert incoming_payload == payload
+        if fn_name in {"publish", "subscribe"}:
+            assert kwargs["ctx"] is ctx
         return expected
 
     monkeypatch.setattr(module_name._core, fn_name, fake_call)

@@ -27,24 +27,6 @@ WEBSOCKET_BINDING = WsBindingSpec(
 )
 
 
-async def subscribe_thread(ctx: dict) -> dict:
-    payload = dict(ctx.get("payload") or {})
-    return {
-        "subscribed": True,
-        "channel": payload.get("channel", "thread:alpha"),
-        "cursor": payload.get("cursor"),
-    }
-
-
-async def publish_thread(ctx: dict) -> dict:
-    payload = dict(ctx.get("payload") or {})
-    return {
-        "published": True,
-        "channel": payload.get("channel", "thread:alpha"),
-        "event": payload.get("event", {}),
-    }
-
-
 async def create_message(ctx: dict) -> dict:
     payload = dict(ctx.get("payload") or {})
     return {
@@ -63,7 +45,6 @@ THREAD_TABLE = TableSpec(
         OpSpec(
             alias="subscribe",
             target="subscribe",
-            handler=subscribe_thread,
             bindings=(WEBSOCKET_BINDING,),
             exchange="bidirectional_stream",
             tx_scope="none",
@@ -74,7 +55,6 @@ THREAD_TABLE = TableSpec(
         OpSpec(
             alias="publish",
             target="publish",
-            handler=publish_thread,
             bindings=(WEBSOCKET_BINDING,),
             exchange="bidirectional_stream",
             tx_scope="none",

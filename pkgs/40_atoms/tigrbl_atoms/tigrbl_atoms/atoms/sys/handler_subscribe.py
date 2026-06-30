@@ -13,7 +13,7 @@ ANCHOR = _ev.SYS_HANDLER_PERSISTENCE
 
 
 async def _run(obj: object | None, ctx: Any) -> None:
-    setattr(ctx, "result", await _core.subscribe(_ctx.payload(ctx)))
+    setattr(ctx, "result", await _core.subscribe(_ctx.payload(ctx), ctx=ctx))
 
 
 class AtomImpl(Atom[Resolved, Operated, Exception]):

@@ -36,7 +36,8 @@ uv run pytest
     create    -> target=create
 ```
 
-`Thread.subscribe` is modeled as a finite JSON-RPC request/response op that
-acknowledges registration. `Thread.publish` is modeled as an explicit fanout op.
-`Message.create` is present to show that OLTP create does not publish unless a
-publish effect is declared.
+`Thread.subscribe` is a finite JSON-RPC request/response op that registers
+session-scoped interest with the framework realtime broker and acknowledges the
+subscription. `Thread.publish` is an explicit fanout op that emits a JSON-RPC
+notification to matching subscribers. `Message.create` is present to show that
+OLTP create does not publish unless a publish effect is declared.
