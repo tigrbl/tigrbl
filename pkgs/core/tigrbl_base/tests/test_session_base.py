@@ -2,11 +2,11 @@ import asyncio
 
 import pytest
 
-from tigrbl_base._base._session_base import TigrblSessionBase
-from tigrbl_core._spec.session_spec import SessionSpec
+from tigrbl_base._base._session_base import EngineSessionBase
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
 
-class StubSession(TigrblSessionBase):
+class StubSession(EngineSessionBase):
     def __init__(self) -> None:
         super().__init__()
         self.events: list[str] = []
@@ -52,7 +52,7 @@ class StubSession(TigrblSessionBase):
 @pytest.mark.asyncio
 async def test_session_base_core_behaviors() -> None:
     session = StubSession()
-    session.apply_spec(SessionSpec(read_only=False))
+    session.apply_spec(EngineSessionSpec(read_only=False))
 
     await session.begin()
     assert session.in_transaction()
@@ -80,7 +80,7 @@ async def test_session_base_core_behaviors() -> None:
 @pytest.mark.asyncio
 async def test_session_base_read_only_guards() -> None:
     session = StubSession()
-    session.apply_spec(SessionSpec(read_only=True))
+    session.apply_spec(EngineSessionSpec(read_only=True))
 
     with pytest.raises(RuntimeError, match="read-only"):
         session.add("x")
@@ -104,7 +104,7 @@ async def test_session_base_run_sync_awaitable() -> None:
 
 @pytest.mark.asyncio
 async def test_session_base_batch_impls_default_to_not_implemented() -> None:
-    session = TigrblSessionBase()
+    session = EngineSessionBase()
 
     with pytest.raises(NotImplementedError):
         await session.executeloop([])

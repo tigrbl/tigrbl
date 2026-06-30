@@ -7,10 +7,10 @@ import threading
 import pandas as pd
 
 try:
-    from tigrbl.session.spec import SessionSpec
+    from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 except Exception:
 
-    class SessionSpec:
+    class EngineSessionSpec:
         def __init__(self, isolation=None, read_only=None):
             self.isolation = isolation
             self.read_only = read_only
@@ -75,9 +75,9 @@ def pandas_engine(
     cat = DataFrameCatalog(tables=tables, pks=dict(pks))
 
     def mk() -> TransactionalDataFrameSession:
-        # A neutral SessionSpec is attached here; the effective SessionSpec from
+        # A neutral EngineSessionSpec is attached here; the effective EngineSessionSpec from
         # session_ctx is typically applied by the Tigrbl layer wrapping the sessionmaker.
-        return TransactionalDataFrameSession(cat, spec=SessionSpec())
+        return TransactionalDataFrameSession(cat, spec=EngineSessionSpec())
 
     return cat, mk
 

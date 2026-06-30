@@ -254,7 +254,7 @@ def initialize(
     sqlite_attachments: Mapping[str, str] | None = None,
     tables: Iterable[Any] | None = None,
 ):
-    if getattr(obj, "_ddl_executed", False):
+    if getattr(obj, "__dict__", {}).get("_ddl_executed", False):
         return
 
     ts = list(tables or [])

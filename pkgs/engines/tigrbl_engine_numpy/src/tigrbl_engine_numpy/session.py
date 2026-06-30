@@ -18,11 +18,11 @@ from typing import (
 import numpy as np
 
 try:
-    from tigrbl.session.base import TigrblSessionBase
+    from tigrbl_base._base import EngineSessionBase
 except Exception:
     from abc import ABC, abstractmethod
 
-    class TigrblSessionBase(ABC):
+    class EngineSessionBase(ABC):
         def __init__(self, spec=None):
             self._spec = spec
 
@@ -61,10 +61,10 @@ except Exception:
 
 
 try:
-    from tigrbl.session.spec import SessionSpec
+    from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 except Exception:
 
-    class SessionSpec:  # pragma: no cover - fallback
+    class EngineSessionSpec:  # pragma: no cover - fallback
         def __init__(self, isolation=None, read_only=None):
             self.isolation = isolation
             self.read_only = read_only
@@ -100,11 +100,11 @@ class _ExecuteResult(_ScalarResult):
     rowcount: int = 0
 
 
-class NumpySession(TigrblSessionBase):
+class NumpySession(EngineSessionBase):
     """Tigrbl session for a single NumPy-backed table database."""
 
     def __init__(self, engine: "NumpyEngine") -> None:
-        super().__init__(SessionSpec())
+        super().__init__(EngineSessionSpec())
         self._engine = engine
         self._snap: Optional[list[dict[str, Any]]] = None
         self._snap_ver: Optional[int] = None

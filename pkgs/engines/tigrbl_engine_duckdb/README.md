@@ -33,7 +33,7 @@ Application developers, data platform engineers, and operators choosing concrete
 
 ## How does tigrbl_engine_duckdb work?
 
-It exposes a `tigrbl.engine` entry point and a package `register()` hook so Tigrbl can discover or load the backend at runtime.
+It exposes `tigrbl.engine` and `tigrbl.engine_plugins` entry points plus a package `register()` hook so Tigrbl can discover or load the backend at runtime. The default builder returns a SQLAlchemy `duckdb-engine` session for ORM DDL and canonical table operations; `mode="native"` preserves the pure `duckdb.Connection` session path.
 
 
 ## Install
@@ -54,7 +54,7 @@ pip install tigrbl_engine_duckdb
 | Repository path | [`pkgs/engines/tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_duckdb) |
 | Python import root | `tigrbl_engine_duckdb` |
 | Console scripts | none declared |
-| Entry points | `tigrbl.engine` |
+| Entry points | `tigrbl.engine`, `tigrbl.engine_plugins` |
 | Optional extras | none declared |
 | Legal files | `LICENSE`, `NOTICE` |
 | Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
@@ -64,14 +64,14 @@ pip install tigrbl_engine_duckdb
 `tigrbl_engine_duckdb` owns the `engine plugin` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
 
 Implementation orientation:
-- `tigrbl_engine_duckdb`: duck_builder, duck_session, plugin
+- `tigrbl_engine_duckdb`: duck_builder, duck_session, sqlalchemy_adapter, plugin
 
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_engine_duckdb`.
-- Public symbols: `DuckDBSession`, `duckdb_capabilities`, `duckdb_engine`, `register`.
+- Public symbols: `DuckDBSession`, `duckdb_capabilities`, `duckdb_engine`, `native_duckdb_engine`, `sqlalchemy_duckdb_engine`, `register`.
 - Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/).
-- External runtime dependencies: `duckdb>=1.0.0`.
+- External runtime dependencies: `duckdb>=1.0.0`, `duckdb-engine>=0.17.0`.
 
 ## Usage Examples
 
@@ -93,12 +93,38 @@ from tigrbl_engine_duckdb import register
 register()
 ```
 
+### Use DuckDB for Tigrbl ORM DDL
+
+```python
+from tigrbl import TigrblApp
+from tigrbl_core._spec import AppSpec
+
+app = TigrblApp.from_spec(
+    AppSpec(
+        engine={"kind": "duckdb", "path": ".data/app.duckdb", "name": "app"},
+        tables=(Widget,),
+    )
+)
+app.initialize()
+```
+
+### Use the native DuckDB session mode
+
+```python
+from tigrbl_engine_duckdb import duckdb_engine
+
+engine, session_factory = duckdb_engine(
+    mapping={"kind": "duckdb", "path": ".data/native.duckdb", "mode": "native"}
+)
+session = session_factory()
+```
+
 ### Discover the engine through package metadata
 
 ```python
 from importlib.metadata import entry_points
 
-for entry_point in entry_points(group="tigrbl.engine"):
+for entry_point in entry_points(group="tigrbl.engine_plugins"):
     if entry_point.module.startswith("tigrbl_engine_duckdb"):
         plugin_register = entry_point.load()
         plugin_register()

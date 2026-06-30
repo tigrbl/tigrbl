@@ -19,6 +19,7 @@ This section collects developer-facing summaries and pointers.
 - `CLI_REFERENCE.md` - implemented unified CLI surface, commands, flags, and smoke semantics
 - `TESTING_GUIDE.md` - current certification lane model, test classes, and validation guidance
 - `PACKAGE_CATALOG.md` - canonical workspace inventory for packages
+- `PACKAGE_LAYERS.md` - dependency-oriented package layer index
 - `PACKAGE_LAYOUT.md` - normalized package layout rules enforced by CI
 - `CI_VALIDATION.md` - repository validation workflow and script inventory
 

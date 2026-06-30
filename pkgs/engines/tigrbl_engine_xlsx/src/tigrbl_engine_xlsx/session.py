@@ -19,11 +19,11 @@ from typing import (
 from openpyxl.worksheet.worksheet import Worksheet
 
 try:
-    from tigrbl.session.base import TigrblSessionBase
+    from tigrbl_base._base import EngineSessionBase
 except Exception:
     from abc import ABC, abstractmethod
 
-    class TigrblSessionBase(ABC):  # pragma: no cover - fallback
+    class EngineSessionBase(ABC):  # pragma: no cover - fallback
         def __init__(self, spec=None):
             self._spec = spec
 
@@ -59,10 +59,10 @@ except Exception:
 
 
 try:
-    from tigrbl.session.spec import SessionSpec
+    from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 except Exception:
 
-    class SessionSpec:  # pragma: no cover - fallback
+    class EngineSessionSpec:  # pragma: no cover - fallback
         def __init__(self, isolation=None, read_only=None):
             self.isolation = isolation
             self.read_only = read_only
@@ -111,11 +111,11 @@ class _ExecuteResult(_ScalarResult):
     rowcount: int = 0
 
 
-class XlsxSession(TigrblSessionBase):
+class XlsxSession(EngineSessionBase):
     """Native transaction session over workbook sheets as tables."""
 
     def __init__(
-        self, catalog: "WorkbookCatalog", spec: Optional[SessionSpec] = None
+        self, catalog: "WorkbookCatalog", spec: Optional[EngineSessionSpec] = None
     ) -> None:
         super().__init__(spec)
         self._cat = catalog

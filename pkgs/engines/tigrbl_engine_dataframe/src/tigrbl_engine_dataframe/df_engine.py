@@ -6,7 +6,7 @@ import threading
 
 import pandas as pd
 
-from tigrbl.session.spec import SessionSpec
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 from .df_session import TransactionalDataFrameSession
 
 # ---- Engine object: in-memory catalog of DataFrames + versions ----
@@ -66,9 +66,9 @@ def dataframe_engine(
     cat = DataFrameCatalog(tables=tables, pks=dict(pks))
 
     def mk() -> TransactionalDataFrameSession:
-        # A neutral SessionSpec is attached here; the effective SessionSpec from
+        # A neutral EngineSessionSpec is attached here; the effective EngineSessionSpec from
         # session_ctx is typically applied by the Tigrbl layer wrapping the sessionmaker.
-        return TransactionalDataFrameSession(cat, spec=SessionSpec())
+        return TransactionalDataFrameSession(cat, spec=EngineSessionSpec())
 
     return cat, mk
 

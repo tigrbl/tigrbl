@@ -1,0 +1,190 @@
+version = 1
+
+[policy]
+package_key = "directory"
+dependency_direction = "lower_or_same_order"
+allow_same_layer_dependencies = true
+
+[[layer]]
+id = "00_typing"
+order = 0
+title = "Typing"
+path = "pkgs/core"
+packages = [
+  "tigrbl_typing",
+]
+
+[[layer]]
+id = "01_spec"
+order = 1
+title = "Spec"
+path = "pkgs/core"
+packages = [
+  "tigrbl_spec",
+]
+
+[[layer]]
+id = "10_core"
+order = 10
+title = "Core"
+path = "pkgs/core"
+packages = [
+  "tigrbl_core",
+]
+
+[[layer]]
+id = "20_base"
+order = 20
+title = "Base"
+path = "pkgs/core"
+packages = [
+  "tigrbl_base",
+]
+
+[[layer]]
+id = "30_orm"
+order = 30
+title = "ORM"
+path = "pkgs/core"
+packages = [
+  "tigrbl_orm",
+]
+
+[[layer]]
+id = "40_atoms"
+order = 40
+title = "Atoms"
+path = "pkgs/core"
+packages = [
+  "tigrbl_atoms",
+]
+
+[[layer]]
+id = "45_kernel"
+order = 45
+title = "Kernel"
+path = "pkgs/core"
+packages = [
+  "tigrbl_kernel",
+]
+
+[[layer]]
+id = "50_runtime"
+order = 50
+title = "Runtime"
+path = "pkgs/core"
+packages = [
+  "tigrbl_runtime",
+]
+
+[[layer]]
+id = "60_ops"
+order = 60
+title = "Operations"
+path = "pkgs/core"
+packages = [
+  "tigrbl_ops_olap",
+  "tigrbl_ops_oltp",
+  "tigrbl_ops_realtime",
+  "tigrbl_ops_webtransport",
+]
+
+[[layer]]
+id = "70_concrete"
+order = 70
+title = "Concrete"
+path = "pkgs/core"
+packages = [
+  "tigrbl_concrete",
+]
+
+[[layer]]
+id = "80_facade"
+order = 80
+title = "Facade"
+path = "pkgs/core"
+packages = [
+  "tigrbl",
+]
+
+[[layer]]
+id = "90_engines"
+order = 90
+title = "Engines"
+path = "pkgs/engines"
+packages = [
+  "tigrbl_engine_bigquery",
+  "tigrbl_engine_clickhouse",
+  "tigrbl_engine_csv",
+  "tigrbl_engine_dataframe",
+  "tigrbl_engine_duckdb",
+  "tigrbl_engine_inmemcache",
+  "tigrbl_engine_inmemory",
+  "tigrbl_engine_membloom",
+  "tigrbl_engine_memdedupe",
+  "tigrbl_engine_memkv",
+  "tigrbl_engine_memlru",
+  "tigrbl_engine_mempubsub",
+  "tigrbl_engine_memqueue",
+  "tigrbl_engine_memrate",
+  "tigrbl_engine_numpy",
+  "tigrbl_engine_pandas",
+  "tigrbl_engine_pgsqli_wal",
+  "tigrbl_engine_postgres",
+  "tigrbl_engine_pyspark",
+  "tigrbl_engine_redis",
+  "tigrbl_engine_rediscachethrough",
+  "tigrbl_engine_snowflake",
+  "tigrbl_engine_sqlite",
+  "tigrbl_engine_xlsx",
+]
+
+[[layer]]
+id = "95_tooling"
+order = 95
+title = "Tooling"
+path = "pkgs/core"
+packages = [
+  "tigrbl_client",
+  "tigrbl_examples",
+  "tigrbl_tests",
+]
+
+[[layer]]
+id = "99_deprecated"
+order = 99
+title = "Deprecated"
+path = "pkgs/deprecated"
+packages = [
+  "tigrbl_canon",
+]
+
+[[dependency_exception]]
+package = "tigrbl"
+dependency = "tigrbl_canon"
+reason = "Legacy facade compatibility import retained while deprecated canon paths are retired."
+
+[[dependency_exception]]
+package = "tigrbl_base"
+dependency = "tigrbl_atoms"
+reason = "Existing batch/session helper coupling predates this layer index and must be removed separately."
+
+[[dependency_exception]]
+package = "tigrbl_atoms"
+dependency = "tigrbl_ops_olap"
+reason = "Existing atom test/runtime coupling predates this layer index and must be removed separately."
+
+[[dependency_exception]]
+package = "tigrbl_atoms"
+dependency = "tigrbl_ops_oltp"
+reason = "Existing atom test/runtime coupling predates this layer index and must be removed separately."
+
+[[dependency_exception]]
+package = "tigrbl_atoms"
+dependency = "tigrbl_ops_realtime"
+reason = "Existing atom test/runtime coupling predates this layer index and must be removed separately."
+
+[[dependency_exception]]
+package = "tigrbl_atoms"
+dependency = "tigrbl_ops_webtransport"
+reason = "Existing atom test/runtime coupling predates this layer index and must be removed separately."

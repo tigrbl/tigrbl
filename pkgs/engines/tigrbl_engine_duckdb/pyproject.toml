@@ -49,6 +49,7 @@ authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 requires-python = ">=3.10,<3.15"
 dependencies = [
   "duckdb>=1.0.0",
+  "duckdb-engine>=0.17.0",
   "tigrbl>=0.3.0.dev4",
 ]
 
@@ -61,6 +62,9 @@ Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_e
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
+duckdb = "tigrbl_engine_duckdb.plugin:register"
+
+[project.entry-points."tigrbl.engine_plugins"]
 duckdb = "tigrbl_engine_duckdb.plugin:register"
 
 [tool.hatch.build.targets.wheel]

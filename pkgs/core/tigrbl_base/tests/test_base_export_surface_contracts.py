@@ -24,7 +24,7 @@ _BASE_EXPORT_CASES = [
     ("StorageTransformBase", "tigrbl_base._base._storage"),
     ("TableBase", "tigrbl_base._base._table_base"),
     ("TableRegistryBase", "tigrbl_base._base._table_registry_base"),
-    ("TigrblSessionBase", "tigrbl_base._base._session_base"),
+    ("EngineSessionBase", "tigrbl_base._base._engine_session_base"),
 ]
 
 

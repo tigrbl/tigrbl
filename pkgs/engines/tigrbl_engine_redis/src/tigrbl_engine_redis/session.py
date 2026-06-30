@@ -3,10 +3,10 @@ from __future__ import annotations
 import inspect
 from typing import Any, Callable, Optional
 
-from tigrbl.session.base import TigrblSessionBase  # first-class session base
+from tigrbl_base._base import EngineSessionBase  # first-class session base
 
 
-class RedisSession(TigrblSessionBase):
+class RedisSession(EngineSessionBase):
     """A Tigrbl session backed by a Redis client (async).
 
     This is a concrete subclass of Tigrbl's first-class session base. It wraps
@@ -42,7 +42,7 @@ class RedisSession(TigrblSessionBase):
         """Return active pipeline if in a tx, else the client."""
         return self._pipe if self._pipe is not None else self.client
 
-    # ---- TigrblSessionBase hooks -----------------------------------------
+    # ---- EngineSessionBase hooks -----------------------------------------
     async def _tx_begin_impl(self) -> None:
         self._pipe = self.client.pipeline(transaction=True)
 

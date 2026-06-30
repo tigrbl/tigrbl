@@ -100,6 +100,7 @@ from tigrbl_concrete._concrete import (  # noqa: E402
     Column,
     CORSMiddleware,
     CrudTable,
+    EngineSession,
     EventStreamTable,
     EventStreamResponse,
     FileResponse,
@@ -194,6 +195,7 @@ from tigrbl_base._base import (  # noqa: E402
     CrudTableBase,
     EngineBase,
     EngineProviderBase,
+    EngineSessionBase,
     ForeignKeyBase,
     HookBase,
     RealtimeTableBase,
@@ -242,7 +244,8 @@ from tigrbl_core._spec import (  # noqa: E402
     SchemaArg,
     SchemaRef,
     SchemaSpec,
-    SessionSpec,
+    EngineSessionCfg,
+    EngineSessionSpec,
     StorageSpec,
     StorageTransformSpec,
     StorageTypeRef,
@@ -346,19 +349,39 @@ async def rpc_call(*args, **kwargs):
     )
 
 
-from tigrbl_core._spec.session_spec import (  # noqa: E402
+from tigrbl_core._compat import warn_legacy_engine_session_name  # noqa: E402
+from tigrbl_core._spec.engine_session_spec import (  # noqa: E402
     readonly as _readonly_fn,
-    session_spec as _session_spec_fn,
+    engine_session_spec as _engine_session_spec_fn,
     tx_read_committed as _tx_read_committed_fn,
     tx_repeatable_read as _tx_repeatable_read_fn,
     tx_serializable as _tx_serializable_fn,
 )
 
 readonly = _readonly_fn
-session_spec = _session_spec_fn
+engine_session_spec = _engine_session_spec_fn
 tx_read_committed = _tx_read_committed_fn
 tx_repeatable_read = _tx_repeatable_read_fn
 tx_serializable = _tx_serializable_fn
+
+
+def __getattr__(name: str):
+    if name == "SessionSpec":
+        warn_legacy_engine_session_name("tigrbl.SessionSpec", "EngineSessionSpec")
+        return EngineSessionSpec
+    if name == "SessionCfg":
+        warn_legacy_engine_session_name("tigrbl.SessionCfg", "EngineSessionCfg")
+        return EngineSessionCfg
+    if name == "session_spec":
+        warn_legacy_engine_session_name("tigrbl.session_spec", "engine_session_spec")
+        return engine_session_spec
+    if name == "TigrblSessionBase":
+        warn_legacy_engine_session_name("tigrbl.TigrblSessionBase", "EngineSessionBase")
+        return EngineSessionBase
+    if name == "DefaultSession":
+        warn_legacy_engine_session_name("tigrbl.DefaultSession", "EngineSession")
+        return EngineSession
+    raise AttributeError(name)
 
 
 __all__ = [
@@ -383,6 +406,7 @@ __all__ = [
     "CrudTableBase",
     "RealtimeTableBase",
     "RouterBase",
+    "EngineSessionBase",
     "Op",
     "op",
     "HTTPBasic",
@@ -475,6 +499,7 @@ __all__ = [
     "Request",
     "UploadedFile",
     "WebSocket",
+    "EngineSession",
     "Response",
     "TransportResponse",
     "JSONResponse",
@@ -499,8 +524,9 @@ __all__ = [
     "HeadersSpec",
     "RequestSpec",
     "SchemaSpec",
-    "SessionSpec",
-    "session_spec",
+    "EngineSessionCfg",
+    "EngineSessionSpec",
+    "engine_session_spec",
     "tx_read_committed",
     "tx_repeatable_read",
     "tx_serializable",

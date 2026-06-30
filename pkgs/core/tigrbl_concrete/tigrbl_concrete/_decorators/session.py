@@ -1,18 +1,18 @@
 from __future__ import annotations
 
 from typing import Any, Optional
-from tigrbl_core._spec.session_spec import SessionSpec, SessionCfg
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec, EngineSessionCfg
 
 
-def _normalize(cfg: Optional[SessionCfg] = None, **kw: Any) -> SessionSpec:
+def _normalize(cfg: Optional[EngineSessionCfg] = None, **kw: Any) -> EngineSessionSpec:
     if cfg is not None and kw:
         raise ValueError("Pass either a mapping/spec or keyword args, not both")
-    return SessionSpec.from_any(cfg or kw) or SessionSpec()
+    return EngineSessionSpec.from_any(cfg or kw) or EngineSessionSpec()
 
 
-def session_ctx(cfg: Optional[SessionCfg] = None, /, **kw: Any):
+def session_ctx(cfg: Optional[EngineSessionCfg] = None, /, **kw: Any):
     """
-    Attach a SessionSpec to an App, API, Model/Table, or op handler.
+    Attach a EngineSessionSpec to an App, API, Model/Table, or op handler.
 
     Precedence is evaluated by the resolver using:
         op > model > router > app
@@ -36,7 +36,7 @@ def read_only_session(obj: Any = None, /, *, isolation: Optional[str] = None):
         setattr(
             o,
             "__tigrbl_session_ctx__",
-            SessionSpec(read_only=True, isolation=isolation),
+            EngineSessionSpec(read_only=True, isolation=isolation),
         )
         return o
 

@@ -5,14 +5,14 @@ from typing import TYPE_CHECKING, Any, Callable
 import pandas as pd
 
 try:
-    from tigrbl.session.base import TigrblSessionBase
+    from tigrbl_base._base import EngineSessionBase
 except Exception:
-    from tigrbl_engine_pandas.session import TigrblSessionBase
+    from tigrbl_engine_pandas.session import EngineSessionBase
 
 try:
-    from tigrbl.session.spec import SessionSpec
+    from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 except Exception:
-    from tigrbl_engine_pandas.session import SessionSpec
+    from tigrbl_engine_pandas.session import EngineSessionSpec
 
 from tigrbl_engine_pandas.session import TransactionalDataFrameSession
 
@@ -20,13 +20,13 @@ if TYPE_CHECKING:
     from .engine import CsvEngine
 
 
-class CsvSession(TigrblSessionBase):
+class CsvSession(EngineSessionBase):
     """Tigrbl first-class session for a single CSV-backed table database."""
 
     def __init__(self, engine: "CsvEngine") -> None:
         super().__init__()
         self._engine = engine
-        self._inner = TransactionalDataFrameSession(engine.catalog, spec=SessionSpec())
+        self._inner = TransactionalDataFrameSession(engine.catalog, spec=EngineSessionSpec())
 
     def table(self, name: str | None = None) -> pd.DataFrame:
         key = name or self._engine.table
@@ -35,7 +35,7 @@ class CsvSession(TigrblSessionBase):
     def query(self, expression: str, *, table: str | None = None) -> pd.DataFrame:
         return self.table(table).query(expression)
 
-    def apply_spec(self, spec: SessionSpec | None) -> None:
+    def apply_spec(self, spec: EngineSessionSpec | None) -> None:
         super().apply_spec(spec)
         self._inner.apply_spec(spec)
 

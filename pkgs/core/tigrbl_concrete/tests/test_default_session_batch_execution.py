@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_concrete._concrete._session import DefaultSession
+from tigrbl_concrete._concrete._engine_session import EngineSession
 
 
 class BatchUnderlying:
@@ -33,7 +33,7 @@ class NoBatchUnderlying:
 @pytest.mark.asyncio
 async def test_default_session_delegates_batch_execution_methods() -> None:
     underlying = BatchUnderlying()
-    session = DefaultSession(underlying)
+    session = EngineSession(underlying)
 
     assert await session.executeloop(["SELECT 1", "SELECT 2"]) == [
         ("loop", "SELECT 1"),
@@ -52,7 +52,7 @@ async def test_default_session_delegates_batch_execution_methods() -> None:
 
 @pytest.mark.asyncio
 async def test_default_session_awaits_async_batch_execution_methods() -> None:
-    session = DefaultSession(AsyncBatchUnderlying())
+    session = EngineSession(AsyncBatchUnderlying())
 
     assert await session.executeloop(["SELECT 1"]) == [("async-loop", "SELECT 1")]
     assert await session.executemany("INSERT", [{"id": 1}]) == (
@@ -64,7 +64,7 @@ async def test_default_session_awaits_async_batch_execution_methods() -> None:
 
 @pytest.mark.asyncio
 async def test_default_session_raises_for_missing_batch_execution_methods() -> None:
-    session = DefaultSession(NoBatchUnderlying())
+    session = EngineSession(NoBatchUnderlying())
 
     with pytest.raises(NotImplementedError, match="executeloop"):
         await session.executeloop([])

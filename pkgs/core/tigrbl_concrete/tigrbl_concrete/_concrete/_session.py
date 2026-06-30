@@ -1,142 +1,17 @@
 from __future__ import annotations
 
-import inspect
-from typing import Any, Callable, Optional
+from typing import Any
 
-from tigrbl_base._base import TigrblSessionBase
-from tigrbl_core._spec.session_spec import SessionSpec
+from tigrbl_core._compat import warn_legacy_engine_session_name
 
-
-class DefaultSession(TigrblSessionBase):
-    """Delegating wrapper for resolved provider sessions."""
-
-    def __init__(self, underlying: Any, spec: Optional[SessionSpec] = None) -> None:
-        super().__init__(spec)
-        self._u = underlying
-
-    async def run_sync(self, fn: Callable[[Any], Any]) -> Any:
-        rv = fn(self._u)
-        if inspect.isawaitable(rv):
-            return await rv
-        return rv
-
-    async def _tx_begin_impl(self) -> None:
-        fn = getattr(self._u, "begin", None)
-        if not callable(fn):
-            raise RuntimeError("underlying session does not support begin()")
-        rv = fn()
-        if inspect.isawaitable(rv):
-            await rv
-
-    async def _tx_commit_impl(self) -> None:
-        fn = getattr(self._u, "commit", None)
-        if not callable(fn):
-            raise RuntimeError("underlying session does not support commit()")
-        rv = fn()
-        if inspect.isawaitable(rv):
-            await rv
-
-    async def _tx_rollback_impl(self) -> None:
-        fn = getattr(self._u, "rollback", None)
-        if not callable(fn):
-            raise RuntimeError("underlying session does not support rollback()")
-        rv = fn()
-        if inspect.isawaitable(rv):
-            await rv
-
-    def in_transaction(self) -> bool:
-        it = getattr(self._u, "in_transaction", None)
-        if callable(it):
-            try:
-                return bool(it())
-            except Exception:
-                pass
-        return super().in_transaction()
-
-    def _add_impl(self, obj: Any) -> Any:
-        fn = getattr(self._u, "add", None)
-        if not callable(fn):
-            raise NotImplementedError("underlying session does not implement add(obj)")
-        return fn(obj)
-
-    async def _delete_impl(self, obj: Any) -> None:
-        fn = getattr(self._u, "delete", None)
-        if not callable(fn):
-            raise NotImplementedError(
-                "underlying session does not implement delete(obj)"
-            )
-        rv = fn(obj)
-        if inspect.isawaitable(rv):
-            await rv
-
-    async def _flush_impl(self) -> None:
-        fn = getattr(self._u, "flush", None)
-        if callable(fn):
-            rv = fn()
-            if inspect.isawaitable(rv):
-                await rv
-
-    async def _refresh_impl(self, obj: Any) -> None:
-        fn = getattr(self._u, "refresh", None)
-        if callable(fn):
-            rv = fn(obj)
-            if inspect.isawaitable(rv):
-                await rv
-
-    async def _get_impl(self, model: type, ident: Any) -> Any | None:
-        fn = getattr(self._u, "get", None)
-        if not callable(fn):
-            raise NotImplementedError(
-                "underlying session does not implement get(model, ident)"
-            )
-        rv = fn(model, ident)
-        return await rv if inspect.isawaitable(rv) else rv
-
-    async def _execute_impl(self, stmt: Any) -> Any:
-        fn = getattr(self._u, "execute", None)
-        if not callable(fn):
-            raise NotImplementedError(
-                "underlying session does not implement execute(stmt)"
-            )
-        rv = fn(stmt)
-        return await rv if inspect.isawaitable(rv) else rv
-
-    async def _executeloop_impl(self, statements: Any) -> Any:
-        fn = getattr(self._u, "executeloop", None)
-        if not callable(fn):
-            raise NotImplementedError(
-                "underlying session does not implement executeloop(statements)"
-            )
-        rv = fn(statements)
-        return await rv if inspect.isawaitable(rv) else rv
-
-    async def _executemany_impl(self, stmt: Any, parameter_sets: Any) -> Any:
-        fn = getattr(self._u, "executemany", None)
-        if not callable(fn):
-            raise NotImplementedError(
-                "underlying session does not implement executemany(stmt, parameter_sets)"
-            )
-        rv = fn(stmt, parameter_sets)
-        return await rv if inspect.isawaitable(rv) else rv
-
-    async def _close_impl(self) -> None:
-        fn = getattr(self._u, "close", None)
-        if callable(fn):
-            rv = fn()
-            if inspect.isawaitable(rv):
-                await rv
+from ._engine_session import EngineSession, wrap_sessionmaker
 
 
-def wrap_sessionmaker(maker: Callable[..., Any], spec: SessionSpec):
-    """Wrap a provider session factory to yield DefaultSession instances."""
-
-    def _mk() -> DefaultSession:
-        underlying = maker()
-        session = DefaultSession(underlying, spec)
-        session.apply_spec(spec)
-        return session
-
-    return _mk
+def __getattr__(name: str) -> Any:
+    if name == "DefaultSession":
+        warn_legacy_engine_session_name("DefaultSession", "EngineSession")
+        return EngineSession
+    raise AttributeError(name)
 
 
-__all__ = ["DefaultSession", "wrap_sessionmaker"]
+__all__ = ["EngineSession", "wrap_sessionmaker", "DefaultSession"]

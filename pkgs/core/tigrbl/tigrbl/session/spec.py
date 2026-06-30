@@ -2,6 +2,17 @@
 
 from __future__ import annotations
 
-from tigrbl_core._spec.session_spec import SessionSpec
+from typing import Any
 
-__all__ = ["SessionSpec"]
+from tigrbl_core._compat import warn_legacy_engine_session_name
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
+
+
+def __getattr__(name: str) -> Any:
+    if name == "SessionSpec":
+        warn_legacy_engine_session_name("tigrbl.session.spec.SessionSpec", "EngineSessionSpec")
+        return EngineSessionSpec
+    raise AttributeError(name)
+
+
+__all__ = ["EngineSessionSpec", "SessionSpec"]

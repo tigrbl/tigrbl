@@ -6,11 +6,11 @@ import pandas as pd
 
 # Prefer Tigrbl's base; provide a minimal fallback if missing (package can still import)
 try:
-    from tigrbl.session.base import TigrblSessionBase
+    from tigrbl_base._base import EngineSessionBase
 except Exception:  # fallback minimal ABC
     from abc import ABC, abstractmethod
 
-    class TigrblSessionBase(ABC):
+    class EngineSessionBase(ABC):
         def __init__(self, spec=None):
             self._spec = spec
             self._open = False
@@ -84,10 +84,10 @@ except Exception:  # fallback minimal ABC
 
 
 try:
-    from tigrbl.session.spec import SessionSpec
+    from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 except Exception:
 
-    class SessionSpec:
+    class EngineSessionSpec:
         def __init__(self, isolation=None, read_only=None):
             self.isolation = isolation
             self.read_only = read_only
@@ -141,11 +141,11 @@ class _ExecuteResult(_ScalarResult):
 # ---- Transactional DataFrame Session ----
 
 
-class TransactionalDataFrameSession(TigrblSessionBase):
+class TransactionalDataFrameSession(EngineSessionBase):
     """Native-transaction session over pandas DataFrames."""
 
     def __init__(
-        self, catalog: DataFrameCatalog, spec: Optional[SessionSpec] = None
+        self, catalog: DataFrameCatalog, spec: Optional[EngineSessionSpec] = None
     ) -> None:
         super().__init__(spec)
         self._cat = catalog

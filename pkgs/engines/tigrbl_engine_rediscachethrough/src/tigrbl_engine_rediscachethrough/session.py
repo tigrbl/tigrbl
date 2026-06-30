@@ -4,10 +4,11 @@ from typing import Any, Optional
 
 from redis import Redis
 from sqlalchemy.orm import Session as SASession
-from tigrbl.session import TigrblSessionBase, SessionSpec
+from tigrbl_base._base import EngineSessionBase
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
 
-class CacheThroughSession(TigrblSessionBase):
+class CacheThroughSession(EngineSessionBase):
     """A Tigrbl session that wraps a SQLAlchemy Session plus a Redis client.
 
     Implements simple read-through caching for `get(model, ident)` and
@@ -21,7 +22,7 @@ class CacheThroughSession(TigrblSessionBase):
         redis_client: Redis,
         cache_ttl_sec: int = 60,
         key_prefix: str = "tigrbl:ct",
-        spec: Optional[SessionSpec] = None,
+        spec: Optional[EngineSessionSpec] = None,
     ) -> None:
         super().__init__(spec)
         self._sa = sa_session

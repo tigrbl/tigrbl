@@ -1,14 +1,14 @@
 from __future__ import annotations
 from typing import Any, Optional
 
-from tigrbl.session.base import TigrblSessionBase  # first-class session base
+from tigrbl_base._base import EngineSessionBase  # first-class session base
 
 
-class ClickHouseSession(TigrblSessionBase):
+class ClickHouseSession(EngineSessionBase):
     """A Tigrbl session backed by clickhouse-connect (sync client).
 
     This concrete session implements the async hooks expected by
-    :class:`TigrblSessionBase`. ClickHouse does not provide general-purpose
+    :class:`EngineSessionBase`. ClickHouse does not provide general-purpose
     transactions; the tx hooks are treated as no-ops.
     """
 
@@ -47,7 +47,7 @@ class ClickHouseSession(TigrblSessionBase):
                 )
         return self._client
 
-    # ---- TigrblSessionBase hooks -----------------------------------------
+    # ---- EngineSessionBase hooks -----------------------------------------
     async def _tx_begin_impl(self) -> None:  # no-op; ClickHouse has limited tx support
         return None
 

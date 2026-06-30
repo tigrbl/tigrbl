@@ -14,6 +14,7 @@ REQUIRED_CANONICAL_DOCS = [
     Path("docs/governance/PATH_LENGTH_POLICY.md"),
     Path("docs/governance/PACKAGE_STRUCTURE_POLICY.md"),
     Path("docs/developer/PACKAGE_CATALOG.md"),
+    Path("docs/developer/PACKAGE_LAYERS.md"),
     Path("docs/developer/PACKAGE_LAYOUT.md"),
     Path("docs/developer/AUTHORING_BCP.md"),
     Path("docs/developer/CI_VALIDATION.md"),

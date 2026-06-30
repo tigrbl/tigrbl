@@ -3,20 +3,20 @@ from __future__ import annotations
 import pytest
 
 from tigrbl import (
-    SessionSpec,
+    EngineSessionSpec,
     SseBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
     readonly,
-    session_spec,
+    engine_session_spec,
     tx_repeatable_read,
 )
-from tigrbl_core._spec.session_spec import tx_read_committed, tx_serializable
+from tigrbl_core._spec.engine_session_spec import tx_read_committed, tx_serializable
 from tigrbl_core._spec import SseFramingSpec, TextFramingSpec
 
 
-def test_sessionspec_normalizes_aliases_and_emits_adapter_kwargs() -> None:
-    spec = session_spec(
+def test_EngineSessionSpec_normalizes_aliases_and_emits_adapter_kwargs() -> None:
+    spec = engine_session_spec(
         {
             "iso": "repeatable_read",
             "readonly": True,
@@ -37,9 +37,9 @@ def test_sessionspec_normalizes_aliases_and_emits_adapter_kwargs() -> None:
     assert kwargs["trace_id"] == "trace-001"
 
 
-def test_sessionspec_merge_uses_higher_scope_non_none_precedence() -> None:
-    app_policy = SessionSpec(isolation="read_committed", read_only=False, max_retries=1)
-    op_policy = SessionSpec(read_only=True, statement_timeout_ms=500)
+def test_EngineSessionSpec_merge_uses_higher_scope_non_none_precedence() -> None:
+    app_policy = EngineSessionSpec(isolation="read_committed", read_only=False, max_retries=1)
+    op_policy = EngineSessionSpec(read_only=True, statement_timeout_ms=500)
 
     merged = app_policy.merge(op_policy)
 
@@ -49,24 +49,24 @@ def test_sessionspec_merge_uses_higher_scope_non_none_precedence() -> None:
     assert merged.statement_timeout_ms == 500
 
 
-def test_sessionspec_helpers_create_named_transaction_profiles() -> None:
-    assert tx_read_committed(read_only=True) == SessionSpec(
+def test_EngineSessionSpec_helpers_create_named_transaction_profiles() -> None:
+    assert tx_read_committed(read_only=True) == EngineSessionSpec(
         isolation="read_committed", read_only=True
     )
-    assert tx_repeatable_read(read_only=False) == SessionSpec(
+    assert tx_repeatable_read(read_only=False) == EngineSessionSpec(
         isolation="repeatable_read", read_only=False
     )
     assert tx_serializable().isolation == "serializable"
-    assert readonly() == SessionSpec(read_only=True)
+    assert readonly() == EngineSessionSpec(read_only=True)
 
 
-def test_sessionspec_factory_rejects_mapping_and_kwargs_together() -> None:
+def test_EngineSessionSpec_factory_rejects_mapping_and_kwargs_together() -> None:
     with pytest.raises(ValueError, match="either a mapping/spec or kwargs"):
-        session_spec({"isolation": "read_committed"}, read_only=True)
+        engine_session_spec({"isolation": "read_committed"}, read_only=True)
 
 
-def test_sessionspec_adapter_kwargs_include_declared_defaults_and_hints() -> None:
-    spec = session_spec(
+def test_EngineSessionSpec_adapter_kwargs_include_declared_defaults_and_hints() -> None:
+    spec = engine_session_spec(
         isolation="read_committed",
         read_only=True,
         lock_timeout_ms=500,
@@ -91,8 +91,8 @@ def test_sessionspec_adapter_kwargs_include_declared_defaults_and_hints() -> Non
     }
 
 
-def test_sessionspec_roundtrips_observability_and_consistency_metadata() -> None:
-    spec = SessionSpec(
+def test_EngineSessionSpec_roundtrips_observability_and_consistency_metadata() -> None:
+    spec = EngineSessionSpec(
         isolation="serializable",
         consistency="bounded_staleness",
         staleness_ms=250,
@@ -112,7 +112,7 @@ def test_sessionspec_roundtrips_observability_and_consistency_metadata() -> None
         page_snapshot="snapshot-001",
     )
 
-    restored = SessionSpec.from_json(spec.to_json())
+    restored = EngineSessionSpec.from_json(spec.to_json())
 
     assert restored == spec
     assert restored.rls_context == {"tenant": "tenant-a"}

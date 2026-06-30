@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_concrete._concrete._session import DefaultSession, wrap_sessionmaker
-from tigrbl_core._spec.session_spec import SessionSpec
+from tigrbl_concrete._concrete._engine_session import EngineSession, wrap_sessionmaker
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
 
 class RecordingSession:
@@ -42,7 +42,7 @@ class RecordingSession:
 @pytest.mark.asyncio
 async def test_default_session_delegates_transaction_success_path() -> None:
     underlying = RecordingSession()
-    session = DefaultSession(underlying)
+    session = EngineSession(underlying)
 
     await session.begin()
     session.add("item")
@@ -55,7 +55,7 @@ async def test_default_session_delegates_transaction_success_path() -> None:
 @pytest.mark.asyncio
 async def test_default_session_delegates_rollback_and_close() -> None:
     underlying = RecordingSession()
-    session = DefaultSession(underlying)
+    session = EngineSession(underlying)
 
     await session.begin()
     await session.delete("item")
@@ -67,7 +67,7 @@ async def test_default_session_delegates_rollback_and_close() -> None:
 
 @pytest.mark.asyncio
 async def test_default_session_enforces_read_only_spec_before_mutation() -> None:
-    session = DefaultSession(RecordingSession(), SessionSpec(read_only=True))
+    session = EngineSession(RecordingSession(), EngineSessionSpec(read_only=True))
 
     with pytest.raises(RuntimeError, match="read-only"):
         session.add("item")
@@ -83,13 +83,13 @@ def test_wrap_sessionmaker_returns_isolated_default_sessions_with_spec() -> None
         made.append(session)
         return session
 
-    spec = SessionSpec(read_only=True, tag="tenant-a")
+    spec = EngineSessionSpec(read_only=True, tag="tenant-a")
     wrapped = wrap_sessionmaker(maker, spec)
     first = wrapped()
     second = wrapped()
 
-    assert isinstance(first, DefaultSession)
-    assert isinstance(second, DefaultSession)
+    assert isinstance(first, EngineSession)
+    assert isinstance(second, EngineSession)
     assert first is not second
     assert first._u is made[0]
     assert second._u is made[1]

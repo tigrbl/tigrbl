@@ -34,6 +34,7 @@ claims, evidence, boundaries, releases, ADRs, or specs.
 | Engine, SQLAlchemy, SQL dialect, and backend plugin comparison | `docs/developer/ENGINE_SQL_EQUIVALENCE.md` |
 | Transport and framing reference | `docs/developer/TRANSPORTS_AND_FRAMING.md` |
 | Package catalog | `docs/developer/PACKAGE_CATALOG.md` |
+| Package layer index | `docs/developer/PACKAGE_LAYERS.md` |
 | Package layout | `docs/developer/PACKAGE_LAYOUT.md` |
 | Release-note policy | `docs/release-notes/README.md` |
 | Working and archived notes | `docs/notes/` |

@@ -714,12 +714,27 @@ class TigrblApp(_App):
         tables: Iterable[Any] | None = None,
     ):
         """Initialize DDL for the app and any attached Routers."""
+        ddl_tables = tables
+        if ddl_tables is None:
+            table_registry = getattr(self, "tables", None)
+            if isinstance(table_registry, Mapping):
+                ddl_tables = tuple(
+                    table
+                    for table in table_registry.values()
+                    if getattr(table, "__table__", None) is not None
+                )
+            elif table_registry is not None:
+                ddl_tables = tuple(
+                    table
+                    for table in table_registry
+                    if getattr(table, "__table__", None) is not None
+                )
         try:
             result = _ddl_initialize(
                 self,
                 schemas=schemas,
                 sqlite_attachments=sqlite_attachments,
-                tables=tables,
+                tables=ddl_tables,
             )
         except ValueError as exc:
             if str(exc) != "Engine provider is not configured":
