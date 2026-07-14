@@ -11,17 +11,36 @@ from tigrbl import cli as tigrbl_cli
 
 
 REPO_ROOT = Path(__file__).resolve().parents[5]
-FIXTURE = REPO_ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "fixtures" / "cli_smoke_app.py"
+FIXTURE = (
+    REPO_ROOT
+    / "pkgs"
+    / "97_tests"
+    / "tigrbl_tests"
+    / "tests"
+    / "fixtures"
+    / "cli_smoke_app.py"
+)
 FIXTURE_MODULE = "tests.fixtures.cli_smoke_app"
 
 
 def test_resolve_target_accepts_positional_or_app_flag_and_rejects_mismatch() -> None:
-    assert tigrbl_cli._resolve_target(argparse.Namespace(target="pkg:app", app=None)) == "pkg:app"
-    assert tigrbl_cli._resolve_target(argparse.Namespace(target=None, app="pkg:app")) == "pkg:app"
-    assert tigrbl_cli._resolve_target(argparse.Namespace(target="pkg:app", app="pkg:app")) == "pkg:app"
+    assert (
+        tigrbl_cli._resolve_target(argparse.Namespace(target="pkg:app", app=None))
+        == "pkg:app"
+    )
+    assert (
+        tigrbl_cli._resolve_target(argparse.Namespace(target=None, app="pkg:app"))
+        == "pkg:app"
+    )
+    assert (
+        tigrbl_cli._resolve_target(argparse.Namespace(target="pkg:app", app="pkg:app"))
+        == "pkg:app"
+    )
 
     with pytest.raises(tigrbl_cli.CLIError, match="target and --app"):
-        tigrbl_cli._resolve_target(argparse.Namespace(target="pkg:app", app="other:app"))
+        tigrbl_cli._resolve_target(
+            argparse.Namespace(target="pkg:app", app="other:app")
+        )
 
 
 def test_module_target_resolution_supports_explicit_attr_and_default_app() -> None:
@@ -34,7 +53,9 @@ def test_module_target_resolution_supports_explicit_attr_and_default_app() -> No
 
 
 def test_module_target_resolution_raises_clear_error_for_missing_attr() -> None:
-    with pytest.raises(tigrbl_cli.CLIError, match="could not resolve attribute 'missing'"):
+    with pytest.raises(
+        tigrbl_cli.CLIError, match="could not resolve attribute 'missing'"
+    ):
         tigrbl_cli._load_target_object(f"{FIXTURE_MODULE}:missing")
 
 
@@ -62,7 +83,9 @@ def test_path_target_resolution_raises_clear_error_for_missing_file() -> None:
         tigrbl_cli._load_target_object(f"{missing}:app")
 
 
-def test_target_surface_loading_coerces_instances_classes_factories_and_router_wrappers() -> None:
+def test_target_surface_loading_coerces_instances_classes_factories_and_router_wrappers() -> (
+    None
+):
     app = TigrblApp(title="instance", mount_system=False)
 
     class AppClass(TigrblApp):
@@ -106,7 +129,9 @@ def test_load_prepared_app_uses_shared_loader_initialization_and_docs_mounts() -
 
     app = tigrbl_cli._load_prepared_app(f"{FIXTURE}:build_app", cfg)
     route_owner = getattr(app, "_app", app)
-    routes = {getattr(route, "path", "") for route in getattr(route_owner, "routes", [])}
+    routes = {
+        getattr(route, "path", "") for route in getattr(route_owner, "routes", [])
+    }
 
     assert getattr(app, "_tigrbl_cli_initialized", False) is True
     assert {"/docs-ui", "/schema.json", "/rpc.json", "/rpc-ui"}.issubset(routes)
@@ -138,7 +163,9 @@ def test_cli_handlers_share_prepared_target_loader(
     monkeypatch.setattr(tigrbl_cli, "_load_prepared_app", fake_load)
     monkeypatch.setitem(tigrbl_cli.SERVER_RUNNERS, "uvicorn", lambda _app, _cfg: 0)
     monkeypatch.setattr(tigrbl_cli, "_render_route_table", lambda _summary: "")
-    monkeypatch.setattr(tigrbl_cli, "_build_doctor_payload", lambda _app, _cfg, _target: {})
+    monkeypatch.setattr(
+        tigrbl_cli, "_build_doctor_payload", lambda _app, _cfg, _target: {}
+    )
     monkeypatch.setattr(tigrbl_cli, "load_engine_plugins", lambda: None)
     monkeypatch.setattr(tigrbl_cli, "known_engine_kinds", lambda: ())
     monkeypatch.setattr(tigrbl_cli, "_installed_servers", lambda: ("uvicorn",))

@@ -17,12 +17,12 @@ class AtomStageSignature:
     stage_out: type[object]
 
 
-def _standards_dir() -> Path:
-    return Path(__file__).resolve().parents[4]
+def _pkgs_dir() -> Path:
+    return Path(__file__).resolve().parents[5]
 
 
 def _atoms_dir() -> Path:
-    return _standards_dir() / "tigrbl_atoms" / "tigrbl_atoms" / "atoms"
+    return _pkgs_dir() / "40_atoms" / "tigrbl_atoms" / "tigrbl_atoms" / "atoms"
 
 
 def _parse_signature(module_path: Path) -> AtomStageSignature | None:

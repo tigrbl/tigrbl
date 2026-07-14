@@ -8,14 +8,17 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[5]
-FIXTURE = REPO_ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "fixtures" / "cli_smoke_app.py"
+PKGS_ROOT = REPO_ROOT / "pkgs"
+FIXTURE = (
+    PKGS_ROOT / "97_tests" / "tigrbl_tests" / "tests" / "fixtures" / "cli_smoke_app.py"
+)
 TARGET = f"{FIXTURE}:app"
 
 
 def _pythonpath() -> str:
     parts: list[str] = []
-    for base in (REPO_ROOT / "pkgs" / "core", REPO_ROOT / "pkgs" / "apps", REPO_ROOT / "pkgs" / "engines"):
-        if not base.exists():
+    for base in sorted(PKGS_ROOT.iterdir()):
+        if not base.is_dir():
             continue
         for child in sorted(base.iterdir()):
             if child.is_dir():
@@ -223,6 +226,8 @@ def test_capabilities_command_smoke_outputs_commands_flags_servers_and_target() 
 def test_json_text_serializes_set_like_values_for_cli_payloads() -> None:
     from tigrbl.cli import _json_text
 
-    payload = json.loads(_json_text({"engine_capabilities": {"dialects": {"sqlite", "postgres"}}}))
+    payload = json.loads(
+        _json_text({"engine_capabilities": {"dialects": {"sqlite", "postgres"}}})
+    )
 
     assert sorted(payload["engine_capabilities"]["dialects"]) == ["postgres", "sqlite"]

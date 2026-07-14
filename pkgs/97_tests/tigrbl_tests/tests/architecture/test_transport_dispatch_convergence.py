@@ -3,11 +3,10 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-_STANDARDS = Path(__file__).resolve().parents[3]
-_PKGS = _STANDARDS.parent
-ROOT = _STANDARDS / "tigrbl" / "tigrbl"
-RUNTIME_ROOT = _STANDARDS / "tigrbl_runtime" / "tigrbl_runtime"
-CANON_ROOT = _PKGS / "deprecated" / "tigrbl_canon" / "tigrbl_canon"
+PKGS_ROOT = Path(__file__).resolve().parents[4]
+ROOT = PKGS_ROOT / "80_facade" / "tigrbl" / "tigrbl"
+RUNTIME_ROOT = PKGS_ROOT / "50_runtime" / "tigrbl_runtime" / "tigrbl_runtime"
+CANON_ROOT = PKGS_ROOT / "99_deprecated" / "tigrbl_canon" / "tigrbl_canon"
 
 
 def _source(pkg_root: Path, rel: str) -> str:

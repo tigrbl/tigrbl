@@ -16,11 +16,12 @@ from tigrbl_kernel.loop_modes import build_loop_controller
 
 
 RUNTIME_ROOT = (
-    Path(__file__).resolve().parents[3] / "tigrbl_runtime" / "tigrbl_runtime"
+    Path(__file__).resolve().parents[4]
+    / "50_runtime"
+    / "tigrbl_runtime"
+    / "tigrbl_runtime"
 )
-FORBIDDEN_RUNTIME_AUTHORING_MODULES = (
-    "tigrbl_runtime.webhooks",
-)
+FORBIDDEN_RUNTIME_AUTHORING_MODULES = ("tigrbl_runtime.webhooks",)
 FORBIDDEN_RUNTIME_AUTHORING_EXPORT_PREFIXES = ("Make", "Define", "Derive")
 
 
@@ -64,7 +65,10 @@ def test_subevent_handler_dispatch_contract() -> None:
 
 def test_owner_dispatch_loop_modes_contract() -> None:
     assert select_loop_mode(binding="websocket", subevent_handlers=()) == "owner"
-    assert select_loop_mode(binding="websocket", subevent_handlers=("message.received",)) == "dispatch"
+    assert (
+        select_loop_mode(binding="websocket", subevent_handlers=("message.received",))
+        == "dispatch"
+    )
 
 
 def test_completion_fence_emit_complete_contract() -> None:
@@ -77,9 +81,21 @@ def test_completion_fence_emit_complete_contract() -> None:
 def test_segment_fusion_barrier_policy_contract() -> None:
     fused = fuse_segments(
         [
-            {"segment_id": "ingress", "class": "pure_ingress", "atoms": ("ingress.parse",)},
-            {"segment_id": "dispatch", "class": "pure_dispatch", "atoms": ("dispatch.select",)},
-            {"segment_id": "emit", "class": "transport.emit", "atoms": ("transport.emit",)},
+            {
+                "segment_id": "ingress",
+                "class": "pure_ingress",
+                "atoms": ("ingress.parse",),
+            },
+            {
+                "segment_id": "dispatch",
+                "class": "pure_dispatch",
+                "atoms": ("dispatch.select",),
+            },
+            {
+                "segment_id": "emit",
+                "class": "transport.emit",
+                "atoms": ("transport.emit",),
+            },
         ]
     )
 

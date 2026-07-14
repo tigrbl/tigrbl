@@ -8,9 +8,10 @@ from pathlib import Path
 import pytest
 
 
-CORE_ROOT = Path(__file__).resolve().parents[3]
+PKGS_ROOT = Path(__file__).resolve().parents[4]
 CODEC_PATH = (
-    CORE_ROOT
+    PKGS_ROOT
+    / "40_atoms"
     / "tigrbl_atoms"
     / "tigrbl_atoms"
     / "atoms"

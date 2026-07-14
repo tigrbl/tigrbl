@@ -4,5 +4,11 @@ from pathlib import Path
 
 
 def test_legacy_transport_dispatcher_file_absent():
-    root = Path(__file__).resolve().parents[3] / "tigrbl" / "tigrbl" / "transport"
+    root = (
+        Path(__file__).resolve().parents[4]
+        / "80_facade"
+        / "tigrbl"
+        / "tigrbl"
+        / "transport"
+    )
     assert not (root / "dispatcher.py").exists()

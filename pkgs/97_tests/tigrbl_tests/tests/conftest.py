@@ -43,8 +43,8 @@ from sqlalchemy.orm import Mapped, Session
 import asyncio
 import httpx
 
-CORE_ROOT = Path(__file__).resolve().parents[2]
-TIGRBL_EXAMPLES_ROOT = CORE_ROOT / "tigrbl_examples"
+PKGS_ROOT = Path(__file__).resolve().parents[3]
+TIGRBL_EXAMPLES_ROOT = PKGS_ROOT / "96_examples" / "tigrbl_examples"
 if TIGRBL_EXAMPLES_ROOT.exists():
     _examples_root = str(TIGRBL_EXAMPLES_ROOT)
     if _examples_root not in sys.path:
@@ -664,4 +664,3 @@ class mapping_plan:
     @staticmethod
     def plan(ctx):
         return SimpleNamespace(visible_specs=tuple(resolve_ops(ctx.model)))
-

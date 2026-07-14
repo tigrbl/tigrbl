@@ -7,7 +7,13 @@ import pytest
 
 @pytest.mark.i9n
 def test_transport_dispatch_modules_removed():
-    root = Path(__file__).resolve().parents[3] / "tigrbl" / "tigrbl" / "transport"
+    root = (
+        Path(__file__).resolve().parents[4]
+        / "80_facade"
+        / "tigrbl"
+        / "tigrbl"
+        / "transport"
+    )
     assert not (root / "dispatch.py").exists()
     assert not (root / "dispatcher.py").exists()
     assert not (root / "jsonrpc" / "dispatcher.py").exists()

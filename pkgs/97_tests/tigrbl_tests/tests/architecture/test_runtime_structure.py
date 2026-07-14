@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-_STANDARDS = Path(__file__).resolve().parents[3]
-PKG = _STANDARDS / "tigrbl" / "tigrbl"
-RUNTIME_PKG = _STANDARDS / "tigrbl_runtime" / "tigrbl_runtime"
+PKGS_ROOT = Path(__file__).resolve().parents[4]
+PKG = PKGS_ROOT / "80_facade" / "tigrbl" / "tigrbl"
+RUNTIME_PKG = PKGS_ROOT / "50_runtime" / "tigrbl_runtime" / "tigrbl_runtime"
 
 
 def test_dependency_invoke_is_runtime_event_anchor():

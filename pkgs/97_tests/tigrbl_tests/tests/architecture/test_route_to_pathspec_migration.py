@@ -34,7 +34,7 @@ def test_appspec_and_routerspec_reject_legacy_routes_field() -> None:
 
 
 def test_canonical_spec_package_does_not_import_legacy_route_module() -> None:
-    spec_root = REPO_ROOT / "pkgs" / "core" / "tigrbl_core" / "tigrbl_core" / "_spec"
+    spec_root = REPO_ROOT / "pkgs" / "10_core" / "tigrbl_core" / "tigrbl_core" / "_spec"
     offenders: list[str] = []
     for py_file in spec_root.rglob("*.py"):
         tree = ast.parse(py_file.read_text(encoding="utf-8"))

@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[3] / "tigrbl" / "tigrbl"
+ROOT = Path(__file__).resolve().parents[4] / "80_facade" / "tigrbl" / "tigrbl"
 
 
 def _target_variants(name: str) -> tuple[str, ...]:

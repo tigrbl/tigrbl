@@ -9,7 +9,15 @@ from tigrbl import cli as tigrbl_cli
 
 
 REPO_ROOT = Path(__file__).resolve().parents[5]
-FIXTURE = REPO_ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "fixtures" / "cli_smoke_app.py"
+FIXTURE = (
+    REPO_ROOT
+    / "pkgs"
+    / "97_tests"
+    / "tigrbl_tests"
+    / "tests"
+    / "fixtures"
+    / "cli_smoke_app.py"
+)
 TARGET = f"{FIXTURE}:app"
 
 
@@ -60,7 +68,9 @@ def _cfg(**overrides):
 
 
 @pytest.mark.parametrize("server", ["uvicorn", "hypercorn", "gunicorn", "tigrcorn"])
-def test_run_command_dispatches_to_each_supported_server(monkeypatch, server: str) -> None:
+def test_run_command_dispatches_to_each_supported_server(
+    monkeypatch, server: str
+) -> None:
     called: dict[str, object] = {}
 
     def fake_runner(app, cfg):
@@ -69,29 +79,31 @@ def test_run_command_dispatches_to_each_supported_server(monkeypatch, server: st
         return 0
 
     monkeypatch.setitem(tigrbl_cli.SERVER_RUNNERS, server, fake_runner)
-    rc = tigrbl_cli.main([
-        "run",
-        TARGET,
-        "--server",
-        server,
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "9001",
-        "--workers",
-        "2",
-        "--root-path",
-        "/root",
-        "--proxy-headers",
-        "--docs-path",
-        "/api-docs",
-        "--openapi-path",
-        "/schema.json",
-        "--openrpc-path",
-        "/rpc.json",
-        "--lens-path",
-        "/rpc-ui",
-    ])
+    rc = tigrbl_cli.main(
+        [
+            "run",
+            TARGET,
+            "--server",
+            server,
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "9001",
+            "--workers",
+            "2",
+            "--root-path",
+            "/root",
+            "--proxy-headers",
+            "--docs-path",
+            "/api-docs",
+            "--openapi-path",
+            "/schema.json",
+            "--openrpc-path",
+            "/rpc.json",
+            "--lens-path",
+            "/rpc-ui",
+        ]
+    )
 
     assert rc == 0
     cfg = called["cfg"]
@@ -103,7 +115,9 @@ def test_run_command_dispatches_to_each_supported_server(monkeypatch, server: st
     assert cfg.proxy_headers is True
     app = called["app"]
     route_owner = getattr(app, "_app", app)
-    routes = {getattr(route, "path", "") for route in getattr(route_owner, "routes", [])}
+    routes = {
+        getattr(route, "path", "") for route in getattr(route_owner, "routes", [])
+    }
     assert "/api-docs" in routes
     assert "/schema.json" in routes
     assert "/rpc.json" in routes
@@ -111,7 +125,12 @@ def test_run_command_dispatches_to_each_supported_server(monkeypatch, server: st
 
 
 def test_supported_servers_are_locked_to_the_governed_set() -> None:
-    assert tigrbl_cli.SUPPORTED_SERVERS == ("tigrcorn", "uvicorn", "hypercorn", "gunicorn")
+    assert tigrbl_cli.SUPPORTED_SERVERS == (
+        "tigrcorn",
+        "uvicorn",
+        "hypercorn",
+        "gunicorn",
+    )
 
 
 @pytest.mark.parametrize("server", ["daphne", "twisted", "granian"])
@@ -160,10 +179,14 @@ def test_hypercorn_runner_translates_config(monkeypatch) -> None:
             self.proxy_mode = None
 
     fake_asyncio_mod = types.ModuleType("hypercorn.asyncio")
-    fake_asyncio_mod.serve = lambda app, config: (captured.update({"app": app, "config": config}) or "fake-coro")
+    fake_asyncio_mod.serve = lambda app, config: (
+        captured.update({"app": app, "config": config}) or "fake-coro"
+    )
     fake_config_mod = types.ModuleType("hypercorn.config")
     fake_config_mod.Config = FakeConfig
-    monkeypatch.setitem(__import__("sys").modules, "hypercorn.asyncio", fake_asyncio_mod)
+    monkeypatch.setitem(
+        __import__("sys").modules, "hypercorn.asyncio", fake_asyncio_mod
+    )
     monkeypatch.setitem(__import__("sys").modules, "hypercorn.config", fake_config_mod)
     monkeypatch.setattr(tigrbl_cli.asyncio, "run", lambda _coro: None)
 
@@ -238,17 +261,34 @@ def test_tigrcorn_runner_translates_config(monkeypatch) -> None:
 @pytest.mark.parametrize(
     ("argv", "message"),
     [
-        (["serve", TARGET, "--trace-sample-rate", "1.5"], "--trace-sample-rate must be between 0.0 and 1.0"),
-        (["serve", TARGET, "--concurrency-limit", "0"], "--concurrency-limit must be >= 1"),
+        (
+            ["serve", TARGET, "--trace-sample-rate", "1.5"],
+            "--trace-sample-rate must be between 0.0 and 1.0",
+        ),
+        (
+            ["serve", TARGET, "--concurrency-limit", "0"],
+            "--concurrency-limit must be >= 1",
+        ),
         (["serve", TARGET, "--admission-queue", "0"], "--admission-queue must be >= 1"),
         (["serve", TARGET, "--backlog", "0"], "--backlog must be >= 1"),
-        (["serve", TARGET, "--http2-max-concurrent-streams", "0"], "--http2-max-concurrent-streams must be >= 1"),
+        (
+            ["serve", TARGET, "--http2-max-concurrent-streams", "0"],
+            "--http2-max-concurrent-streams must be >= 1",
+        ),
         (["serve", TARGET, "--http3-max-data", "0"], "--http3-max-data must be >= 1"),
-        (["serve", TARGET, "--alpn-policy", ",,,"], "--alpn-policy must include at least one protocol"),
-        (["serve", TARGET, "--quic-metrics", ",,,"], "--quic-metrics must include at least one counter"),
+        (
+            ["serve", TARGET, "--alpn-policy", ",,,"],
+            "--alpn-policy must include at least one protocol",
+        ),
+        (
+            ["serve", TARGET, "--quic-metrics", ",,,"],
+            "--quic-metrics must include at least one counter",
+        ),
     ],
 )
-def test_cli_rejects_invalid_tigrcorn_operator_controls(argv: list[str], message: str) -> None:
+def test_cli_rejects_invalid_tigrcorn_operator_controls(
+    argv: list[str], message: str
+) -> None:
     with pytest.raises(tigrbl_cli.CLIError, match=message):
         args = tigrbl_cli._build_parser().parse_args(argv)
         tigrbl_cli._serve_config_from_args(args)

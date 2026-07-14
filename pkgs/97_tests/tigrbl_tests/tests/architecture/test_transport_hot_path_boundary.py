@@ -4,11 +4,11 @@ import ast
 from pathlib import Path
 
 
-CORE_ROOT = Path(__file__).resolve().parents[3]
+PKGS_ROOT = Path(__file__).resolve().parents[4]
 HOT_PATH_ROOTS = (
-    CORE_ROOT / "tigrbl_atoms" / "tigrbl_atoms",
-    CORE_ROOT / "tigrbl_kernel" / "tigrbl_kernel",
-    CORE_ROOT / "tigrbl_runtime" / "tigrbl_runtime",
+    PKGS_ROOT / "40_atoms" / "tigrbl_atoms" / "tigrbl_atoms",
+    PKGS_ROOT / "45_kernel" / "tigrbl_kernel" / "tigrbl_kernel",
+    PKGS_ROOT / "50_runtime" / "tigrbl_runtime" / "tigrbl_runtime",
 )
 DEPRECATED_TRANSPORT_MODULE_PREFIXES = (
     "tigrbl.transport",
@@ -20,9 +20,7 @@ def _python_sources() -> list[Path]:
     paths: list[Path] = []
     for root in HOT_PATH_ROOTS:
         paths.extend(
-            path
-            for path in root.rglob("*.py")
-            if "__pycache__" not in path.parts
+            path for path in root.rglob("*.py") if "__pycache__" not in path.parts
         )
     return paths
 
@@ -43,7 +41,7 @@ def _forbidden_imports(path: Path) -> list[str]:
 
 def test_atoms_kernel_runtime_do_not_import_deprecated_transport_shims() -> None:
     offenders = {
-        str(path.relative_to(CORE_ROOT)): imports
+        str(path.relative_to(PKGS_ROOT)): imports
         for path in _python_sources()
         if (imports := _forbidden_imports(path))
     }
@@ -51,16 +49,16 @@ def test_atoms_kernel_runtime_do_not_import_deprecated_transport_shims() -> None
     assert offenders == {}
 
 
-def test_atoms_kernel_runtime_do_not_dynamic_import_deprecated_transport_shims() -> None:
+def test_atoms_kernel_runtime_do_not_dynamic_import_deprecated_transport_shims() -> (
+    None
+):
     offenders: dict[str, list[str]] = {}
     for path in _python_sources():
         text = path.read_text(encoding="utf-8")
         hits = [
-            prefix
-            for prefix in DEPRECATED_TRANSPORT_MODULE_PREFIXES
-            if prefix in text
+            prefix for prefix in DEPRECATED_TRANSPORT_MODULE_PREFIXES if prefix in text
         ]
         if hits:
-            offenders[str(path.relative_to(CORE_ROOT))] = hits
+            offenders[str(path.relative_to(PKGS_ROOT))] = hits
 
     assert offenders == {}
