@@ -16,7 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / 'tools' / 'ci'))
 
 CURRENT_TARGET = REPO_ROOT / 'docs' / 'conformance' / 'CURRENT_TARGET.md'
-PACKAGE_PYPROJECT = REPO_ROOT / 'pkgs' / 'core' / 'tigrbl' / 'pyproject.toml'
+PACKAGE_PYPROJECT = REPO_ROOT / 'pkgs' / '80_facade' / 'tigrbl' / 'pyproject.toml'
 REGISTRY = REPO_ROOT / '.ssot' / 'registry.json'
 REQUIRED = {'HANDOFF-001', 'HANDOFF-002', 'NEXT-001', 'NEXT-002'}
 VERSION_RE = re.compile(r'^([0-9]+)\.([0-9]+)\.([0-9]+)(?:\.dev([0-9]+))?$')

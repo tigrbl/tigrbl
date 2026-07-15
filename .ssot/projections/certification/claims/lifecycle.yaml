@@ -36,13 +36,13 @@ claims:
     target_mapping: current_release
     owning_modules:
       - .ssot/projections/certification/claims/current.yaml
-      - pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py
+      - pkgs/80_facade/tigrbl/tigrbl/system/docs/openapi/schema.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/CURRENT_TARGET.md
       - docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
     preserved_evidence:
       - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
       - docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json
@@ -58,13 +58,13 @@ claims:
     target_mapping: current_release
     owning_modules:
       - .ssot/projections/certification/claims/current.yaml
-      - pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py
+      - pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/CURRENT_TARGET.md
       - docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
     preserved_evidence:
       - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
       - docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json
@@ -85,7 +85,7 @@ claims:
     public_contract_artifacts:
       - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/security/test_schemes.py
+      - pkgs/97_tests/tigrbl_tests/tests/security/test_schemes.py
       - tools/ci/tests/test_http_auth_challenges.py
     preserved_evidence:
       - docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md
@@ -107,7 +107,7 @@ claims:
     public_contract_artifacts:
       - docs/developer/operator/README.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_closure.py
     preserved_evidence:
       - docs/conformance/audit/2026/phase7-operator-surface/README.md
       - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
@@ -123,13 +123,13 @@ claims:
     target_mapping: current_release
     owning_modules:
       - .ssot/projections/certification/claims/current.yaml
-      - pkgs/core/tigrbl/tigrbl/cli.py
+      - pkgs/80_facade/tigrbl/tigrbl/cli.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
       - docs/conformance/audit/2026/p8-cli/README.md
       - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
@@ -293,7 +293,7 @@ claims:
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - tools/ci/tests/test_certification_tree.py
-      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_family_alignment.py
     preserved_evidence:
       - .ssot/projections/certification/targets/next_target.yaml
       - .github/workflows/next-target-datatypes.yml
@@ -371,15 +371,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+      - pkgs/10_core/tigrbl_core/tests/test_semantic_datatype_core.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+      - pkgs/10_core/tigrbl_core/tests/test_semantic_datatype_core.py
       - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
@@ -394,18 +394,18 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py
-      - pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/column_spec.py
+      - pkgs/20_base/tigrbl_base/tigrbl_base/_base/_column_base.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
-      - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+      - pkgs/10_core/tigrbl_core/tests/test_column_datatype_integration.py
+      - pkgs/20_base/tigrbl_base/tests/test_column_datatype_lowering.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
-      - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+      - pkgs/10_core/tigrbl_core/tests/test_column_datatype_integration.py
+      - pkgs/20_base/tigrbl_base/tests/test_column_datatype_lowering.py
     release_gate_coverage:
       - A
       - B
@@ -419,15 +419,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+      - pkgs/10_core/tigrbl_core/tests/test_adapter_registry_contract.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+      - pkgs/10_core/tigrbl_core/tests/test_adapter_registry_contract.py
       - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
@@ -442,15 +442,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_bridge_lowering.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_bridge_lowering.py
       - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
@@ -465,16 +465,16 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
-      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
       - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
@@ -489,16 +489,16 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py
       - .github/workflows/evidence-lanes.yml
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_family_alignment.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_family_alignment.py
       - .github/workflows/evidence-lanes.yml
     release_gate_coverage:
       - A
@@ -513,15 +513,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/table_spec.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+      - pkgs/10_core/tigrbl_core/tests/test_table_portability_contract.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+      - pkgs/10_core/tigrbl_core/tests/test_table_portability_contract.py
       - .ssot/projections/certification/targets/next_target.yaml
     release_gate_coverage:
       - A
@@ -536,16 +536,16 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
       - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
-      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
-      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
       - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
@@ -560,15 +560,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -582,15 +582,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -604,15 +604,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -626,15 +626,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -648,15 +648,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -670,15 +670,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -692,15 +692,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -714,15 +714,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -736,15 +736,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -758,15 +758,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -780,15 +780,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -802,15 +802,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -824,15 +824,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -846,15 +846,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -868,15 +868,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_oltp
+      - pkgs/60_ops/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -890,15 +890,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_olap
+      - pkgs/60_ops/tigrbl_ops_olap
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -912,15 +912,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_olap
+      - pkgs/60_ops/tigrbl_ops_olap
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -934,15 +934,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -956,15 +956,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -978,15 +978,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -1000,15 +1000,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -1022,15 +1022,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -1044,15 +1044,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -1066,15 +1066,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -1088,15 +1088,15 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_ops_realtime
+      - pkgs/60_ops/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     preserved_evidence:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
     release_gate_coverage:
       - A
       - B
@@ -1110,17 +1110,17 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
-      - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/config/constants.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/op_spec.py
     required_test_classes:
       - tools/ci/tests/test_certification_tree.py
     preserved_evidence:
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
-      - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/config/constants.py
     release_gate_coverage:
       - A
       - B
@@ -1134,7 +1134,7 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl/tigrbl/cli.py
+      - pkgs/80_facade/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -1142,9 +1142,9 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
     release_gate_coverage:
       - A
@@ -1159,7 +1159,7 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl/tigrbl/cli.py
+      - pkgs/80_facade/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -1167,9 +1167,9 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
     release_gate_coverage:
       - A
@@ -1184,7 +1184,7 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl/tigrbl/cli.py
+      - pkgs/80_facade/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -1192,9 +1192,9 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
     release_gate_coverage:
       - A
@@ -1209,7 +1209,7 @@ claims:
     owning_modules:
       - .ssot/projections/certification/claims/target.yaml
       - .ssot/projections/certification/targets/next_target.yaml
-      - pkgs/core/tigrbl/tigrbl/cli.py
+      - pkgs/80_facade/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -1217,9 +1217,9 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
     release_gate_coverage:
       - A
@@ -1242,7 +1242,7 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
@@ -1263,7 +1263,7 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
@@ -1284,7 +1284,7 @@ claims:
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     required_test_classes:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
     preserved_evidence:
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md

@@ -13,22 +13,22 @@ from pathlib import Path
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
-PACKAGE_DIR = ROOT / 'pkgs' / 'core' / 'tigrbl'
-NATIVE_PY_PATH = ROOT / 'pkgs' / 'core' / 'tigrbl_runtime'
+PACKAGE_DIR = ROOT / 'pkgs' / '80_facade' / 'tigrbl'
+NATIVE_PY_PATH = ROOT / 'pkgs' / '50_runtime' / 'tigrbl_runtime'
 CORE_INSTALL_DIRS = [
-    ROOT / 'pkgs' / 'core' / 'tigrbl_typing',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_spec',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_base',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_core',
-    ROOT / 'pkgs' / 'deprecated' / 'tigrbl_canon',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_atoms',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_kernel',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_olap',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_oltp',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_realtime',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_webtransport',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_orm',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_concrete',
+    ROOT / 'pkgs' / '00_typing' / 'tigrbl_typing',
+    ROOT / 'pkgs' / '01_spec' / 'tigrbl_spec',
+    ROOT / 'pkgs' / '20_base' / 'tigrbl_base',
+    ROOT / 'pkgs' / '10_core' / 'tigrbl_core',
+    ROOT / 'pkgs' / '99_deprecated' / 'tigrbl_canon',
+    ROOT / 'pkgs' / '40_atoms' / 'tigrbl_atoms',
+    ROOT / 'pkgs' / '45_kernel' / 'tigrbl_kernel',
+    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_olap',
+    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_oltp',
+    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_realtime',
+    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_webtransport',
+    ROOT / 'pkgs' / '30_orm' / 'tigrbl_orm',
+    ROOT / 'pkgs' / '70_concrete' / 'tigrbl_concrete',
 ]
 TARGET_DEPS = [
     'sqlalchemy>=2.0',
