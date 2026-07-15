@@ -27,7 +27,7 @@ class GeneratedBlock:
 
 def _add_workspace_paths() -> None:
     candidates = [ROOT, ROOT / "examples" / "equivalence_contracts" / "src"]
-    for base in (ROOT / "pkgs" / "core", ROOT / "pkgs" / "apps", ROOT / "pkgs" / "engines"):
+    for base in sorted((ROOT / "pkgs").iterdir()):
         if not base.is_dir():
             continue
         for child in sorted(base.iterdir()):
@@ -81,7 +81,7 @@ def _format_status(missing: list[str]) -> str:
 
 
 def _facade_exports() -> set[str]:
-    facade = ROOT / "pkgs" / "core" / "tigrbl" / "tigrbl" / "__init__.py"
+    facade = ROOT / "pkgs" / "80_facade" / "tigrbl" / "tigrbl" / "__init__.py"
     tree = ast.parse(facade.read_text(encoding="utf-8"))
     exports: set[str] = set()
     for node in tree.body:
@@ -354,7 +354,7 @@ def _parse_project_name(pyproject: Path) -> str:
 
 def render_engine_package_snapshot() -> str:
     rows = []
-    for pyproject in sorted((ROOT / "pkgs" / "engines").glob("*/pyproject.toml")):
+    for pyproject in sorted((ROOT / "pkgs" / "90_engines").glob("*/pyproject.toml")):
         package_name = _parse_project_name(pyproject)
         rows.append(
             [
