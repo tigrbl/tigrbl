@@ -11,427 +11,427 @@ features:
     name: Canonical datatype semantic center
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: semantic-datatype-core
     claim_target: NEXT-003
     phase: N1
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+      - pkgs/10_core/tigrbl_core/tests/test_semantic_datatype_core.py
       - .github/workflows/next-target-datatypes.yml
   - id: NEXT-FEAT-002
     name: ColumnSpec.datatype adoption
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: column-datatype-integration
     claim_target: NEXT-004
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
-      - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+      - pkgs/10_core/tigrbl_core/tests/test_column_datatype_integration.py
+      - pkgs/20_base/tigrbl_base/tests/test_column_datatype_lowering.py
   - id: NEXT-FEAT-003
     name: TypeAdapter and TypeRegistry contract
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: adapter-registry-contract
     claim_target: NEXT-005
     phase: N1
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+      - pkgs/10_core/tigrbl_core/tests/test_adapter_registry_contract.py
   - id: NEXT-FEAT-004
     name: Engine lowering and registry bridge
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: engine-bridge-lowering
     claim_target: NEXT-006
     phase: N2
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_bridge_lowering.py
   - id: NEXT-FEAT-005
     name: Reflected type mapper and reverse mapping
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: reflection-roundtrip-recovery
     claim_target: NEXT-007
     phase: N5
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
-      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
   - id: NEXT-FEAT-006
     name: Engine-family datatype alignment
     state: target
     owner: Next-target program
-    package: pkgs/engines
+    package: pkgs/90_engines
     test_class: engine-family-alignment
     claim_target: NEXT-008
     phase: N2
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+      - pkgs/10_core/tigrbl_core/tests/test_engine_family_alignment.py
       - .github/workflows/evidence-lanes.yml
   - id: NEXT-FEAT-007
     name: Table portability and interoperability rules
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: table-portability-contract
     claim_target: NEXT-009
     phase: N4
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py
+      - pkgs/10_core/tigrbl_core/tests/test_table_portability_contract.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/table_spec.py
   - id: NEXT-FEAT-008
     name: Reflection-driven schema round-trip recovery
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: schema-roundtrip-recovery
     claim_target: NEXT-010
     phase: N5
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
-      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/10_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
   - id: NEXT-FEAT-009
     name: Canonical op create
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-create
     claim_target: NEXT-011
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-010
     name: Canonical op read
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-read
     claim_target: NEXT-012
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-011
     name: Canonical op update
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-update
     claim_target: NEXT-013
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-012
     name: Canonical op replace
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-replace
     claim_target: NEXT-014
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-013
     name: Canonical op merge
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-merge
     claim_target: NEXT-015
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-014
     name: Canonical op delete
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-delete
     claim_target: NEXT-016
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-015
     name: Canonical op list
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-list
     claim_target: NEXT-017
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-016
     name: Canonical op clear
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-clear
     claim_target: NEXT-018
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-017
     name: Canonical op count
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-count
     claim_target: NEXT-019
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-018
     name: Canonical op exists
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-exists
     claim_target: NEXT-020
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-019
     name: Canonical op bulk_create
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-bulk-create
     claim_target: NEXT-021
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-020
     name: Canonical op bulk_update
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-bulk-update
     claim_target: NEXT-022
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-021
     name: Canonical op bulk_replace
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-bulk-replace
     claim_target: NEXT-023
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-022
     name: Canonical op bulk_merge
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-bulk-merge
     claim_target: NEXT-024
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-023
     name: Canonical op bulk_delete
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_oltp
+    package: pkgs/60_ops/tigrbl_ops_oltp
     test_class: canonical-op-bulk-delete
     claim_target: NEXT-025
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-024
     name: Canonical op aggregate
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_olap
+    package: pkgs/60_ops/tigrbl_ops_olap
     test_class: canonical-op-aggregate
     claim_target: NEXT-026
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-025
     name: Canonical op group_by
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_olap
+    package: pkgs/60_ops/tigrbl_ops_olap
     test_class: canonical-op-group-by
     claim_target: NEXT-027
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-026
     name: Canonical op publish
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-publish
     claim_target: NEXT-028
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-027
     name: Canonical op subscribe
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-subscribe
     claim_target: NEXT-029
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-028
     name: Canonical op tail
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-tail
     claim_target: NEXT-030
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-029
     name: Canonical op upload
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-upload
     claim_target: NEXT-031
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-030
     name: Canonical op download
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-download
     claim_target: NEXT-032
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-031
     name: Canonical op append_chunk
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-append-chunk
     claim_target: NEXT-033
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-032
     name: Canonical op send_datagram
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-send-datagram
     claim_target: NEXT-034
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-033
     name: Canonical op checkpoint
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_ops_realtime
+    package: pkgs/60_ops/tigrbl_ops_realtime
     test_class: canonical-op-checkpoint
     claim_target: NEXT-035
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - pkgs/40_atoms/tigrbl_atoms/tests/test_sys_atoms.py
   - id: NEXT-FEAT-034
     name: Canonical op custom
     state: target
     owner: Next-target program
-    package: pkgs/core/tigrbl_core
+    package: pkgs/10_core/tigrbl_core
     test_class: canonical-op-custom
     claim_target: NEXT-036
     phase: N3
     evidence_artifacts:
-      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
-      - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+      - pkgs/10_core/tigrbl_core/tigrbl_core/config/constants.py
   - id: NEXT-FEAT-035
     name: Supported server tigrcorn
     state: target
     owner: CLI / Developer Experience
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-runner-tigrcorn
     claim_target: NEXT-037
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
   - id: NEXT-FEAT-036
     name: Supported server uvicorn
     state: target
     owner: CLI / Developer Experience
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-runner-uvicorn
     claim_target: NEXT-038
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
   - id: NEXT-FEAT-037
     name: Supported server hypercorn
     state: target
     owner: CLI / Developer Experience
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-runner-hypercorn
     claim_target: NEXT-039
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
   - id: NEXT-FEAT-038
     name: Supported server gunicorn
     state: target
     owner: CLI / Developer Experience
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-runner-gunicorn
     claim_target: NEXT-040
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - tools/conformance/installed_package_smoke.py
   - id: NEXT-FEAT-039
     name: Out-of-boundary server daphne
     state: target
     owner: Server/runtime boundary
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-oob-daphne
     claim_target: NEXT-041
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
   - id: NEXT-FEAT-040
     name: Out-of-boundary server twisted
     state: target
     owner: Server/runtime boundary
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-oob-twisted
     claim_target: NEXT-042
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
   - id: NEXT-FEAT-041
     name: Out-of-boundary server granian
     state: target
     owner: Server/runtime boundary
-    package: pkgs/core/tigrbl
+    package: pkgs/80_facade/tigrbl
     test_class: server-oob-granian
     claim_target: NEXT-043
     phase: T2
     evidence_artifacts:
-      - pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+      - pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
 risks:

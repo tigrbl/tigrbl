@@ -9,7 +9,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
-PACKAGE_DIR = ROOT / 'pkgs' / 'core' / 'tigrbl'
+PACKAGE_DIR = ROOT / 'pkgs' / '80_facade' / 'tigrbl'
 
 
 def find_entry_points(wheel_path: Path) -> dict[str, str]:

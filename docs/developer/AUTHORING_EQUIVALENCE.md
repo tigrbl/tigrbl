@@ -42,7 +42,7 @@ Source inputs: `pkgs/80_facade/tigrbl/tigrbl/__init__.py`, `pkgs/10_core/tigrbl_
 | Table and resource authoring | `Table`, `TableBase`, `CrudTable`, `RestTable`, `JsonRpcTable`, `RestJsonRpcTable` | present |
 | Operation and binding authoring | `OpSpec`, `HTTPBindingSpec`, `HttpRestBindingSpec`, `HttpJsonRpcBindingSpec`, `HttpStreamBindingSpec`, `SseBindingSpec`, `WebSocketBindingSpec`, `WsBindingSpec`, `WebTransportBindingSpec` | present |
 | Schema, column, and response authoring | `ColumnSpec`, `FieldSpec`, `IOSpec`, `StorageSpec`, `SchemaSpec`, `ResponseSpec` | present |
-| Engine, session, and hook authoring | `EngineSpec`, `engine_ctx`, `session_spec`, `op_ctx`, `hook_ctx`, `response_ctx` | present |
+| Engine, session, and hook authoring | `EngineSpec`, `engine_ctx`, `session_spec`, `op_ctx`, `hook_ctx`, `response_ctx` | missing: `session_spec` |
 <!-- END GENERATED: equivalence-docs:authoring-public-surface -->
 
 ## Application Authoring Matrix

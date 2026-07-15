@@ -16,7 +16,7 @@ ROOT = repo_root()
 REGISTRY = ROOT / '.ssot' / 'registry.json'
 DOC_POINTERS = ROOT / 'docs' / 'governance' / 'DOC_POINTERS.md'
 VERSIONING = ROOT / 'docs' / 'governance' / 'VERSIONING_POLICY.md'
-PACKAGE_PYPROJECT = ROOT / 'pkgs' / 'core' / 'tigrbl' / 'pyproject.toml'
+PACKAGE_PYPROJECT = ROOT / 'pkgs' / '80_facade' / 'tigrbl' / 'pyproject.toml'
 REQUIRED_ADRS = {'adr:1043', 'adr:1044'}
 STATIC_REQUIRED_PATHS = [
     ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'post-promotion-handoff' / 'README.md',
