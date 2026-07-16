@@ -52,6 +52,13 @@ class SchemaOut:
 
 
 @dataclass(frozen=True)
+class SchemaStored:
+    fields: Tuple[str, ...]
+    by_field: Dict[str, Dict[str, object]]
+    required_from_client: Tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class OpView:
     schema_in: SchemaIn
     schema_out: SchemaOut
@@ -59,6 +66,7 @@ class OpView:
     virtual_producers: Dict[str, Callable[[object, dict], object]]
     to_stored_transforms: Dict[str, Callable[[object, dict], object]]
     refresh_hints: Tuple[str, ...]
+    schema_stored: SchemaStored | None = None
 
 
 @dataclass(frozen=True, slots=True)

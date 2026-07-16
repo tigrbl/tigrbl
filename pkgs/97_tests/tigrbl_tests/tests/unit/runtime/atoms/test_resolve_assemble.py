@@ -4,6 +4,7 @@ from tigrbl_atoms.atoms.resolve import assemble
 from tigrbl_kernel import (
     SchemaIn,
     SchemaOut,
+    SchemaStored,
     OpView,
     _default_kernel as K,
 )
@@ -25,6 +26,11 @@ def test_assemble_separates_virtual_and_persisted() -> None:
             by_field={"name": {"in_enabled": True}, "v": {"virtual": True}},
         ),
         schema_out=SchemaOut(fields=(), by_field={}, expose=()),
+        schema_stored=SchemaStored(
+            fields=("name",),
+            by_field={"name": {"from_client": True, "required": True}},
+            required_from_client=("name",),
+        ),
         paired_index={},
         virtual_producers={},
         to_stored_transforms={},
@@ -44,3 +50,5 @@ def test_assemble_separates_virtual_and_persisted() -> None:
     assemble._run(None, ctx)
     assert ctx.temp["assembled_values"] == {"name": "Alice"}
     assert ctx.temp["virtual_in"] == {"v": "x"}
+    assert tuple(sorted(ctx.temp["assembled_values"])) == ov.schema_stored.fields
+    assert "v" not in ov.schema_stored.fields

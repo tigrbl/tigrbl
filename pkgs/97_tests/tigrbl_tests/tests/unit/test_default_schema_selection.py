@@ -17,6 +17,7 @@ def _default_schemas_for_spec(model: type, spec: OpSpec) -> dict[str, object | N
     alias_ns = getattr(getattr(model, "schemas", object()), spec.alias, None)
     return {
         "in_": getattr(alias_ns, "in_", None),
+        "persisted": getattr(alias_ns, "persisted", None),
         "out": getattr(alias_ns, "out", None),
         "in_item": None,
         "out_item": None,
@@ -38,26 +39,27 @@ def _build_router_key_model() -> type:
 
 
 @pytest.mark.parametrize(
-    ("target", "expect_bound"),
+    ("target", "expect_bound", "expect_persisted"),
     [
-        ("create", True),
-        ("read", True),
-        ("update", True),
-        ("replace", True),
-        ("merge", False),
-        ("delete", True),
-        ("list", True),
-        ("clear", True),
-        ("bulk_create", False),
-        ("bulk_update", False),
-        ("bulk_replace", False),
-        ("bulk_merge", False),
-        ("bulk_delete", False),
+        ("create", True, True),
+        ("read", True, False),
+        ("update", True, True),
+        ("replace", True, True),
+        ("merge", False, False),
+        ("delete", True, False),
+        ("list", True, False),
+        ("clear", True, False),
+        ("bulk_create", False, False),
+        ("bulk_update", False, False),
+        ("bulk_replace", False, False),
+        ("bulk_merge", False, False),
+        ("bulk_delete", False, False),
     ],
 )
 def test_default_schema_selection_for_all_canonical_targets(
     target: str,
     expect_bound: bool,
+    expect_persisted: bool,
 ):
     model = _build_router_key_model()
     spec = OpSpec(alias=target, target=target)
@@ -70,6 +72,10 @@ def test_default_schema_selection_for_all_canonical_targets(
     else:
         assert defaults["in_"] is None
         assert defaults["out"] is None
+    if expect_persisted:
+        assert defaults["persisted"] is not None
+    else:
+        assert defaults["persisted"] is None
 
     assert defaults["in_item"] is None
     assert defaults["out_item"] is None
@@ -83,6 +89,7 @@ def test_default_create_out_schema_matches_read_schema():
     read_schema = _build_schema(model, verb="read")
 
     assert defaults["out"] is not read_schema
+    assert defaults["persisted"] is not None
 
 
 def test_default_create_out_schema_excludes_create_only_alias_fields():
@@ -92,7 +99,9 @@ def test_default_create_out_schema_excludes_create_only_alias_fields():
     defaults = _default_schemas_for_spec(model, spec)
 
     assert defaults["out"] is not None
+    assert defaults["persisted"] is not None
     assert "digest" in defaults["out"].model_fields
+    assert "digest" in defaults["persisted"].model_fields
     assert "api_key" not in defaults["out"].model_fields
 
 
@@ -115,5 +124,6 @@ def test_default_custom_target_uses_alias_specific_io_sets():
     defaults = _default_schemas_for_spec(CustomModel, spec)
 
     assert defaults["in_"] is None
+    assert defaults["persisted"] is None
     assert defaults["out"] is None
 

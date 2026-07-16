@@ -12,7 +12,7 @@ def get_schema(
     orm_cls: type,
     op: str,
     *,
-    kind: Literal["in", "out"] = "out",
+    kind: Literal["in", "persisted", "out"] = "out",
 ) -> Optional[Type[BaseModel]]:
     """Return the bound schema for ``orm_cls``.
 
@@ -23,7 +23,8 @@ def get_schema(
     op:
         Operation alias whose schema should be returned.
     kind:
-        Either ``"in"`` for request schemas or ``"out"`` for response schemas.
+        Either ``"in"`` for request schemas, ``"persisted"`` for storage-facing
+        schemas, or ``"out"`` for response schemas.
 
     Returns
     -------
@@ -55,12 +56,16 @@ def get_schema(
     logger.debug("Found operation '%s' for model %s", op, orm_cls.__name__)
 
     kind = kind.lower()
-    if kind not in {"in", "out"}:
+    if kind not in {"in", "persisted", "out"}:
         logger.debug("Invalid schema kind '%s' requested", kind)
-        raise ValueError("kind must be 'in' or 'out'")
+        raise ValueError("kind must be 'in', 'persisted', or 'out'")
     logger.debug("Using schema kind '%s'", kind)
 
-    attr = "in_" if kind == "in" else "out"
+    attr = {
+        "in": "in_",
+        "persisted": "persisted",
+        "out": "out",
+    }[kind]
     if not hasattr(alias_ns, attr):
         logger.debug(
             "Schema kind '%s' not found for op '%s' on %s", kind, op, orm_cls.__name__

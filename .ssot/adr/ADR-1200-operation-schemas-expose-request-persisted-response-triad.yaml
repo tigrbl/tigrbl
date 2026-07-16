@@ -1,0 +1,46 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1200"
+number: 1200
+slug: "operation-schemas-expose-request-persisted-response-triad"
+title: "Operation schemas expose request persisted response triad"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Table operations currently expose request and response schemas as first-class bound surfaces, while the storage-facing shape exists only as compiled runtime data. Introduce a governed third schema view so ops can expose request, persisted, and response shapes without conflating declaration helpers with storage compilation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  1. Tigrbl table operations may expose three distinct schema views: request (`in_`), persisted (`persisted` on the public surface), and response (`out`).
+  2. The public lookup and bound namespace for the third view MUST use `persisted`, while internal compiler/runtime vocabulary may continue to use `stored` where that matches existing implementation terminology.
+  3. The persisted schema MUST be compiled from storage-facing runtime truth rather than treated as a primary `schema_ctx` declaration surface.
+  4. Persisted schema compilation MUST exclude virtual-only input fields, include storage-backed fields that survive assembly, include paired/generated stored fields, and reflect storage transforms and server/defaulted stored fields.
+  5. Request/response schema declaration auto-binding remains governed separately; adding the persisted view must not make `schema_ctx` invoke full runtime binding or storage compilation during declaration.
+  
+  ## Context
+  Today `Table.schemas.<alias>.in_` and `.out` are first-class public surfaces, while the storage-facing shape is represented only indirectly through compiled runtime structures such as assembled persisted values, paired stored fields, and `to_stored` transforms. That split is workable internally, but it leaves no first-class contract for callers or tests that need to reason about what the framework intends to persist for a specific operation.
+  
+  The desired outcome is a stable triad:
+  - request: what callers may send
+  - persisted: what the framework intends to write/store
+  - response: what the framework returns or exposes
+  
+  The persisted view is semantically different from both request and response. It is not simply a declared authoring schema, because runtime storage truth may add server-derived fields, exclude virtual inputs, and reflect storage transforms.
+  
+  ## Consequences
+  - Public schema consumers gain an explicit storage-facing schema surface without having to reverse-engineer runtime internals.
+  - Operation compilation must produce a third schema projection and export it consistently onto bound table schema namespaces.
+  - Existing `schema_ctx` auto-binding stays narrow and side-effect-light.
+  - Tests and SSOT proof scaffolds must cover triad exposure, persisted-field selection, and helper access semantics.
+  
+  ## Feature Mapping
+  - Governs `feat:op-persisted-schema-surface-001`.
+  
+  ## Rejected Alternatives
+  - Treating the response schema as a proxy for persisted state; response semantics often diverge from storage semantics.
+  - Making `schema_ctx(kind="persisted")` the primary persisted-schema authoring path in the first cut; that would conflate declaration with compilation.
+  - Keeping persisted semantics as runtime-only internal data with no first-class schema surface.

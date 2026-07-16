@@ -18,6 +18,7 @@ _LAZY_EXPORTS = {
     "PackedKernel": "models",
     "SchemaIn": "models",
     "SchemaOut": "models",
+    "SchemaStored": "models",
 }
 
 _default_kernel = None
@@ -73,6 +74,7 @@ __all__ = [
     "PackedKernel",
     "SchemaIn",
     "SchemaOut",
+    "SchemaStored",
     "build_kernel_plan",
     "build_packed_kernel",
     "build_packed_kernel_measurement_view",

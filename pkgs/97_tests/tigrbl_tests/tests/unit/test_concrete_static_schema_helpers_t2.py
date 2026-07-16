@@ -34,6 +34,11 @@ def test_get_schema_is_deterministic_and_fails_closed_for_bad_context() -> None:
     assert get_schema(SchemaWidget, "create", kind="in") is get_schema(
         SchemaWidget, "create", kind="IN"
     )
+    assert get_schema(SchemaWidget, "create", kind="persisted") is get_schema(
+        SchemaWidget,
+        "create",
+        kind="PERSISTED",
+    )
     with pytest.raises(KeyError):
         get_schema(SchemaWidget, "missing")
     with pytest.raises(ValueError):

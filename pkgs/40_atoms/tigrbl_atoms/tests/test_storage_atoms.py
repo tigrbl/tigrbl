@@ -8,6 +8,7 @@ import pytest
 from tigrbl_atoms.atoms.storage import REGISTRY
 from tigrbl_atoms.atoms.storage import to_stored
 from tigrbl_atoms.types import Atom, ResolvedCtx
+from tigrbl_kernel import SchemaStored
 
 
 def test_storage_registry_contains_expected_atoms() -> None:
@@ -69,6 +70,11 @@ def test_to_stored_derives_paired_value_from_pointer_and_assigns_model() -> None
                 fields=(),
                 by_field={"token": {"nullable": False}},
             ),
+            schema_stored=SchemaStored(
+                fields=("token",),
+                by_field={"token": {"derived": True, "required": True}},
+                required_from_client=(),
+            ),
             paired_index={"token": {"store": lambda raw, _ctx: f"hashed:{raw}"}},
             to_stored_transforms={},
         ),
@@ -79,6 +85,7 @@ def test_to_stored_derives_paired_value_from_pointer_and_assigns_model() -> None
 
     assert ctx.temp["assembled_values"]["token"] == "hashed:cleartext"
     assert model.token == "hashed:cleartext"
+    assert ctx.opview.schema_stored.fields == ("token",)
     assert {"field": "token", "action": "derived_from_paired"} in ctx.temp[
         "storage_log"
     ]

@@ -1,0 +1,42 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2203"
+number: 2203
+slug: "operation-persisted-schema-contract"
+title: "Operation persisted schema contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how Tigrbl compiles and exposes the persisted/storage-facing schema view for a table operation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+  This SPEC defines the persisted/storage-facing schema projection for a table operation and its public exposure through bound schema namespaces and `get_schema()`.
+  
+  ## Requirements
+  1. Full operation schema materialization MUST be able to expose `Table.schemas.<alias>.persisted` for operations that have a meaningful storage-facing write shape.
+  2. `get_schema(Table, alias, kind="persisted")` MUST resolve that same persisted schema object when the operation exposes one.
+  3. Persisted schema compilation MUST derive from storage/runtime truth rather than simply mirroring a declared request or response schema.
+  4. Fields with `storage=None` or other virtual-only inbound semantics MUST be excluded from the persisted schema.
+  5. Storage-backed fields that survive into assembled persisted values MUST be included in the persisted schema.
+  6. Paired or generated stored fields that may be omitted from request input but are produced server-side for storage MUST be included in the persisted schema.
+  7. Persisted schema requiredness MUST distinguish between what is required from the client and what is guaranteed or defaulted server-side for storage.
+  8. Persisted schema compilation MUST reflect storage transforms that materially affect the persisted field set or persisted field semantics.
+  9. Operations that do not produce a meaningful persisted write shape MAY omit `.persisted`; in those cases `get_schema(..., kind="persisted")` MUST fail closed with the same style of missing-schema behavior used for absent operation schemas.
+  10. Introducing the persisted view MUST NOT widen `schema_ctx` declaration rules or force declaration-time runtime binding.
+  
+  ## Non-Goals
+  - This SPEC does not require `schema_ctx(kind="persisted")`.
+  - This SPEC does not redefine request or response schema semantics.
+  - This SPEC does not require every read-only or non-mutating operation to expose a persisted schema.
+  
+  ## Feature Mapping
+  - `feat:op-persisted-schema-surface-001`
+  - `feat:get-schema-python-helper-surface-001`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1200"

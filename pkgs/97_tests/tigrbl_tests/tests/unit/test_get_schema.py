@@ -17,6 +17,7 @@ def test_get_schema_returns_bound_request_and_response_from_bind():
     bind(Widget)
 
     assert get_schema(Widget, "create", kind="in") is Widget.schemas.create.in_
+    assert get_schema(Widget, "create", kind="persisted") is Widget.schemas.create.persisted
     assert get_schema(Widget, "create", kind="out") is Widget.schemas.create.out
 
 
@@ -28,6 +29,7 @@ def test_get_schema_kind_is_case_insensitive():
     bind(Gadget)
 
     assert get_schema(Gadget, "create", kind="IN") is Gadget.schemas.create.in_
+    assert get_schema(Gadget, "create", kind="PERSISTED") is Gadget.schemas.create.persisted
 
 
 def test_get_schema_raises_for_unbound_model():
@@ -62,12 +64,13 @@ def test_get_schema_raises_for_invalid_kind():
         get_schema(Thing, "create", kind="sideways")
 
 
-def test_get_schema_raises_when_kind_not_bound():
+def test_get_schema_raises_when_persisted_kind_not_bound():
     class Custom(TableBase, GUIDPk):
         __tablename__ = "custom_get_schema"
         name = Column(String, nullable=False)
 
-    spec = OpSpec(alias="ping", target="ping")
+    spec = OpSpec(alias="ping", target="custom")
     build_schemas(Custom, [spec])
 
-    assert get_schema(Custom, "ping", kind="in") is not None
+    with pytest.raises(KeyError):
+        get_schema(Custom, "ping", kind="persisted")

@@ -8,7 +8,7 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the governed public operator schema-lookup surface exposed through `get_schema()` on the `tigrbl` facade."
+summary: "Define the governed public operator schema-lookup surface exposed through `get_schema()` on the `tigrbl` facade, including request, persisted, and response schema views."
 supersedes:
   - "spc:2042"
 superseded_by: []
@@ -28,16 +28,21 @@ body: |-
   - `get_schema()` is the only schema/helper-like facade export that is governed as a public operator helper surface.
   - `get_schema()` is a read-only lookup over already-declared or already-bound schema objects; it does not become a schema-definition authority.
   - `get_schema()` may resolve schema objects for operator-facing runtime/docs integration without widening the authoring-helper surface.
+  - `get_schema()` MUST support the request schema (`kind="in"`), the persisted/storage-facing schema (`kind="persisted"`), and the response schema (`kind="out"`) when the target operation exposes those schema views.
+  - The persisted lookup surface is a compiled storage-facing projection derived from runtime/storage truth; `get_schema()` does not make `schema_ctx` a persisted-schema authoring surface.
   - Internal builder helpers such as `_build_schema()` and `_build_list_params()` are not governed public operator surfaces.
   
   ## Classification Rules
   
   - lookup-helper feature: read-only schema lookup surface explicitly supported on the facade
+  - persisted schema lookup: read-only access to the storage-facing op schema without widening declaration helpers or changing request/response semantics
   - non-goal: builder/materialization helpers becoming public merely because they are importable
+  - non-goal: making `get_schema()` responsible for compiling, defaulting, or otherwise authoring runtime schemas
   
   ## Traceability
   
-  - ADRs: `adr:1039`, `adr:1052`, `adr:1063`
-  - Related features: `feat:get-schema-python-helper-surface-001`
+  - ADRs: `adr:1039`, `adr:1052`, `adr:1063`, `adr:1200`
+  - Related features: `feat:get-schema-python-helper-surface-001`, `feat:op-persisted-schema-surface-001`
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1200"

@@ -8,9 +8,10 @@ import re
 from types import SimpleNamespace
 from typing import Any, Mapping, Optional, Set, Tuple
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field, create_model
 
 from tigrbl_concrete._concrete._router import Router
+from tigrbl_core._spec.column_spec import ColumnSpec
 from tigrbl_core._spec import OpSpec
 from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcBindingSpec,
@@ -26,8 +27,14 @@ from tigrbl_core.config.constants import HOOK_DECLS_ATTR
 from tigrbl_core._spec.op_utils import _maybe_await, _unwrap
 from tigrbl_core.schema.builder import _build_schema
 from tigrbl_core.schema.builder import _strip_parent_fields
-from tigrbl_core.schema.utils import _make_bulk_rows_model, _make_deleted_response_model
+from tigrbl_core.schema.builder.helpers import _add_field, _normalize_py_type
+from tigrbl_core.schema.utils import (
+    _make_bulk_rows_model,
+    _make_deleted_response_model,
+    namely_model,
+)
 from tigrbl_base._base._schema_base import SchemaBase
+from tigrbl_kernel.opview_compiler import compile_opview_from_specs
 from tigrbl_typing.phases import HOOK_PHASES
 
 from tigrbl_concrete._mapping.op_resolver import resolve as resolve_ops
@@ -43,6 +50,65 @@ _CALL_MODEL_AND_CTX = 0
 _CALL_CTX_POSITIONAL = 1
 _CALL_CTX_KEYWORD = 2
 _CALL_NO_ARGS = 3
+
+
+def _camel_alias(alias: str) -> str:
+    return alias.replace("_", " ").title().replace(" ", "")
+
+
+def _pydantic_field_for_stored(meta: Mapping[str, Any]) -> Field:
+    field_kwargs: dict[str, Any] = {}
+    max_length = meta.get("max_length")
+    if isinstance(max_length, int) and max_length > 0:
+        field_kwargs["max_length"] = max_length
+    if not bool(meta.get("required", False)):
+        field_kwargs["default"] = None
+    else:
+        field_kwargs["default"] = ...
+
+    extras = {
+        key: meta[key]
+        for key in ("required_from_client", "server_default", "derived", "from_client")
+        if key in meta
+    }
+    if extras:
+        field_kwargs["json_schema_extra"] = extras
+    return Field(**field_kwargs)
+
+
+def _build_persisted_schema(model: type, spec: OpSpec) -> type[BaseModel] | None:
+    compiled = compile_opview_from_specs(ColumnSpec.collect(model), spec)
+    schema_stored = getattr(compiled, "schema_stored", None)
+    if schema_stored is None or not tuple(getattr(schema_stored, "fields", ()) or ()):
+        return None
+
+    fields: dict[str, tuple[type | Any, Field]] = {}
+    for field_name in tuple(schema_stored.fields):
+        meta = schema_stored.by_field.get(field_name, {})
+        py_t = _normalize_py_type(meta.get("py_type", Any))
+        if py_t is not Any and bool(meta.get("nullable", False)):
+            try:
+                py_t = py_t | None
+            except TypeError:
+                pass
+        _add_field(
+            fields,
+            name=field_name,
+            py_t=py_t,
+            field=_pydantic_field_for_stored(meta),
+        )
+
+    model_name = f"{model.__name__}{_camel_alias(spec.alias)}Persisted"
+    schema_cls = create_model(  # type: ignore[call-arg]
+        model_name,
+        __config__=ConfigDict(from_attributes=True, extra="forbid"),
+        **fields,
+    )
+    return namely_model(
+        schema_cls,
+        name=model_name,
+        doc=f"{spec.alias} persisted schema for {model.__name__}",
+    )
 
 
 def _stream_chunk_source(payload: Any) -> Any:
@@ -543,7 +609,12 @@ def _resolve_schema_arg(model: type, arg: Any) -> Any:
         ns = getattr(getattr(model, "schemas", SimpleNamespace()), alias, None)
         if ns is None:
             raise KeyError(f"Unknown schema alias '{alias}' on {model.__name__}")
-        return getattr(ns, "in_" if kind == "in" else "out", None)
+        attr = {
+            "in": "in_",
+            "persisted": "persisted",
+            "out": "out",
+        }.get(kind, "out")
+        return getattr(ns, attr, None)
     if inspect.isclass(arg):
         return arg
     alias = getattr(arg, "alias", None)
@@ -552,7 +623,12 @@ def _resolve_schema_arg(model: type, arg: Any) -> Any:
         ns = getattr(getattr(model, "schemas", SimpleNamespace()), alias, None)
         if ns is None:
             raise KeyError(f"Unknown schema alias '{alias}' on {model.__name__}")
-        return getattr(ns, "in_" if kind == "in" else "out", None)
+        attr = {
+            "in": "in_",
+            "persisted": "persisted",
+            "out": "out",
+        }.get(kind, "out")
+        return getattr(ns, attr, None)
     if callable(arg):
         return arg(model)
     return arg
@@ -611,6 +687,11 @@ def _materialize_schemas(model: type, specs: Tuple[OpSpec, ...]) -> None:
         if spec.response_model is not None:
             setattr(alias_ns, "out", _resolve_schema_arg(model, spec.response_model))
 
+        if not hasattr(alias_ns, "persisted"):
+            persisted_model = _build_persisted_schema(model, spec)
+            if persisted_model is not None:
+                setattr(alias_ns, "persisted", persisted_model)
+
         if nested_vars and not spec.alias.startswith("bulk_"):
             in_model = getattr(alias_ns, "in_", None)
             setattr(
@@ -654,6 +735,12 @@ def _materialize_schemas(model: type, specs: Tuple[OpSpec, ...]) -> None:
             and (getattr(alias_ns, "out", None) is None or target_has_resp_override)
         ):
             setattr(alias_ns, "out", getattr(target_ns, "out"))
+        if (
+            isinstance(target_ns, SimpleNamespace)
+            and getattr(target_ns, "persisted", None) is not None
+            and getattr(alias_ns, "persisted", None) is None
+        ):
+            setattr(alias_ns, "persisted", getattr(target_ns, "persisted"))
 
         # Keep explicit schema overrides as-is so OpenAPI components preserve
         # developer-provided model names (e.g., ``EchoIn``/``EchoOut``).
