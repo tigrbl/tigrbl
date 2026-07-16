@@ -28,7 +28,7 @@ def engine_spec(
             kind = kw.get("kind")
             if not kind:
                 raise ValueError(
-                    "Provide spec=<DSN|mapping> or kind=('sqlite'|'postgres') with appropriate fields"
+                    "Provide spec=<DSN|mapping> or kind=('sqlite'|'postgres'|'mysql') with appropriate fields"
                 )
 
             async_kw = kw.get("async_")
@@ -69,8 +69,17 @@ def engine_spec(
                     "pool_size": kw.get("pool_size", 10),
                     "max": kw.get("max", 20),
                 }
+            elif kind == "mysql":
+                async_ = bool(async_kw) if async_kw is not None else False
+                spec = {
+                    "kind": "mysql", "async": async_,
+                    "user": kw.get("user", "app"), "pwd": kw.get("pwd", "secret"),
+                    "host": kw.get("host", "localhost"), "port": kw.get("port", 3306),
+                    "db": kw.get("name", kw.get("db", "app_db")),
+                    "pool_size": kw.get("pool_size", 10), "max": kw.get("max", 20),
+                }
             else:
-                raise ValueError("kind must be 'sqlite' or 'postgres'")
+                raise ValueError("kind must be 'sqlite', 'postgres', or 'mysql'")
 
     return EngineSpec.from_any(spec)
 
@@ -142,6 +151,13 @@ def pg_cfg(
     }
 
 
+def mysql_cfg(*, async_: bool = False, user: str = "app", pwd: str = "secret",
+              host: str = "localhost", port: int = 3306, name: str = "app_db",
+              pool_size: int = 10, max: int = 20) -> EngineCfg:
+    return {"kind": "mysql", "async": async_, "user": user, "pwd": pwd,
+            "host": host, "port": port, "db": name, "pool_size": pool_size, "max": max}
+
+
 def mem(async_: bool = True) -> EngineCfg:
     """SQLite in-memory (StaticPool) EngineCfg mapping."""
     return {"kind": "sqlite", "async": async_, "mode": "memory"}
@@ -172,6 +188,12 @@ def pgs(**kw: Any) -> EngineCfg:
     """Sync Postgres EngineCfg (psycopg/pg8000 depending on your builders)."""
     kw.setdefault("async_", False)
     return pg_cfg(**kw)
+
+
+def mysql(**kw: Any) -> EngineCfg:
+    """Sync MySQL EngineCfg (PyMySQL)."""
+    kw.setdefault("async_", False)
+    return mysql_cfg(**kw)
 
 
 # ---------------------------------------------------------------------------
@@ -213,6 +235,10 @@ def provider_postgres(
     )
 
 
+def provider_mysql(**kw: Any) -> Provider:
+    return provider_from_spec(engine_spec(mysql_cfg(**kw)))
+
+
 __all__ = [
     # EngineSpec / Provider / Engine helpers
     "engine_spec",
@@ -221,13 +247,16 @@ __all__ = [
     # convenience EngineCfg helpers
     "sqlite_cfg",
     "pg_cfg",
+    "mysql_cfg",
     "mem",
     "sqlitef",
     "pg",
     "pga",
     "pgs",
+    "mysql",
     # direct providers
     "provider_sqlite_memory",
     "provider_sqlite_file",
     "provider_postgres",
+    "provider_mysql",
 ]

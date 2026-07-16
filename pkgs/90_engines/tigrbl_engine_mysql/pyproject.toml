@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tigrbl_engine_mysql"
+version = "0.4.5.dev4"
+description = "MySQL engine plugin providing native Tigrbl EngineSession integration."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+dependencies = [
+  "SQLAlchemy>=2.0,<3.0",
+  "PyMySQL>=1.1,<2.0",
+  "tigrbl>=0.4.5.dev4,<0.5",
+]
+
+[project.entry-points."tigrbl.engine_plugins"]
+mysql = "tigrbl_engine_mysql:register"
+
+[project.urls]
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_mysql"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.11"]
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

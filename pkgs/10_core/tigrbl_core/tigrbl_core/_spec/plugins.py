@@ -29,14 +29,21 @@ def load_engine_plugins() -> None:
     if _LOADED:
         return
 
-    try:
-        discovered = entry_points(group="tigrbl.engine_plugins")
-    except TypeError:
-        discovered = entry_points().get("tigrbl.engine_plugins", [])  # pragma: no cover
+    discovered = []
+    for group in ("tigrbl.engine_plugins", "tigrbl.engine"):
+        try:
+            discovered.extend(entry_points(group=group))
+        except TypeError:  # pragma: no cover
+            discovered.extend(entry_points().get(group, []))
 
+    loaded_names: set[str] = set()
     for ep in discovered:
+        name = str(getattr(ep, "name", ""))
+        if name in loaded_names:
+            continue
         try:
             _invoke_plugin(ep.load())
+            loaded_names.add(name)
         except Exception:
             # EngineSpec handles missing registrations with explicit error text.
             continue
