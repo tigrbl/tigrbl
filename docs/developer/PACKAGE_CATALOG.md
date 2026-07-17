@@ -7,7 +7,7 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 ## Counts
 
 - core Python packages: 17
-- engine packages: 24
+- engine packages: 26
 - application packages: 0
 - deprecated packages: 1
 - Rust runtime binding packages: 0
@@ -55,6 +55,8 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 - `tigrbl_engine_pyspark`
 - `tigrbl_engine_redis`
 - `tigrbl_engine_rediscachethrough`
+- `tigrbl_engine_s3`
+- `tigrbl_engine_s3fs`
 - `tigrbl_engine_snowflake`
 - `tigrbl_engine_sqlite`
 - `tigrbl_engine_xlsx`

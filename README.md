@@ -458,6 +458,8 @@ Use that same mental model for schema, response, path, engine, and operation beh
 | `tigrbl_engine_pyspark` | [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) | [`pkgs/90_engines/tigrbl_engine_pyspark`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_pyspark) | PySpark workflows |
 | `tigrbl_engine_redis` | [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) | [`pkgs/90_engines/tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_redis) | Redis integration |
 | `tigrbl_engine_rediscachethrough` | [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) | [`pkgs/90_engines/tigrbl_engine_rediscachethrough`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_rediscachethrough) | Redis cache-through integration |
+| `tigrbl_engine_s3` | [`tigrbl_engine_s3`](https://pypi.org/project/tigrbl_engine_s3/) | [`pkgs/90_engines/tigrbl_engine_s3`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_s3) | Direct S3 API object storage with optional CAS |
+| `tigrbl_engine_s3fs` | [`tigrbl_engine_s3fs`](https://pypi.org/project/tigrbl_engine_s3fs/) | [`pkgs/90_engines/tigrbl_engine_s3fs`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_s3fs) | S3FS-backed object storage with optional CAS |
 | `tigrbl_engine_snowflake` | [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) | [`pkgs/90_engines/tigrbl_engine_snowflake`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_snowflake) | Snowflake integration |
 | `tigrbl_engine_sqlite` | [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) | [`pkgs/90_engines/tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_sqlite) | SQLite integration |
 | `tigrbl_engine_xlsx` | [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) | [`pkgs/90_engines/tigrbl_engine_xlsx`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_xlsx) | XLSX-backed workflows |
@@ -474,7 +476,7 @@ Tigrbl runtime execution is Python-only. Rust-named runtime, kernel, atom, handl
 - Choose [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) when you need concrete classes, decorators, engine resolution, docs mounting, or diagnostics without taking the facade dependency.
 - Choose [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are maintaining runtime execution, transport-unit handling, or transaction helpers.
 - Choose operation packs when you need canonical CRUD, analytical, realtime, stream, or transport-oriented operation definitions.
-- Choose engine packages when you need a backend-specific dependency surface for SQLite, Postgres, Redis, Snowflake, BigQuery, DuckDB, warehouse, tabular, or in-memory workflows.
+- Choose engine packages when you need a backend-specific dependency surface for SQLite, Postgres, Redis, S3 object storage, Snowflake, BigQuery, DuckDB, warehouse, tabular, or in-memory workflows.
 
 ## Best Practices
 

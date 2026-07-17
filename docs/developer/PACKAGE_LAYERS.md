@@ -29,7 +29,7 @@ explicit dependency exceptions with a reason.
 | 60 | Operations | `tigrbl_ops_olap`, `tigrbl_ops_oltp`, `tigrbl_ops_realtime`, `tigrbl_ops_webtransport` |
 | 70 | Concrete | `tigrbl_concrete` |
 | 80 | Facade | `tigrbl` |
-| 90 | Engines | `tigrbl_engine_bigquery`, `tigrbl_engine_clickhouse`, `tigrbl_engine_csv`, `tigrbl_engine_dataframe`, `tigrbl_engine_duckdb`, `tigrbl_engine_inmemcache`, `tigrbl_engine_inmemory`, `tigrbl_engine_membloom`, `tigrbl_engine_memdedupe`, `tigrbl_engine_memkv`, `tigrbl_engine_memlru`, `tigrbl_engine_mempubsub`, `tigrbl_engine_memqueue`, `tigrbl_engine_memrate`, `tigrbl_engine_numpy`, `tigrbl_engine_pandas`, `tigrbl_engine_pgsqli_wal`, `tigrbl_engine_postgres`, `tigrbl_engine_pyspark`, `tigrbl_engine_redis`, `tigrbl_engine_rediscachethrough`, `tigrbl_engine_snowflake`, `tigrbl_engine_sqlite`, `tigrbl_engine_xlsx` |
+| 90 | Engines | `tigrbl_engine_bigquery`, `tigrbl_engine_clickhouse`, `tigrbl_engine_csv`, `tigrbl_engine_dataframe`, `tigrbl_engine_duckdb`, `tigrbl_engine_inmemcache`, `tigrbl_engine_inmemory`, `tigrbl_engine_membloom`, `tigrbl_engine_memdedupe`, `tigrbl_engine_memkv`, `tigrbl_engine_memlru`, `tigrbl_engine_mempubsub`, `tigrbl_engine_memqueue`, `tigrbl_engine_memrate`, `tigrbl_engine_numpy`, `tigrbl_engine_pandas`, `tigrbl_engine_pgsqli_wal`, `tigrbl_engine_postgres`, `tigrbl_engine_pyspark`, `tigrbl_engine_redis`, `tigrbl_engine_rediscachethrough`, `tigrbl_engine_s3`, `tigrbl_engine_s3fs`, `tigrbl_engine_snowflake`, `tigrbl_engine_sqlite`, `tigrbl_engine_xlsx` |
 | 95 | Client | `tigrbl_client` |
 | 96 | Examples | `tigrbl_examples` |
 | 97 | Test Suite | `tigrbl_tests` |

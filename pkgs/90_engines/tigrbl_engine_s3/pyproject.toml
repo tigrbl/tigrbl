@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tigrbl_engine_s3"
+version = "0.4.5.dev4"
+description = "Direct S3 API-backed object storage engine plugin for Tigrbl with optional content-addressed storage."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+    "boto3>=1.35.0",
+    "tigrbl>=0.3.0.dev4",
+]
+keywords = ["tigrbl", "engine", "s3", "boto3", "object-storage", "cas"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: AsyncIO",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+[project.urls]
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_s3"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[project.entry-points."tigrbl.engine"]
+s3 = "tigrbl_engine_s3:register"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.24.0", "ruff>=0.11.0"]
+
+[tool.uv.sources]
+tigrbl = { workspace = true }
