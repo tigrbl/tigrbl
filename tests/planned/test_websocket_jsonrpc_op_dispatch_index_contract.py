@@ -9,7 +9,7 @@ import pytest
 from tigrbl_core._spec.binding_spec import HttpJsonRpcBindingSpec, WsBindingSpec
 
 
-EXAMPLE_PATH = Path("examples/websocket_realtime_ops/app.py")
+EXAMPLE_PATH = Path("pkgs/96_examples/websocket_realtime_ops/app.py")
 
 
 def _load_demo_module():
@@ -117,7 +117,7 @@ async def test_websocket_jsonrpc_dispatch_uses_framework_runtime_contract() -> N
 
 
 def test_websocket_jsonrpc_example_has_no_custom_kernel_contract() -> None:
-    source = Path("examples/websocket_realtime_ops/app.py").read_text()
+    source = Path("pkgs/96_examples/websocket_realtime_ops/app.py").read_text()
 
     assert "compile_websocket_jsonrpc_dispatch_index" not in source
     assert "compile_websocket_chain" not in source
@@ -126,7 +126,7 @@ def test_websocket_jsonrpc_example_has_no_custom_kernel_contract() -> None:
 
 def test_websocket_jsonrpc_loop_is_not_concrete_runtime_contract() -> None:
     source = Path(
-        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/runtime_ops.py"
+        "pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete/system/docs/runtime_ops.py"
     ).read_text()
 
     assert "_dispatch_jsonrpc_text" not in source

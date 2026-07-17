@@ -49,10 +49,10 @@ dev = [
 package = true
 
 [tool.uv.sources]
-"tigrbl-core" = { path = "../../pkgs/10_core/tigrbl_core", editable = true }
-"tigrbl" = { path = "../../pkgs/80_facade/tigrbl", editable = true }
-"tigrbl-typing" = { path = "../../pkgs/00_typing/tigrbl_typing", editable = true }
-"tigrbl_spec" = { path = "../../pkgs/01_spec/tigrbl_spec", editable = true }
+"tigrbl-core" = { path = "../../10_core/tigrbl_core", editable = true }
+"tigrbl" = { path = "../../80_facade/tigrbl", editable = true }
+"tigrbl-typing" = { path = "../../00_typing/tigrbl_typing", editable = true }
+"tigrbl_spec" = { path = "../../01_spec/tigrbl_spec", editable = true }
 
 [tool.tigrbl]
 publish = false

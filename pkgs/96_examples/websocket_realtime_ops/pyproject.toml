@@ -19,8 +19,8 @@ dev = [
 package = false
 
 [tool.uv.sources]
-tigrbl = { path = "../../pkgs/80_facade/tigrbl", editable = true }
-tigrbl-core = { path = "../../pkgs/10_core/tigrbl_core", editable = true }
+tigrbl = { path = "../../80_facade/tigrbl", editable = true }
+tigrbl-core = { path = "../../10_core/tigrbl_core", editable = true }
 
 [tool.pytest.ini_options]
 addopts = [

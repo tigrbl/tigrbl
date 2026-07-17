@@ -203,7 +203,7 @@ def build_demo_matrix() -> list[dict[str, str]]:
         {
             "demo": "h1-h2-h3-profiles",
             "surface": "operator profiles",
-            "entrypoint": "examples/transport_surface_matrix_demo/app.py:build_app",
+            "entrypoint": "pkgs/96_examples/transport_surface_matrix_demo/app.py:build_app",
         },
         {
             "demo": "rest-and-jsonrpc",

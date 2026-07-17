@@ -100,7 +100,7 @@ def matrix_rows() -> tuple[dict[str, str], ...]:
             "tigrbl": refs["tigrbl"],
             "fastapi": refs["fastapi"],
             "flask": refs["flask"],
-            "test": "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
+            "test": "pkgs/96_examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
         })
     return tuple(rows)
 

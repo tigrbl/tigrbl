@@ -155,7 +155,7 @@ matters for equivalence, pedagogy, or certification.
 Every equivalence gets its own directory:
 
 ```text
-examples/equivalence_contracts/
+pkgs/96_examples/equivalence_contracts/
   AGENTS.md
   pyproject.toml
   README.md
@@ -248,7 +248,7 @@ Every equivalence must have tests that:
 Run these checks before committing equivalence work:
 
 ```powershell
-uv run --project examples/equivalence_contracts --group dev python -m pytest -q examples/equivalence_contracts/tests
+uv run --project pkgs/96_examples/equivalence_contracts --group dev python -m pytest -q pkgs/96_examples/equivalence_contracts/tests
 python tools/ci/validate_equivalence_runtime_contracts.py
 python tools/docs/update_equivalence_docs.py --check
 git diff --check

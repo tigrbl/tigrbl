@@ -15,6 +15,7 @@ EXCLUDED_ROOTS = {
     ROOT / '.venv',
     ROOT / '.tmp',
     ROOT / '.uv-cache',
+    ROOT / '.uv-cache-codex',
     ROOT / '.pip-cache',
     ROOT / '.benchmarks',
     ROOT / 'target',

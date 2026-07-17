@@ -11,7 +11,7 @@ from common import fail, repo_root  # noqa: E402
 
 
 ROOT = repo_root()
-PROJECT = ROOT / "examples" / "equivalence_contracts"
+PROJECT = ROOT / "pkgs" / "96_examples" / "equivalence_contracts"
 
 
 def _workspace_pythonpath() -> str:
@@ -32,9 +32,9 @@ def _workspace_pythonpath() -> str:
 def main() -> None:
     errors: list[str] = []
     if not (PROJECT / "pyproject.toml").is_file():
-        errors.append("examples/equivalence_contracts/pyproject.toml is missing")
+        errors.append("pkgs/96_examples/equivalence_contracts/pyproject.toml is missing")
     if not (PROJECT / "src" / "tigrbl_equivalence_contracts").is_dir():
-        errors.append("examples/equivalence_contracts runtime package is missing")
+        errors.append("pkgs/96_examples/equivalence_contracts runtime package is missing")
     if errors:
         fail(errors)
 
@@ -43,7 +43,7 @@ def main() -> None:
     env["PYTHONPATH"] = _workspace_pythonpath()
     uv = shutil.which("uv")
     if uv is None:
-        fail(["uv is required to validate examples/equivalence_contracts"])
+        fail(["uv is required to validate pkgs/96_examples/equivalence_contracts"])
     result = subprocess.run(
         [
             uv,

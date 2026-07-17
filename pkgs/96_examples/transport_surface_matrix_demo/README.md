@@ -14,7 +14,7 @@ This UV project collects the transport-surface demos requested for the current c
 - `mtls`
 - `webtransport (single session with 1 unidirectional stream, 1 bidirectional stream, and datagram messages)`
 
-The app entrypoint is [app.py](/E:/swarmauri_github/tigrbl/examples/transport_surface_matrix_demo/app.py:1).
+The app entrypoint is `pkgs/96_examples/transport_surface_matrix_demo/app.py`.
 
 ## What Is Runnable Now
 

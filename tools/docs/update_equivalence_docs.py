@@ -26,7 +26,7 @@ class GeneratedBlock:
 
 
 def _add_workspace_paths() -> None:
-    candidates = [ROOT, ROOT / "examples" / "equivalence_contracts" / "src"]
+    candidates = [ROOT, ROOT / "pkgs" / "96_examples" / "equivalence_contracts" / "src"]
     for base in sorted((ROOT / "pkgs").iterdir()):
         if not base.is_dir():
             continue
@@ -470,9 +470,9 @@ def render_certifiable_equivalence_matrix() -> str:
         [
             _generated_note(
                 [
-                    "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/contracts.py",
-                    "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/equivalences/",
-                    "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
+                    "pkgs/96_examples/equivalence_contracts/src/tigrbl_equivalence_contracts/contracts.py",
+                    "pkgs/96_examples/equivalence_contracts/src/tigrbl_equivalence_contracts/equivalences/",
+                    "pkgs/96_examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
                 ]
             ),
             _markdown_table(

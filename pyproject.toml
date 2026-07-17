@@ -56,6 +56,7 @@ dev = [
 members = [
   "pkgs/00_typing/*",
   "pkgs/01_spec/*",
+  "pkgs/02_model/*",
   "pkgs/10_core/*",
   "pkgs/20_base/*",
   "pkgs/30_orm/*",
@@ -70,4 +71,9 @@ members = [
   "pkgs/96_examples/*",
   "pkgs/97_tests/*",
   "pkgs/99_deprecated/*",
+]
+exclude = [
+  "pkgs/96_examples/equivalence_contracts",
+  "pkgs/96_examples/transport_surface_matrix_demo",
+  "pkgs/96_examples/websocket_realtime_ops",
 ]

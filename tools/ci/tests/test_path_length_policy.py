@@ -24,7 +24,8 @@ def _excluded(path: Path) -> bool:
 def test_example_local_virtualenv_is_excluded() -> None:
     path = (
         REPO_ROOT
-        / 'examples'
+        / 'pkgs'
+        / '96_examples'
         / 'equivalence_contracts'
         / '.venv'
         / 'Lib'
