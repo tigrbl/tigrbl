@@ -1,0 +1,45 @@
+[project]
+name = "tigrbl_model"
+version = "0.4.5.dev4"
+description = "Pydantic-independent validation, serialization, and JSON Schema models for Tigrbl."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "pyyaml>=6.0",
+    "tomli-w>=1.0",
+    "tomli>=2.0.1; python_version < '3.11'",
+    "typing-extensions>=4.0; python_version < '3.11'",
+]
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/02_model/tigrbl_model"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{ include = "tigrbl_model" }]
+include = ["tigrbl_model/py.typed"]
+
+[dependency-groups]
+dev = [
+    "pydantic>=2.10,<3",
+    "pytest>=8.0",
+    "ruff>=0.9.9",
+]
