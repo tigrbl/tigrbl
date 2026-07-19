@@ -78,8 +78,11 @@ async def _run(obj: object | None, ctx: Any) -> None:
     detail = std.detail if getattr(std, "detail", None) not in (None, "") else str(std)
     status_code = int(getattr(std, "status_code", 500) or 500)
     if is_persistence_exception(err):
-        status_code = 500
-        detail = "Internal error"
+        if status_code >= 500:
+            status_code = 500
+            detail = "Internal error"
+        else:
+            detail = "Conflict" if status_code == 409 else "Persistence constraint failed"
 
     temp = getattr(ctx, "temp", None)
     if not isinstance(temp, dict):

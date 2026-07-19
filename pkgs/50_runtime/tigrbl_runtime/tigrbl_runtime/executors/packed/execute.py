@@ -252,8 +252,11 @@ class _PackedExecuteMixin:
                 status_code = int(getattr(std, "status_code", 500) or 500)
                 persistence_error = self._is_persistence_exception(exc)
                 if persistence_error:
-                    status_code = 500
-                    detail = "Internal error"
+                    if status_code >= 500:
+                        status_code = 500
+                        detail = "Internal error"
+                    else:
+                        detail = "Conflict" if status_code == 409 else "Persistence constraint failed"
                 payload = self._jsonrpc_error_payload(
                     ctx,
                     status_code,
