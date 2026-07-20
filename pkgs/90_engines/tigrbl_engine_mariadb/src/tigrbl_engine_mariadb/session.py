@@ -8,7 +8,7 @@ from tigrbl_concrete._concrete._engine_session import EngineSession
 from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
 
-class _MySQLAlchemySession(_SASession):
+class _MariaDBAlchemySession(_SASession):
     def executeloop(self, statements: Iterable[Any]) -> list[Any]:
         results = []
         for item in statements:
@@ -22,12 +22,12 @@ class _MySQLAlchemySession(_SASession):
         return self.execute(stmt, list(parameter_sets))
 
 
-class MySQLSession(EngineSession):
-    """MySQL session exposed through Tigrbl's shared EngineSession contract."""
+class MariaDBSession(EngineSession):
+    """MariaDB session exposed through Tigrbl's shared EngineSession contract."""
 
-    def __init__(self, underlying: _MySQLAlchemySession, spec: EngineSessionSpec | None = None) -> None:
+    def __init__(self, underlying: _MariaDBAlchemySession, spec: EngineSessionSpec | None = None) -> None:
         super().__init__(underlying, spec or EngineSessionSpec())
 
 
-__all__ = ["MySQLSession"]
+__all__ = ["MariaDBSession"]
 

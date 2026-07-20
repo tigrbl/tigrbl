@@ -37,7 +37,7 @@ members = [
     "tigrbl-engine-mempubsub",
     "tigrbl-engine-memqueue",
     "tigrbl-engine-memrate",
-    "tigrbl-engine-mysql",
+    "tigrbl-engine-mariadb",
     "tigrbl-engine-numpy",
     "tigrbl-engine-pandas",
     "tigrbl-engine-pgsqli-wal",
@@ -4394,9 +4394,9 @@ dependencies = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
-name = "tigrbl-engine-mysql"
+name = "tigrbl-engine-mariadb"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/90_engines/tigrbl_engine_mysql" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_mariadb" }
 dependencies = [
     { name = "pymysql" },
     { name = "sqlalchemy" },

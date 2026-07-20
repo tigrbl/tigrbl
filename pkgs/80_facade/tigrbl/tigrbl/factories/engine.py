@@ -69,10 +69,10 @@ def engine_spec(
                     "pool_size": kw.get("pool_size", 10),
                     "max": kw.get("max", 20),
                 }
-            elif kind == "mysql":
+            elif kind in ("mariadb", "mysql"):
                 async_ = bool(async_kw) if async_kw is not None else False
                 spec = {
-                    "kind": "mysql", "async": async_,
+                    "kind": kind, "async": async_,
                     "user": kw.get("user", "app"), "pwd": kw.get("pwd", "secret"),
                     "host": kw.get("host", "localhost"), "port": kw.get("port", 3306),
                     "db": kw.get("name", kw.get("db", "app_db")),
@@ -158,6 +158,19 @@ def mysql_cfg(*, async_: bool = False, user: str = "app", pwd: str = "secret",
             "host": host, "port": port, "db": name, "pool_size": pool_size, "max": max}
 
 
+def mariadb_cfg(*, async_: bool = False, user: str = "app", pwd: str = "secret",
+                 host: str = "localhost", port: int = 3306, name: str = "app_db",
+                 pool_size: int = 10, max: int = 20) -> EngineCfg:
+    return {"kind": "mariadb", "async": async_, "user": user, "pwd": pwd,
+            "host": host, "port": port, "db": name, "pool_size": pool_size, "max": max}
+
+
+def mariadb(**kw: Any) -> EngineCfg:
+    """Sync MariaDB EngineCfg (PyMySQL)."""
+    kw.setdefault("async_", False)
+    return mariadb_cfg(**kw)
+
+
 def mem(async_: bool = True) -> EngineCfg:
     """SQLite in-memory (StaticPool) EngineCfg mapping."""
     return {"kind": "sqlite", "async": async_, "mode": "memory"}
@@ -235,6 +248,10 @@ def provider_postgres(
     )
 
 
+def provider_mariadb(**kw: Any) -> Provider:
+    return provider_from_spec(engine_spec(mariadb_cfg(**kw)))
+
+
 def provider_mysql(**kw: Any) -> Provider:
     return provider_from_spec(engine_spec(mysql_cfg(**kw)))
 
@@ -248,15 +265,18 @@ __all__ = [
     "sqlite_cfg",
     "pg_cfg",
     "mysql_cfg",
+    "mariadb_cfg",
     "mem",
     "sqlitef",
     "pg",
     "pga",
     "pgs",
     "mysql",
+    "mariadb",
     # direct providers
     "provider_sqlite_memory",
     "provider_sqlite_file",
     "provider_postgres",
     "provider_mysql",
+    "provider_mariadb",
 ]

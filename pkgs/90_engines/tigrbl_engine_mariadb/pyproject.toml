@@ -3,9 +3,9 @@ requires = ["hatchling>=1.25.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "tigrbl_engine_mysql"
+name = "tigrbl_engine_mariadb"
 version = "0.4.5.dev4"
-description = "MySQL engine plugin providing native Tigrbl EngineSession integration."
+description = "MariaDB engine plugin providing native Tigrbl EngineSession integration."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10,<3.15"
@@ -17,10 +17,11 @@ dependencies = [
 ]
 
 [project.entry-points."tigrbl.engine_plugins"]
-mysql = "tigrbl_engine_mysql:register"
+mariadb = "tigrbl_engine_mariadb:register"
+mysql = "tigrbl_engine_mariadb:register"
 
 [project.urls]
-Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_mysql"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_mariadb"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
 [dependency-groups]

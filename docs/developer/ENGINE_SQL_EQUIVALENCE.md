@@ -69,7 +69,7 @@ Source inputs: `pkgs/90_engines/*/pyproject.toml`.
 | `tigrbl_engine_mempubsub` | `mempubsub` | `tigrbl_engine_mempubsub` | `pkgs/90_engines/tigrbl_engine_mempubsub` |
 | `tigrbl_engine_memqueue` | `memqueue` | `tigrbl_engine_memqueue` | `pkgs/90_engines/tigrbl_engine_memqueue` |
 | `tigrbl_engine_memrate` | `memrate` | `tigrbl_engine_memrate` | `pkgs/90_engines/tigrbl_engine_memrate` |
-| `tigrbl_engine_mysql` | none | `tigrbl_engine_mysql` | `pkgs/90_engines/tigrbl_engine_mysql` |
+| `tigrbl_engine_mariadb` | `mariadb` (plus `mysql` compatibility) | `tigrbl_engine_mariadb` | `pkgs/90_engines/tigrbl_engine_mariadb` |
 | `tigrbl_engine_numpy` | `numpy` | `tigrbl_engine_numpy` | `pkgs/90_engines/tigrbl_engine_numpy` |
 | `tigrbl_engine_pandas` | `pandas` | `tigrbl_engine_pandas` | `pkgs/90_engines/tigrbl_engine_pandas` |
 | `tigrbl_engine_pgsqli_wal` | `pgsqli_wal` | `tigrbl_engine_pgsqli_wal` | `pkgs/90_engines/tigrbl_engine_pgsqli_wal` |
