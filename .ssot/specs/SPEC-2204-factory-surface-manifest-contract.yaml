@@ -1,0 +1,58 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2204"
+number: 2204
+slug: "factory-surface-manifest-contract"
+title: "Factory surface manifest contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Factory surface manifest contract"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created for repo-wide factory inventory and enforcement."
+    at: "2026-07-24T13:42:59Z"
+references: []
+body: |-
+  ## Contract
+
+  1. The repository MUST maintain one machine-readable inventory of governed public factory surfaces and explicit internal exemptions.
+  2. Each surface row records canonical symbol, owner package, verb, form, aliases, descriptor kind, sync/async mode, return category, permitted side effects, stability, and deprecation state.
+  3. Supported forms are standalone, direct identity alias, re-export, wrapper, classmethod, staticmethod, inherited, descriptor alias, async factory, CamelCase authoring, provider factory, instance provider/accessor, and internal helper exemption.
+  4. Alias rows identify one canonical target. Cycles and multiple canonical owners are invalid.
+  5. Discovery scans all live package source and public export surfaces. Tests, generated code, vendored code, local closures, and private helpers are excluded unless explicitly exported.
+  6. A discovered public candidate absent from the manifest fails conformance after enforcement is enabled.
+  7. A manifest row whose symbol or alias cannot be resolved fails conformance.
+  8. The manifest is reviewed in the same change as any new, renamed, moved, deprecated, or removed public factory.
+
+  ## Required fields
+
+  - `canonical`
+  - `owner`
+  - `verb`
+  - `form`
+  - `descriptor`
+  - `async`
+  - `returns`
+  - `side_effects`
+  - `stability`
+  - `aliases`
+  - optional `deprecated_since`, `replacement`, and `remove_after`
+
+  ## Required verification
+
+  - AST discovery and import-level resolution agree.
+  - Canonical and alias symbols exist.
+  - Identity-required aliases are identical.
+  - Signature and descriptor metadata match declared rows.
+  - No unclassified public candidate remains.
+  - Internal exemptions are private and not re-exported.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1029"
+  - "adr:1194"
+  - "adr:1002"

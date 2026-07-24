@@ -1,39 +1,57 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1029"
 number: 1029
 slug: "factories-are-canonical-construction-surfaces"
-title: "ADR-0028 - Factories Are Canonical Construction Surfaces"
+title: "Factories are canonical construction and projection surfaces"
 status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The repository currently exposes convenience APIs through both `factories` and `shortcuts`. That boundary only stays coherent if one namespace owns construction helpers and the other acts purely as a convenience re-export layer."
+summary: "Factory aliases become compatibility contracts. Facades cannot independently reimplement concrete-owned factories. Signature, descriptor, identity, return category, async behavior, and side effects are governed separately. Existing drift is classified before release-blocking enforcement. SPEC-2009 is the normative matrix."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Expanded factory verb semantics, forms, identity, descriptor, provider, and package-ownership rules; status remains draft."
+    at: "2026-07-24T13:41:28Z"
 references: []
 body: |-
   ## Decision
   
-  - **Status:** Proposed
-  - **Date:** 2026-04-16
-  - **Related ADRs:** ADR-0018, ADR-0019, ADR-0027
+  1. `factories` is the canonical namespace for public construction and projection helpers. `shortcuts` and facades may re-export canonical surfaces but must not become parallel implementation owners.
+  2. Public factory candidates are governed by semantic role and export status, not by verb spelling alone. Internal helpers and local closures are excluded unless exported as authoring API.
+  3. `define` produces declarative configuration, a spec, or a definition without runtime initialization or external I/O.
+  4. `derive` deterministically projects an existing definition, type, or initialized object into another type or configured surface. Registration performed by `derive` must be deterministic and local to the returned projection.
+  5. `make` constructs a usable instance. Initialization, I/O, and async behavior are part of its declared contract and must not be hidden by an alias.
+  6. `provide` exposes or acquires a runtime dependency. An instance `provide()` accessor is not a factory alias when it returns an existing object without construction, registration, initialization, or derivation. `provider_*` and `prov` are separate provider-factory vocabulary.
+  7. Governed forms include standalone functions, qualified verb functions, direct aliases, facade and shortcut re-exports, wrappers, class methods, static methods, inherited factories, descriptor aliases, async factories, CamelCase authoring forms, provider factories, and instance accessors.
+  8. Direct aliases such as `acol = makeColumn`, `vcol = makeVirtualColumn`, and `op = make` must preserve object identity. Re-exports must preserve identity, signature, annotations, descriptor behavior, async behavior, return category, and documented side effects.
+  9. Wrapper aliases are compatibility surfaces, not direct aliases. They must delegate to one canonical owner, preserve or explicitly publish their signature, and carry deprecation/removal policy when noncanonical.
+  10. CamelCase `Make*`, `Define*`, `Derive*`, and `Provide*` forms are concrete authoring forms. Lowercase forms are classified by the factory manifest.
+  11. `tigrbl_concrete` owns public authoring factory implementations. `tigrbl` may re-export them. Core, base, and runtime must not own public concrete construction factories except tracked compatibility shims. Provider/session factories remain with their semantic owner.
+  12. Every governed public surface must appear in the factory surface manifest. New unclassified public candidates fail conformance after inventory enforcement begins.
   
-  1. `factories` is the canonical owner for construction helpers such as `make*`, `define*`, `derive*`, engine/config builders, response helpers, and direct aliases of those factory functions.
-  2. `acol`, `vcol`, and `op` are factory aliases because they directly alias factory functions.
-  3. `shortcuts` remains supported, but only as a thin re-export layer over canonical surfaces.
-  4. `shortcuts.rest` may re-export REST decorator aliases for convenience, but REST decorators remain owned by the decorators layer rather than the factories layer.
-  5. Decorator aliases and protocol aliases are not factories and must not be implemented inside `factories`.
+  ## Form classifications
   
-  ## Context
+  - standalone factory: module-level canonical callable;
+  - identity alias: another name bound to the same callable;
+  - re-export alias: the same callable exported through another module;
+  - wrapper alias: delegating callable with distinct identity;
+  - class/static/inherited/descriptor factory: binding behavior is normative;
+  - async factory: awaitability is normative;
+  - provider factory: constructs or acquires provider/session dependencies;
+  - instance provider/accessor: exposes materialized state;
+  - internal helper: non-public computation rather than authoring.
   
-  The repository currently exposes convenience APIs through both `factories` and `shortcuts`. That boundary only stays coherent if one namespace owns construction helpers and the other acts purely as a convenience re-export layer.
+  ## Consequences
   
-  The active line also needs an explicit classification for direct aliases such as `acol`, `vcol`, and `op`.
+  Factory aliases become compatibility contracts. Facades cannot independently reimplement concrete-owned factories. Signature, descriptor, identity, return category, async behavior, and side effects are governed separately. Existing drift is classified before release-blocking enforcement. SPEC-2009 is the normative matrix.
   
-  ## Rejected Alternatives
+  ## Rejected alternatives
   
-  - Keeping `shortcuts` and `factories` as parallel canonical owners.
-  - Classifying REST decorators as factories.
-  - Moving decorator implementations into `factories`.
+  - Governing every function beginning with a factory verb.
+  - Treating wrappers as identity aliases.
+  - Treating `provide()` as construction solely because it appears beside factories.
+  - Keeping shortcuts, facades, and concrete packages as parallel owners.

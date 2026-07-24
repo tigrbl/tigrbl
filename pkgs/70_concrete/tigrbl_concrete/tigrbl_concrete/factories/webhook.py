@@ -8,7 +8,7 @@ from tigrbl_core._spec import HttpRestBindingSpec, OpSpec, PathSpec
 from tigrbl_concrete._concrete._webhook import Webhook
 
 
-def DefineWebhook(
+def defineWebhook(
     *,
     path: str,
     provider: str,
@@ -78,4 +78,6 @@ def _webhookAlias(*, provider: str, event_type: str) -> str:
     return f"webhook_{token or 'event'}"
 
 
-__all__ = ["DefineWebhook"]
+DefineWebhook = defineWebhook
+
+__all__ = ["DefineWebhook", "defineWebhook"]

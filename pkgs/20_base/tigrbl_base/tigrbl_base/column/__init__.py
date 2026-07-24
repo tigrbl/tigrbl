@@ -1,3 +1,10 @@
+"""Base column abstractions and legacy construction helpers.
+
+``makeColumn``, ``makeVirtualColumn``, ``acol``, and ``vcol`` construct
+``ColumnBase`` objects. They are retained as deprecated base-layer compatibility
+surfaces and are not aliases of the concrete factories exported by ``tigrbl``.
+New application code should import column factories from ``tigrbl.factories``.
+"""
 from __future__ import annotations
 
 from typing import Any, Callable, Optional

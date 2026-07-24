@@ -1,14 +1,3 @@
-from __future__ import annotations
-
-from typing import Any
-
-
-def make(**kwargs: Any):
-    from tigrbl import Op
-
-    return Op(**kwargs)
-
-
-op = make
+from tigrbl_concrete.factories.op import make, op
 
 __all__ = ["make", "op"]

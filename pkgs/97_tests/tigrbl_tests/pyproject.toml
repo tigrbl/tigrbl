@@ -105,6 +105,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 packages = [
     { include = "tests" },
+    { include = "tigrbl_tests" },
 ]
 
 [dependency-groups]

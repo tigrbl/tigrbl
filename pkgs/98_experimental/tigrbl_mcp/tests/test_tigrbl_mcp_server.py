@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import json
 import sys
 from pathlib import Path
@@ -243,6 +244,13 @@ def test_factory_descriptors_and_provide_accessor_are_explicit() -> None:
     assert isinstance(TigrblMCP.__dict__["make"], classmethod)
     assert isinstance(TigrblMCP.__dict__["derive"], classmethod)
     assert not isinstance(TigrblMCP.__dict__["provide"], classmethod)
+    assert not inspect.iscoroutinefunction(TigrblMCP.define)
+    assert inspect.iscoroutinefunction(TigrblMCP.make)
+    assert not inspect.iscoroutinefunction(TigrblMCP.derive)
+    assert not inspect.iscoroutinefunction(TigrblMCP.provide)
+    assert "definition" in inspect.signature(TigrblMCP.make).parameters
+    assert "app" in inspect.signature(TigrblMCP.derive).parameters
+    assert tuple(inspect.signature(TigrblMCP.provide).parameters) == ("self",)
     assert TigrblMCP.provide.__doc__ is not None
     assert "not a constructor" in TigrblMCP.provide.__doc__
 

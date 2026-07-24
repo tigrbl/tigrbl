@@ -1,0 +1,453 @@
+{
+    "version":  1,
+    "surfaces":  [
+                     {
+                         "path":  "tigrbl_concrete.factories.app:defineAppSpec",
+                         "owner":  "concrete",
+                         "verb":  "define",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "spec-class",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.app:defineAppSpec",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.app:deriveApp",
+                         "owner":  "concrete",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "concrete-class",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.app:deriveApp",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.table:defineTableSpec",
+                         "owner":  "concrete",
+                         "verb":  "define",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "spec-class",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.table:defineTableSpec",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.table:deriveTable",
+                         "owner":  "concrete",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "concrete-class",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.table:deriveTable",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.table:deriveTableSpec",
+                         "owner":  "concrete",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "spec-instance",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.table:deriveTableSpec",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.column:makeColumn",
+                         "owner":  "concrete",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "descriptor-instance",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl_concrete.factories.column:acol",
+                                             "form":  "identity"
+                                         },
+                                         {
+                                             "path":  "tigrbl.factories.column:makeColumn",
+                                             "form":  "re-export"
+                                         },
+                                         {
+                                             "path":  "tigrbl.factories.column:acol",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.column:makeVirtualColumn",
+                         "owner":  "concrete",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "descriptor-instance",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl_concrete.factories.column:vcol",
+                                             "form":  "identity"
+                                         },
+                                         {
+                                             "path":  "tigrbl.factories.column:makeVirtualColumn",
+                                             "form":  "re-export"
+                                         },
+                                         {
+                                             "path":  "tigrbl.factories.column:vcol",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.router:defineRouterSpec",
+                         "owner":  "concrete",
+                         "verb":  "define",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "spec-class",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.router:defineRouterSpec",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.router:deriveRouter",
+                         "owner":  "concrete",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "concrete-class",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl.factories.router:deriveRouter",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.op:make",
+                         "owner":  "concrete",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "descriptor-instance",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl_concrete.factories.op:op",
+                                             "form":  "identity"
+                                         },
+                                         {
+                                             "path":  "tigrbl.factories.op:make",
+                                             "form":  "re-export"
+                                         },
+                                         {
+                                             "path":  "tigrbl.factories.op:op",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_concrete.factories.webhook:defineWebhook",
+                         "owner":  "concrete",
+                         "verb":  "define",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "path-spec",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl_concrete.factories.webhook:DefineWebhook",
+                                             "form":  "identity",
+                                             "stability":  "deprecated"
+                                         },
+                                         {
+                                             "path":  "tigrbl_concrete.shortcuts.webhook:defineWebhook",
+                                             "form":  "re-export"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_base.column:makeColumn",
+                         "owner":  "base",
+                         "verb":  "make",
+                         "form":  "compatibility",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "base-descriptor-instance",
+                         "side_effects":  "construction",
+                         "stability":  "deprecated",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl_base.column:acol",
+                                             "form":  "identity",
+                                             "stability":  "deprecated"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_base.column:makeVirtualColumn",
+                         "owner":  "base",
+                         "verb":  "make",
+                         "form":  "compatibility",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "base-descriptor-instance",
+                         "side_effects":  "construction",
+                         "stability":  "deprecated",
+                         "aliases":  [
+                                         {
+                                             "path":  "tigrbl_base.column:vcol",
+                                             "form":  "identity",
+                                             "stability":  "deprecated"
+                                         }
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_core._spec.binding_spec:derive_session_metadata_for_framing",
+                         "owner":  "core",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "metadata",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_core._spec.binding_spec:derive_websocket_subprotocols",
+                         "owner":  "core",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "protocols",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_core._spec.binding_spec:derive_websocket_subprotocol_for_framing",
+                         "owner":  "core",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "protocol",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_core._spec.table_profile_spec:make_profile_op",
+                         "owner":  "core",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "profile-op",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_core._spec.table_profile_spec:make_table_profile",
+                         "owner":  "core",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "table-profile",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_core._spec.table_profile_spec:make_builtin_table_profile",
+                         "owner":  "core",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "table-profile",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.dispatch_taxonomy:derive_runtime_event",
+                         "owner":  "kernel",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "event",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.labels:make_dep",
+                         "owner":  "kernel",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "label",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.labels:make_secdep",
+                         "owner":  "kernel",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "label",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.labels:make_sys",
+                         "owner":  "kernel",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "label",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.labels:make_atom",
+                         "owner":  "kernel",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "label",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.labels:make_hook",
+                         "owner":  "kernel",
+                         "verb":  "make",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "label",
+                         "side_effects":  "construction",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.subevent_taxonomy:derive_runtime_subevents",
+                         "owner":  "kernel",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "subevents",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     },
+                     {
+                         "path":  "tigrbl_kernel.subevent_taxonomy:derive_binding_subevents",
+                         "owner":  "kernel",
+                         "verb":  "derive",
+                         "form":  "function",
+                         "descriptor":  "function",
+                         "async_mode":  "sync",
+                         "returns":  "subevents",
+                         "side_effects":  "none",
+                         "stability":  "stable",
+                         "aliases":  [
+
+                                     ]
+                     }
+                 ]
+}

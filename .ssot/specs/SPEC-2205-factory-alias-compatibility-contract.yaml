@@ -1,0 +1,45 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2205"
+number: 2205
+slug: "factory-alias-compatibility-contract"
+title: "Factory alias compatibility and evolution contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Factory alias compatibility and evolution contract"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern factory alias migration and compatibility."
+    at: "2026-07-24T13:43:01Z"
+references: []
+body: |-
+  ## Contract
+
+  1. Factory compatibility is evaluated independently across name, owner, identity, signature, annotations, descriptor kind, sync/async mode, return category, side effects, exceptions, and documentation.
+  2. Direct aliases and re-exports MUST preserve identity unless a manifested wrapper compatibility surface explicitly permits distinct identity.
+  3. Wrapper aliases MUST delegate to the canonical surface and publish `__wrapped__` or equivalent traceability where technically possible.
+  4. Moving a canonical implementation across packages requires identity-preserving re-export compatibility or an explicit deprecation window.
+  5. Changing standalone, classmethod, staticmethod, or instance binding is breaking.
+  6. Changing sync to async or async to sync is breaking.
+  7. Changing `define`, `derive`, `make`, or `provide` return category or side-effect class is breaking.
+  8. Deprecated wrappers MUST identify replacement, emit the governed warning, and have a tracked removal target.
+  9. CamelCase/lowercase transitions MUST retain the prior public form through the compatibility window unless an accepted ADR authorizes immediate removal.
+  10. Compatibility tests remain linked until the deprecated surface is removed and its lifecycle record is closed.
+
+  ## Required verification
+
+  - Signature and descriptor snapshots for stable public surfaces.
+  - Import and identity checks for compatibility re-exports.
+  - Warning and delegation tests for wrappers.
+  - Negative tests for silent descriptor, async, return-category, and side-effect changes.
+  - Removal tests proving stale exports and manifest rows disappear together.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1029"
+  - "adr:1194"
+  - "adr:1002"
