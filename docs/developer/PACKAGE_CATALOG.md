@@ -7,7 +7,9 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 ## Counts
 
 - core Python packages: 17
-- engine packages: 26
+- engine packages: 28
+- example packages: 4
+- experimental packages: 1
 - application packages: 0
 - deprecated packages: 1
 - Rust runtime binding packages: 0
@@ -16,6 +18,7 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 
 - `tigrbl_typing`
 - `tigrbl_spec`
+- `tigrbl_model`
 - `tigrbl_core`
 - `tigrbl_base`
 - `tigrbl_orm`
@@ -29,7 +32,6 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 - `tigrbl_concrete`
 - `tigrbl`
 - `tigrbl_client`
-- `tigrbl_examples`
 - `tigrbl_tests`
 
 ## Engine Packages
@@ -48,6 +50,7 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 - `tigrbl_engine_mempubsub`
 - `tigrbl_engine_memqueue`
 - `tigrbl_engine_memrate`
+- `tigrbl_engine_mariadb`
 - `tigrbl_engine_numpy`
 - `tigrbl_engine_pandas`
 - `tigrbl_engine_pgsqli_wal`
@@ -55,11 +58,23 @@ Layer order is governed by `pkgs/LAYERS.toml` and projected in
 - `tigrbl_engine_pyspark`
 - `tigrbl_engine_redis`
 - `tigrbl_engine_rediscachethrough`
+- `tigrbl_engine_rom`
 - `tigrbl_engine_s3`
 - `tigrbl_engine_s3fs`
 - `tigrbl_engine_snowflake`
 - `tigrbl_engine_sqlite`
 - `tigrbl_engine_xlsx`
+
+## Example Packages
+
+- `equivalence_contracts`
+- `tigrbl_examples`
+- `transport_surface_matrix_demo`
+- `websocket_realtime_ops`
+
+## Experimental Packages
+
+- `tigrbl_mcp`
 
 ## Application Packages
 
