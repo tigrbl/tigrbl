@@ -1,13 +1,14 @@
 [project]
-name = "tigrbl-mcp-server-demo"
+name = "tigrbl-mcp"
 version = "0.1.0"
-description = "MCP 2025-11-25 server backed by Tigrbl operations."
+description = "Experimental low-level MCP SDK integration for Tigrbl operations."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
 dependencies = [
   "mcp>=1.28,<2",
   "tigrbl",
   "tigrbl-core",
+  "uvicorn>=0.30",
 ]
 
 [dependency-groups]
@@ -20,8 +21,8 @@ dev = [
 package = false
 
 [tool.uv.sources]
-tigrbl = { path = "../../80_facade/tigrbl", editable = true }
-tigrbl-core = { path = "../../10_core/tigrbl_core", editable = true }
+tigrbl = { workspace = true }
+tigrbl-core = { workspace = true }
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

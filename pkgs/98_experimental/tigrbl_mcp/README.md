@@ -1,65 +1,68 @@
-# Tigrbl MCP Server
+# Experimental Tigrbl MCP
 
-This example exposes an in-process Tigrbl-backed note service through the stable MCP
-`2025-11-25` protocol using the official Python SDK.
+This experimental package projects Tigrbl operations onto MCP `2025-11-25`
+using the official Python SDK's low-level APIs. It does not use the SDK's
+high-level convenience server.
 
-It demonstrates:
+The implementation uses:
 
-- a `TigrblMCP` factory surface built around `define`, `make`, `derive`, and
-  `provide`, with no application-specific build helper;
-- three model-callable tools whose execution routes through
-  `TigrblApp.rpc_call()`;
-- a `note://{note_id}` resource template;
-- a `summarize_note` prompt;
-- deterministic projection of bound Tigrbl `OpSpec` input/output schemas into
-  an MCP tool catalog;
-- explicit, opt-in MCP exposure policy in `OpSpec.extra["mcp"]`;
-- both stdio and Streamable HTTP server entry points.
+- `mcp.server.lowlevel.Server` for protocol dispatch and capability negotiation;
+- `mcp.server.stdio.stdio_server` for stdio framing;
+- `mcp.server.streamable_http_manager.StreamableHTTPSessionManager` for
+  Streamable HTTP;
+- explicit SDK handlers for tools, resources, resource templates, and prompts;
+- `TigrblApp.rpc_call()` as the only execution path for projected operations.
 
-## Factory lifecycle
+## Explicit MCP handlers
 
-`app.py` defines the declarative service once:
+`TigrblMCP.derive()` registers the two operation-backed handlers:
 
-```python
-NOTE_MCP = TigrblMCP.define(
-    name="tigrbl-notes",
-    tables=(Note,),
-    tools={
-        "create_note": _create_note_tool,
-        "read_note": _read_note_tool,
-        "list_notes": _list_notes_tool,
-    },
-    surfaces=(_provide_note_surfaces,),
-    instructions="Create and read notes.",
-)
-```
+- `list_tools`
+- `call_tool`
 
-Create an initialized Tigrbl application and its MCP projection with `make`:
+The note surface provider registers:
+
+- `list_resources`
+- `list_resource_templates`
+- `read_resource`
+- `list_prompts`
+- `get_prompt`
+
+Registering these handlers directly causes the low-level SDK to advertise the
+corresponding MCP server capabilities during initialization.
+
+## Factory vocabulary
 
 ```python
+NOTE_MCP = TigrblMCP.define(...)
 service = await TigrblMCP.make(NOTE_MCP, engine=mem(async_=False))
-```
-
-Project an existing initialized `TigrblApp` with `derive`, and obtain the
-configured official-SDK server with `provide`:
-
-```python
 derived = TigrblMCP.derive(NOTE_MCP, existing_app)
-mcp = derived.provide()
+server = service.provide()
 ```
+
+The verbs have deliberately distinct contracts:
+
+- `define(...) -> TigrblMCPDefinition` validates and freezes declarative input.
+- `make(...) -> TigrblMCP` constructs and initializes a derived `TigrblApp`, then
+  delegates to `derive`.
+- `derive(definition, app) -> TigrblMCP` projects an existing initialized app
+  onto a low-level MCP `Server`.
+- `service.provide() -> Server` exposes that already-derived SDK server.
+
+`provide` is therefore not a factory alias like `define`, `make`, or `derive`.
+It is an instance-level provisioning/accessor boundary. It performs no creation,
+initialization, registration, or derivation.
 
 ## ASGI scope by transport
 
-Stdio does not enter ASGI. It carries MCP JSON-RPC messages over stdin/stdout, so
-there is no `scope`, `receive`, or `send`, and the factory reports this directly:
+Stdio transports MCP JSON-RPC over process streams, so it has no ASGI scope:
 
 ```python
 assert service.asgi_app("stdio") is None
 ```
 
-Streamable HTTP is an ASGI application. For an MCP request, the ASGI server
-creates an ordinary HTTP scope shaped like this (connection-specific values are
-illustrative):
+Streamable HTTP exposes an ASGI application at `/mcp`. A request receives a
+normal ASGI HTTP scope such as:
 
 ```python
 {
@@ -77,42 +80,21 @@ illustrative):
 }
 ```
 
-The corresponding application is available with:
-
-```python
-mcp_asgi = service.asgi_app("streamable-http")
-```
-
-`server.py` still delegates process startup to the official SDK's `run` method;
-`asgi_app` exists for inspection, testing, or mounting into another ASGI host.
-
 ## Run
-
-From this directory:
 
 ```bash
 uv run python server.py --transport stdio
 uv run python server.py --transport streamable-http
 ```
 
-The Streamable HTTP endpoint is `http://127.0.0.1:8000/mcp` by default.
+The Streamable HTTP endpoint defaults to `http://127.0.0.1:8000/mcp`.
 
 ## Inspect
-
-For a headless stdio check from PowerShell:
 
 ```powershell
 & 'C:\Program Files\nodejs\npx.cmd' -y @modelcontextprotocol/inspector@0.21.2 `
   --cli .\.venv\Scripts\python.exe server.py --method tools/list
 ```
-
-For interactive inspection, start the HTTP server, run:
-
-```bash
-npx -y @modelcontextprotocol/inspector
-```
-
-and connect the Inspector to `http://127.0.0.1:8000/mcp`.
 
 ## Test
 

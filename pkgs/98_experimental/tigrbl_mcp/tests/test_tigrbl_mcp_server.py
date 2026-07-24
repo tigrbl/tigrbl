@@ -4,9 +4,12 @@ import json
 import sys
 from pathlib import Path
 
+import httpx
 import pytest
-from mcp import ClientSession, StdioServerParameters
+from mcp import ClientSession, StdioServerParameters, types
+from mcp.server.lowlevel import Server
 from mcp.client.stdio import stdio_client
+from mcp.client.streamable_http import streamable_http_client
 from mcp.shared.memory import create_connected_server_and_client_session
 from pydantic import AnyUrl
 
@@ -19,6 +22,7 @@ import app as app_module  # noqa: E402
 import server as server_module  # noqa: E402
 from app import NOTE_MCP  # noqa: E402
 from server import parse_args  # noqa: E402
+from tigrbl.factories.app import deriveApp  # noqa: E402
 from tigrbl.factories.engine import mem  # noqa: E402
 from tigrbl_mcp import TigrblMCP, TigrblMCPDefinition  # noqa: E402
 
@@ -42,6 +46,34 @@ async def test_catalog_projects_only_explicit_tigrbl_mcp_operations() -> None:
     assert by_name["list_notes"].output_schema["type"] == "array"
     assert by_name["read_note"].read_only is True
     assert by_name["create_note"].read_only is False
+
+
+def test_lowlevel_sdk_handlers_cover_declared_mcp_capabilities() -> None:
+    service = TigrblMCP.derive(NOTE_MCP, _initialized_app_for_sync_test())
+    handlers = service.provide().request_handlers
+
+    assert isinstance(service.provide(), Server)
+    assert {
+        types.ListToolsRequest,
+        types.CallToolRequest,
+        types.ListResourcesRequest,
+        types.ListResourceTemplatesRequest,
+        types.ReadResourceRequest,
+        types.ListPromptsRequest,
+        types.GetPromptRequest,
+    }.issubset(handlers)
+
+
+def _initialized_app_for_sync_test():
+    App = deriveApp(
+        title=NOTE_MCP.name,
+        version=NOTE_MCP.version,
+        engine=mem(async_=False),
+        tables=NOTE_MCP.tables,
+    )
+    app = App()
+    app.initialize()
+    return app
 
 
 @pytest.mark.asyncio
@@ -155,6 +187,37 @@ async def test_streamable_http_exposes_mcp_asgi_scope() -> None:
 
 
 @pytest.mark.asyncio
+async def test_official_sdk_client_connects_over_streamable_http_asgi() -> None:
+    service = await TigrblMCP.make(NOTE_MCP, engine=mem(async_=False))
+    app = service.asgi_app("streamable-http")
+    assert app is not None
+
+    transport = httpx.ASGITransport(app=app)
+    async with app.router.lifespan_context(app):
+        async with httpx.AsyncClient(
+            transport=transport,
+            base_url="http://testserver",
+        ) as http_client:
+            async with streamable_http_client(
+                "http://testserver/mcp",
+                http_client=http_client,
+            ) as streams:
+                async with ClientSession(streams[0], streams[1]) as client:
+                    await client.initialize()
+                    tools = await client.list_tools()
+                    prompts = await client.list_prompts()
+                    templates = await client.list_resource_templates()
+
+    assert [tool.name for tool in tools.tools] == [
+        "create_note",
+        "read_note",
+        "list_notes",
+    ]
+    assert [prompt.name for prompt in prompts.prompts] == ["summarize_note"]
+    assert str(templates.resourceTemplates[0].uriTemplate) == "note://{note_id}"
+
+
+@pytest.mark.asyncio
 async def test_derive_preserves_transport_provisioning_contract() -> None:
     service = await TigrblMCP.make(NOTE_MCP, engine=mem(async_=False))
     derived = TigrblMCP.derive(NOTE_MCP, service.tigrbl)
@@ -173,6 +236,22 @@ def test_factory_surface_replaces_build_helpers() -> None:
         callable(getattr(TigrblMCP, method))
         for method in ("make", "define", "derive", "provide")
     )
+
+
+def test_factory_descriptors_and_provide_accessor_are_explicit() -> None:
+    assert isinstance(TigrblMCP.__dict__["define"], classmethod)
+    assert isinstance(TigrblMCP.__dict__["make"], classmethod)
+    assert isinstance(TigrblMCP.__dict__["derive"], classmethod)
+    assert not isinstance(TigrblMCP.__dict__["provide"], classmethod)
+    assert TigrblMCP.provide.__doc__ is not None
+    assert "not a constructor" in TigrblMCP.provide.__doc__
+
+
+def test_python_sources_use_only_lowlevel_sdk() -> None:
+    sources = [*EXAMPLE_DIR.glob("*.py"), *EXAMPLE_DIR.joinpath("tests").glob("*.py")]
+    forbidden = "fast" + "mcp"
+    for source in sources:
+        assert forbidden not in source.read_text(encoding="utf-8").lower(), source
 
 
 @pytest.mark.asyncio

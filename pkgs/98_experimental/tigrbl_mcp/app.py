@@ -4,7 +4,8 @@ import json
 from typing import Any
 from uuid import UUID
 
-from mcp.server.fastmcp import FastMCP
+from mcp import types
+from mcp.server.lowlevel import Server
 from pydantic import BaseModel, ConfigDict, RootModel
 from tigrbl import TableBase, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
@@ -150,27 +151,71 @@ def _list_notes_tool(app: TigrblApp):
     return list_notes
 
 
-def _provide_note_surfaces(mcp: FastMCP, app: TigrblApp) -> None:
-    @mcp.resource(
-        "note://{note_id}",
-        name="note",
-        title="Note",
-        description="Read a Tigrbl note as JSON context.",
-        mime_type="application/json",
-    )
-    async def note_resource(note_id: str) -> str:
+def _provide_note_surfaces(mcp: Server[Any, Any], app: TigrblApp) -> None:
+    @mcp.list_resources()
+    async def list_resources() -> list[types.Resource]:
+        return []
+
+    @mcp.list_resource_templates()
+    async def list_resource_templates() -> list[types.ResourceTemplate]:
+        return [
+            types.ResourceTemplate(
+                uriTemplate="note://{note_id}",
+                name="note",
+                title="Note",
+                description="Read a Tigrbl note as JSON context.",
+                mimeType="application/json",
+            )
+        ]
+
+    @mcp.read_resource()
+    async def read_resource(uri: Any) -> str:
+        value = str(uri)
+        if not value.startswith("note://"):
+            raise ValueError(f"unsupported resource URI: {value}")
+        note_id = value.removeprefix("note://")
         result = await app.rpc_call("Note", "read", {"id": note_id})
         return json.dumps(result, sort_keys=True)
 
-    @mcp.prompt(
-        name="summarize_note",
-        title="Summarize note",
-        description="Prepare a concise summary of one note resource.",
-    )
-    def summarize_note(note_id: str) -> str:
-        return (
+    @mcp.list_prompts()
+    async def list_prompts() -> list[types.Prompt]:
+        return [
+            types.Prompt(
+                name="summarize_note",
+                title="Summarize note",
+                description="Prepare a concise summary of one note resource.",
+                arguments=[
+                    types.PromptArgument(
+                        name="note_id",
+                        description="Identifier of the note to summarize.",
+                        required=True,
+                    )
+                ],
+            )
+        ]
+
+    @mcp.get_prompt()
+    async def get_prompt(
+        name: str,
+        arguments: dict[str, str] | None,
+    ) -> types.GetPromptResult:
+        if name != "summarize_note":
+            raise ValueError(f"unknown MCP prompt: {name}")
+        note_id = (arguments or {}).get("note_id")
+        if not note_id:
+            raise ValueError("summarize_note requires note_id")
+        text = (
             f"Read note://{note_id}. Summarize its decisions and list any "
             "unresolved actions. Do not invent details absent from the note."
+        )
+        return types.GetPromptResult(
+            description="Prepare a concise summary of one note resource.",
+            messages=[
+                types.PromptMessage(
+                    role="user",
+                    content=types.TextContent(type="text", text=text),
+                )
+            ],
         )
 
 
