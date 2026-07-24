@@ -1,6 +1,6 @@
 from .app import defineAppSpec, deriveApp
 from .column import acol, makeColumn, makeVirtualColumn, vcol
-from .op import make, op
+from .op import makeOp, op
 from .router import defineRouterSpec, deriveRouter
 from .table import defineTableSpec, deriveTable, deriveTableSpec
 from .webhook import DefineWebhook, defineWebhook
@@ -16,7 +16,7 @@ __all__ = [
     "deriveRouter",
     "deriveTable",
     "deriveTableSpec",
-    "make",
+    "makeOp",
     "makeColumn",
     "makeVirtualColumn",
     "op",

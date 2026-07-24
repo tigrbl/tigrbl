@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Expanded factory verb semantics, forms, identity, descriptor, provider, and package-ownership rules; status remains draft."
     at: "2026-07-24T13:41:28Z"
+    note: "Expanded factory verb semantics, forms, identity, descriptor, provider, and package-ownership rules; status remains draft."
+    status: "draft"
 references: []
 body: |-
   ## Decision
@@ -27,7 +27,7 @@ body: |-
   5. `make` constructs a usable instance. Initialization, I/O, and async behavior are part of its declared contract and must not be hidden by an alias.
   6. `provide` exposes or acquires a runtime dependency. An instance `provide()` accessor is not a factory alias when it returns an existing object without construction, registration, initialization, or derivation. `provider_*` and `prov` are separate provider-factory vocabulary.
   7. Governed forms include standalone functions, qualified verb functions, direct aliases, facade and shortcut re-exports, wrappers, class methods, static methods, inherited factories, descriptor aliases, async factories, CamelCase authoring forms, provider factories, and instance accessors.
-  8. Direct aliases such as `acol = makeColumn`, `vcol = makeVirtualColumn`, and `op = make` must preserve object identity. Re-exports must preserve identity, signature, annotations, descriptor behavior, async behavior, return category, and documented side effects.
+  8. Standalone factory names must qualify the constructed product (`makeColumn`, `makeOp`, etc.); a bare module-level `make` export is non-conforming. Direct aliases such as `acol = makeColumn`, `vcol = makeVirtualColumn`, and `op = makeOp` must preserve object identity. Re-exports must preserve identity, signature, annotations, descriptor behavior, async behavior, return category, and documented side effects.
   9. Wrapper aliases are compatibility surfaces, not direct aliases. They must delegate to one canonical owner, preserve or explicitly publish their signature, and carry deprecation/removal policy when noncanonical.
   10. CamelCase `Make*`, `Define*`, `Derive*`, and `Provide*` forms are concrete authoring forms. Lowercase forms are classified by the factory manifest.
   11. `tigrbl_concrete` owns public authoring factory implementations. `tigrbl` may re-export them. Core, base, and runtime must not own public concrete construction factories except tracked compatibility shims. Provider/session factories remain with their semantic owner.

@@ -5,11 +5,11 @@ from typing import Any
 from tigrbl_concrete._concrete._op import Op
 
 
-def make(**kwargs: Any) -> Op:
+def makeOp(**kwargs: Any) -> Op:
     """Make a concrete declarative operation descriptor."""
     return Op(**kwargs)
 
 
-op = make
+op = makeOp
 
-__all__ = ["make", "op"]
+__all__ = ["makeOp", "op"]

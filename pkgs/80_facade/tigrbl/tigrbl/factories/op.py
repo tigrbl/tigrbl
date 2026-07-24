@@ -1,3 +1,3 @@
-from tigrbl_concrete.factories.op import make, op
+from tigrbl_concrete.factories.op import makeOp, op
 
-__all__ = ["make", "op"]
+__all__ = ["makeOp", "op"]

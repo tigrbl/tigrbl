@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Replaced route/docs-only language and repaired the stale ADR-1028 link with the normative factory form matrix."
     at: "2026-07-24T13:42:58Z"
+    note: "Replaced route/docs-only language and repaired the stale ADR-1028 link with the normative factory form matrix."
+    status: "draft"
 references: []
 body: |-
   ## Contract
@@ -24,7 +24,7 @@ body: |-
 
   1. `define` returns declarative configuration, a spec, or a definition and MUST NOT perform runtime initialization or external I/O.
   2. `derive` projects an existing definition, type, or initialized object deterministically. It MUST document whether it returns a type, spec, projection, or configured service.
-  3. `make` returns a usable instance. Initialization, I/O, caching, and awaitability MUST be explicit public contract fields.
+  3. `make<Product>` returns a usable instance. A standalone public factory MUST qualify its product in the callable name and MUST NOT export a bare module-level `make`. Initialization, I/O, caching, and awaitability MUST be explicit public contract fields.
   4. `provide` exposes or acquires a dependency. An instance accessor returning existing state MUST NOT be described as a factory alias. `provider_*` and `prov` are provider factories and MUST be classified separately.
 
   ### Governed forms
@@ -66,6 +66,16 @@ body: |-
   ## Non-conformance
 
   An unmanifested public factory candidate, independent facade implementation, false identity alias, undocumented descriptor/async change, or verb that violates its return/side-effect contract is non-conforming.
+  spec_kind: normative
+  adr_ids:
+  - adr:1029
+  - adr:1194
+  - adr:1002
+  spec_kind: normative
+  adr_ids:
+  - adr:1029
+  - adr:1194
+  - adr:1002
 spec_kind: "normative"
 adr_ids:
   - "adr:1029"

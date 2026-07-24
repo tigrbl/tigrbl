@@ -14,5 +14,5 @@ def test_facade_reexports_concrete_factory_identity():
     assert facade_column.makeVirtualColumn is column.makeVirtualColumn
     assert facade_router.defineRouterSpec is router.defineRouterSpec
     assert facade_router.deriveRouter is router.deriveRouter
-    assert facade_op.make is op.make
+    assert facade_op.makeOp is op.makeOp
     assert facade_op.op is op.op
