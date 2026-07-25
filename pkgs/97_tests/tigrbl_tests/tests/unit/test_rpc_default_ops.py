@@ -31,7 +31,7 @@ def app_and_session() -> Iterator[tuple[TigrblApp, Session, type[TableBase]]]:
         items = spec_acol(
             storage=S(type_=JSON, nullable=True),
             field=F(py_type=list[dict[str, str]]),
-            io=IO(out_verbs=("read", "list")),
+            io=IO(in_verbs=("create",), out_verbs=("read", "list")),
         )
 
     app = TigrblApp(engine=mem(async_=False))
@@ -104,10 +104,13 @@ async def test_rpc_delete(app_and_session):
 @pytest.mark.asyncio
 async def test_rpc_list(app_and_session):
     app, db, Widget = app_and_session
-    await app.rpc_call(Widget, "create", {"name": "f1"}, db=db)
+    await app.rpc_call(
+        Widget, "create", {"name": "f1", "items": [{"key": "value"}]}, db=db
+    )
     await app.rpc_call(Widget, "create", {"name": "f2"}, db=db)
     rows = await app.rpc_call(Widget, "list", {}, db=db)
     assert {r["name"] for r in rows} == {"f1", "f2"}
+    assert next(row for row in rows if row["name"] == "f1")["items"] == [{"key": "value"}]
     schema = build_operation_result_json_schema(
         Widget.ops.by_alias["list"],
         Widget.schemas.list.out,
