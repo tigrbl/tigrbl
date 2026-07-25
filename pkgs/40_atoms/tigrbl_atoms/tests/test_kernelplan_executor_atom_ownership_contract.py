@@ -185,6 +185,26 @@ def test_atom_owned_asgi_channel_payload_steps_are_concrete_behaviors() -> None:
     }
 
 
+def test_structured_webtransport_payloads_preserve_binary_frames() -> None:
+    frame = b"\x00\x00\x00\x05hello"
+    events = webtransport_structured_payload_events(
+        session_id="s1",
+        inbound={
+            "type": "webtransport.stream.receive",
+            "session_id": "s1",
+            "stream_id": 4,
+            "stream_direction": "bidi",
+        },
+        payload={
+            "bidirectional_streams": [{"id": 4, "message": frame}],
+            "unidirectional_streams": [{"id": 7, "message": frame}],
+            "datagrams": [{"id": "d1", "payload": frame}],
+        },
+    )
+
+    assert [event["data"] for event in events] == [frame, frame, frame]
+
+
 @pytest.mark.asyncio
 async def test_atom_owned_framing_completion_and_loop_steps_execute() -> None:
     frame = encode_app_frame(kind=3, payload=b"hello")

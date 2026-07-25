@@ -121,6 +121,12 @@ def _row_for_lane(rows: Any, *, lane_id: Any, index: int) -> Mapping[str, Any]:
     return {}
 
 
+def _webtransport_payload_bytes(value: Any) -> bytes:
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        return bytes(value)
+    return str(value).encode("utf-8")
+
+
 def webtransport_structured_payload_events(
     *,
     session_id: Any,
@@ -160,7 +166,7 @@ def webtransport_structured_payload_events(
                 "stream_id": inbound_stream_id,
                 "stream_direction": "bidi",
                 "stream_initiator": current.get("stream_initiator", "client"),
-                "data": str(message).encode("utf-8"),
+                "data": _webtransport_payload_bytes(message),
                 "more": False,
             }
             if framing is not None:
@@ -201,7 +207,7 @@ def webtransport_structured_payload_events(
                 "stream_id": stream_id,
                 "stream_direction": "server_to_client",
                 "stream_initiator": "server",
-                "data": str(message).encode("utf-8"),
+                "data": _webtransport_payload_bytes(message),
                 "more": False,
             }
             row_framing = row.get("framing") if isinstance(row, Mapping) else None
@@ -243,7 +249,7 @@ def webtransport_structured_payload_events(
                     )
                     or f"datagram-{index + 1}"
                 ),
-                "data": str(body).encode("utf-8"),
+                "data": _webtransport_payload_bytes(body),
             }
             row_framing = row.get("framing") if isinstance(row, Mapping) else None
             if row_framing is None and index < len(inbound_datagram_framings):
