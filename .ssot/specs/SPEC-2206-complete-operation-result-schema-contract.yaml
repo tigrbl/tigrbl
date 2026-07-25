@@ -1,0 +1,89 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2206"
+number: 2206
+slug: "complete-operation-result-schema-contract"
+title: "Complete operation result JSON Schema contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines the complete JSON Schema result contract for bound Tigrbl operations and its projection into OpenRPC and OpenAPI documentation."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Canonical result-schema builder and OpenAPI/OpenRPC projections implemented with passing core, runtime, and docs parity tests."
+    at: "2026-07-25T14:20:25Z"
+references: []
+body: |-
+  ## Scope
+  
+  This SPEC defines the complete JSON Schema result contract for bound Tigrbl operations and its projection into OpenRPC and OpenAPI documentation.
+  
+  ## Requirements
+  
+  1. The result schema MUST describe the complete value returned after Tigrbl production serialization.
+  2. For target=list, the result root MUST be an array and items MUST describe or reference the bound list-row output model.
+  3. For a custom operation with an explicit response model, that response model MUST be authoritative.
+  4. For a custom operation without an explicit response model, a resolvable handler return annotation SHOULD define the complete result schema.
+  5. Built-in non-list operations MUST use their bound complete output model, including nullable or explicit deletion-result semantics.
+  6. Resolution precedence MUST be explicit response model, built-in target semantics, custom return annotation, bound output model, then a deterministic diagnostic or documented fallback.
+  7. FieldSpec.py_type MUST take precedence over storage-column inference when generating logical validation and documentation schemas.
+  8. JSON-backed list, object, scalar, union, nullable, and root-model declarations MUST retain their declared logical shape.
+  9. Result schemas MUST accept every supported serialized Decimal representation emitted by Tigrbl, including exponent notation such as 0E-10.
+  10. OpenRPC method result schemas MUST use the canonical complete-result builder and MUST hoist definitions into valid component references.
+  11. OpenAPI success response schemas for bound operations MUST use the same canonical complete-result builder.
+  12. OpenAPI MUST hoist generated $defs into components.schemas, rewrite local references, and emit no dangling component references.
+  13. Equivalent REST and JSON-RPC operation results MUST not diverge after removal of transport-specific envelopes.
+  14. Missing or unresolvable custom result annotations MUST produce a deterministic fallback or diagnostic and MUST NOT silently advertise an incorrect collection or object root.
+  15. Generated schemas MUST be valid under their declared JSON Schema dialect and MUST validate representative empty and populated runtime results.
+  16. Explicit bulk, deletion, clear, and specialized response models MUST remain authoritative.
+  17. A handwritten adapter representing a bound Tigrbl operation MUST identify its bound model and operation alias, or provide an explicit response schema.
+  18. A table-backed route with a response body MUST publish content.application/json.schema unless an explicit no-body contract applies.
+  19. Non-Tigrbl routes and explicitly declared third-party route response schemas MUST remain unaffected by canonical Tigrbl result projection.
+  20. Projection parity MUST compare normalized result roots, item schemas, nullable or union branches, and referenced component identities.
+  
+  ## Operation Matrix
+  
+  | Operation | Serialized runtime value | OpenAPI response | OpenRPC result |
+  | --- | --- | --- | --- |
+  | create/read/update/replace | bound row or declared result object | object or component reference | object or component reference |
+  | delete | explicit deletion result | deletion result model | deletion result model |
+  | list | array of rows | array root with row items | array root with row items |
+  | custom with response model | declared result | declared schema | declared schema |
+  | custom with typed list annotation | array | array root | array root |
+  | custom with typed object annotation | object | object or component reference | object or component reference |
+  | custom unresolved | deterministic fallback or diagnostic | never a guessed incorrect root | never a guessed incorrect root |
+  
+  ## Projection Rules
+  
+  1. The canonical builder determines the complete result shape.
+  2. Each documentation projection owns transport wrapping, component hoisting, and reference rewriting.
+  3. OpenAPI documents the direct HTTP response value.
+  4. OpenRPC documents the method result inside the JSON-RPC response envelope.
+  5. Removing transport-specific envelopes MUST yield equivalent complete-result schemas for the same operation.
+  
+  ## Verification
+  
+  - Core unit tests validate array roots, explicit-response precedence, custom array/object/root-model/union/nullable differentiation, Decimal serialization, unresolved annotations, and reference integrity.
+  - OpenAPI unit tests validate complete result roots, component hoisting, explicit response preservation, and non-Tigrbl route isolation.
+  - OpenRPC unit tests validate complete result roots and component references.
+  - Cross-projection integration tests validate normalized OpenAPI/OpenRPC parity.
+  - REST and JSON-RPC runtime tests validate empty and populated serialized results against generated schemas.
+  - Application integration tests validate handwritten adapter metadata and published response content schemas.
+  
+  ## Feature Mapping
+  
+  - feat:operation-result-schema-builder-001
+  - feat:openapi-openrpc-operation-result-parity-001
+  - feat:build-openrpc-spec-helper-surface-001
+  - feat:build-openapi-helper-surface-001
+  - feat:openapi-payload-surface-001
+  - feat:openapi-request-response-parameter-emission-001
+  - feat:surface-docs-cross-projection-parity-001
+  - feat:stdapi-openapi-docs-parity-001
+spec_kind: "normative"
+adr_ids:
+  - "adr:1201"

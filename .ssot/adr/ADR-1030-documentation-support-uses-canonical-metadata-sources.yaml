@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1030"
 number: 1030
@@ -22,14 +22,17 @@ body: |-
   2. Payload authority is owned by canonical operation/spec projection contracts.
   3. UI authority is owned by docs UI mount contracts.
   4. Parity authority is owned by conformance contracts requiring runtime/docs equivalence.
+  5. Complete operation-result shape is owned by ADR-1201 and its normative specifications. Route inspection, storage types, or row output models MUST NOT independently redefine that result shape.
   
-  Any documentation projection that bypasses canonical payload generation is non-conforming.
+  Any documentation projection that bypasses canonical payload or complete-result generation is non-conforming.
   
   ## Context
   
-  Documentation support currently spans multiple concerns and needs explicit authority boundaries so traceability remains deterministic.
+  Documentation support spans multiple concerns and needs explicit authority boundaries so traceability remains deterministic. OpenAPI and OpenRPC may use different transport envelopes, but equivalent operation results require the same canonical shape.
   
   ## Consequences
   
   - Cross-surface ownership disputes are resolved by the owning surface contract.
   - Docs generation remains canonical-source first.
+  - OpenAPI and OpenRPC projections delegate complete result-shape authority to ADR-1201.
+  - Handwritten routes must preserve canonical metadata or declare an explicit response contract.

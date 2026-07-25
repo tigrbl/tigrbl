@@ -7,8 +7,8 @@ from pydantic import BaseModel
 from tigrbl_concrete._concrete._response import Response
 from tigrbl_core._spec import OpSpec
 from tigrbl_core._spec.binding_spec import HttpJsonRpcBindingSpec
-from tigrbl_core.schema import build_operation_result_json_schema
 from .openapi.helpers import (
+    _schema_from_operation_result,
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
@@ -277,15 +277,13 @@ def build_openrpc_spec(
                 method["params"] = []
 
             if out_schema is not None:
-                out_json = build_operation_result_json_schema(
+                out_json = _schema_from_operation_result(
                     op,
                     out_schema,
-                    handler=getattr(model, op.alias, None),
-                    ref_template="#/components/schemas/{model}",
+                    components,
+                    handler=getattr(op, "handler", None)
+                    or getattr(model, op.alias, None),
                 )
-                defs = out_json.pop("$defs", {})
-                for key, value in defs.items():
-                    components.setdefault(key, value)
                 method["result"] = {"name": "result", "schema": out_json}
 
             secdeps = tuple(getattr(op, "secdeps", ()) or ())

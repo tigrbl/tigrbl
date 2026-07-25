@@ -30,6 +30,21 @@ def _model_json_schema(model: Any, *, ref_template: str) -> JsonSchema:
     return _normalize_runtime_schema(dict(exporter(ref_template=ref_template)))
 
 
+def _annotation_json_schema(annotation: Any, *, ref_template: str) -> JsonSchema:
+    return _normalize_runtime_schema(
+        dict(TypeAdapter(annotation).json_schema(ref_template=ref_template))
+    )
+
+
+def _handler_return_annotation(handler: Any) -> Any | None:
+    if not callable(handler):
+        return None
+    try:
+        return get_type_hints(handler).get("return")
+    except (NameError, TypeError):
+        return None
+
+
 def build_operation_result_json_schema(
     operation: Any,
     output_model: Any,
@@ -37,28 +52,23 @@ def build_operation_result_json_schema(
     handler: Any | None = None,
     ref_template: str = "#/$defs/{model}",
 ) -> JsonSchema:
-    """Build the JSON Schema for the complete value returned by an operation."""
+    """Build JSON Schema for the complete serialized operation result.
+
+    'output_model' is the operation's bound output model. The binder has
+    already resolved any explicit 'operation.response_model' into this value,
+    so an explicit response model remains authoritative over handler
+    annotations.
+    """
 
     target = str(getattr(operation, "target", ""))
     model_schema = _model_json_schema(output_model, ref_template=ref_template)
     if target == "list" and model_schema.get("type") != "array":
-        return _normalize_runtime_schema(
-            dict(TypeAdapter(list[output_model]).json_schema(ref_template=ref_template))
-        )
+        return _annotation_json_schema(list[output_model], ref_template=ref_template)
 
-    if (
-        target == "custom"
-        and getattr(operation, "response_model", None) is None
-        and callable(handler)
-    ):
-        try:
-            annotation = get_type_hints(handler).get("return")
-        except (NameError, TypeError):
-            annotation = None
+    if target == "custom" and getattr(operation, "response_model", None) is None:
+        annotation = _handler_return_annotation(handler)
         if annotation is not None:
-            return _normalize_runtime_schema(
-                dict(TypeAdapter(annotation).json_schema(ref_template=ref_template))
-            )
+            return _annotation_json_schema(annotation, ref_template=ref_template)
 
     return model_schema
 

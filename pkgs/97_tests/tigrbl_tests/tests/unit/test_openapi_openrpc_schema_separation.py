@@ -73,3 +73,46 @@ def test_openapi_schema_excludes_openrpc_even_if_route_is_schema_visible() -> No
 
     assert "/openrpc.json" not in payload["paths"]
 
+
+
+def _openapi_result_schema(payload: dict, operation_id: str) -> dict:
+    for path_item in payload["paths"].values():
+        for operation in path_item.values():
+            if operation.get("operationId") != operation_id:
+                continue
+            response = operation["responses"]["200"]
+            return response["content"]["application/json"]["schema"]
+    raise AssertionError(f"OpenAPI operation {operation_id!r} was not found")
+
+
+def _openrpc_result_schema(payload: dict, method_name: str) -> dict:
+    method = next(
+        method for method in payload["methods"] if method["name"] == method_name
+    )
+    return method["result"]["schema"]
+
+
+def test_openapi_and_openrpc_publish_equivalent_list_result_shapes() -> None:
+    app = _build_app()
+    transport = ASGITransport(app=app)
+
+    with Client(transport=transport, base_url="http://test") as client:
+        openapi_payload = client.get("/openapi.json").json()
+        openrpc_payload = client.get("/openrpc.json").json()
+
+    operation_id = next(
+        operation["operationId"]
+        for path_item in openapi_payload["paths"].values()
+        for operation in path_item.values()
+        if operation.get("operationId", "").endswith(".list")
+    )
+    openapi_schema = _openapi_result_schema(openapi_payload, operation_id)
+    openrpc_schema = _openrpc_result_schema(openrpc_payload, f"{Widget.__name__}.list")
+
+    assert openapi_schema["type"] == openrpc_schema["type"] == "array"
+    assert openapi_schema["items"] == openrpc_schema["items"]
+    item_ref = openapi_schema["items"]["$ref"].rsplit("/", maxsplit=1)[-1]
+    assert (
+        openapi_payload["components"]["schemas"][item_ref]
+        == openrpc_payload["components"]["schemas"][item_ref]
+    )

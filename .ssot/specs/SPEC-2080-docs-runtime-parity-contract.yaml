@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2080"
 number: 2080
@@ -21,42 +21,52 @@ status_notes:
     note: "Updated docs runtime parity with docs/schema/runtime evidence."
     status: "draft"
   -
-    status: "draft"
-    note: "Added the openapi_schema publication and invalidation contract to docs/runtime parity."
     at: "2026-05-24T10:38:00Z"
+    note: "Added the openapi_schema publication and invalidation contract to docs/runtime parity."
+    status: "draft"
 references: []
 body: |-
   ## Decision
   
   1. Runtime behavior and documentation projections MUST remain observationally consistent.
-  2. Security behavior (auth challenges, documented schemes, authorization expectations) MUST be parity-checked between runtime and docs.
+  2. Security behavior, including auth challenges, documented schemes, and authorization expectations, MUST be parity-checked between runtime and docs.
   3. Operator visibility exposed at runtime MUST match operator visibility in docs payloads.
   4. Docs/runtime parity MUST be evaluated from the same canonical AppSpec graph and docs projection policy. Runtime route inspection alone is not sufficient proof of parity.
   5. Parity failures are conformance failures.
   6. REST/JSON-RPC parity, schema projection parity, and docs payload parity are one conformance concern when a test exercises all three.
   7. In-memory documentation publication surfaces exposed on app/router objects are part of docs/runtime parity when downstream tooling consumes those objects directly.
-  8. Calling `openapi()` on a supported app/router object MUST publish the generated OpenAPI document to `openapi_schema`.
-  9. Runtime route mutation that changes the observable OpenAPI surface MUST invalidate stale `openapi_schema` state before the next publication.
-  10. The mounted `/openapi.json` payload and the in-memory `openapi_schema` publication path MUST represent the same document family for the same runtime revision.
+  8. Calling openapi() on a supported app/router object MUST publish the generated OpenAPI document to openapi_schema.
+  9. Runtime route mutation that changes the observable OpenAPI surface MUST invalidate stale openapi_schema state before the next publication.
+  10. The mounted /openapi.json payload and the in-memory openapi_schema publication path MUST represent the same document family for the same runtime revision.
+  11. Complete operation results MUST conform to SPEC-2206.
+  12. Generated OpenAPI and OpenRPC result schemas MUST validate the serialized values returned by their corresponding runtime operations.
+  13. REST and JSON-RPC result parity MUST be evaluated after removing transport-specific envelopes.
+  14. Empty and populated collection responses MUST both validate against their published array-root schemas.
+  15. A table-backed route that returns a response body but publishes no success response content schema is a parity failure unless an explicit no-body contract applies.
+  16. Handwritten route adapters MUST retain canonical model and operation identity, or declare an explicit response schema, so runtime behavior and documentation can be compared deterministically.
+  17. Component references MUST resolve in the published document used by downstream clients.
   
   ## Integration Coverage
   
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_bulk_docs_client.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_rest_rpc_parity_v3.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_schema_ctx_op_ctx_integration.py`
-  - `pkgs/core/tigrbl_tests/tests/unit/test_openapi_schema_cache_contract.py::test_openapi_schema_is_cached_on_app`
-  - `pkgs/core/tigrbl_tests/tests/unit/test_openapi_schema_cache_contract.py::test_openapi_schema_cache_is_invalidated_when_routes_change`
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_bulk_docs_client.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_rest_rpc_parity_v3.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_schema_ctx_op_ctx_integration.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_openapi_openrpc_result_parity.py
+  - pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_operation_result_schema.py
+  - pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_schema_cache_contract.py::test_openapi_schema_is_cached_on_app
+  - pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_schema_cache_contract.py::test_openapi_schema_cache_is_invalidated_when_routes_change
   
   ## Traceability
   
-  - ADRs: `adr:1080`, `adr:1032`, `adr:1041`, `adr:1014`
-  - Related specs: `spc:2012`, `spc:2077`, `spc:2078`, `spc:2079`
-  - Related features: `feat:openapi-schema-cache-compatibility-001`
+  - ADRs: adr:1080, adr:1032, adr:1041, adr:1014, adr:1201
+  - Related specs: spc:2012, spc:2077, spc:2078, spc:2079, spc:2206
+  - Related features: feat:openapi-schema-cache-compatibility-001, feat:operation-result-schema-builder-001, feat:openapi-openrpc-operation-result-parity-001
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
   - "adr:1032"
   - "adr:1041"
   - "adr:1014"
+  - "adr:1201"

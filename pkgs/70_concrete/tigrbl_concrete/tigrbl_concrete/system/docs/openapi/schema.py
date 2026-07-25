@@ -11,6 +11,7 @@ from .helpers import (
     _request_schema_from_handler,
     _resolve_component_schema_ref,
     _schema_from_model,
+    _schema_from_operation_result,
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
@@ -67,13 +68,17 @@ def openapi(
         canonical_path = route.path_template.rstrip("/") or "/"
         if canonical_path == "/openrpc.json" or route.name == "openrpc_json":
             continue
-        model = getattr(route, "tigrbl_model", None)
+        route_model = getattr(route, "tigrbl_model", None)
         route_alias = (
             getattr(route, "tigrbl_alias", None)
             or route.name.rsplit(".", maxsplit=1)[-1]
         )
         if selected_keys is not None:
-            table_name = getattr(model, "__name__", "") if model is not None else ""
+            table_name = (
+                getattr(route_model, "__name__", "")
+                if route_model is not None
+                else ""
+            )
             if (canonical_path, table_name, str(route_alias)) not in selected_keys:
                 continue
 
@@ -93,12 +98,12 @@ def openapi(
                     entry: dict[str, Any] = {
                         "description": meta.get("description", "") or "",
                     }
-                    model = meta.get("model")
-                    if model is not None:
+                    response_model = meta.get("model")
+                    if response_model is not None:
                         entry["content"] = {
                             "application/json": {
                                 "schema": _schema_from_model(
-                                    model,
+                                    response_model,
                                     components_schemas,
                                 )
                             }
@@ -108,10 +113,26 @@ def openapi(
                 entry = {"description": "Successful Response"}
                 schema = route.response_schema
                 if schema is None and route.response_model is not None:
-                    schema = _schema_from_model(
-                        route.response_model,
-                        components_schemas,
-                    )
+                    operation = None
+                    ops = getattr(route_model, "ops", None)
+                    by_alias = getattr(ops, "by_alias", None)
+                    if isinstance(by_alias, dict):
+                        operation = by_alias.get(alias)
+
+                    if operation is not None:
+                        schema = _schema_from_operation_result(
+                            operation,
+                            route.response_model,
+                            components_schemas,
+                            handler=getattr(operation, "handler", None)
+                            or getattr(route_model, alias, None),
+                            register_root=True,
+                        )
+                    else:
+                        schema = _schema_from_model(
+                            route.response_model,
+                            components_schemas,
+                        )
                 if schema is not None:
                     entry["content"] = {"application/json": {"schema": schema}}
                 responses[str(status_code)] = entry
@@ -178,7 +199,7 @@ def openapi(
                     "content": {"application/json": {"schema": request_schema}},
                 }
 
-            model = getattr(route, "tigrbl_model", None)
+            model = route_model
             alias = getattr(route, "tigrbl_alias", None)
             binding = getattr(route, "tigrbl_binding", None)
             security_deps: list[Any] = []

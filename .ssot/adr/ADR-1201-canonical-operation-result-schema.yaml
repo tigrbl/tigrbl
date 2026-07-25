@@ -1,0 +1,67 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1201"
+number: 1201
+slug: "canonical-operation-result-schema"
+title: "Canonical complete operation result JSON Schema"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Operation output models describe row and field structure, but they do not always describe the complete value returned by an operation. A list operation returns a collection, and a custom operation may return a collection, object, union, nullable value, or root model. Publishing only the row model causes documentation and protocol clients to reject valid runtime results. JSON storage also cannot determine whether a logical field is an object, array, scalar, or union when an explicit FieldSpec type exists."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Implemented in tigrbl_core and consumed by OpenAPI and OpenRPC with passing T1 result-schema parity evidence."
+    at: "2026-07-25T14:20:22Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Tigrbl MUST publish JSON Schema for the complete serialized value returned by an operation, not merely the schema of one row or element.
+  2. Built-in list operations MUST publish an array root whose items reference the bound row output model.
+  3. Result-schema resolution MUST prefer an explicit operation response model, then built-in operation semantics, then a resolvable custom-handler return annotation, then the bound output model, and finally a deterministic diagnostic or documented fallback.
+  4. FieldSpec.py_type is authoritative for logical validation and schema generation; storage-column inference is a fallback only.
+  5. Published result schemas MUST validate values produced by Tigrbl's production serializer, including supported Decimal exponent notation.
+  6. OpenAPI and OpenRPC projections MUST consume the canonical result contract wherever their transport envelope semantics are equivalent.
+  7. OpenAPI MUST document the direct HTTP response value. OpenRPC MUST document the method result within the JSON-RPC envelope. Cross-projection parity is evaluated after removing transport-specific envelopes.
+  8. OpenAPI projection MUST hoist generated $defs into components.schemas, rewrite references, and emit no dangling component references.
+  9. A handwritten adapter representing a bound Tigrbl operation MUST identify its bound model and operation alias, or provide an explicit response schema.
+  10. Explicit bulk, deletion, and specialized response contracts remain authoritative and MUST NOT be replaced by generic row-model inference.
+  11. A missing or unresolvable custom result annotation MUST NOT silently advertise an incorrect collection or object root.
+  
+  ## Context
+  
+  Operation output models describe row and field structure, but they do not always describe the complete value returned by an operation. A list operation returns a collection, and a custom operation may return a collection, object, union, nullable value, or root model. Publishing only the row model causes documentation and protocol clients to reject valid runtime results. JSON storage also cannot determine whether a logical field is an object, array, scalar, or union when an explicit FieldSpec type exists.
+  
+  The same operation may be projected through REST/OpenAPI and JSON-RPC/OpenRPC. Those transports have different envelopes but share one operation result. Projection-specific result-shape inference creates schema/runtime divergence.
+  
+  ## Consequences
+  
+  - tigrbl_core owns a reusable complete-result JSON Schema builder.
+  - OpenAPI and OpenRPC consume one result-shape algorithm.
+  - Documentation projections cannot independently guess result wrappers.
+  - Explicit logical field types survive storage-independent schema generation.
+  - Runtime/schema conformance tests validate serialized results, not Python-only values.
+  - Custom handlers without explicit response models require resolvable return annotations or a deterministic diagnostic or fallback.
+  - Handwritten route adapters must retain enough canonical operation metadata for documentation projection.
+  - Component-definition hoisting and reference integrity are projection responsibilities, not alternate result-shape algorithms.
+  
+  ## Feature Mapping
+  
+  - Governs feat:operation-result-schema-builder-001.
+  - Governs feat:openapi-openrpc-operation-result-parity-001.
+  - Constrains feat:build-openapi-helper-surface-001.
+  - Constrains feat:build-openrpc-spec-helper-surface-001.
+  - Constrains feat:openapi-payload-surface-001.
+  - Constrains feat:surface-docs-cross-projection-parity-001.
+  
+  ## Rejected Alternatives
+  
+  - Treating a row output model as the complete list-operation result.
+  - Inferring logical JSON types solely from the storage column.
+  - Maintaining separate result-shape algorithms in OpenAPI and OpenRPC.
+  - Defaulting every untyped custom operation to an object-root schema.
+  - Treating transport envelopes as operation-result shapes.

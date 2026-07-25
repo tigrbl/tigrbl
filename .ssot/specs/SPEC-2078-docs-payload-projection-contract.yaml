@@ -1,4 +1,4 @@
-schema_version: "0.3.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2078"
 number: 2078
@@ -26,25 +26,34 @@ body: |-
   
   1. Documentation payloads (OpenAPI/OpenRPC and related docs artifacts) are canonical projections.
   2. Payload generation MUST be deterministic for equivalent canonical inputs.
-  3. Security, operation visibility, request/response schema references, and status/error metadata emitted in payloads are normative.
+  3. Security, operation visibility, request/response schema references, status/error metadata, and complete operation-result shapes emitted in payloads are normative.
   4. Payload projections MUST derive from canonical metadata ownership boundaries.
   5. Payload inclusion MUST be selected from canonical docs projection policy rather than inferred only from mounted runtime routes or incidental docs endpoints.
-  6. Docs payload paths such as `/openapi.json` and `/openrpc.json` MAY be ordinary canonical path nodes, but the payload contract is still governed by the selected docs projection rather than by path presence alone.
+  6. Docs payload paths such as /openapi.json and /openrpc.json MAY be ordinary canonical path nodes, but the payload contract is still governed by the selected docs projection rather than by path presence alone.
   7. Bulk operation schemas, clear response schemas, schema examples, and client-facing request/response schema objects are part of the payload projection contract.
+  8. Complete operation-result schemas MUST conform to SPEC-2206.
+  9. A collection operation projected as a single row or object schema is nonconforming.
+  10. Equivalent OpenAPI and OpenRPC results MUST derive from the same canonical result contract; projection-specific envelopes do not authorize projection-specific result-shape inference.
+  11. OpenAPI and OpenRPC component references MUST resolve and MUST preserve the canonical result root and item shape.
+  12. A table-backed response body omitted from content.application/json.schema is nonconforming unless an explicit no-body contract applies.
   
   ## Integration Coverage
   
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_bulk_docs_client.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_bulk_docs_client.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_schema.py
+  - pkgs/97_tests/tigrbl_tests/tests/i9n/test_openapi_openrpc_result_parity.py
+  - pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_operation_result_schema.py
+  - pkgs/97_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
   
   ## Traceability
   
-  - ADRs: `adr:1080`, `adr:1030`, `adr:1014`
-  - Related specs: `spc:2069`, `spc:2080`, `spc:2150`
+  - ADRs: adr:1080, adr:1030, adr:1014, adr:1201
+  - Related specs: spc:2069, spc:2080, spc:2150, spc:2206
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
   - "adr:1030"
   - "adr:1014"
+  - "adr:1201"

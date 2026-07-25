@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2010"
 number: 2010
@@ -22,11 +22,13 @@ body: |-
   2. Payload projection requirements are delegated to SPEC-2078.
   3. UI support requirements are delegated to SPEC-2079.
   4. Runtime/docs parity requirements are delegated to SPEC-2080.
+  5. Complete operation-result schema requirements are delegated to SPEC-2206.
   
   ## Normative Statement
   
-  Implementations claiming documentation support MUST satisfy all applicable delegated docs contracts.
+  Implementations claiming documentation support MUST satisfy all applicable delegated docs contracts. SPEC-2010 does not redefine the detailed result-shape requirements owned by SPEC-2206.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
   - "adr:1030"
+  - "adr:1201"

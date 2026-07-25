@@ -11,6 +11,7 @@ from tigrbl_concrete._mapping.core_resolver import (
     split_annotated as _split_annotated,
 )
 from tigrbl_concrete._concrete._route import Route
+from tigrbl_core.schema import build_operation_result_json_schema
 
 
 def _normalize_schema_refs(node: Any) -> Any:
@@ -31,6 +32,58 @@ def _normalize_schema_refs(node: Any) -> Any:
     return node
 
 
+def _register_component_schema(
+    name: str,
+    schema: dict[str, Any],
+    components_schemas: dict[str, Any],
+) -> None:
+    existing = components_schemas.get(name)
+    if existing is not None and existing != schema:
+        raise ValueError(f"Conflicting JSON Schema component {name!r}.")
+    components_schemas.setdefault(name, schema)
+
+
+def _hoist_schema_defs(
+    schema: dict[str, Any],
+    components_schemas: dict[str, Any],
+) -> dict[str, Any]:
+    normalized = _normalize_schema_refs(schema)
+    defs = normalized.pop("$defs", None)
+    if isinstance(defs, dict):
+        for name, definition in defs.items():
+            _register_component_schema(
+                str(name),
+                _normalize_schema_refs(definition),
+                components_schemas,
+            )
+    return normalized
+
+
+def _schema_from_operation_result(
+    operation: Any,
+    output_model: Any,
+    components_schemas: dict[str, Any],
+    *,
+    handler: Any | None = None,
+    register_root: bool = False,
+) -> dict[str, Any]:
+    schema = build_operation_result_json_schema(
+        operation,
+        output_model,
+        handler=handler,
+        ref_template="#/components/schemas/{model}",
+    )
+    schema = _hoist_schema_defs(schema, components_schemas)
+    if not register_root or schema.get("type") != "object":
+        return schema
+
+    schema_name = schema.get("title")
+    if not isinstance(schema_name, str) or not schema_name:
+        return schema
+    _register_component_schema(schema_name, schema, components_schemas)
+    return {"$ref": f"#/components/schemas/{schema_name}"}
+
+
 def _schema_from_model(
     model: Any, components_schemas: dict[str, Any] | None = None
 ) -> dict[str, Any]:
@@ -45,14 +98,16 @@ def _schema_from_model(
             defs = schema.pop("$defs", None)
             if isinstance(defs, dict) and components_schemas is not None:
                 for name, definition in defs.items():
-                    components_schemas.setdefault(
-                        name, _normalize_schema_refs(definition)
+                    _register_component_schema(
+                        name,
+                        _normalize_schema_refs(definition),
+                        components_schemas,
                     )
             if components_schemas is None:
                 return schema  # type: ignore[no-any-return]
 
             schema_name = str(schema.get("title") or model.__name__)
-            components_schemas.setdefault(schema_name, schema)
+            _register_component_schema(schema_name, schema, components_schemas)
             return {"$ref": f"#/components/schemas/{schema_name}"}
     except Exception:
         pass
