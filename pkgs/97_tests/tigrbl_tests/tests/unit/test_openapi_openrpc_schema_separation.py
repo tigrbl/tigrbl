@@ -74,7 +74,6 @@ def test_openapi_schema_excludes_openrpc_even_if_route_is_schema_visible() -> No
     assert "/openrpc.json" not in payload["paths"]
 
 
-
 def _openapi_result_schema(payload: dict, operation_id: str) -> dict:
     for path_item in payload["paths"].values():
         for operation in path_item.values():

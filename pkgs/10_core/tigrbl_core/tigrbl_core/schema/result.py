@@ -12,7 +12,9 @@ _JSON_DECIMAL_PATTERN = r"^(?!^[-+.]*$)[+-]?0*\d*\.?\d*(?:[eE][+-]?\d+)?$"
 
 def _normalize_runtime_schema(value: Any) -> Any:
     if isinstance(value, dict):
-        normalized = {key: _normalize_runtime_schema(item) for key, item in value.items()}
+        normalized = {
+            key: _normalize_runtime_schema(item) for key, item in value.items()
+        }
         if normalized.get("pattern") == _PYDANTIC_DECIMAL_PATTERN:
             normalized["pattern"] = _JSON_DECIMAL_PATTERN
         return normalized

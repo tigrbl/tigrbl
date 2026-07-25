@@ -192,8 +192,7 @@ def _selected_openrpc_methods(
     if not selected:
         return set()
     return {
-        (entry.path, str(entry.table or ""), str(entry.op or ""))
-        for entry in selected
+        (entry.path, str(entry.table or ""), str(entry.op or "")) for entry in selected
     }
 
 
@@ -316,7 +315,9 @@ def mount_openrpc(
     setattr(router, "openrpc_path", normalized_path)
 
     def _openrpc_endpoint(request: Any) -> Response:
-        return Response.json(build_openrpc_spec(router, request=request, docs_path=normalized_path))
+        return Response.json(
+            build_openrpc_spec(router, request=request, docs_path=normalized_path)
+        )
 
     router.add_route(
         normalized_path,

@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-JSON_SCHEMA_DRAFT_2020_12_DIALECT = "https://json-schema.org/draft/2020-12/schema"
-
 from tigrbl_typing.status.mappings import status
 from .helpers import (
     _request_schema_from_handler,
@@ -19,6 +17,8 @@ from tigrbl_concrete._mapping.appspec.docs_lowering import (
     selected_projection_entries_if_configured,
 )
 from ..surface import auth_surface, binding_surface, op_surface
+
+JSON_SCHEMA_DRAFT_2020_12_DIALECT = "https://json-schema.org/draft/2020-12/schema"
 
 
 def _prefixed_path(router: Any, path: str) -> str:
@@ -44,8 +44,7 @@ def _selected_openapi_keys(
     if not selected:
         return set()
     return {
-        (entry.path, str(entry.table or ""), str(entry.op or ""))
-        for entry in selected
+        (entry.path, str(entry.table or ""), str(entry.op or "")) for entry in selected
     }
 
 
@@ -75,9 +74,7 @@ def openapi(
         )
         if selected_keys is not None:
             table_name = (
-                getattr(route_model, "__name__", "")
-                if route_model is not None
-                else ""
+                getattr(route_model, "__name__", "") if route_model is not None else ""
             )
             if (canonical_path, table_name, str(route_alias)) not in selected_keys:
                 continue
@@ -230,11 +227,7 @@ def openapi(
                 )
             op["x-tigrbl-auth"] = auth_surface(sec)
 
-            surface = (
-                op_surface(surface_spec)
-                if surface_spec is not None
-                else {}
-            )
+            surface = op_surface(surface_spec) if surface_spec is not None else {}
             exchange = getattr(route, "tigrbl_exchange", None)
             if exchange not in (None, "request_response"):
                 surface["exchange"] = exchange
