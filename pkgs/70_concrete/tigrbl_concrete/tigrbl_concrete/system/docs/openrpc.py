@@ -280,8 +280,8 @@ def build_openrpc_spec(
                     op,
                     out_schema,
                     components,
-                    handler=getattr(op, "handler", None)
-                    or getattr(model, op.alias, None),
+                    handler=getattr(model, op.alias, None)
+                    or getattr(op, "handler", None),
                 )
                 method["result"] = {"name": "result", "schema": out_json}
 

@@ -121,8 +121,8 @@ def openapi(
                             operation,
                             route.response_model,
                             components_schemas,
-                            handler=getattr(operation, "handler", None)
-                            or getattr(route_model, alias, None),
+                            handler=getattr(route_model, alias, None)
+                            or getattr(operation, "handler", None),
                             register_root=True,
                         )
                     else:
