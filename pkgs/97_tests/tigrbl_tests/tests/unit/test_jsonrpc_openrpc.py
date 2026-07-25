@@ -81,6 +81,10 @@ def test_openrpc_includes_method_schema():
     assert result["title"].startswith(model.__name__)
     assert "Response" in result["title"]
 
+    list_result = methods[f"{model.__name__}.list"]["result"]["schema"]
+    assert list_result["type"] == "array"
+    assert list_result["items"]["$ref"].startswith("#/components/schemas/")
+
 
 def test_openrpc_declares_public_default_without_authn() -> None:
     app, model = _build_app()

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from tigrbl_core._spec.schema_spec import SchemaArg, SchemaRef
 from .get_schema import get_schema
+from .result import build_operation_result_json_schema
 from .builder.build_schema import _build_schema
 from .builder.list_params import _build_list_params
 from .spec_json import (
@@ -39,6 +40,7 @@ from .utils import (
 
 __all__ = [
     "get_schema",
+    "build_operation_result_json_schema",
     "SchemaRef",
     "SchemaArg",
     "_build_schema",

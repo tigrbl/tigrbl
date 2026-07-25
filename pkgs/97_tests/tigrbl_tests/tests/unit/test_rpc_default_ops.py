@@ -1,14 +1,16 @@
 import pytest
 from collections.abc import Iterator
+from jsonschema import validate
 
 from tigrbl import TigrblApp
 from tigrbl.orm.mixins import BulkCapable, GUIDPk
 from tigrbl._spec import IO, S, F
 from tigrbl.factories.column import acol as spec_acol
 from tigrbl.orm.tables import TableBase
-from tigrbl.types import Session, String
+from tigrbl.types import JSON, Session, String
 from tigrbl.factories.engine import mem
 from tigrbl import resolver as _resolver
+from tigrbl_core.schema import build_operation_result_json_schema
 
 
 @pytest.fixture()
@@ -25,6 +27,11 @@ def app_and_session() -> Iterator[tuple[TigrblApp, Session, type[TableBase]]]:
                 out_verbs=("read", "list"),
                 mutable_verbs=("create", "update", "replace"),
             ),
+        )
+        items = spec_acol(
+            storage=S(type_=JSON, nullable=True),
+            field=F(py_type=list[dict[str, str]]),
+            io=IO(out_verbs=("read", "list")),
         )
 
     app = TigrblApp(engine=mem(async_=False))
@@ -101,6 +108,15 @@ async def test_rpc_list(app_and_session):
     await app.rpc_call(Widget, "create", {"name": "f2"}, db=db)
     rows = await app.rpc_call(Widget, "list", {}, db=db)
     assert {r["name"] for r in rows} == {"f1", "f2"}
+    schema = build_operation_result_json_schema(
+        Widget.ops.by_alias["list"],
+        Widget.schemas.list.out,
+    )
+    validate(rows, schema)
+    assert schema["type"] == "array"
+    item_model = schema["items"]["$ref"].rsplit("/", 1)[-1]
+    items_schema = schema["$defs"][item_model]["properties"]["items"]
+    assert any(branch.get("type") == "array" for branch in items_schema["anyOf"])
 
 
 @pytest.mark.asyncio
