@@ -19,6 +19,52 @@ from ._asgi_webtransport import (
 )
 
 
+def _webtransport_event_projection(ctx: Any) -> Mapping[str, Any]:
+    projection = ctx.get("channel_event_projection")
+    if isinstance(projection, Mapping):
+        return projection
+    channel = ctx.get("channel")
+    state = getattr(channel, "state", None) if channel is not None else None
+    if isinstance(state, dict):
+        projection = state.get("event_projection")
+        if isinstance(projection, Mapping):
+            return projection
+    return {}
+
+
+def _is_receive_only_webtransport_stream(ctx: Any) -> bool:
+    projection = _webtransport_event_projection(ctx)
+    if (
+        projection.get("lane") == "unidi_client_stream"
+        or projection.get("exchange") == "client_stream"
+    ):
+        return True
+    message = ctx.get("channel_message")
+    return bool(
+        isinstance(message, Mapping)
+        and message.get("type") == "webtransport.stream.receive"
+        and message.get("stream_direction") == "client_to_server"
+    )
+
+
+def _validate_receive_only_webtransport_output(payload: Any) -> None:
+    if payload is None:
+        return
+    if not isinstance(payload, Mapping) or not any(
+        key in payload
+        for key in ("bidirectional_streams", "unidirectional_streams", "datagrams")
+    ):
+        raise ValueError(
+            "cannot automatically reply on a client_to_server WebTransport stream; "
+            "return None or emit an explicit server_to_client stream or datagram"
+        )
+    if payload.get("bidirectional_streams"):
+        raise ValueError(
+            "bidirectional_streams output is invalid for a client_to_server "
+            "WebTransport stream; use unidirectional_streams or datagrams"
+        )
+
+
 async def _send_session_payload(
     env: Any,
     payload: Any,
@@ -87,11 +133,15 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
         for key in ("bidirectional_streams", "unidirectional_streams", "datagrams")
     )
     if structured_payload:
-        if not queue and message_type in {
-            "webtransport.stream.receive",
-            "webtransport.datagram.receive",
-        }:
-            queue = [message]
+        if (
+            message_type
+            in {
+                "webtransport.stream.receive",
+                "webtransport.datagram.receive",
+            }
+            and message not in queue
+        ):
+            queue.append(message)
         if not queue:
             raise ValueError(
                 "structured WebTransport payloads require inbound stream.receive or datagram.receive events"
@@ -222,6 +272,16 @@ async def send_transport_via_channel(env: Any, ctx: Any) -> None:
         if payload is None:
             payload = getattr(ctx, "result", None)
         if scope_type == "webtransport":
+            if _is_receive_only_webtransport_stream(ctx):
+                _validate_receive_only_webtransport_output(payload)
+                if payload is None:
+                    if isinstance(state, dict):
+                        state["egress_disposition"] = "suppressed_receive_only"
+                        state["emitted"] = False
+                    if isinstance(egress, dict):
+                        egress["response_suppressed"] = True
+                        egress["suppression_reason"] = "receive_only_stream"
+                    return
             await _send_webtransport_payload(env, ctx, payload)
         else:
             await _send_session_payload(

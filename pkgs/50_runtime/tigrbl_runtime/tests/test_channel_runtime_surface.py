@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import asyncio
-from types import SimpleNamespace
+
+import pytest
 
 from tigrbl_runtime.channel import (
     RuntimeWebSocket,
@@ -66,7 +67,10 @@ def test_prepare_channel_context_reads_initial_websocket_message() -> None:
     messages = iter(
         [
             {"type": "websocket.connect"},
-            {"type": "websocket.receive", "text": '{"jsonrpc":"2.0","method":"widgets.echo","id":1}'},
+            {
+                "type": "websocket.receive",
+                "text": '{"jsonrpc":"2.0","method":"widgets.echo","id":1}',
+            },
         ]
     )
 
@@ -233,7 +237,11 @@ def test_prepare_channel_context_traces_webtransport_receive_into_ctx() -> None:
     async def _receive() -> dict[str, object]:
         return next(messages)
 
-    scope = {"type": "webtransport", "scheme": "webtransport", "path": "/transport/session"}
+    scope = {
+        "type": "webtransport",
+        "scheme": "webtransport",
+        "path": "/transport/session",
+    }
     env = GwRawEnvelope(kind="asgi3", scope=scope, receive=_receive, send=_noop_send)
     ctx = {"temp": {}}
 
@@ -461,7 +469,9 @@ def test_send_transport_via_channel_rejects_invalid_webtransport_inbound_lane() 
     assert sent == []
 
 
-def test_send_transport_via_channel_closes_webtransport_disconnect_idempotently() -> None:
+def test_send_transport_via_channel_closes_webtransport_disconnect_idempotently() -> (
+    None
+):
     sent: list[dict[str, object]] = []
 
     async def send(message: dict[str, object]) -> None:
@@ -487,8 +497,248 @@ def test_send_transport_via_channel_closes_webtransport_disconnect_idempotently(
         "session_id": "s1",
         "code": 1001,
     }
-    ctx.temp = {"egress": {"transport_response": {"body": {"datagrams": [{"payload": "pong"}]}}}}
+    ctx.temp = {
+        "egress": {"transport_response": {"body": {"datagrams": [{"payload": "pong"}]}}}
+    }
 
     asyncio.run(send_transport_via_channel(env, ctx))
 
     assert sent == [{"type": "webtransport.close", "code": 1001, "session_id": "s1"}]
+
+
+def _receive_only_channel(message: dict[str, object]) -> OpChannel:
+    return OpChannel(
+        kind="webtransport",
+        family="session",
+        exchange="bidirectional_stream",
+        protocol="webtransport",
+        path="/transport/session",
+        state={
+            "session_id": "s1",
+            "receive_queue": [message],
+            "event_projection": {
+                "family": "stream",
+                "lane": "unidi_client_stream",
+                "exchange": "client_stream",
+                "stream_direction": "client_to_server",
+            },
+        },
+    )
+
+
+def _receive_only_message() -> dict[str, object]:
+    return {
+        "type": "webtransport.stream.receive",
+        "session_id": "s1",
+        "stream_id": "6",
+        "stream_direction": "client_to_server",
+        "framing": "binary",
+    }
+
+
+def test_prepare_channel_context_records_receive_only_event_projection() -> None:
+    messages = iter(
+        [
+            {"type": "webtransport.connect", "session_id": "s1"},
+            {**_receive_only_message(), "data": b"upload"},
+        ]
+    )
+
+    async def receive() -> dict[str, object]:
+        return next(messages)
+
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=receive,
+        send=_noop_send,
+    )
+    ctx = {"temp": {}}
+
+    channel = asyncio.run(prepare_channel_context(env, ctx))
+
+    assert channel.state["event_projection"]["lane"] == "unidi_client_stream"
+    assert channel.state["event_projection"]["exchange"] == "client_stream"
+    assert ctx["channel_event_projection"] == channel.state["event_projection"]
+
+
+def test_receive_only_webtransport_none_result_sends_nothing() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    message = _receive_only_message()
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = _receive_only_channel(message)
+    ctx["channel_message"] = message
+    ctx.result = None
+    ctx.temp = {"egress": {}}
+
+    asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert sent == []
+    assert "transport_sent" not in ctx["channel"].state
+    assert ctx["channel"].state["egress_disposition"] == "suppressed_receive_only"
+    assert ctx.temp["egress"] == {
+        "response_suppressed": True,
+        "suppression_reason": "receive_only_stream",
+    }
+
+
+def test_operation_projection_overrides_stale_shared_channel_projection() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    message = {
+        "type": "webtransport.stream.receive",
+        "session_id": "s1",
+        "stream_id": "8",
+        "stream_direction": "bidi",
+        "framing": "binary",
+    }
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={
+            "type": "webtransport",
+            "path": "/transport/session",
+            "state": {"tigrbl_webtransport": {"accepted": True}},
+        },
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = _receive_only_channel(_receive_only_message())
+    ctx["channel_message"] = message
+    ctx["channel_event_projection"] = {
+        "family": "stream",
+        "lane": "bidi_stream",
+        "exchange": "bidirectional_stream",
+        "stream_direction": "bidi",
+    }
+    ctx.temp = {
+        "egress": {
+            "transport_response": {
+                "body": {"bidirectional_streams": [{"id": "8", "message": b"ok"}]}
+            }
+        }
+    }
+
+    asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert sent == [
+        {
+            "type": "webtransport.stream.send",
+            "session_id": "s1",
+            "stream_id": "8",
+            "stream_direction": "bidi",
+            "stream_initiator": "client",
+            "data": b"ok",
+            "more": False,
+            "framing": "binary",
+        }
+    ]
+
+
+def test_receive_only_webtransport_scalar_result_fails_before_send() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    message = _receive_only_message()
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = _receive_only_channel(message)
+    ctx["channel_message"] = message
+    ctx.result = b"illegal echo"
+    ctx.temp = {"egress": {}}
+
+    with pytest.raises(ValueError, match="cannot automatically reply"):
+        asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert sent == []
+
+
+def test_receive_only_webtransport_allows_explicit_server_lanes() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    message = _receive_only_message()
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={
+            "type": "webtransport",
+            "path": "/transport/session",
+            "state": {"tigrbl_webtransport": {"accepted": True}},
+        },
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = _receive_only_channel(message)
+    ctx["channel_message"] = message
+    ctx.temp = {
+        "egress": {
+            "transport_response": {
+                "body": {
+                    "unidirectional_streams": [{"id": "ack-stream", "message": b"ack"}],
+                    "datagrams": [{"id": "ack-dgram", "payload": b"seen"}],
+                }
+            }
+        }
+    }
+
+    asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert [event["type"] for event in sent] == [
+        "webtransport.stream.send",
+        "webtransport.datagram.send",
+    ]
+    assert sent[0]["stream_direction"] == "server_to_client"
+    assert ctx["channel"].state["transport_sent"] is True
+
+
+def test_receive_only_webtransport_rejects_bidirectional_output() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    message = _receive_only_message()
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = _receive_only_channel(message)
+    ctx["channel_message"] = message
+    ctx.temp = {
+        "egress": {
+            "transport_response": {
+                "body": {"bidirectional_streams": [{"message": "illegal"}]}
+            }
+        }
+    }
+
+    with pytest.raises(ValueError, match="bidirectional_streams output is invalid"):
+        asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert sent == []

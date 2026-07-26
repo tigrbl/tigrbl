@@ -304,3 +304,87 @@ async def test_atom_owned_direct_websocket_unary_executes_without_runtime() -> N
         {"type": "websocket.send", "text": "ok"},
         {"type": "websocket.close", "code": 1000},
     ]
+
+
+def test_receive_only_webtransport_scalar_payload_is_rejected() -> None:
+    with pytest.raises(ValueError, match="cannot automatically reply"):
+        webtransport_payload_event(
+            base={
+                "type": "webtransport.stream.receive",
+                "session_id": "s1",
+                "stream_id": 6,
+                "stream_direction": "client_to_server",
+            },
+            payload=b"illegal echo",
+        )
+
+
+def test_receive_only_webtransport_rejects_bidirectional_output() -> None:
+    inbound = {
+        "type": "webtransport.stream.receive",
+        "session_id": "s1",
+        "stream_id": 6,
+        "stream_direction": "client_to_server",
+    }
+
+    with pytest.raises(ValueError, match="bidirectional_streams output is invalid"):
+        webtransport_structured_payload_events(
+            session_id="s1",
+            inbound=inbound,
+            payload={"bidirectional_streams": [{"message": b"illegal"}]},
+        )
+
+
+def test_mixed_webtransport_batch_allows_response_to_bidirectional_input() -> None:
+    events = webtransport_structured_payload_events(
+        session_id="s1",
+        inbound=[
+            {
+                "type": "webtransport.stream.receive",
+                "session_id": "s1",
+                "stream_id": 6,
+                "stream_direction": "client_to_server",
+            },
+            {
+                "type": "webtransport.stream.receive",
+                "session_id": "s1",
+                "stream_id": 8,
+                "stream_direction": "bidi",
+            },
+        ],
+        payload={"bidirectional_streams": [{"id": 8, "message": b"response"}]},
+    )
+
+    assert events == [
+        {
+            "type": "webtransport.stream.send",
+            "session_id": "s1",
+            "stream_id": 8,
+            "stream_direction": "bidi",
+            "stream_initiator": "client",
+            "data": b"response",
+            "more": False,
+        }
+    ]
+
+
+def test_receive_only_webtransport_allows_explicit_server_output() -> None:
+    events = webtransport_structured_payload_events(
+        session_id="s1",
+        inbound={
+            "type": "webtransport.stream.receive",
+            "session_id": "s1",
+            "stream_id": 6,
+            "stream_direction": "client_to_server",
+        },
+        payload={
+            "unidirectional_streams": [{"id": "ack", "message": b"ok"}],
+            "datagrams": [{"id": "seen", "payload": b"seen"}],
+        },
+    )
+
+    assert [event["type"] for event in events] == [
+        "webtransport.stream.send",
+        "webtransport.datagram.send",
+    ]
+    assert events[0]["stream_direction"] == "server_to_client"

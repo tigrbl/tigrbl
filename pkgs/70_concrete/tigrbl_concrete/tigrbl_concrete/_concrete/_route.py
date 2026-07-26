@@ -6,7 +6,17 @@ import inspect
 import re
 from dataclasses import dataclass, replace
 from types import SimpleNamespace
-from typing import Annotated, Any, Callable, Iterable, Mapping, MutableMapping, Sequence, get_args, get_origin
+from typing import (
+    Annotated,
+    Any,
+    Callable,
+    Iterable,
+    Mapping,
+    MutableMapping,
+    Sequence,
+    get_args,
+    get_origin,
+)
 
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from tigrbl_concrete.security.dependencies import Dependency
@@ -209,8 +219,7 @@ def _binding_key(binding: Any) -> tuple[str, str, tuple[str, ...]]:
         str(getattr(binding, "proto", "") or ""),
         str(getattr(binding, "path", "") or ""),
         tuple(
-            str(item).upper()
-            for item in tuple(getattr(binding, "methods", ()) or ())
+            str(item).upper() for item in tuple(getattr(binding, "methods", ()) or ())
         ),
     )
 
@@ -263,7 +272,9 @@ def _prefix_transport_binding(binding: Any, mount_prefix: str) -> Any:
     if not path.startswith("/"):
         path = f"/{path}"
     prefixed_path = (
-        path if path == mount_prefix or path.startswith(f"{mount_prefix}/") else f"{mount_prefix}{path}"
+        path
+        if path == mount_prefix or path.startswith(f"{mount_prefix}/")
+        else f"{mount_prefix}{path}"
     )
     if prefixed_path == getattr(binding, "path", None):
         return binding
@@ -419,7 +430,9 @@ def _resolve_route_from_ctx(ctx: Any) -> Route | None:
     for route in routes:
         if not isinstance(route, Route):
             continue
-        route_alias = getattr(route, "tigrbl_alias", None) or getattr(route, "name", None)
+        route_alias = getattr(route, "tigrbl_alias", None) or getattr(
+            route, "name", None
+        )
         if route_alias == alias:
             return route
     return None
@@ -458,11 +471,7 @@ async def _invoke_route_handler(route: Route, ctx: Any) -> None:
                 request = _route_request(route, ctx, coerce_concrete=True)
             kwargs[name] = request
             continue
-        if (
-            len(params) == 1
-            and not path_params
-            and param.default is inspect._empty
-        ):
+        if len(params) == 1 and not path_params and param.default is inspect._empty:
             if request is None:
                 request = _route_request(route, ctx, coerce_concrete=False)
             kwargs[name] = request
@@ -523,7 +532,9 @@ def upsert_route_opspec(
     ops_ns = getattr(model, "ops", None)
     existing_specs = tuple(getattr(ops_ns, "all", ()) or ())
     updated_specs = tuple(
-        current for current in existing_specs if getattr(current, "alias", None) != spec.alias
+        current
+        for current in existing_specs
+        if getattr(current, "alias", None) != spec.alias
     ) + (spec,)
     updated_ops = _rebuild_ops_namespace(updated_specs)
     model.ops = updated_ops
@@ -636,9 +647,7 @@ def add_route(
         status_code=kwargs.pop("status_code", None),
         dependencies=kwargs.pop("dependencies", None),
         security_dependencies=kwargs.pop("security_dependencies", None),
-        inherit_owner_dependencies=bool(
-            kwargs.pop("inherit_owner_dependencies", True)
-        ),
+        inherit_owner_dependencies=bool(kwargs.pop("inherit_owner_dependencies", True)),
         tigrbl_model=kwargs.pop("tigrbl_model", None),
         tigrbl_alias=kwargs.pop("tigrbl_alias", None),
         tigrbl_binding=binding,
@@ -651,7 +660,9 @@ def add_route(
     if route.tigrbl_model is None:
         alias = route.tigrbl_alias or route.name
         existing_ops = getattr(ensure_route_ops_model(owner), "ops", None)
-        existing_specs = tuple(getattr(existing_ops, "by_alias", {}).get(alias, ()) or ())
+        existing_specs = tuple(
+            getattr(existing_ops, "by_alias", {}).get(alias, ()) or ()
+        )
         existing = existing_specs[0] if existing_specs else None
         tags = tuple(route.tags or ())
         if isinstance(route.tigrbl_binding, HttpRestBindingSpec):
@@ -668,16 +679,25 @@ def add_route(
             if route.tigrbl_binding is not None:
                 bindings = bindings + (route.tigrbl_binding,)
 
+        route_exchange = str(
+            route.tigrbl_exchange
+            or getattr(route.tigrbl_binding, "exchange", None)
+            or getattr(existing, "exchange", None)
+            or "request_response"
+        )
         route_spec = (
             replace(
                 existing,
                 bindings=tuple(bindings),
+                exchange=route_exchange,
                 tags=tags or tuple(getattr(existing, "tags", ()) or ()),
                 status_code=route.status_code
                 if route.status_code is not None
                 else getattr(existing, "status_code", None),
-                request_model=route.request_model or getattr(existing, "request_model", None),
-                response_model=route.response_model or getattr(existing, "response_model", None),
+                request_model=route.request_model
+                or getattr(existing, "request_model", None),
+                response_model=route.response_model
+                or getattr(existing, "response_model", None),
                 handler=route.endpoint,
             )
             if existing is not None
@@ -693,7 +713,7 @@ def add_route(
                 status_code=route.status_code,
                 request_model=route.request_model,
                 response_model=route.response_model,
-                exchange=str(route.tigrbl_exchange or "request_response"),
+                exchange=route_exchange,
                 tx_scope=str(route.tigrbl_tx_scope or "inherit"),
                 handler=route.endpoint,
             )
@@ -769,7 +789,9 @@ def include_router_routes(owner: Any, router: Any, *, prefix: str = "") -> None:
                 dep for dep in router_dependencies if dep not in route_dependencies
             ] + route_dependencies
 
-        normalized_path = (path if path.startswith("/") else f"/{path}").rstrip("/") or "/"
+        normalized_path = (path if path.startswith("/") else f"/{path}").rstrip(
+            "/"
+        ) or "/"
         methods = frozenset(str(method).upper() for method in tuple(route.methods))
         owner.routes[:] = [
             existing
@@ -808,7 +830,9 @@ def include_router_routes(owner: Any, router: Any, *, prefix: str = "") -> None:
             inherit_owner_dependencies=route.inherit_owner_dependencies,
             tigrbl_model=route.tigrbl_model,
             tigrbl_alias=route.tigrbl_alias,
-            tigrbl_binding=_prefix_transport_binding(route.tigrbl_binding, nested_prefix),
+            tigrbl_binding=_prefix_transport_binding(
+                route.tigrbl_binding, nested_prefix
+            ),
             tigrbl_exchange=route.tigrbl_exchange,
             tigrbl_tx_scope=route.tigrbl_tx_scope,
             tigrbl_default_root=getattr(route, "tigrbl_default_root", False),

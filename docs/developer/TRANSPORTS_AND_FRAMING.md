@@ -65,6 +65,19 @@ FastAPI, WebSocket, and WebTransport concepts, see
 | WebTransport unidirectional server stream | Server | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | Provisional | Server-to-client stream lane. |
 | WebTransport datagram | Client or server | Datagram / unordered payload unit | `bytes`, `binary`, `text`, `json` | Provisional | `jsonrpc` and `ndjson` are intentionally excluded for datagrams. |
 
+### Receive-only WebTransport completion
+
+A client-initiated unidirectional WebTransport stream is receive-only on its
+physical stream. Returning `None` after consuming such an event completes the
+operation without scheduling an ASGI send. Scalar results are not automatically
+echoed because `webtransport.stream.send` is illegal with
+`stream_direction="client_to_server"`.
+
+Applications that need outbound work in response must return an explicit
+structured payload using `unidirectional_streams` or `datagrams`. They must not
+set `channel.state["transport_sent"]` or another runtime-owned suppression flag.
+Bidirectional stream results retain the existing automatic reply behavior.
+
 ## Framing Matrix
 
 | Framing | Where it is supported | Status | Rules |

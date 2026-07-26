@@ -55,6 +55,12 @@ def webtransport_payload_event(
     event_type = str(base.get("type") or "")
     session_id = base.get("session_id")
     if event_type == "webtransport.stream.receive":
+        if base.get("stream_direction") == "client_to_server":
+            raise ValueError(
+                "cannot automatically reply on a client_to_server WebTransport "
+                "stream; return None or emit an explicit server_to_client stream "
+                "or datagram"
+            )
         out: dict[str, Any] = {
             "type": "webtransport.stream.send",
             "session_id": session_id,
@@ -135,6 +141,25 @@ def webtransport_structured_payload_events(
 ) -> list[dict[str, Any]]:
     events: list[dict[str, Any]] = []
     inbound_events = inbound if isinstance(inbound, list) else [inbound]
+    receive_only = any(
+        str(item.get("type") or "") == "webtransport.stream.receive"
+        and str(item.get("stream_direction") or "") == "client_to_server"
+        for item in inbound_events
+    )
+    has_bidirectional_input = any(
+        str(item.get("type") or "") == "webtransport.stream.receive"
+        and str(item.get("stream_direction") or "bidi") == "bidi"
+        for item in inbound_events
+    )
+    if (
+        receive_only
+        and not has_bidirectional_input
+        and payload.get("bidirectional_streams")
+    ):
+        raise ValueError(
+            "bidirectional_streams output is invalid for a client_to_server "
+            "WebTransport stream; use unidirectional_streams or datagrams"
+        )
     bidi_index = 0
     for current in inbound_events:
         inbound_type = str(current.get("type") or "")

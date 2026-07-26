@@ -292,6 +292,8 @@ async def _receive_webtransport_session_messages(
                 channel="receive",
                 payload={**message, "session_id": state.get("session_id")},
             )
+            state["event_projection"] = dict(projection)
+            ctx["channel_event_projection"] = dict(projection)
             if current_session is not None:
                 current_session.apply_event(
                     event=message_type,

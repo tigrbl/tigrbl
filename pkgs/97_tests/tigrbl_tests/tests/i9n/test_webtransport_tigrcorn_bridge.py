@@ -20,14 +20,20 @@ def _install_adjacent_tigrcorn_sources() -> None:
         tigrcorn = repo_parent / "tigrcorn"
         if not tigrcorn.exists():
             continue
-        src_paths = [tigrcorn / "src", *(path / "src" for path in (tigrcorn / "pkgs").glob("*"))]
+        src_paths = [
+            tigrcorn / "src",
+            *(path / "src" for path in (tigrcorn / "pkgs").glob("*")),
+        ]
         for src_path in reversed(src_paths):
             if src_path.exists():
                 value = str(src_path)
                 if value not in sys.path:
                     sys.path.insert(0, value)
         return
-    pytest.skip("adjacent tigrcorn checkout is required for this bridge test", allow_module_level=True)
+    pytest.skip(
+        "adjacent tigrcorn checkout is required for this bridge test",
+        allow_module_level=True,
+    )
 
 
 _install_adjacent_tigrcorn_sources()
@@ -106,7 +112,9 @@ async def _run_contract_session(
 
 
 @pytest.mark.asyncio
-async def test_tigrbl_webtransport_bidi_stream_runs_over_tigrcorn_contract_events() -> None:
+async def test_tigrbl_webtransport_bidi_stream_runs_over_tigrcorn_contract_events() -> (
+    None
+):
     scope = _scope("/transport/echo")
     connect = webtransport_connect("session-1")
     stream = webtransport_stream_receive(
@@ -125,7 +133,9 @@ async def test_tigrbl_webtransport_bidi_stream_runs_over_tigrcorn_contract_event
         "client_to_server",
     )
 
-    sent = await _run_contract_session(_app("/transport/echo"), scope, [connect, stream])
+    sent = await _run_contract_session(
+        _app("/transport/echo"), scope, [connect, stream]
+    )
 
     assert sent[0] == {"type": "webtransport.accept", "session_id": "session-1"}
     assert sent[1] == {
@@ -147,7 +157,9 @@ async def test_tigrbl_webtransport_bidi_stream_runs_over_tigrcorn_contract_event
 
 
 @pytest.mark.asyncio
-async def test_tigrbl_webtransport_datagram_runs_over_tigrcorn_contract_events() -> None:
+async def test_tigrbl_webtransport_datagram_runs_over_tigrcorn_contract_events() -> (
+    None
+):
     scope = _scope("/transport/echo")
     connect = webtransport_connect("session-1")
     datagram = webtransport_datagram_receive(
@@ -164,7 +176,9 @@ async def test_tigrbl_webtransport_datagram_runs_over_tigrcorn_contract_events()
         "client_to_server",
     )
 
-    sent = await _run_contract_session(_app("/transport/echo"), scope, [connect, datagram])
+    sent = await _run_contract_session(
+        _app("/transport/echo"), scope, [connect, datagram]
+    )
 
     assert sent[0] == {"type": "webtransport.accept", "session_id": "session-1"}
     assert sent[1] == {
@@ -191,12 +205,17 @@ async def test_webtransport_bidi_and_unidi_lane_metadata_reaches_hooks() -> None
         captured.append(dict(ctx["webtransport"]))
 
     async def lanes(ctx: Any) -> dict[str, Any]:
-        return {
-            "bidirectional_streams": [{"id": "bidi-1", "message": "reply-bidi"}],
+        output = {
             "unidirectional_streams": [
                 {"id": "server-1", "message": "server-unidi", "framing": "text"}
             ],
         }
+        message = ctx.get("channel_message", {})
+        if message.get("stream_direction") == "bidi":
+            output["bidirectional_streams"] = [
+                {"id": "bidi-1", "message": "reply-bidi"}
+            ]
+        return output
 
     app.hooks = (
         HookSpec(
@@ -227,7 +246,9 @@ async def test_webtransport_bidi_and_unidi_lane_metadata_reaches_hooks() -> None
         tigrbl_exchange="bidirectional_stream",
     )
     scope = _scope("/transport/lanes")
-    scope.setdefault("state", {}).setdefault("tigrbl_webtransport", {})["eager_drain"] = True
+    scope.setdefault("state", {}).setdefault("tigrbl_webtransport", {})[
+        "eager_drain"
+    ] = True
     events = [
         webtransport_connect("lane-session"),
         webtransport_stream_receive(
@@ -249,7 +270,9 @@ async def test_webtransport_bidi_and_unidi_lane_metadata_reaches_hooks() -> None
 
     sent = await _run_contract_session(app, scope, events)
 
-    lanes_by_stream = {item["stream_id"]: item["lane"] for item in captured if item["stream_id"]}
+    lanes_by_stream = {
+        item["stream_id"]: item["lane"] for item in captured if item["stream_id"]
+    }
     assert lanes_by_stream["bidi-1"] == "bidi_stream"
     assert lanes_by_stream["client-1"] == "unidi_client_stream"
     assert any(
