@@ -192,10 +192,14 @@ def webtransport_structured_payload_events(
                 "stream_direction": "bidi",
                 "stream_initiator": current.get("stream_initiator", "client"),
                 "data": _webtransport_payload_bytes(message),
-                "more": False,
+                "more": bool(row.get("more", False))
+                if isinstance(row, Mapping)
+                else False,
             }
             if framing is not None:
                 event["framing"] = framing
+            if isinstance(row, Mapping) and row.get("priority") is not None:
+                event["priority"] = bool(row["priority"])
             events.append(event)
 
     uni_rows = payload.get("unidirectional_streams")
@@ -214,11 +218,13 @@ def webtransport_structured_payload_events(
                 "stream_direction": "server_to_client",
                 "stream_initiator": "server",
                 "data": _webtransport_payload_bytes(message),
-                "more": False,
+                "more": bool(row.get("more", False)),
             }
             row_framing = row.get("framing") if isinstance(row, Mapping) else None
             if row_framing is not None:
                 event["framing"] = row_framing
+            if row.get("priority") is not None:
+                event["priority"] = bool(row["priority"])
             events.append(event)
 
     datagram_rows = payload.get("datagrams")
