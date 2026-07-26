@@ -336,7 +336,7 @@ def test_send_transport_via_channel_emits_structured_webtransport_events() -> No
     assert sent[2] == {
         "type": "webtransport.stream.send",
         "session_id": "s1",
-        "stream_id": 5,
+        "stream_id": "server-stream-1",
         "stream_direction": "server_to_client",
         "stream_initiator": "server",
         "data": b"demo-unidirectional",
@@ -393,7 +393,7 @@ def test_send_transport_via_channel_emits_structured_webtransport_events() -> No
             "lane": "unidi_server_stream",
             "exchange": "server_stream",
             "session_id": "s1",
-            "stream_id": 5,
+            "stream_id": "server-stream-1",
             "stream_direction": "server_to_client",
             "stream_initiator": "server",
             "more": False,

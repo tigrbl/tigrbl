@@ -173,20 +173,6 @@ def webtransport_structured_payload_events(
                 event["framing"] = framing
             events.append(event)
 
-    first_inbound_stream_id = next(
-        (
-            item.get("stream_id")
-            for item in inbound_events
-            if str(item.get("type") or "") == "webtransport.stream.receive"
-        ),
-        None,
-    )
-    numeric_stream_base: int | None = None
-    try:
-        numeric_stream_base = int(first_inbound_stream_id)
-    except Exception:
-        numeric_stream_base = None
-
     uni_rows = payload.get("unidirectional_streams")
     if isinstance(uni_rows, list):
         for index, row in enumerate(uni_rows):
@@ -196,11 +182,6 @@ def webtransport_structured_payload_events(
             if message is None:
                 continue
             stream_id: Any = row.get("id") or f"server-stream-{index + 1}"
-            if numeric_stream_base is not None:
-                try:
-                    stream_id = int(stream_id)
-                except Exception:
-                    stream_id = numeric_stream_base + index + 1
             event = {
                 "type": "webtransport.stream.send",
                 "session_id": session_id,

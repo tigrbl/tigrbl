@@ -197,12 +197,14 @@ def test_structured_webtransport_payloads_preserve_binary_frames() -> None:
         },
         payload={
             "bidirectional_streams": [{"id": 4, "message": frame}],
-            "unidirectional_streams": [{"id": 7, "message": frame}],
+            "unidirectional_streams": [{"id": "room-event-1", "message": frame}],
             "datagrams": [{"id": "d1", "payload": frame}],
         },
     )
 
     assert [event["data"] for event in events] == [frame, frame, frame]
+    assert events[1]["stream_id"] == "room-event-1"
+    assert events[1]["stream_direction"] == "server_to_client"
 
 
 @pytest.mark.asyncio
