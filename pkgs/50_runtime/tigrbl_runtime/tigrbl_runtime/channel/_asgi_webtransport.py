@@ -18,6 +18,8 @@ from tigrbl_kernel.webtransport_events import validate_webtransport_event_payloa
 from tigrbl_atoms.runtime_channel import WebTransportSessionState
 from tigrbl_typing.channel import OpChannel
 
+MAX_EAGER_DRAIN_EVENTS = 16
+
 
 def _webtransport_scope_state(env: Any) -> dict[str, Any]:
     scope = getattr(env, "scope", {}) or {}
@@ -343,11 +345,17 @@ async def _receive_webtransport_session_messages(
             message = await receive()
             await _record_payload_message(message)
 
-    while shared_state.get("eager_drain") is True and not state.get("disconnected"):
+    drained_events = 0
+    while (
+        shared_state.get("eager_drain") is True
+        and not state.get("disconnected")
+        and drained_events < MAX_EAGER_DRAIN_EVENTS
+    ):
         try:
             message = await asyncio.wait_for(receive(), timeout=0.001)
         except TimeoutError:
             break
         await _record_payload_message(message)
+        drained_events += 1
 
     state["receive_queue"] = queue

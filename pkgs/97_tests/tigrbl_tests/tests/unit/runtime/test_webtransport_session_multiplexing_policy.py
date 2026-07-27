@@ -148,6 +148,43 @@ def test_webtransport_session_exposes_provisioning_and_caps_distinct_streams() -
         )
 
 
+def test_completed_streams_release_the_active_stream_budget() -> None:
+    session = WebTransportSessionState(session_id="sess-1", max_streams=1)
+    session.apply_event(
+        event="webtransport.stream.receive",
+        channel="receive",
+        payload={
+            "session_id": "sess-1",
+            "stream_id": "stream-1",
+            "stream_direction": "bidi",
+            "more": False,
+        },
+    )
+    first = session.apply_event(
+        event="webtransport.stream.send",
+        channel="send",
+        payload={
+            "session_id": "sess-1",
+            "stream_id": "stream-1",
+            "stream_direction": "bidi",
+            "more": False,
+        },
+    )
+
+    assert first["streams"]["stream-1"]["closed"] is True
+    second = session.apply_event(
+        event="webtransport.stream.receive",
+        channel="receive",
+        payload={
+            "session_id": "sess-1",
+            "stream_id": "stream-2",
+            "stream_direction": "bidi",
+            "more": True,
+        },
+    )
+    assert second["streams"]["stream-2"]["closed"] is False
+
+
 def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_independently() -> None:
     session = WebTransportSessionState(session_id="sess-1")
 

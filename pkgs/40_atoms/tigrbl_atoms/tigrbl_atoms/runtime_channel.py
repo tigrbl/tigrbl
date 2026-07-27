@@ -237,6 +237,8 @@ class WebTransportLaneState:
     stream_ordinal: int | None = None
     stream_id_width: str | None = None
     closed: bool = False
+    receive_closed: bool = False
+    send_closed: bool = False
     chunks_received: int = 0
     chunks_sent: int = 0
 
@@ -330,6 +332,8 @@ class WebTransportSessionState:
                     "stream_ordinal": state.stream_ordinal,
                     "stream_id_width": state.stream_id_width,
                     "closed": state.closed,
+                    "receive_closed": state.receive_closed,
+                    "send_closed": state.send_closed,
                     "chunks_received": state.chunks_received,
                     "chunks_sent": state.chunks_sent,
                 }
@@ -381,7 +385,8 @@ class WebTransportSessionState:
         lane = str(projection["lane"])
         lane_metadata = self._stream_lane_metadata(payload=payload, projection=projection)
         if state is None:
-            if len(self.streams) >= self.stream_id_provisioning.max_streams:
+            active_streams = sum(not item.closed for item in self.streams.values())
+            if active_streams >= self.stream_id_provisioning.max_streams:
                 raise ValueError("WebTransport session max_streams exceeded")
             state = WebTransportLaneState(
                 lane=lane,
@@ -411,10 +416,22 @@ class WebTransportSessionState:
             "webtransport.stream.stop_sending",
         }:
             state.closed = True
+            state.receive_closed = True
+            state.send_closed = True
         elif channel == "receive":
             state.chunks_received += 1
+            if "more" in payload and not bool(payload["more"]):
+                state.receive_closed = True
         elif channel == "send":
             state.chunks_sent += 1
+            if "more" in payload and not bool(payload["more"]):
+                state.send_closed = True
+        if state.stream_direction == "bidi":
+            state.closed = state.receive_closed and state.send_closed
+        elif state.stream_direction == "client_to_server":
+            state.closed = state.receive_closed
+        elif state.stream_direction == "server_to_client":
+            state.closed = state.send_closed
 
     def _apply_datagram_event(self, payload: dict[str, Any]) -> None:
         datagram_id = str(payload["datagram_id"])

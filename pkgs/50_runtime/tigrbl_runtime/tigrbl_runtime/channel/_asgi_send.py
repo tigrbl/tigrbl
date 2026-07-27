@@ -201,6 +201,14 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
                 )
                 await _run_webtransport_hooks(env, ctx, direction="send", message=event)
                 await send(event)
+            if isinstance(state, dict):
+                raw_queue = state.get("receive_queue")
+                consumed = min(len(queue), len(raw_queue or ()))
+                if isinstance(raw_queue, deque):
+                    for _ in range(consumed):
+                        raw_queue.popleft()
+                elif isinstance(raw_queue, list):
+                    del raw_queue[:consumed]
         else:
             event = _webtransport_payload_event(base=base, payload=payload)
             if isinstance(session, WebTransportSessionState):

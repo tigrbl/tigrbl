@@ -285,6 +285,38 @@ def test_prepare_channel_context_traces_webtransport_receive_into_ctx() -> None:
     assert channel.state["webtransport_trace"] is trace
 
 
+def test_eager_webtransport_drain_yields_under_continuous_media() -> None:
+    calls = 0
+
+    async def receive() -> dict[str, object]:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return {"type": "webtransport.connect", "session_id": "s1"}
+        return {
+            "type": "webtransport.stream.receive",
+            "session_id": "s1",
+            "stream_id": "2",
+            "stream_direction": "client_to_server",
+            "framing": "binary",
+            "data": b"media",
+            "more": True,
+        }
+
+    scope = {
+        "type": "webtransport",
+        "path": "/transport/session",
+        "state": {"tigrbl_webtransport": {"eager_drain": True}},
+    }
+    env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=_noop_send)
+    ctx = {"temp": {}}
+
+    channel = asyncio.run(prepare_channel_context(env, ctx))
+
+    assert calls == 18
+    assert len(channel.state["receive_queue"]) == 17
+
+
 def test_send_transport_via_channel_emits_structured_webtransport_events() -> None:
     sent: list[dict[str, object]] = []
 
@@ -646,6 +678,7 @@ def test_operation_projection_overrides_stale_shared_channel_projection() -> Non
             "framing": "binary",
         }
     ]
+    assert list(ctx["channel"].state["receive_queue"]) == []
 
 
 def test_receive_only_webtransport_scalar_result_fails_before_send() -> None:
