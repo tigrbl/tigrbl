@@ -77,7 +77,30 @@ def webtransport_payload_event(
             out["framing"] = base.get("framing")
         request_id = base.get("jsonrpc_request_id")
         persistent_control = request_id is not None or base.get("framing") == "jsonrpc"
-        if isinstance(payload, (bytes, bytearray)):
+        if persistent_control and isinstance(payload, (bytes, bytearray)):
+            raw_payload = bytes(payload)
+            if (
+                len(raw_payload) >= 4
+                and int.from_bytes(raw_payload[:4], "big") == len(raw_payload) - 4
+            ):
+                out["data"] = raw_payload
+            else:
+                response = json.loads(raw_payload)
+                if not isinstance(response, Mapping):
+                    raise TypeError(
+                        "persistent WebTransport control bytes must encode a JSON object"
+                    )
+                out["data"] = encode_jsonrpc_record(response)
+            out["framing"] = "jsonrpc"
+        elif persistent_control and isinstance(payload, str):
+            response = json.loads(payload)
+            if not isinstance(response, Mapping):
+                raise TypeError(
+                    "persistent WebTransport control text must encode a JSON object"
+                )
+            out["data"] = encode_jsonrpc_record(response)
+            out["framing"] = "jsonrpc"
+        elif isinstance(payload, (bytes, bytearray)):
             out["data"] = bytes(payload)
         elif isinstance(payload, str):
             out["data"] = payload.encode("utf-8")

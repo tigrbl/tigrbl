@@ -217,6 +217,26 @@ def test_structured_webtransport_payloads_preserve_binary_frames() -> None:
     assert events[1]["priority"] is True
 
 
+def test_persistent_control_frames_serialized_jsonrpc_bytes_once() -> None:
+    response = b'{"jsonrpc":"2.0","id":"request-1","result":{"ok":true}}'
+    base = {
+        "type": "webtransport.stream.receive",
+        "session_id": "s1",
+        "stream_id": 4,
+        "stream_direction": "bidi",
+        "framing": "jsonrpc",
+        "jsonrpc_request_id": "request-1",
+    }
+
+    framed = webtransport_payload_event(base=base, payload=response)
+    reframed = webtransport_payload_event(base=base, payload=framed["data"])
+
+    assert framed["data"][:4] == len(response).to_bytes(4, "big")
+    assert framed["data"][4:] == response
+    assert reframed["data"] == framed["data"]
+    assert framed["more"] is True
+
+
 @pytest.mark.asyncio
 async def test_atom_owned_framing_completion_and_loop_steps_execute() -> None:
     frame = encode_app_frame(kind=3, payload=b"hello")
