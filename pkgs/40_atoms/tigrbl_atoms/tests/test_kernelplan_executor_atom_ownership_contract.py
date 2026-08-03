@@ -138,6 +138,7 @@ def test_atom_owned_asgi_channel_payload_steps_are_concrete_behaviors() -> None:
             "stream_id": 4,
             "stream_direction": "bidi",
             "framing": "bytes",
+            "jsonrpc_request_id": "request-1",
         },
         payload={"ok": True},
     )
@@ -166,9 +167,9 @@ def test_atom_owned_asgi_channel_payload_steps_are_concrete_behaviors() -> None:
         "stream_id": 4,
         "stream_direction": "bidi",
         "stream_initiator": "client",
-        "framing": "bytes",
-        "data": b'{"ok":true}',
-        "more": False,
+            "framing": "jsonrpc",
+                "data": b'\x00\x00\x007{"jsonrpc":"2.0","id":"request-1","result":{"ok":true}}',
+            "more": True,
     }
     assert datagram_events == [
         {

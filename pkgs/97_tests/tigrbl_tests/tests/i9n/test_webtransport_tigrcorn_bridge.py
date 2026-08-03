@@ -146,7 +146,7 @@ async def test_tigrbl_webtransport_bidi_stream_runs_over_tigrcorn_contract_event
         "stream_initiator": "client",
         "framing": "text",
         "data": b"echo:hello",
-        "more": False,
+            "more": False,
     }
     outgoing = project_send_event(scope, sent[1])
     assert (outgoing.family, outgoing.exchange, outgoing.direction) == (

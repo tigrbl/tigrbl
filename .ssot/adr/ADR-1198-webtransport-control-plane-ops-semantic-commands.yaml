@@ -13,9 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
+    at: "2026-06-26T06:46:01Z"
     note: "Accepted with tigrbl_ops_webtransport implementation and focused tests in commit fcc7be67."
-    at: "2026-06-26T06:46:00Z"
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Clarified by adr:1202: control operations share one session-scoped bidirectional stream."
+    at: "2026-08-03T21:48:42Z"
 references: []
 body: |-
   ## Decision

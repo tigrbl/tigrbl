@@ -29,13 +29,9 @@ status_notes:
     note: "WebTransport inner framing contract updated to require lane legality validation before stream or datagram payload encode/decode dispatch."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated by adr:1182: WebTransport inner framing remains lane-local while bidirectional stream initiator metadata must be preserved separately from framing."
     at: "2026-06-17T10:11:10Z"
-  -
+    note: "Updated by adr:1182: WebTransport inner framing remains lane-local while bidirectional stream initiator metadata must be preserved separately from framing."
     status: "draft"
-    note: "Updated WebTransport inner framing to use lane-local FramingSpec declarations and op-selected lanes."
-    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -90,3 +86,4 @@ adr_ids:
   - "adr:1133"
   - "adr:1134"
   - "adr:1182"
+  - "adr:1202"

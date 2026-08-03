@@ -4,6 +4,8 @@ import json
 from collections.abc import Mapping
 from typing import Any
 
+from ..framing.webtransport_records import encode_jsonrpc_record
+
 
 def message_payload(message: Mapping[str, Any]) -> Any:
     payload = message.get("bytes")
@@ -73,15 +75,25 @@ def webtransport_payload_event(
             out["stream_initiator"] = "client"
         if base.get("framing") is not None:
             out["framing"] = base.get("framing")
+        request_id = base.get("jsonrpc_request_id")
+        persistent_control = request_id is not None or base.get("framing") == "jsonrpc"
         if isinstance(payload, (bytes, bytearray)):
             out["data"] = bytes(payload)
         elif isinstance(payload, str):
             out["data"] = payload.encode("utf-8")
+        elif persistent_control:
+            response = payload
+            if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+                response = payload
+            elif request_id is not None:
+                response = {"jsonrpc": "2.0", "id": request_id, "result": payload}
+            out["data"] = encode_jsonrpc_record(response)
+            out["framing"] = "jsonrpc"
         else:
             out["data"] = json.dumps(
                 payload, separators=(",", ":"), default=str
             ).encode("utf-8")
-        out["more"] = False
+        out["more"] = persistent_control
         return out
     if event_type == "webtransport.datagram.receive":
         out = {

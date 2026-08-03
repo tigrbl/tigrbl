@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1094"
 number: 1094
@@ -11,7 +11,11 @@ tags: []
 summary: "Response-level iteration is insufficient for event ordering, cancellation, backpressure, and executor parity across protocols."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Clarified by adr:1202: a WebTransport loop iteration completes one framed record, not the control stream."
+    at: "2026-08-03T21:48:27Z"
 references: []
 body: |-
   ## Decision

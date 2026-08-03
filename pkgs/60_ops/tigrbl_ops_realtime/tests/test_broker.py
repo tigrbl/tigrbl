@@ -75,8 +75,8 @@ def test_transport_sinks_own_transport_projection() -> None:
 
         assert websocket_messages[0]["type"] == "websocket.send"
         assert webtransport_messages[0]["type"] == "webtransport.stream.send"
-        assert str(webtransport_messages[0]["stream_id"]).startswith("realtime-events-")
-        assert webtransport_messages[0]["more"] is False
+        assert webtransport_messages[0]["stream_id"] == "realtime-events"
+        assert webtransport_messages[0]["more"] is True
         assert webtransport_messages[0]["emit_id"]
 
     asyncio.run(exercise())

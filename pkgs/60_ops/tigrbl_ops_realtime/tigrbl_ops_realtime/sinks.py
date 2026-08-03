@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
+from dataclasses import field
 import inspect
 import json
+import struct
 from typing import Any, Awaitable, Callable, Mapping, Protocol, runtime_checkable
 from uuid import uuid4
 
@@ -63,18 +66,18 @@ class WebTransportRealtimeSink:
     carrier: Any
     session_id: str
     stream_id: str = "realtime-events"
+    _send_lock: asyncio.Lock = field(default_factory=asyncio.Lock, init=False, repr=False)
+    _closed_streams: set[str] = field(default_factory=set, init=False, repr=False)
 
     async def send_realtime(self, envelope: RealtimeEnvelope) -> None:
         payload = json.dumps(
             envelope.jsonrpc(), separators=(",", ":"), default=str
         ).encode()
-        emit_id = uuid4().hex
         await self.send_bytes(
-            stream_id=f"{self.stream_id}-{emit_id}",
-            payload=payload,
+            stream_id=self.stream_id,
+            payload=struct.pack("!I", len(payload)) + payload,
             framing="jsonrpc",
-            more=False,
-            emit_id=emit_id,
+            more=True,
         )
 
     async def send_bytes(
@@ -86,31 +89,40 @@ class WebTransportRealtimeSink:
         more: bool = True,
         emit_id: str | None = None,
     ) -> None:
-        await _send(
-            _resolve_send(self.carrier),
-            {
-                "type": "webtransport.stream.send",
-                "session_id": self.session_id,
-                "stream_id": stream_id,
-                "stream_direction": "server_to_client",
-                "framing": framing,
-                "data": bytes(payload),
-                "more": more,
-                "emit_id": emit_id or uuid4().hex,
-            },
-        )
+        async with self._send_lock:
+            if stream_id in self._closed_streams:
+                raise RuntimeError(f"WebTransport stream {stream_id!r} is closed")
+            await _send(
+                _resolve_send(self.carrier),
+                {
+                    "type": "webtransport.stream.send",
+                    "session_id": self.session_id,
+                    "stream_id": stream_id,
+                    "stream_direction": "server_to_client",
+                    "framing": framing,
+                    "data": bytes(payload),
+                    "more": more,
+                    "emit_id": emit_id or uuid4().hex,
+                },
+            )
+            if not more:
+                self._closed_streams.add(stream_id)
 
     async def close_stream(self, stream_id: str) -> None:
-        await _send(
-            _resolve_send(self.carrier),
-            {
-                "type": "webtransport.stream.close",
-                "session_id": self.session_id,
-                "stream_id": stream_id,
-                "stream_direction": "server_to_client",
-                "emit_id": uuid4().hex,
-            },
-        )
+        async with self._send_lock:
+            if stream_id in self._closed_streams:
+                return
+            await _send(
+                _resolve_send(self.carrier),
+                {
+                    "type": "webtransport.stream.close",
+                    "session_id": self.session_id,
+                    "stream_id": stream_id,
+                    "stream_direction": "server_to_client",
+                    "emit_id": uuid4().hex,
+                },
+            )
+            self._closed_streams.add(stream_id)
 
 
 def realtime_sink_from_context(ctx: Any, carrier: Any) -> RealtimeSink:

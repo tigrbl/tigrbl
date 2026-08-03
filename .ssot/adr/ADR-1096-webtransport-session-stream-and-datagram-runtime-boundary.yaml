@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1096"
 number: 1096
@@ -26,12 +26,8 @@ status_notes:
     status: "draft"
   -
     status: "draft"
-    note: "Updated WebTransport boundary with explicit Tigrcorn session multiplexing proof requirement."
-    at: "2026-05-31T19:28:33Z"
-  -
-    status: "draft"
-    note: "Updated WebTransport boundary with op-to-lane binding and first control stream policy."
-    at: "2026-06-24T00:00:00Z"
+    note: "Clarified by adr:1202: KernelPlan owns the persistent control loop while runtime remains raw ASGI projection."
+    at: "2026-08-03T21:48:32Z"
 references: []
 body: |-
   ## Decision

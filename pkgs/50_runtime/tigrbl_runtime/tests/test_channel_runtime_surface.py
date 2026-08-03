@@ -230,6 +230,7 @@ def test_prepare_channel_context_traces_webtransport_receive_into_ctx() -> None:
                 "stream_direction": "bidi",
                 "framing": "text",
                 "data": b"hello",
+                "more": True,
             },
         ]
     )
@@ -277,8 +278,9 @@ def test_prepare_channel_context_traces_webtransport_receive_into_ctx() -> None:
             "stream_id": "4",
             "stream_direction": "bidi",
             "stream_initiator": "client",
-            "framing": "text",
-            "payload_bytes": 5,
+                "framing": "text",
+                "more": True,
+                "payload_bytes": 5,
         },
     ]
     assert ctx["webtransport_trace"] is trace

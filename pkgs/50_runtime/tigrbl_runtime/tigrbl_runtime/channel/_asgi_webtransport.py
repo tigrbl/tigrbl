@@ -15,6 +15,7 @@ from tigrbl_kernel.channel_taxonomy import (
     webtransport_event_metadata as _webtransport_event_metadata,
 )
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
+from tigrbl_kernel.webtransport_session_plan import WebTransportSessionPlan
 from tigrbl_atoms.runtime_channel import WebTransportSessionState
 from tigrbl_typing.channel import OpChannel
 
@@ -244,6 +245,20 @@ async def _receive_webtransport_session_messages(
     queue: deque[Mapping[str, Any]] = deque()
     session: WebTransportSessionState | None = None
 
+    session_plan = shared_state.get("session_plan")
+    if not isinstance(session_plan, WebTransportSessionPlan):
+        session_plan = WebTransportSessionPlan()
+        shared_state["session_plan"] = session_plan
+
+    async def _receive_record_or_event() -> Mapping[str, Any]:
+        if session_plan.has_pending():
+            return session_plan.pop_pending()
+        while True:
+            raw = _enrich_webtransport_message(env, await receive())
+            session_plan.project_receive(raw)
+            if session_plan.has_pending():
+                return session_plan.pop_pending()
+
     def _ensure_session(message: Mapping[str, Any]) -> WebTransportSessionState | None:
         nonlocal session
         session_id = message.get("session_id") or _webtransport_scope_session_id(env)
@@ -338,11 +353,11 @@ async def _receive_webtransport_session_messages(
             return
         ctx["channel_message"] = message
 
-    message = await receive()
+    message = await _receive_record_or_event()
     await _record_payload_message(message)
     if message.get("type") == "webtransport.connect":
         if "channel_message" not in ctx:
-            message = await receive()
+            message = await _receive_record_or_event()
             await _record_payload_message(message)
 
     drained_events = 0
@@ -352,7 +367,9 @@ async def _receive_webtransport_session_messages(
         and drained_events < MAX_EAGER_DRAIN_EVENTS
     ):
         try:
-            message = await asyncio.wait_for(receive(), timeout=0.001)
+            message = await asyncio.wait_for(
+                _receive_record_or_event(), timeout=0.001
+            )
         except TimeoutError:
             break
         await _record_payload_message(message)

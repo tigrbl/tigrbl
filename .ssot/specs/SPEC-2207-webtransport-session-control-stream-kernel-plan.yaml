@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2207"
+number: 2207
+slug: "webtransport-session-control-stream-kernel-plan"
+title: "WebTransport session control-stream KernelPlan contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A WebTransport control binding compiles a session-scoped loop that repeatedly reads uint32 big-endian length-prefixed JSON-RPC records, dispatches each operation through the canonical operation index, encodes the correlated response, and emits it with nonterminal continuation. Framing atoms own record boundaries, KernelPlan owns loop and dispatch composition, realtime sink atoms own asynchronous event lanes, and runtime owns only raw ASGI projection. Explicit control close or session disconnect terminates streams and cleans subscriptions and media sinks."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Implemented by framing atoms, session plan, realtime sinks, and lowering path."
+    at: "2026-08-03T22:24:55Z"
+references: []
+body: |-
+  A WebTransport control binding compiles a session-scoped loop that repeatedly reads uint32 big-endian length-prefixed JSON-RPC records, dispatches each operation through the canonical operation index, encodes the correlated response, and emits it with nonterminal continuation. Framing atoms own record boundaries, KernelPlan owns loop and dispatch composition, realtime sink atoms own asynchronous event lanes, and runtime owns only raw ASGI projection. Explicit control close or session disconnect terminates streams and cleans subscriptions and media sinks.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1202"

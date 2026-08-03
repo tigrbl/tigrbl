@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1202"
+number: 1202
+slug: "kernelplan-webtransport-control-loop"
+title: "KernelPlan owns the session-scoped WebTransport control loop"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A WebTransport control lane is one session-scoped, client-initiated, long-lived bidirectional stream. KernelPlan compiles the record-read, length-prefix decode, JSON-RPC decode, operation dispatch, JSON-RPC encode, length-prefix encode, and nonterminal stream-emit loop. Completing an operation completes one application record, not the carrier stream. Runtime adapters remain raw ASGI scope, receive, and send projection only. Explicit close or session cleanup terminates the control stream and associated subscription and media sinks."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted with kernel-owned record state and operation-loop semantics."
+    at: "2026-08-03T22:24:51Z"
+references: []
+body: |-
+  A WebTransport control lane is one session-scoped, client-initiated, long-lived bidirectional stream. KernelPlan compiles the record-read, length-prefix decode, JSON-RPC decode, operation dispatch, JSON-RPC encode, length-prefix encode, and nonterminal stream-emit loop. Completing an operation completes one application record, not the carrier stream. Runtime adapters remain raw ASGI scope, receive, and send projection only. Explicit close or session cleanup terminates the control stream and associated subscription and media sinks.

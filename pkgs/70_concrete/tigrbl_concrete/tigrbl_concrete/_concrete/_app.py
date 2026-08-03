@@ -422,19 +422,42 @@ class App(AppBase):
             wt_state = {}
             scope_state["tigrbl_webtransport"] = wt_state
 
-        while wt_state.get("closed") is not True:
-            env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
-            await self.invoke(env)
-            trace = wt_state.get("trace")
-            if isinstance(trace, list):
-                self._webtransport_trace_latest = list(trace)
-                snapshots = getattr(self, "_webtransport_trace_snapshots", None)
-                if not isinstance(snapshots, list):
-                    snapshots = []
-                    self._webtransport_trace_snapshots = snapshots
-                snapshots.append(list(trace))
-            if wt_state.get("closed") is True or wt_state.get("disconnected") is True:
-                break
+        try:
+            while wt_state.get("closed") is not True:
+                env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+                await self.invoke(env)
+                trace = wt_state.get("trace")
+                if isinstance(trace, list):
+                    self._webtransport_trace_latest = list(trace)
+                    snapshots = getattr(self, "_webtransport_trace_snapshots", None)
+                    if not isinstance(snapshots, list):
+                        snapshots = []
+                        self._webtransport_trace_snapshots = snapshots
+                    snapshots.append(list(trace))
+                if wt_state.get("closed") is True or wt_state.get("disconnected") is True:
+                    break
+        finally:
+            session_id = scope.get("session_id")
+            extensions = scope.get("extensions")
+            if session_id is None and isinstance(extensions, dict):
+                extension = extensions.get("webtransport")
+                if isinstance(extension, dict):
+                    session_id = extension.get("session_id")
+            callbacks = []
+            broker = getattr(self, "__realtime_broker__", None)
+            if session_id is not None and callable(
+                getattr(broker, "unsubscribe_session", None)
+            ):
+                callbacks.append(
+                    lambda: broker.unsubscribe_session(str(session_id))
+                )
+            hub = getattr(self, "__presentation_hub__", None)
+            if session_id is not None and callable(getattr(hub, "disconnect", None)):
+                callbacks.append(lambda: hub.disconnect(str(session_id)))
+            session_plan = wt_state.get("session_plan")
+            cleanup = getattr(session_plan, "cleanup", None)
+            if callable(cleanup):
+                await cleanup(*callbacks)
 
     async def _handle_lifespan(
         self, _scope: dict[str, Any], receive: Any, send: Any

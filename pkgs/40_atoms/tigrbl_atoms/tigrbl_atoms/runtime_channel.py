@@ -562,6 +562,8 @@ def _validate_stream_payload(
         "webtransport.stream.receive",
         "webtransport.stream.send",
     }:
+        if not isinstance(payload.get("more"), bool):
+            raise ValueError("WebTransport stream payload requires Boolean more")
         if not isinstance(direction, str) or direction not in _STREAM_DIRECTIONS:
             raise ValueError("WebTransport stream payload requires valid stream_direction")
     else:

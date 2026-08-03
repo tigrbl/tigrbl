@@ -175,6 +175,12 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
             )
     if payload is not None:
         base = {**message, "session_id": session_id}
+        temp = getattr(ctx, "temp", None)
+        dispatch = temp.get("dispatch") if isinstance(temp, Mapping) else None
+        if isinstance(dispatch, Mapping):
+            request = dispatch.get("rpc") or dispatch.get("rpc_envelope")
+            if isinstance(request, Mapping) and request.get("id") is not None:
+                base["jsonrpc_request_id"] = request.get("id")
         if structured_payload:
             for event in _webtransport_structured_payload_events(
                 session_id=session_id,
