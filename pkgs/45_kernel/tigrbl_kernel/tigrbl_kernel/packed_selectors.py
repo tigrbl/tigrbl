@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, MutableMapping
+from dataclasses import dataclass
+import json
+from typing import Any
 
 from .models import KernelPlan, PackedKernel
 from .packed_access import (
@@ -15,7 +18,9 @@ ExactRouteVerifyCache = MutableMapping[
     int, Mapping[int, Mapping[int, tuple[tuple[str, int], ...]]]
 ]
 ExactWebSocketCache = MutableMapping[int, Mapping[tuple[str, str], int]]
-ExactJsonRpcCache = MutableMapping[int, Mapping[str, Mapping[str, tuple[int, str, str]]]]
+ExactJsonRpcCache = MutableMapping[
+    int, Mapping[str, Mapping[str, tuple[int, str, str]]]
+]
 
 
 def resolve_hot_exact_route_slices(
@@ -32,9 +37,7 @@ def resolve_hot_exact_route_slices(
     if method_ids is None or path_hashes is None or program_ids is None:
         cache[packed_id] = {}
         return {}
-    if not (
-        int(method_ids.count) == int(path_hashes.count) == int(program_ids.count)
-    ):
+    if not (int(method_ids.count) == int(path_hashes.count) == int(program_ids.count)):
         cache[packed_id] = {}
         return {}
     directory: dict[int, tuple[int, int]] = {}
@@ -229,9 +232,146 @@ def resolve_hot_exact_jsonrpc_routes(
                     selector = str(entry.get("selector") or f"{endpoint}:{rpc_method}")
                     method_map[rpc_method] = (meta_index, str(proto), selector)
 
-    frozen = {endpoint: dict(method_map) for endpoint, method_map in exact_routes.items()}
+    frozen = {
+        endpoint: dict(method_map) for endpoint, method_map in exact_routes.items()
+    }
     cache[plan_id] = frozen
     return frozen
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportProgramSelection:
+    program_id: int = -1
+    path_params: Mapping[str, str] | None = None
+    lane: str | None = None
+    rpc_envelope: Mapping[str, Any] | None = None
+    disposition: str = "no_match"
+
+
+def _webtransport_route_rows(
+    plan: KernelPlan,
+    path: str,
+) -> tuple[tuple[Mapping[str, Any], Mapping[str, str]], ...]:
+    bucket = plan.proto_indices.get("webtransport")
+    if not isinstance(bucket, Mapping):
+        return ()
+
+    rows: list[tuple[Mapping[str, Any], Mapping[str, str]]] = []
+    exact_routes = bucket.get("routes")
+    if isinstance(exact_routes, Mapping):
+        exact = exact_routes.get(path)
+        if isinstance(exact, list):
+            rows.extend((row, {}) for row in exact if isinstance(row, Mapping))
+
+    templated = bucket.get("templated")
+    if isinstance(templated, list):
+        for row in templated:
+            if not isinstance(row, Mapping):
+                continue
+            pattern = row.get("pattern")
+            if pattern is None or not hasattr(pattern, "match"):
+                continue
+            matched = pattern.match(path)
+            if matched is not None:
+                rows.append((row, matched.groupdict()))
+    return tuple(rows)
+
+
+def _webtransport_rpc_envelope(message: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    payload = message.get("data")
+    if payload is None:
+        payload = message.get("bytes")
+    if isinstance(payload, (bytes, bytearray, memoryview)):
+        try:
+            payload = json.loads(bytes(payload).decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return None
+    elif isinstance(payload, str):
+        try:
+            payload = json.loads(payload)
+        except json.JSONDecodeError:
+            return None
+    return payload if isinstance(payload, Mapping) else None
+
+
+def resolve_webtransport_program(
+    plan: KernelPlan,
+    *,
+    path: str,
+    message: Mapping[str, Any],
+) -> WebTransportProgramSelection:
+    event_type = str(message.get("type") or "")
+    rows = _webtransport_route_rows(plan, path)
+    if event_type in {
+        "webtransport.connect",
+        "webtransport.disconnect",
+        "transport.emit.complete",
+        "transport.emit.failed",
+    }:
+        return WebTransportProgramSelection(disposition="lifecycle")
+
+    lane: str | None = None
+    rpc_envelope: Mapping[str, Any] | None = None
+    rpc_method: str | None = None
+    if event_type == "webtransport.stream.receive":
+        direction = str(message.get("stream_direction") or "bidi")
+        lane = (
+            "unidi_client_stream" if direction == "client_to_server" else "bidi_stream"
+        )
+        if lane == "bidi_stream":
+            rpc_envelope = _webtransport_rpc_envelope(message)
+            method = rpc_envelope.get("method") if rpc_envelope is not None else None
+            rpc_method = method if isinstance(method, str) and method else None
+    elif event_type == "webtransport.datagram.receive":
+        lane = "datagram"
+    else:
+        return WebTransportProgramSelection(disposition="unsupported_event")
+
+    candidates = [
+        (row, params)
+        for row, params in rows
+        if str(row.get("lane") or row.get("profile") or "") == lane
+    ]
+    if lane == "bidi_stream":
+        if rpc_method is None:
+            return WebTransportProgramSelection(
+                lane=lane,
+                rpc_envelope=rpc_envelope,
+                disposition="invalid_jsonrpc",
+            )
+        candidates = [
+            (row, params)
+            for row, params in candidates
+            if row.get("rpc_method") == rpc_method
+        ]
+        if not candidates:
+            return WebTransportProgramSelection(
+                lane=lane,
+                rpc_envelope=rpc_envelope,
+                disposition="method_not_found",
+            )
+
+    if len(candidates) != 1:
+        return WebTransportProgramSelection(
+            lane=lane,
+            rpc_envelope=rpc_envelope,
+            disposition="ambiguous" if candidates else "no_match",
+        )
+    row, path_params = candidates[0]
+    program_id = row.get("meta_index")
+    if not isinstance(program_id, int):
+        return WebTransportProgramSelection(
+            lane=lane,
+            rpc_envelope=rpc_envelope,
+            disposition="invalid_plan",
+        )
+    return WebTransportProgramSelection(
+        program_id=program_id,
+        path_params=dict(path_params),
+        lane=lane,
+        rpc_envelope=rpc_envelope,
+        disposition="dispatch",
+    )
 
 
 def normalize_jsonrpc_mount_path(path: str) -> str:

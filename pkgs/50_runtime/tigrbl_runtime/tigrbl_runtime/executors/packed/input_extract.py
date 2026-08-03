@@ -185,7 +185,7 @@ class _PackedInputExtractMixin:
         body_payload = hot.parsed_json
         if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, dict):
             body_payload = body_payload.get("params", {})
-        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC:
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and plan.field_names:
             self._reject_jsonrpc_wrapper_keys(
                 body_payload,
                 field_names=plan.field_names,

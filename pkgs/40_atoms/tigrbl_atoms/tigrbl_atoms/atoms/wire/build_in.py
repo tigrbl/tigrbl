@@ -70,7 +70,8 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     if payload is not getattr(ctx, "payload", None):
         setattr(ctx, "payload", payload)
 
-    _reject_disallowed_wrapper_keys(payload, schema_in=schema_in or {})
+    if schema_in:
+        _reject_disallowed_wrapper_keys(payload, schema_in=schema_in)
     if not schema_in:
         logger.debug("No schema_in available; skipping wire:build_in")
         return  # nothing to do
@@ -375,6 +376,8 @@ def _reject_disallowed_wrapper_keys(
 ) -> None:
     by_field = schema_in.get("by_field", {})
     field_names = set(by_field.keys()) if isinstance(by_field, Mapping) else set()
+    if not field_names:
+        return
     allowed_wrapper_keys = field_names & _WRAPPER_KEYS
 
     def _check_mapping(item: Mapping[str, Any]) -> None:

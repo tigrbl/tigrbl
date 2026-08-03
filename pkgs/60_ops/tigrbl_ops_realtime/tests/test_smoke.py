@@ -3,7 +3,12 @@ import json
 
 import pytest
 
-from tigrbl_ops_realtime import InMemoryRealtimeBroker, publish, subscribe, unsubscribe_session
+from tigrbl_ops_realtime import (
+    InMemoryRealtimeBroker,
+    publish,
+    subscribe,
+    unsubscribe_session,
+)
 
 
 def test_package_namespace_available() -> None:

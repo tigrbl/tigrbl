@@ -95,6 +95,7 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
         metadata["lane"] = lane
         metadata["inner_framing"] = framing_kind(inner_framing)
         metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
+        metadata["rpc_method"] = getattr(binding, "rpc_method", None)
         if inner_framing is not None:
             metadata["inner_framing_kind"] = str(inner_framing)
             metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
@@ -206,8 +207,6 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
     from tigrbl_core._spec.binding_spec import (
         HttpJsonRpcBindingSpec,
         HttpRestBindingSpec,
-        HttpJsonRpcProtocolBindingSpec,
-        HttpRestProtocolBindingSpec,
         HttpStreamBindingSpec,
         SseBindingSpec,
         WebSocketProtocolBindingSpec,
@@ -281,7 +280,9 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                                     meta_index
                                 )
 
-                elif isinstance(binding, (HttpJsonRpcBindingSpec, HttpJsonRpcProtocolBindingSpec)):
+                elif isinstance(
+                    binding, (HttpJsonRpcBindingSpec, HttpJsonRpcProtocolBindingSpec)
+                ):
                     rpc_path = str(
                         getattr(
                             binding,
@@ -302,8 +303,12 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                     proto_bucket = route_data.setdefault(
                         binding.proto, {"paths": {}, "endpoints": {}}
                     )
-                    path_bucket = proto_bucket.setdefault("paths", {}).setdefault(rpc_path, {})
-                    endpoint_bucket = proto_bucket.setdefault("endpoints", {}).setdefault(rpc_path, {})
+                    path_bucket = proto_bucket.setdefault("paths", {}).setdefault(
+                        rpc_path, {}
+                    )
+                    endpoint_bucket = proto_bucket.setdefault(
+                        "endpoints", {}
+                    ).setdefault(rpc_path, {})
                     proto_bucket[rpc_method] = meta_index
                     row = {
                         "meta_index": meta_index,
@@ -327,7 +332,9 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                         binding.proto, {"exact": {}, "templated": []}
                     )
                     if (
-                        isinstance(binding, (WsBindingSpec, WebSocketProtocolBindingSpec))
+                        isinstance(
+                            binding, (WsBindingSpec, WebSocketProtocolBindingSpec)
+                        )
                         and framing_kind(getattr(binding, "framing", None)) == "jsonrpc"
                         and target != "custom"
                     ):
@@ -351,13 +358,25 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                             }
                         )
                     else:
-                        bucket["exact"][selector] = meta_index
-                        bucket.setdefault("exact_metadata", {})[selector] = {
+                        route_row = {
                             "path": binding.path,
                             "meta_index": meta_index,
                             "selector": selector,
                             **route_metadata,
                         }
+                        if binding.proto == "webtransport":
+                            bucket["exact"].setdefault(selector, meta_index)
+                            bucket.setdefault("routes", {}).setdefault(
+                                selector, []
+                            ).append(route_row)
+                            bucket.setdefault("exact_metadata", {}).setdefault(
+                                selector, route_row
+                            )
+                        else:
+                            bucket["exact"][selector] = meta_index
+                            bucket.setdefault("exact_metadata", {})[selector] = (
+                                route_row
+                            )
 
     semantic = KernelPlan(
         proto_indices=route_data,

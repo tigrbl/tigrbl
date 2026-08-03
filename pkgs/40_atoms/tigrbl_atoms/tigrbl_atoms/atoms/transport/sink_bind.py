@@ -18,6 +18,34 @@ def _run(obj: object | None, ctx: Any) -> None:
     transport["sink_family"] = getattr(ctx, "transport_sink_family", None)
     transport["correlation_id"] = getattr(ctx, "correlation_id", None)
 
+    raw = getattr(ctx, "raw", None)
+    scope = getattr(raw, "scope", None) if raw is not None else None
+    send = getattr(raw, "send", None) if raw is not None else None
+    if not isinstance(scope, dict) or not callable(send):
+        return
+    scope_type = str(scope.get("type") or "")
+    if scope_type not in {"websocket", "webtransport"}:
+        return
+    session_id = None
+    message = getattr(ctx, "channel_message", None)
+    if isinstance(message, dict):
+        session_id = message.get("session_id")
+    if session_id is None:
+        extensions = scope.get("extensions")
+        if isinstance(extensions, dict):
+            extension = extensions.get(scope_type)
+            if isinstance(extension, dict):
+                session_id = extension.get("session_id")
+    realtime = _ensure_temp(ctx).setdefault("realtime", {})
+    realtime["sink"] = send
+    realtime["transport"] = scope_type
+    if session_id is not None:
+        realtime["session_id"] = str(session_id)
+    owner = scope.get("app")
+    broker = getattr(owner, "__realtime_broker__", None)
+    if broker is not None:
+        realtime["broker"] = broker
+
 
 hot_run = _run
 

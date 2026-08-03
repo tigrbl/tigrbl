@@ -10,7 +10,6 @@ from tigrbl_core._spec.binding_spec import (
     HttpStreamBindingSpec,
     JsonFramingSpec,
     JsonRpcFramingSpec,
-    BytesFramingSpec,
     NdjsonFramingSpec,
     SseBindingSpec,
     SseFramingSpec,
@@ -147,4 +146,25 @@ def test_http_stream_binding_rejects_native_bidirectional_exchange() -> None:
             proto="http.stream",
             path="/duplex",
             exchange="bidirectional_stream",
+        )
+
+
+def test_webtransport_jsonrpc_lane_accepts_explicit_rpc_method() -> None:
+    binding = WebTransportBindingSpec(
+        path="/r/{room_id}",
+        profile="bidi_stream",
+        inner_framing=JsonRpcFramingSpec(),
+        rpc_method="Presentation.join",
+    )
+
+    assert binding.rpc_method == "Presentation.join"
+
+
+def test_webtransport_rpc_method_requires_jsonrpc_bidi_lane() -> None:
+    with pytest.raises(ValueError, match="bidi_stream"):
+        WebTransportBindingSpec(
+            path="/r/{room_id}",
+            profile="datagram",
+            inner_framing=JsonFramingSpec(),
+            rpc_method="Presentation.join",
         )

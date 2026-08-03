@@ -213,6 +213,8 @@ def _is_batch_domain_run(run: Any) -> bool:
     except ValueError:
         return False
     domain = parts[index + 1] if index + 1 < len(parts) else None
+    if domain == "transport" and parts[-1] == "sink_bind":
+        return False
     return domain in {"transport", "intent", "batch", "fanout"}
 
 

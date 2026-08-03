@@ -30,6 +30,105 @@ class _PackedRouteSelectMixin:
             self._hot_exact_websocket_route_cache,
         )
 
+    def _prime_webtransport_program(
+        self,
+        ctx: _Ctx,
+        env: Any,
+        plan: KernelPlan,
+        packed: PackedKernel,
+    ) -> int:
+        del packed
+        hot = self._ensure_hot_ctx(ctx, env)
+        if hot.scope_type != "webtransport" or not hot.path:
+            return -1
+        message = ctx.get("channel_message")
+        if not isinstance(message, Mapping):
+            return -1
+
+        selection = _kernel_resolve_webtransport_program(
+            plan,
+            path=hot.path,
+            message=message,
+        )
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            return -1
+        temp["webtransport_selection"] = selection
+        if selection.path_params is not None:
+            path_params = dict(selection.path_params)
+            hot.path_params = path_params
+            hot.route_path_params = path_params
+            temp.setdefault("route", {})["path_params"] = path_params
+            temp.setdefault("dispatch", {})["path_params"] = path_params
+            channel = ctx.get("channel")
+            if channel is not None:
+                channel.path_params = path_params
+
+        if selection.program_id < 0:
+            return -1
+
+        protocol = (
+            "webtransport.jsonrpc"
+            if selection.rpc_envelope is not None
+            else "webtransport"
+        )
+        selector = hot.path
+        if selection.rpc_envelope is not None:
+            rpc_method = selection.rpc_envelope.get("method")
+            selector = f"{hot.path}:{rpc_method}"
+            params = selection.rpc_envelope.get("params")
+            hot.parsed_json = dict(selection.rpc_envelope)
+            hot.parsed_json_loaded = True
+            hot.route_rpc_envelope = dict(selection.rpc_envelope)
+            hot.dispatch_rpc_envelope = dict(selection.rpc_envelope)
+            hot.dispatch_jsonrpc_request_id = selection.rpc_envelope.get("id")
+            hot.dispatch_rpc_method = (
+                rpc_method if isinstance(rpc_method, str) else None
+            )
+            hot.route_payload = dict(params) if isinstance(params, Mapping) else {}
+            route = temp.setdefault("route", {})
+            dispatch = temp.setdefault("dispatch", {})
+            route["rpc_envelope"] = dict(selection.rpc_envelope)
+            route["payload"] = hot.route_payload
+            dispatch["rpc"] = dict(selection.rpc_envelope)
+            dispatch["rpc_method"] = rpc_method
+            dispatch["parsed_payload"] = hot.route_payload
+
+        program_id = int(selection.program_id)
+        hot.program_id = program_id
+        hot.route_program_id = program_id
+        hot.route_opmeta_index = program_id
+        hot.route_protocol = protocol
+        hot.route_selector = selector
+        hot.dispatch_binding_protocol = protocol
+        hot.dispatch_binding_selector = selector
+        hot.dispatch_channel_protocol = "webtransport"
+        hot.dispatch_channel_selector = hot.path
+        hot.transport_kind_id = (
+            _TRANSPORT_KIND_JSONRPC
+            if selection.rpc_envelope is not None
+            else _TRANSPORT_KIND_CHANNEL
+        )
+        temp["program_id"] = program_id
+        temp.setdefault("route", {}).update(
+            {
+                "program_id": program_id,
+                "opmeta_index": program_id,
+                "protocol": protocol,
+                "selector": selector,
+            }
+        )
+        temp.setdefault("dispatch", {}).update(
+            {
+                "binding_protocol": protocol,
+                "binding_selector": selector,
+                "channel_protocol": "webtransport",
+                "channel_selector": hot.path,
+            }
+        )
+        ctx.path = hot.path
+        return program_id
+
     def _prime_exact_channel_program(
         self,
         ctx: _Ctx,
@@ -140,7 +239,9 @@ class _PackedRouteSelectMixin:
                 owner = ctx.get(owner_key)
             mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
             if isinstance(mounts, Mapping):
-                endpoint = mounts.get(path) or mounts.get(hot.path) or mounts.get(f"{path}/")
+                endpoint = (
+                    mounts.get(path) or mounts.get(hot.path) or mounts.get(f"{path}/")
+                )
                 if isinstance(endpoint, str) and endpoint:
                     return endpoint
         for endpoint, mapped_path in __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__.items():

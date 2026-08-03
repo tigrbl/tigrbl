@@ -29,7 +29,11 @@ class _PackedExecuteMixin:
         ):
             request = self._ensure_hot_request(ctx, hot)
             body_bytes = await self._ensure_body_bytes(ctx, hot)
-            if request is not None and body_bytes is not None and hasattr(request, "body"):
+            if (
+                request is not None
+                and body_bytes is not None
+                and hasattr(request, "body")
+            ):
                 request.body = body_bytes
             if not hot.parsed_json_loaded:
                 parsed = None
@@ -40,7 +44,10 @@ class _PackedExecuteMixin:
                         parsed = None
                 hot.parsed_json = parsed
                 hot.parsed_json_loaded = True
-            if isinstance(hot.parsed_json, Mapping) and hot.parsed_json.get("jsonrpc") == "2.0":
+            if (
+                isinstance(hot.parsed_json, Mapping)
+                and hot.parsed_json.get("jsonrpc") == "2.0"
+            ):
                 params = hot.parsed_json.get("params", {})
                 if isinstance(params, Mapping) and set(params) == {"params"}:
                     egress = temp.setdefault("egress", {})
@@ -62,19 +69,43 @@ class _PackedExecuteMixin:
                 )
                 return
 
-        program_id = self._require_program_id_from_ctx(ctx)
-        if program_id < 0:
+        if hot.scope_type == "webtransport":
+            program_id = self._prime_webtransport_program(ctx, env, plan, packed)
+        else:
+            program_id = self._require_program_id_from_ctx(ctx)
+        if program_id < 0 and hot.scope_type != "webtransport":
             program_id = self._prime_exact_route_program(ctx, env, packed)
-        if program_id < 0:
-            program_id = await self._prime_exact_jsonrpc_program(
-                ctx, env, plan, packed
-            )
-        if program_id < 0:
+        if program_id < 0 and hot.scope_type != "webtransport":
+            program_id = await self._prime_exact_jsonrpc_program(ctx, env, plan, packed)
+        if program_id < 0 and hot.scope_type != "webtransport":
             program_id = self._prime_exact_channel_program(ctx, env, plan, packed)
         if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
+            wt_selection = temp.get("webtransport_selection")
+            disposition = getattr(wt_selection, "disposition", None)
+            rpc_envelope = getattr(wt_selection, "rpc_envelope", None)
+            if disposition == "lifecycle":
+                await _send_transport_response(env, ctx)
+                return
+            if disposition in {"method_not_found", "invalid_jsonrpc"}:
+                ctx.result = {
+                    "jsonrpc": "2.0",
+                    "error": {
+                        "code": -32601 if disposition == "method_not_found" else -32600,
+                        "message": (
+                            "Method not found"
+                            if disposition == "method_not_found"
+                            else "Invalid Request"
+                        ),
+                    },
+                    "id": rpc_envelope.get("id")
+                    if isinstance(rpc_envelope, Mapping)
+                    else None,
+                }
+                await _send_transport_response(env, ctx)
+                return
             transport = hot.egress_transport_response
             if isinstance(transport, dict):
                 await _send_transport_response(env, ctx)
@@ -176,7 +207,7 @@ class _PackedExecuteMixin:
                 error_phase_segments = self._resolve_error_segments(
                     packed,
                     program_id,
-            )
+                )
 
             try:
                 await self._run_hot_jsonrpc_security_dependencies(
@@ -190,10 +221,11 @@ class _PackedExecuteMixin:
                     opview = getattr(ctx, "opview", None)
                     schema_in = getattr(opview, "schema_in", None)
                     field_names = tuple(getattr(schema_in, "fields", ()) or ())
-                    self._reject_jsonrpc_wrapper_keys(
-                        hot.parsed_json.get("params", {}),
-                        field_names=field_names,
-                    )
+                    if field_names:
+                        self._reject_jsonrpc_wrapper_keys(
+                            hot.parsed_json.get("params", {}),
+                            field_names=field_names,
+                        )
                 await self._resolve_program_runner(
                     packed,
                     program_id,
@@ -256,7 +288,11 @@ class _PackedExecuteMixin:
                         status_code = 500
                         detail = "Internal error"
                     else:
-                        detail = "Conflict" if status_code == 409 else "Persistence constraint failed"
+                        detail = (
+                            "Conflict"
+                            if status_code == 409
+                            else "Persistence constraint failed"
+                        )
                 payload = self._jsonrpc_error_payload(
                     ctx,
                     status_code,

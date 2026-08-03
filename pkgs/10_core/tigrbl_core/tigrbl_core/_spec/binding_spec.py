@@ -775,6 +775,7 @@ class WebTransportBindingSpec(SerdeMixin):
     exchange: Exchange = "bidirectional_stream"
     framing: None = None
     inner_framing: FramingSpec | None = None
+    rpc_method: str | None = None
 
     def __post_init__(self) -> None:
         if self.framing is not None:
@@ -801,10 +802,20 @@ class WebTransportBindingSpec(SerdeMixin):
             lane=lane,
             inner_framing=self.inner_framing,
         )
+        rpc_method = self.rpc_method
+        if rpc_method is not None:
+            rpc_method = str(rpc_method).strip()
+            if not rpc_method:
+                raise ValueError("WebTransport rpc_method must not be empty")
+            if lane != "bidi_stream" or framing_kind(inner_framing) != "jsonrpc":
+                raise ValueError(
+                    "WebTransport rpc_method requires a bidi_stream lane with JSON-RPC framing"
+                )
         object.__setattr__(self, "framing", None)
         object.__setattr__(self, "lane", lane)
         object.__setattr__(self, "exchange", exchange)
         object.__setattr__(self, "inner_framing", inner_framing)
+        object.__setattr__(self, "rpc_method", rpc_method)
 
 
 @dataclass(frozen=True, slots=True)

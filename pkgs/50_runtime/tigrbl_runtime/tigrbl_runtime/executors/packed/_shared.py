@@ -91,6 +91,7 @@ from tigrbl_kernel.packed_selectors import (
     resolve_hot_exact_websocket_routes as _kernel_resolve_hot_exact_websocket_routes,
     resolve_program_id_from_exact_route as _kernel_resolve_program_id_from_exact_route,
     resolve_program_id_from_exact_websocket as _kernel_resolve_program_id_from_exact_websocket,
+    resolve_webtransport_program as _kernel_resolve_webtransport_program,
 )
 from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase

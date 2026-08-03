@@ -57,6 +57,7 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
     websocket_jsonrpc_tables: OrderedDict[
         tuple[str, str], tuple[Any, Any, str]
     ] = OrderedDict()
+    webtransport_tables: OrderedDict[tuple[str, str], tuple[Any, Any]] = OrderedDict()
 
     for path_spec in tuple(getattr(router_spec, "paths", ()) or ()):
         if path_spec.kind == "resource":
@@ -92,6 +93,18 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
                 websocket_jsonrpc_tables.setdefault(
                     key, (model, table_spec, protocol)
                 )
+                install_scope_engine_names(
+                    router=router,
+                    model=model,
+                    table_spec=table_spec,
+                    op_specs=tuple(getattr(table_spec, "ops", ()) or ()),
+                )
+        elif path_spec.kind == "webtransport":
+            for table_spec in tuple(path_spec.tables or ()):
+                model = _resolve_table_model(table_spec)
+                _apply_table_spec_to_model(model, table_spec)
+                key = (path_spec.path, _model_identity(model, table_spec))
+                webtransport_tables.setdefault(key, (model, table_spec))
                 install_scope_engine_names(
                     router=router,
                     model=model,
@@ -144,6 +157,22 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
             if dispatcher_path not in mounted_dispatchers:
                 router.mount_jsonrpc(prefix=dispatcher_path)
                 mounted_dispatchers.add(dispatcher_path)
+
+    if webtransport_tables:
+        for (_, _), payload in webtransport_tables.items():
+            model, table_spec = payload
+            _, materialized_router = router.include_table(model, mount_router=False)
+            install_scope_engine_names(
+                router=router,
+                model=model,
+                table_spec=table_spec,
+                op_specs=tuple(getattr(table_spec, "ops", ()) or ()),
+            )
+            engine_name = getattr(table_spec, "engine_name", None) or getattr(
+                router, "engine_name", None
+            )
+            if materialized_router is not None and engine_name is not None:
+                _resolver.register_router_engine_name(materialized_router, engine_name)
 
     if websocket_jsonrpc_tables:
         from tigrbl_concrete.system.docs.runtime_ops import (
