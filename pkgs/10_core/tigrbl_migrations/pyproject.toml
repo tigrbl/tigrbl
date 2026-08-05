@@ -1,0 +1,25 @@
+[project]
+name = "tigrbl-migrations"
+version = "0.4.5.dev4"
+description = "Component manifests, migration DAGs, schema ownership, ledgers, and deployment locks for Tigrbl."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+license = { text = "Apache-2.0" }
+dependencies = [
+    "packaging>=24",
+    "tomli>=2.0; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "hypothesis>=6"]
+
+[tool.tigrbl.manifest]
+version = "1.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{ include = "tigrbl_migrations" }]
+include = ["tigrbl_migrations/manifest_protocol.toml"]
