@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime as dt
 from functools import lru_cache
 from typing import Any, Dict, Mapping, Tuple
 
@@ -61,11 +60,11 @@ def _filter_plan_cache_token(model: type, verb: str) -> tuple[int, int, int, int
 @lru_cache(maxsize=512)
 def _filter_plan_cached(
     model: type, verb: str, cache_token: tuple[int, int, int, int, int]
-) -> tuple[Mapping[str, bool], frozenset[str], Mapping[str, Any]]:
+) -> tuple[Mapping[str, bool], frozenset[str]]:
     del cache_token
     specs = _colspecs(model)
     if not specs:
-        return {}, frozenset(), _table_python_types(model)
+        return {}, frozenset()
 
     allowed_by_field: dict[str, bool] = {}
     for name, sp in specs.items():
@@ -80,28 +79,7 @@ def _filter_plan_cached(
         )
         allowed_by_field[name] = allowed
 
-    return (
-        allowed_by_field,
-        _excluded_schema_fields(model, verb),
-        _table_python_types(model),
-    )
-
-
-@lru_cache(maxsize=256)
-def _table_python_types(model: type) -> Mapping[str, Any]:
-    table = getattr(model, "__table__", None)
-    columns = getattr(table, "columns", None)
-    if columns is None:
-        return {}
-    resolved: dict[str, Any] = {}
-    for col in columns:
-        try:
-            py_t = getattr(getattr(col, "type", None), "python_type", None)
-        except Exception:
-            py_t = None
-        if py_t is not None:
-            resolved[getattr(col, "name", "")] = py_t
-    return resolved
+    return allowed_by_field, _excluded_schema_fields(model, verb)
 
 
 def _pk_columns(model: type) -> Tuple[Any, ...]:
@@ -124,23 +102,6 @@ def _single_pk_name(model: type) -> str:
     return name
 
 
-def _coerce_pk_value(model: type, value: Any) -> Any:
-    if value is None:
-        return None
-    try:
-        col = _pk_columns(model)[0]
-        py_type = col.type.python_type  # type: ignore[attr-defined]
-    except Exception:  # pragma: no cover - best effort
-        return value
-    if isinstance(value, py_type):
-        return value
-    try:
-        coerced = py_type(value)
-        return coerced
-    except Exception:  # pragma: no cover - fallback to original
-        return value
-
-
 def _model_columns(model: type) -> Tuple[str, ...]:
     table = getattr(model, "__table__", None)
     if table is None:
@@ -156,7 +117,7 @@ def _colspecs(model: type) -> Mapping[str, Any]:
 def _filter_in_values(
     model: type, data: Mapping[str, Any], verb: str
 ) -> Dict[str, Any]:
-    allowed_by_field, excluded_fields, column_types = _filter_plan_cached(
+    allowed_by_field, excluded_fields = _filter_plan_cached(
         model, verb, _filter_plan_cache_token(model, verb)
     )
     if not allowed_by_field and not excluded_fields:
@@ -171,19 +132,7 @@ def _filter_in_values(
             out[k] = v
             continue
         if allowed:
-            try:
-                py_t = column_types.get(k)
-                if py_t is not None and v is not None and not isinstance(v, py_t):
-                    if py_t in (dt.datetime, dt.date) and isinstance(v, str):
-                        parsed = py_t.fromisoformat(v)
-                        out[k] = parsed
-                    else:
-                        out[k] = py_t(v)
-                else:
-                    out[k] = v
-            except Exception:
-                # Best effort coercion only; preserve original value on failure.
-                out[k] = v
+            out[k] = v
     return out
 
 

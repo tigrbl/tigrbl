@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 import tigrbl_ops_oltp as _core
-from tigrbl_ops_oltp.crud.helpers.model import _coerce_pk_value
 
 from ... import events as _ev
 from ...stages import Operated, Resolved
@@ -28,7 +27,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     if isinstance(raw_ids, list):
         for ident in raw_ids:
             try:
-                ids.append(_coerce_pk_value(model, ident))
+                ids.append(ident)
             except Exception:
                 continue
     setattr(ctx, "result", await _core.bulk_delete(model, ids, db=_ctx.db(ctx)))

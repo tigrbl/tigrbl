@@ -166,7 +166,7 @@ def test_immutable_columns():
     assert helpers._immutable_columns(Widget, "create") == set()
 
 
-def test_coerce_filters_keeps_valid_ops():
+def test_authorize_filters_keeps_valid_ops():
     raw = {
         "name__like": "a%",
         "value__gt": 1,
@@ -174,7 +174,7 @@ def test_coerce_filters_keeps_valid_ops():
         "value__>=": 3,
         "unknown": 4,
     }
-    coerced = helpers._coerce_filters(Widget, raw)
+    coerced = helpers._authorize_filters(Widget, raw)
     assert coerced == {"name__like": "a%", "value__gt": 1, "value__gte": 3}
 
 
@@ -337,4 +337,3 @@ async def test_clear_bulk_and_delete(session):
     assert res == {"deleted": 2}
     remaining = await crud.list(Widget, db=session)
     assert [r.name for r in remaining] == ["b"]
-

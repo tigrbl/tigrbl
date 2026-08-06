@@ -21,8 +21,7 @@ from .helpers import (
     sa_delete,
     _apply_filters,
     _apply_sort,
-    _coerce_filters,
-    _coerce_pk_value,
+    _authorize_filters,
     _filter_in_values,
     _immutable_columns,
     _maybe_delete,
@@ -233,7 +232,6 @@ async def merge(
     logger.debug("merge called with model=%s ident=%s data=%s", model, ident, data)
     _ensure_model_mapped(model)
     pk = _single_pk_name(model)
-    ident = _coerce_pk_value(model, ident)
     obj = await _maybe_get(db, model, ident)
 
     verb = "update" if obj is not None else "create"
@@ -282,7 +280,7 @@ async def list(*_args: Any, **_kwargs: Any) -> List[Any]:  # noqa: A001  (shadow
     model, params = _normalize_list_call(_args, _kwargs)
     _ensure_model_mapped(model)
 
-    filters: Mapping[str, Any] = _coerce_filters(model, params["filters"])
+    filters: Mapping[str, Any] = _authorize_filters(model, params["filters"])
     skip: Optional[int] = params["skip"]
     limit: Optional[int] = params["limit"]
     db: Union[Session, AsyncSession] = params["db"]
@@ -345,7 +343,7 @@ async def clear(
         await _maybe_flush(db)
         return {"deleted": n}
 
-    filt = _coerce_filters(model, raw_filters)
+    filt = _authorize_filters(model, raw_filters)
     where = _apply_filters(model, filt)
     stmt = sa_delete(model)
     if where is not None:
@@ -363,7 +361,7 @@ async def count(*args: Any, **kwargs: Any) -> Dict[str, int]:
     model, params = _normalize_list_call(args, kwargs)
     _ensure_model_mapped(model)
 
-    filters: Mapping[str, Any] = _coerce_filters(model, params["filters"])
+    filters: Mapping[str, Any] = _authorize_filters(model, params["filters"])
     db: Union[Session, AsyncSession] = params["db"]
     stmt = select(func.count()).select_from(model)
     where = _apply_filters(model, filters)
@@ -374,7 +372,9 @@ async def count(*args: Any, **kwargs: Any) -> Dict[str, int]:
     return {"count": int(value or 0)}
 
 
-async def exists(model: type, ident: Any, db: Union[Session, AsyncSession]) -> Dict[str, bool]:
+async def exists(
+    model: type, ident: Any, db: Union[Session, AsyncSession]
+) -> Dict[str, bool]:
     """Check whether a row exists by primary key."""
     _ensure_model_mapped(model)
     obj = await _maybe_get(db, model, ident)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from typing import Any, Sequence, Type
 
 from tigrbl_concrete._concrete._table import Table
@@ -53,9 +54,55 @@ def deriveTable(model: Type[Table], **kw: Any) -> Type[Table]:
     return type(name, (Spec, model), {})
 
 
-def deriveTableSpec(model: Type[Table]) -> TableSpec:
-    """Collect a concrete table class into a TableSpec instance."""
-    return TableSpec.collect(model)
+def _merge_ops(existing: Sequence[Any], incoming: Sequence[Any]) -> tuple[Any, ...]:
+    if not incoming:
+        return tuple(existing)
+    merged: dict[tuple[Any, Any], Any] = {}
+    for operation in (*tuple(existing), *tuple(incoming)):
+        alias = getattr(operation, "alias", None)
+        target = getattr(operation, "target", None)
+        key = (
+            (alias, target)
+            if alias is not None and target is not None
+            else ("legacy", operation)
+        )
+        merged[key] = operation
+    return tuple(merged.values())
 
 
-__all__ = ["defineTableSpec", "deriveTable", "deriveTableSpec"]
+def deriveTableSpec(
+    model: Type[Table],
+    *,
+    ops: Sequence[Any] = (),
+    columns: Sequence[Any] = (),
+    schemas: Sequence[Any] = (),
+    hooks: Sequence[Any] = (),
+    security_deps: Sequence[Any] = (),
+    deps: Sequence[Any] = (),
+) -> TableSpec:
+    """Derive a new specification without mutating the source table."""
+
+    collected = TableSpec.collect(model)
+    return replace(
+        collected,
+        ops=_merge_ops(tuple(collected.ops), tuple(ops)),
+        columns=(*tuple(collected.columns), *tuple(columns)),
+        schemas=(*tuple(collected.schemas), *tuple(schemas)),
+        hooks=(*tuple(collected.hooks), *tuple(hooks)),
+        security_deps=(*tuple(collected.security_deps), *tuple(security_deps)),
+        deps=(*tuple(collected.deps), *tuple(deps)),
+    )
+
+
+def provideTableSpec(source: Type[Table] | TableSpec) -> TableSpec:
+    """Normalize a concrete table or collected specification for consumers."""
+
+    spec = source if isinstance(source, TableSpec) else deriveTableSpec(source)
+    if not isinstance(spec, TableSpec):
+        raise TypeError("table specification source must be a Table or TableSpec")
+    if not isinstance(spec.model, type):
+        raise TypeError("table specification requires a concrete model class")
+    return spec
+
+
+__all__ = ["defineTableSpec", "deriveTable", "deriveTableSpec", "provideTableSpec"]

@@ -8,7 +8,7 @@ from typing import Any, Dict, Mapping, Optional, Union
 
 from .common import RouterLike, _ensure_router_ns
 from ..._concrete import engine_resolver as _resolver
-from tigrbl_ops_oltp.crud.helpers.model import _coerce_pk_value, _single_pk_name
+from tigrbl_ops_oltp.crud.helpers.model import _single_pk_name
 from tigrbl_ops_oltp.crud import ops as _crud_ops
 from tigrbl_ops_oltp.crud import bulk as _crud_bulk
 from ..._mapping.op_resolver import resolve as resolve_ops
@@ -270,37 +270,9 @@ async def rpc_call(
         pk_name = None
 
     if pk_name and isinstance(payload, Mapping) and pk_name in payload:
-        payload = dict(payload)
-        payload[pk_name] = _coerce_pk_value(mdl, payload[pk_name])
-
-    if pk_name and isinstance(payload, (list, tuple)):
-        normalized_payload: list[Any] = []
-        changed = False
-        for item in payload:
-            if isinstance(item, Mapping) and pk_name in item:
-                row = dict(item)
-                row[pk_name] = _coerce_pk_value(mdl, row[pk_name])
-                normalized_payload.append(row)
-                changed = True
-            else:
-                normalized_payload.append(item)
-        if changed:
-            payload = normalized_payload
-
-    if pk_name and isinstance(payload, Mapping) and pk_name in payload:
-        coerced_pk = _coerce_pk_value(mdl, payload[pk_name])
         pp = dict(ctx_dict.get("path_params", {}))
-        pp.setdefault(pk_name, coerced_pk)
+        pp.setdefault(pk_name, payload[pk_name])
         ctx_dict["path_params"] = pp
-
-    if pk_name and isinstance(ctx_dict.get("path_params"), Mapping):
-        pp = dict(ctx_dict.get("path_params", {}))
-        if pk_name in pp:
-            pp[pk_name] = _coerce_pk_value(mdl, pp[pk_name])
-            ctx_dict["path_params"] = pp
-
-    if method == "bulk_delete" and pk_name and isinstance(payload, (list, tuple)):
-        payload = [_coerce_pk_value(mdl, ident) for ident in payload]
 
     try:
         logger.debug("Executing rpc_call %s.%s", getattr(mdl, "__name__", mdl), method)
@@ -357,7 +329,6 @@ async def rpc_call(
             if ident is None and isinstance(payload, Mapping):
                 ident = payload.get(pk_name)
             if ident is not None:
-                ident = _coerce_pk_value(mdl, ident)
                 if resolution.target == "read":
                     fallback = _crud_ops.read(mdl, ident, db)
                 elif resolution.target == "update":
@@ -385,9 +356,6 @@ async def rpc_call(
                 ident = path_params.get(pk_name)
             if ident is None and isinstance(payload, Mapping):
                 ident = payload.get(pk_name)
-            if ident is not None:
-                ident = _coerce_pk_value(mdl, ident)
-
             if target == "read":
                 needs_read = final is None
                 if isinstance(final, Mapping):
@@ -427,7 +395,6 @@ async def rpc_call(
                 if ident is None and isinstance(payload, Mapping):
                     ident = payload.get(pk_name)
                 if ident is not None:
-                    ident = _coerce_pk_value(mdl, ident)
                     deleted = _crud_ops.delete(mdl, ident, db)
                     final = await deleted if inspect.isawaitable(deleted) else deleted
 

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import uuid
 from typing import Any, Type
 
 from pydantic import BaseModel, ConfigDict, Field, create_model
@@ -24,8 +23,7 @@ def _build_list_params(model: type) -> Type[BaseModel]:
         limit=(int | None, Field(None, ge=10)),
         sort=(str | list[str] | None, Field(None)),
     )
-    _scalars = {str, int, float, bool, bytes, uuid.UUID}
-    cols: dict[str, tuple[type, Field]] = {}
+    cols: dict[str, tuple[Any, Any]] = {}
 
     table = getattr(model, "__table__", None)
     if table is None or not getattr(table, "columns", None):
@@ -42,12 +40,6 @@ def _build_list_params(model: type) -> Type[BaseModel]:
             "schema: build_list_params generated %s (no columns)", schema.__name__
         )
         return schema
-
-    pk_name = None
-    for c in table.columns:
-        if getattr(c, "primary_key", False):
-            pk_name = c.name
-            break
 
     _canon = {
         "eq": "eq",
@@ -74,30 +66,28 @@ def _build_list_params(model: type) -> Type[BaseModel]:
         "not_in": "not_in",
     }
 
+    spec_map = ColumnSpec.collect(model)
     for c in table.columns:
-        if pk_name and c.name == pk_name:
-            continue
-        py_t = getattr(c.type, "python_type", Any)
-        if py_t in _scalars:
-            spec_map = ColumnSpec.collect(model)
-            spec = spec_map.get(c.name)
-            io = getattr(spec, "io", None)
-            ops_raw = set(getattr(io, "filter_ops", ()) or [])
-            if not ops_raw:
-                # Allow basic equality filtering by default on scalar columns
-                ops_raw = {"eq"}
-            ops = {_canon.get(op, op) for op in ops_raw}
-            if "eq" in ops:
-                cols[c.name] = (py_t | None, Field(None))
-                logger.debug("schema: list filter add %s type=%r", c.name, py_t)
-            for op in ops:
-                if op == "eq":
-                    continue
-                fname = f"{c.name}__{op}"
-                cols[fname] = (py_t | None, Field(None))
-                logger.debug(
-                    "schema: list filter add %s op=%s type=%r", c.name, op, py_t
-                )
+        try:
+            py_t = c.type.python_type
+        except Exception:
+            py_t = Any
+        spec = spec_map.get(c.name)
+        io = getattr(spec, "io", None)
+        ops_raw = set(getattr(io, "filter_ops", ()) or [])
+        if not ops_raw:
+            ops_raw = {"eq"}
+        ops = {_canon.get(op, op) for op in ops_raw}
+        if "eq" in ops:
+            cols[c.name] = (py_t | None, Field(None))
+            logger.debug("schema: list filter add %s type=%r", c.name, py_t)
+        for op in ops:
+            if op == "eq":
+                continue
+            fname = f"{c.name}__{op}"
+            annotation = list[py_t] | None if op in {"in", "not_in"} else py_t | None
+            cols[fname] = (annotation, Field(None))
+            logger.debug("schema: list filter add %s op=%s type=%r", c.name, op, py_t)
 
     schema = create_model(
         f"{tab}ListParams",

@@ -23,13 +23,17 @@ class Thing(LocalBase):
     name: Mapped[str] = acol(
         storage=S(type_=String),
         field=F(py_type=str),
-        io=IO(out_verbs=("read", "list"), filter_ops=("eq", "like")),
+        io=IO(out_verbs=("read", "list"), filter_ops=("eq", "like", "in")),
     )
 
 
 def test_build_list_params_with_spec_only_model():
     params = _build_list_params(Thing)
     fields = set(params.model_fields.keys())
+    assert "id" in fields
     assert "name" in fields
     assert "name__like" in fields
-
+    assert "name__in" in fields
+    parsed = params.model_validate({"id": "4", "name__in": ["a", "b"]})
+    assert parsed.id == 4
+    assert parsed.name__in == ["a", "b"]

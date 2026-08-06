@@ -102,7 +102,9 @@ class _PackedInputCompileMixin:
             if not (0 <= slot_id < len(field_names)):
                 continue
             field_name = field_names[slot_id]
-            field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
+            field_meta = (
+                by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
+            )
             source_mask = self._hot_int_at(
                 packed,
                 "param_shape_source_masks",
@@ -156,7 +158,11 @@ class _PackedInputCompileMixin:
         )
         paired_index = getattr(opview, "paired_index", {}) or {}
         for field_name, desc in paired_index.items():
-            if isinstance(field_name, str) and field_name and field_name not in field_index:
+            if (
+                isinstance(field_name, str)
+                and field_name
+                and field_name not in field_index
+            ):
                 reserved_input_keys.add(field_name)
             alias = desc.get("alias") if isinstance(desc, Mapping) else None
             if isinstance(alias, str) and alias:
@@ -217,18 +223,15 @@ class _PackedInputCompileMixin:
                 continue
 
             target_type = field_plan.py_type
-            if value is not None and isinstance(target_type, type):
-                ok, new_val, msg = _coerce_if_needed(
-                    value,
-                    target_type,
-                    allow=field_plan.coerce,
-                )
-                if not ok:
+            if value is not None and target_type is not None:
+                try:
+                    new_val = _materialize_field_value(value, target_type)
+                except Exception:
                     errors.append(
                         {
                             "field": field_plan.field_name,
                             "code": "type_mismatch",
-                            "message": msg or f"Expected {target_type.__name__}.",
+                            "message": f"Could not materialize {target_type!s}.",
                         }
                     )
                     continue
@@ -267,7 +270,9 @@ class _PackedInputCompileMixin:
                     )
 
         hot.compiled_in_invalid = bool(errors)
-        hot.compiled_in_errors = tuple(dict(error) for error in errors) if errors else None
+        hot.compiled_in_errors = (
+            tuple(dict(error) for error in errors) if errors else None
+        )
         hot.compiled_in_coerced = tuple(coerced)
         hot.in_present_names = tuple(
             field_names[idx]
@@ -306,7 +311,11 @@ class _PackedInputCompileMixin:
 
             absent.append(field_plan.field_name)
             default_fn = field_plan.default_factory
-            if callable(default_fn) and field_plan.in_enabled and not field_plan.is_virtual:
+            if (
+                callable(default_fn)
+                and field_plan.in_enabled
+                and not field_plan.is_virtual
+            ):
                 if view is None:
                     view = _ctx_view(ctx)
                 try:

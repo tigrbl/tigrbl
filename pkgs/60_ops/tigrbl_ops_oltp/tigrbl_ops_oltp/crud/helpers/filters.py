@@ -36,10 +36,10 @@ _CANON_OPS = {
 }
 
 
-def _coerce_filters(
+def _authorize_filters(
     model: type, filters: Optional[Mapping[str, Any]]
 ) -> Dict[str, Any]:
-    logger.debug("_coerce_filters called with filters=%s", filters)
+    logger.debug("_authorize_filters called with filters=%s", filters)
     cols = set(_model_columns(model))
     specs = _colspecs(model)
     raw = dict(filters or {})
@@ -58,7 +58,7 @@ def _coerce_filters(
                 continue
         key = name if canon == "eq" else f"{name}__{canon}"
         out[key] = v
-    logger.debug("_coerce_filters returning %s", out)
+    logger.debug("_authorize_filters returning %s", out)
     return out
 
 

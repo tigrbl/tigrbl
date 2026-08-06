@@ -122,7 +122,9 @@ def test_filter_ops_restricts_filters():
     Model = type(
         "Model", (), {"__tigrbl_colspecs__": {"name": spec}, "__table__": table}
     )
-    filters = helpers._coerce_filters(Model, {"name": 1, "name__lt": 0, "name__gt": 2})
+    filters = helpers._authorize_filters(
+        Model, {"name": 1, "name__lt": 0, "name__gt": 2}
+    )
     assert filters == {"name": 1, "name__gt": 2}
 
 
@@ -171,4 +173,3 @@ def test_allow_out_disables_field():
     ctx = SimpleNamespace(opview=ov, temp={})
     collect_out_run(None, ctx)
     assert "name" not in ctx.temp["schema_out"]["by_field"]
-

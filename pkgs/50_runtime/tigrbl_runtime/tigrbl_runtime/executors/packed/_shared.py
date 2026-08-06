@@ -13,7 +13,7 @@ from types import SimpleNamespace
 from tigrbl_atoms._ctx import _ctx_view
 from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
-from tigrbl_atoms.atoms.wire.validate_in import _coerce_if_needed
+from tigrbl_core.schema.materialize import _materialize_field_value
 from tigrbl_atoms.atoms.transport.websocket_unary import (
     DirectWebSocketUnary as _DirectWebSocketUnary,
 )
@@ -166,5 +166,3 @@ __all__ = [
     for name in globals()
     if not name.startswith("__") or name == "__JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__"
 ]
-
-

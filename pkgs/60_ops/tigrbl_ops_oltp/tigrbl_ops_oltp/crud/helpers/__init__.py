@@ -18,13 +18,12 @@ except Exception:  # pragma: no cover
 from .model import (
     _pk_columns,
     _single_pk_name,
-    _coerce_pk_value,
     _model_columns,
     _colspecs,
     _filter_in_values,
     _immutable_columns,
 )
-from .filters import _CANON_OPS, _coerce_filters, _apply_filters, _apply_sort
+from .filters import _CANON_OPS, _authorize_filters, _apply_filters, _apply_sort
 from .db import (
     _is_async_db,
     _maybe_get,
@@ -51,8 +50,7 @@ __all__ = [
     "_apply_filters",
     "_apply_sort",
     "_CANON_OPS",
-    "_coerce_filters",
-    "_coerce_pk_value",
+    "_authorize_filters",
     "_colspecs",
     "_filter_in_values",
     "_immutable_columns",

@@ -9,7 +9,6 @@ from .helpers import (
     AsyncSession,
     Session,
     sa_delete,
-    _coerce_pk_value,
     _immutable_columns,
     _maybe_delete,
     _maybe_execute,
@@ -113,7 +112,7 @@ async def bulk_merge(
     to_create: List[Mapping[str, Any]] = []
     for r in rows or ():
         r = dict(r)
-        ident = _coerce_pk_value(model, r.get(pk))
+        ident = r.get(pk)
         if ident is not None:
             existing = await _maybe_get(db, model, ident)
             if existing is not None:

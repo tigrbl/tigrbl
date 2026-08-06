@@ -5,7 +5,6 @@ from ...types import Atom, Ctx, ExecutingCtx
 from ...stages import Executing
 
 import dataclasses as _dc
-import uuid as _uuid
 from typing import Any, Dict, Mapping, Optional
 import logging
 
@@ -357,10 +356,7 @@ def _inject_path_params_for_bulk(payload: Any, ctx: Any) -> Any:
         if not isinstance(item, Mapping):
             merged.append(item)
             continue
-        merged_item = {
-            key: _coerce_model_field_value(ctx, key, value)
-            for key, value in path_params.items()
-        }
+        merged_item = dict(path_params)
         merged_item.update(item)
         changed = changed or merged_item != item
         merged.append(merged_item)
@@ -403,22 +399,6 @@ def _reject_disallowed_wrapper_keys(
         for item in payload:
             if isinstance(item, Mapping):
                 _check_mapping(item)
-
-
-def _coerce_model_field_value(ctx: Any, field: str, value: Any) -> Any:
-    model = getattr(ctx, "model", None)
-    table = getattr(model, "__table__", None) if model is not None else None
-    columns = getattr(table, "columns", None) if table is not None else None
-    column = columns.get(field) if columns is not None else None
-    col_type = getattr(column, "type", None)
-    py_type = getattr(col_type, "python_type", None)
-
-    if py_type is _uuid.UUID and isinstance(value, str):
-        try:
-            return _uuid.UUID(value)
-        except Exception:
-            return value
-    return value
 
 
 class AtomImpl(Atom[Executing, Executing, Exception]):

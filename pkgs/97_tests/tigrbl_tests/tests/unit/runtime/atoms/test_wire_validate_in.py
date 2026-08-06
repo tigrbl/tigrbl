@@ -1,4 +1,5 @@
 from types import SimpleNamespace
+from enum import Enum
 
 import pytest
 
@@ -42,7 +43,7 @@ def test_validate_in_missing_required() -> None:
     assert ctx.temp["in_invalid"] is True
 
 
-def test_validate_in_coerces_types() -> None:
+def test_validate_in_materializes_declared_types() -> None:
     class App:
         pass
 
@@ -69,3 +70,38 @@ def test_validate_in_coerces_types() -> None:
     validate_in._run(None, ctx)
     assert ctx.temp["in_values"]["age"] == 5
     assert ctx.temp["in_coerced"] == ("age",)
+
+
+def test_validate_in_materializes_non_matrix_type() -> None:
+    class State(str, Enum):
+        ready = "ready"
+
+    class App:
+        pass
+
+    class Model:
+        pass
+
+    app = App()
+    alias = "create"
+    ov = OpView(
+        schema_in=SchemaIn(fields=("state",), by_field={"state": {"py_type": State}}),
+        schema_out=SchemaOut(fields=(), by_field={}, expose=()),
+        paired_index={},
+        virtual_producers={},
+        to_stored_transforms={},
+        refresh_hints=(),
+    )
+    K._opviews[app] = {(Model, alias): ov}
+    K._primed[app] = True
+    ctx = SimpleNamespace(
+        app=app,
+        model=Model,
+        op=alias,
+        opview=ov,
+        temp={"in_values": {"state": "ready"}},
+    )
+
+    validate_in._run(None, ctx)
+
+    assert ctx.temp["in_values"]["state"] is State.ready

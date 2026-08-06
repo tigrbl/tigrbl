@@ -4,14 +4,12 @@ from __future__ import annotations
 from ...types import Atom, Ctx, ExecutingCtx
 from ...stages import Executing
 
-import datetime as _dt
-import decimal as _dc
-import uuid as _uuid
 import logging
 from typing import Any, Dict, Mapping, Optional, Tuple
 
 from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_typing.status.mappings import status as _status
+from tigrbl_core.schema.materialize import _materialize_field_value
 
 from ... import events as _ev
 from ..._opview_helpers import _ensure_ov, _ensure_schema_in, _ensure_temp
@@ -120,18 +118,18 @@ def _run(obj: Optional[object], ctx: Any) -> None:
             )
             continue  # skip further checks for this field
 
-        # Type (optionally coerce)
+        # Materialize through the declared schema annotation.
         target_type = entry.get("py_type")
-        if value is not None and isinstance(target_type, type):
-            allow_coerce = bool(entry.get("coerce", True))
-            ok, new_val, msg = _coerce_if_needed(value, target_type, allow=allow_coerce)
-            if not ok:
+        if value is not None and target_type is not None:
+            try:
+                new_val = _materialize_field_value(value, target_type)
+            except Exception:
                 logger.debug("Type mismatch for field %s", name)
                 errors.append(
                     _err(
                         name,
                         "type_mismatch",
-                        msg or f"Expected {_type_name(target_type)}.",
+                        f"Could not materialize {_type_name(target_type)}.",
                     )
                 )
                 continue
@@ -252,16 +250,16 @@ def _validate_mapping_item(
             continue
 
         target_type = entry.get("py_type")
-        if value is not None and isinstance(target_type, type):
-            allow_coerce = bool(entry.get("coerce", True))
-            ok, new_val, msg = _coerce_if_needed(value, target_type, allow=allow_coerce)
-            if not ok:
+        if value is not None and target_type is not None:
+            try:
+                new_val = _materialize_field_value(value, target_type)
+            except Exception:
                 logger.debug("Type mismatch for field %s", name)
                 errors.append(
                     _err(
                         name,
                         "type_mismatch",
-                        msg or f"Expected {_type_name(target_type)}.",
+                        f"Could not materialize {_type_name(target_type)}.",
                     )
                 )
                 continue
@@ -298,64 +296,11 @@ def _validate_mapping_item(
     return errors, coerced, in_values
 
 
-def _type_name(t: type) -> str:
+def _type_name(t: Any) -> str:
     return getattr(t, "__name__", str(t))
 
 
 # ── coercion helpers ──────────────────────────────────────────────────────────
-
-
-def _coerce_if_needed(
-    value: Any, target: type, *, allow: bool
-) -> Tuple[bool, Any, Optional[str]]:
-    """Return (ok, new_value, error_message). Only coerces when allow=True."""
-    if isinstance(value, target):
-        return True, value, None
-    if not allow:
-        return False, value, f"Expected {_type_name(target)}."
-    try:
-        coerced = _coerce(value, target)
-        return True, coerced, None
-    except Exception:
-        return False, value, f"Could not convert to {_type_name(target)}."
-
-
-def _coerce(value: Any, target: type) -> Any:
-    if target is str:
-        return str(value)
-    if target is int:
-        if isinstance(value, bool):
-            return int(value)
-        return int(str(value).strip())
-    if target is float:
-        return float(str(value).strip())
-    if target is bool:
-        if isinstance(value, bool):
-            return value
-        s = str(value).strip().lower()
-        if s in {"true", "1", "yes", "y", "on"}:
-            return True
-        if s in {"false", "0", "no", "n", "off"}:
-            return False
-        raise ValueError("not a boolean")
-    if target is _dc.Decimal:
-        return _dc.Decimal(str(value).strip())
-    if target is _uuid.UUID:
-        return _uuid.UUID(str(value))
-    if target is _dt.datetime:
-        # allow both date-time and date-only (promote to midnight)
-        s = str(value).strip()
-        try:
-            return _dt.datetime.fromisoformat(s)
-        except Exception:
-            d = _dt.date.fromisoformat(s)
-            return _dt.datetime.combine(d, _dt.time())
-    if target is _dt.date:
-        return _dt.date.fromisoformat(str(value).strip())
-    if target is _dt.time:
-        return _dt.time.fromisoformat(str(value).strip())
-    # Fallback: try direct construction
-    return target(value)
 
 
 def _reserved_input_keys(
