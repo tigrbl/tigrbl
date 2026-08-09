@@ -14,16 +14,30 @@ _COMPAT_ALIASES = {
     'security': 'tigrbl.security',
 }
 
+_COLUMN_EXPORTS = {
+    'Column': 'tigrbl_concrete._concrete',
+    'acol': 'tigrbl_concrete.factories.column',
+    'makeColumn': 'tigrbl_concrete.factories.column',
+    'makeVirtualColumn': 'tigrbl_concrete.factories.column',
+    'vcol': 'tigrbl_concrete.factories.column',
+}
+
 __all__ = [
     'build_handlers',
     'build_hooks',
     'build_schemas',
     'build_rest_router',
+    *_COLUMN_EXPORTS,
     *_COMPAT_ALIASES,
 ]
 
 
 def __getattr__(name: str) -> Any:
+    if name in _COLUMN_EXPORTS:
+        module = import_module(_COLUMN_EXPORTS[name])
+        value = getattr(module, name)
+        globals()[name] = value
+        return value
     if name in _COMPAT_ALIASES:
         module = import_module(_COMPAT_ALIASES[name])
         globals()[name] = module
