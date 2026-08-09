@@ -37,6 +37,18 @@ def test_from_any_rejects_unknown_dsn() -> None:
         EngineSpec.from_any("oracle://local")
 
 
+def test_from_any_parses_duckdb_file_and_quack_dsn() -> None:
+    file_spec = EngineSpec.from_any("data/analytics.duckdb")
+    quack_spec = EngineSpec.from_any("quack://data/analytics.duckdb")
+
+    assert file_spec is not None
+    assert file_spec.kind == "duckdb"
+    assert file_spec.dsn == "data/analytics.duckdb"
+    assert quack_spec is not None
+    assert quack_spec.kind == "duckdb"
+    assert quack_spec.dsn == "quack://data/analytics.duckdb"
+
+
 def test_build_requires_registered_engine_provider(monkeypatch) -> None:
     from tigrbl_core._spec import plugins, registry
 

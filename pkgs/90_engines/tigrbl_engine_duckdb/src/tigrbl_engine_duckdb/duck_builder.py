@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Callable, Mapping, Optional, Tuple
+from urllib.parse import unquote
 
 import duckdb
 from sqlalchemy import create_engine
@@ -42,7 +43,15 @@ def _duckdb_path(config: Mapping[str, Any]) -> str:
         or config.get("dsn")
         or ":memory:"
     )
-    return str(path)
+    location = str(path)
+    if location.lower().startswith("quack://"):
+        # ``quack://relative/file.duckdb`` maps to a relative path, while an
+        # additional slash retains an absolute POSIX path. This also preserves
+        # Windows drive paths such as ``quack://C:/data/app.duckdb``.
+        location = unquote(location[len("quack://") :])
+        if not location:
+            return ":memory:"
+    return location
 
 
 def _mode(config: Mapping[str, Any]) -> str:

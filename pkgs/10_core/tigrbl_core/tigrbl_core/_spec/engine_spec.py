@@ -163,6 +163,10 @@ class EngineSpec(SerdeMixin):
             if s.startswith("postgresql://") or s.startswith("postgres://"):
                 return EngineSpec(kind="postgres", async_=False, dsn=s)
 
+            # DuckDB accepts its quack URI as well as a direct database file.
+            if s.lower().startswith("quack://") or s.lower().endswith(".duckdb"):
+                return EngineSpec(kind="duckdb", async_=False, dsn=s)
+
             raise ValueError(f"Unsupported DSN: {s}")
 
         # Mapping

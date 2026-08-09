@@ -35,6 +35,10 @@ Application developers, data platform engineers, and operators choosing concrete
 
 It exposes `tigrbl.engine` and `tigrbl.engine_plugins` entry points plus a package `register()` hook so Tigrbl can discover or load the backend at runtime. The default builder returns a SQLAlchemy `duckdb-engine` session for ORM DDL and canonical table operations; `mode="native"` preserves the pure `duckdb.Connection` session path.
 
+DuckDB locations can be supplied as direct `*.duckdb` files or as `quack://`
+URIs. For example, `data/app.duckdb` and `quack://data/app.duckdb` both open
+the local `data/app.duckdb` database.
+
 
 ## Install
 
@@ -106,6 +110,14 @@ app = TigrblApp.from_spec(
     )
 )
 app.initialize()
+```
+
+The same engine may be selected with a direct location string:
+
+```python
+app = TigrblApp.from_spec(
+    AppSpec(engine="quack://.data/app.duckdb", tables=(Widget,))
+)
 ```
 
 ### Use the native DuckDB session mode

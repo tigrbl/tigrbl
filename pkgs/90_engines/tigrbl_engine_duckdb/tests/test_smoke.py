@@ -4,12 +4,12 @@ import inspect
 from pathlib import Path
 
 import pytest
-from sqlalchemy import select, text
+from sqlalchemy import text
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl.types import Column, String
 from tigrbl_core._spec import plugins, registry
-from tigrbl_core._spec import AppSpec
+from tigrbl_core._spec import AppSpec, EngineSpec
 from tigrbl_concrete._concrete import engine_resolver as resolver
 from tigrbl_concrete._concrete._engine_session import EngineSession
 from tigrbl_engine_duckdb import (
@@ -64,6 +64,36 @@ def test_engine_plugin_loader_discovers_duckdb_entry_point() -> None:
     plugins.load_engine_plugins()
 
     assert registry.get_engine_registration("duckdb") is not None
+
+
+@pytest.mark.parametrize(
+    ("location", "expected_name"),
+    (
+        ("direct.duckdb", "direct.duckdb"),
+        ("quack://nested/quacked.duckdb", "nested/quacked.duckdb"),
+    ),
+)
+@pytest.mark.asyncio
+async def test_duckdb_locations_resolve_to_file_paths(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    location: str,
+    expected_name: str,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    spec = EngineSpec.from_any(location)
+
+    assert spec is not None
+    assert spec.kind == "duckdb"
+    engine, maker = spec.build()
+    try:
+        session = maker()
+        await session.execute(text("SELECT 1"))
+        await session.close()
+        assert Path(engine.url.database) == Path(expected_name)
+        assert (tmp_path / expected_name).is_file()
+    finally:
+        engine.dispose()
 
 
 @pytest.mark.asyncio
