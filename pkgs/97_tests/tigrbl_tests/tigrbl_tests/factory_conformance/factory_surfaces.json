@@ -448,6 +448,134 @@
                          "aliases":  [
 
                                      ]
+                     },
+                     {
+                       "path": "tigrbl_concrete.records:provideTableHandler",
+                       "owner": "concrete", "verb": "provide", "form": "function",
+                       "descriptor": "function", "async_mode": "sync",
+                       "returns": "handler", "side_effects": "none",
+                       "stability": "stable", "family": "table-handler",
+                       "aliases": [{"path": "tigrbl:provideTableHandler", "form": "re-export"}]
+                     },
+                     {
+                       "path": "tigrbl_concrete.factories.table:provideTableSpec",
+                       "owner": "concrete", "verb": "provide", "form": "function",
+                       "descriptor": "function", "async_mode": "sync",
+                       "returns": "spec-instance", "side_effects": "none",
+                       "stability": "stable", "family": "table", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete.factories.activation:activateTableSpec",
+                       "owner": "concrete", "verb": "activate", "form": "function",
+                       "descriptor": "function", "async_mode": "sync",
+                       "returns": "bound-operations", "side_effects": "runtime-mutation",
+                       "stability": "stable", "family": "table", "idempotency": "repeat-safe",
+                       "aliases": [{"path": "tigrbl.factories.table:activateTableSpec", "form": "re-export"}]
+                     },
+                     {
+                       "path": "tigrbl_concrete.factories.activation:activateTableSpecs",
+                       "owner": "concrete", "verb": "activate", "form": "function",
+                       "descriptor": "function", "async_mode": "sync",
+                       "returns": "bound-operation-map", "side_effects": "runtime-mutation",
+                       "stability": "stable", "family": "table", "idempotency": "repeat-safe",
+                       "aliases": [{"path": "tigrbl.factories.table:activateTableSpecs", "form": "re-export"}]
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._column:Column.make",
+                       "owner": "concrete", "verb": "make", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "descriptor-instance", "side_effects": "construction",
+                       "stability": "stable", "family": "column", "receiver": "Column",
+                       "canonical": "tigrbl_concrete.factories.column:makeColumn", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._column:Column.make_virtual",
+                       "owner": "concrete", "verb": "make", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "descriptor-instance", "side_effects": "construction",
+                       "stability": "stable", "family": "column", "receiver": "Column",
+                       "canonical": "tigrbl_concrete.factories.column:makeVirtualColumn", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._op:Op.make",
+                       "owner": "concrete", "verb": "make", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "descriptor-instance", "side_effects": "construction",
+                       "stability": "stable", "family": "op", "receiver": "Op",
+                       "canonical": "tigrbl_concrete.factories.op:makeOp", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete.tigrbl_app:TigrblApp.define",
+                       "owner": "concrete", "verb": "define", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "spec-class", "side_effects": "none",
+                       "stability": "stable", "family": "app", "receiver": "TigrblApp",
+                       "canonical": "tigrbl_concrete.factories.app:defineAppSpec", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete.tigrbl_app:TigrblApp.derive",
+                       "owner": "concrete", "verb": "derive", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "concrete-class", "side_effects": "none",
+                       "stability": "stable", "family": "app", "receiver": "TigrblApp",
+                       "canonical": "tigrbl_concrete.factories.app:deriveApp", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._router:Router.define",
+                       "owner": "concrete", "verb": "define", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "spec-class", "side_effects": "none",
+                       "stability": "stable", "family": "router", "receiver": "Router",
+                       "canonical": "tigrbl_concrete.factories.router:defineRouterSpec", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._router:Router.derive",
+                       "owner": "concrete", "verb": "derive", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "concrete-class", "side_effects": "none",
+                       "stability": "stable", "family": "router", "receiver": "Router",
+                       "canonical": "tigrbl_concrete.factories.router:deriveRouter", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._table:Table.define",
+                       "owner": "concrete", "verb": "define", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "spec-class", "side_effects": "none",
+                       "stability": "stable", "family": "table", "receiver": "Table",
+                       "canonical": "tigrbl_concrete.factories.table:defineTableSpec", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._table:Table.derive",
+                       "owner": "concrete", "verb": "derive", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "spec-instance", "side_effects": "none",
+                       "stability": "stable", "family": "table", "receiver": "Table",
+                       "canonical": "tigrbl_concrete.factories.table:deriveTableSpec", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._table:Table.derive_class",
+                       "owner": "concrete", "verb": "derive", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "concrete-class", "side_effects": "none",
+                       "stability": "stable", "family": "table", "receiver": "Table",
+                       "canonical": "tigrbl_concrete.factories.table:deriveTable", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._table:Table.provide",
+                       "owner": "concrete", "verb": "provide", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "spec-instance", "side_effects": "none",
+                       "stability": "stable", "family": "table", "receiver": "Table",
+                       "canonical": "tigrbl_concrete.factories.table:provideTableSpec", "aliases": []
+                     },
+                     {
+                       "path": "tigrbl_concrete._concrete._table:Table.activate",
+                       "owner": "concrete", "verb": "activate", "form": "classmethod",
+                       "descriptor": "classmethod", "async_mode": "sync",
+                       "returns": "bound-operations", "side_effects": "runtime-mutation",
+                       "stability": "stable", "family": "table", "receiver": "Table",
+                       "canonical": "tigrbl_concrete.factories.activation:activateTableSpec",
+                       "idempotency": "repeat-safe", "aliases": []
                      }
                  ]
 }

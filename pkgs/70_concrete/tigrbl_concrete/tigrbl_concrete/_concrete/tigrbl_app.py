@@ -111,6 +111,20 @@ class TigrblApp(_App):
 
     mount_favicon = mount_favicon
 
+    @classmethod
+    def define(cls, **kwargs) -> type[AppSpec]:
+        """Define declarative app configuration through the canonical factory."""
+        from tigrbl_concrete.factories.app import defineAppSpec
+
+        return defineAppSpec(**kwargs)
+
+    @classmethod
+    def derive(cls, **kwargs) -> type[TigrblApp]:
+        """Derive an app class through the canonical factory."""
+        from tigrbl_concrete.factories.app import deriveApp
+
+        return deriveApp(**kwargs)
+
     @staticmethod
     def _collect_declared_tables(owner: type) -> tuple[Any, ...]:
         collected: list[Any] = []

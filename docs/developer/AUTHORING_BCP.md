@@ -45,6 +45,15 @@ are explicitly validating or implementing the lower-level boundary.
 
 ## Best Current Practice Groups
 
+### Use factory verbs according to their contracts
+
+- Avoid: Treating `make`, `define`, `derive`, `provide`, and `activate` as
+  interchangeable names or adding factory methods to passive specifications.
+- Do: Use canonical functions or their concrete product classmethod delegates,
+  following [Factory Method Patterns](FACTORY_METHOD_PATTERNS.md).
+- Why: Stable verb semantics expose when an operation constructs, declares,
+  transforms, normalizes, or performs runtime binding.
+
 ### Keep the facade as the application contract
 
 - Avoid: Treating ASGI, FastAPI, Flask, Starlette, SQLAlchemy ORM

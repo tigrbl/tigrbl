@@ -60,6 +60,20 @@ class Router(RouterBase):
     RPC_PREFIX = "/rpc"
     SYSTEM_PREFIX = "/system"
 
+    @classmethod
+    def define(cls, **kwargs):
+        """Define declarative router configuration through the canonical factory."""
+        from tigrbl_concrete.factories.router import defineRouterSpec
+
+        return defineRouterSpec(**kwargs)
+
+    @classmethod
+    def derive(cls, **kwargs):
+        """Derive a router class through the canonical factory."""
+        from tigrbl_concrete.factories.router import deriveRouter
+
+        return deriveRouter(**kwargs)
+
     @staticmethod
     def _collect_declared_tables(owner: type) -> tuple[Any, ...]:
         collected: list[Any] = []

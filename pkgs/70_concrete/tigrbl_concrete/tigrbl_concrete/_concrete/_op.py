@@ -12,6 +12,13 @@ class Op(OpBase):
 
     __slots__ = ()
 
+    @classmethod
+    def make(cls, **kwargs):
+        """Construct an operation through the canonical factory."""
+        from tigrbl_concrete.factories.op import makeOp
+
+        return makeOp(**kwargs)
+
     def __set_name__(self, owner: type, name: str) -> None:  # noqa: D401
         spec = self
         alias = self.alias or name

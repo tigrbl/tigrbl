@@ -32,6 +32,10 @@ body: |-
   10. CamelCase `Make*`, `Define*`, `Derive*`, and `Provide*` forms are concrete authoring forms. Lowercase forms are classified by the factory manifest.
   11. `tigrbl_concrete` owns public authoring factory implementations. `tigrbl` may re-export them. Core, base, and runtime must not own public concrete construction factories except tracked compatibility shims. Provider/session factories remain with their semantic owner.
   12. Every governed public surface must appear in the factory surface manifest. New unclassified public candidates fail conformance after inventory enforcement begins.
+  13. `activate` explicitly realizes a provided specification through registration, binding, initialization, or other declared runtime mutation. Activation side effects and repeat behavior are part of its public contract.
+  14. Canonical algorithms remain module-level product-qualified factory functions. Concrete product classes may expose classmethod delegates, but those delegates do not become independent implementation owners.
+  15. Core specification values remain passive declarative contracts. They must not import concrete factories or gain factory methods merely to mirror functional or classmethod forms.
+  16. Functional, classmethod, and instance-method forms are an applicability matrix rather than a required Cartesian product. An instance method is governed only when its concrete receiver semantically owns the operation.
   
   ## Form classifications
   
@@ -43,6 +47,7 @@ body: |-
   - async factory: awaitability is normative;
   - provider factory: constructs or acquires provider/session dependencies;
   - instance provider/accessor: exposes materialized state;
+  - product classmethod: product-qualified delegate to one canonical factory function;
   - internal helper: non-public computation rather than authoring.
   
   ## Consequences

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-_VERBS = ("make", "define", "derive", "provide")
+_VERBS = ("make", "define", "derive", "provide", "activate")
 
 
 @dataclass(frozen=True, slots=True)

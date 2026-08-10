@@ -12,6 +12,22 @@ Legend:
 - `missing`: no first-class spec row currently exists for the surface in that row.
 - `n/a`: no current surface in that column.
 
+## Factory product classmethods
+
+Factory functions remain canonical and specifications remain passive. Concrete
+product classes expose these convenience delegates:
+
+| Product | `make` | `define` | `derive` | `provide` | `activate` |
+|---|---|---|---|---|---|
+| `Column` | `make`, `make_virtual` | n/a | n/a | n/a | n/a |
+| `Op` | `make` | n/a | n/a | n/a | n/a |
+| `TigrblApp` | n/a | `define` | `derive` | n/a | n/a |
+| `Router` | n/a | `define` | `derive` | n/a | n/a |
+| `Table` | n/a | `define` | `derive`, `derive_class` | `provide` | `activate` |
+
+See [Factory Method Patterns](developer/FACTORY_METHOD_PATTERNS.md) for verb
+semantics, functional equivalents, and the ordinary-method applicability rule.
+
 
 | Spec | JSON schema | Dataclass | Base | Concrete(s) | Mount | Include | Include bulk | Class collection | Shortcut(s) | Decorator(s) | define_* | derive_* | make_* |
 |---|---|---:|---|---|---|---|---|---|---|---|---|---|---|

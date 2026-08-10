@@ -6,7 +6,7 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Any
 
-_VALID_VERBS = {"define", "derive", "make", "provide"}
+_VALID_VERBS = {"activate", "define", "derive", "make", "provide"}
 _VALID_FORMS = {
     "function",
     "classmethod",
@@ -37,6 +37,11 @@ class FactorySurface:
     returns: str
     side_effects: str
     stability: str
+    family: str | None = None
+    receiver: str | None = None
+    canonical: str | None = None
+    idempotency: str | None = None
+    equivalence_group: str | None = None
     aliases: tuple[FactoryAlias, ...] = ()
 
 

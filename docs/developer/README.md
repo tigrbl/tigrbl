@@ -1,5 +1,9 @@
 # Developer Documentation
 
+- [Factory Method Patterns](FACTORY_METHOD_PATTERNS.md) defines the canonical
+  `make`, `define`, `derive`, `provide`, and `activate` contracts and their
+  supported functional and classmethod forms.
+
 This section collects developer-facing summaries and pointers.
 
 ## Contents

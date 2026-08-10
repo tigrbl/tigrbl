@@ -73,6 +73,7 @@ def _merge_ops(existing: Sequence[Any], incoming: Sequence[Any]) -> tuple[Any, .
 def deriveTableSpec(
     model: Type[Table],
     *,
+    spec: Type[TableSpec] | TableSpec | None = None,
     ops: Sequence[Any] = (),
     columns: Sequence[Any] = (),
     schemas: Sequence[Any] = (),
@@ -80,9 +81,36 @@ def deriveTableSpec(
     security_deps: Sequence[Any] = (),
     deps: Sequence[Any] = (),
 ) -> TableSpec:
-    """Derive a new specification without mutating the source table."""
+    """Derive a specification without mutating the model or supplied spec."""
 
     collected = TableSpec.collect(model)
+    if spec is not None:
+        if isinstance(spec, TableSpec):
+            supplied = spec
+        elif isinstance(spec, type) and issubclass(spec, TableSpec):
+            supplied = TableSpec.collect(spec)
+        else:
+            raise TypeError("spec must be a TableSpec instance or subclass")
+        collected = replace(
+            collected,
+            engine=(
+                supplied.engine if supplied.engine is not None else collected.engine
+            ),
+            engine_name=(
+                supplied.engine_name
+                if supplied.engine_name is not None
+                else collected.engine_name
+            ),
+            ops=_merge_ops(tuple(collected.ops), tuple(supplied.ops)),
+            columns=(*tuple(collected.columns), *tuple(supplied.columns)),
+            schemas=(*tuple(collected.schemas), *tuple(supplied.schemas)),
+            hooks=(*tuple(collected.hooks), *tuple(supplied.hooks)),
+            security_deps=(
+                *tuple(collected.security_deps),
+                *tuple(supplied.security_deps),
+            ),
+            deps=(*tuple(collected.deps), *tuple(supplied.deps)),
+        )
     return replace(
         collected,
         ops=_merge_ops(tuple(collected.ops), tuple(ops)),

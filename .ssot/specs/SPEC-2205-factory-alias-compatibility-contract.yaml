@@ -13,13 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to govern factory alias migration and compatibility."
     at: "2026-07-24T13:43:01Z"
+    note: "Created to govern factory alias migration and compatibility."
+    status: "draft"
 references: []
 body: |-
   ## Contract
-
+  
   1. Factory compatibility is evaluated independently across name, owner, identity, signature, annotations, descriptor kind, sync/async mode, return category, side effects, exceptions, and documentation.
   2. Direct aliases and re-exports MUST preserve identity unless a manifested wrapper compatibility surface explicitly permits distinct identity.
   3. Wrapper aliases MUST delegate to the canonical surface and publish `__wrapped__` or equivalent traceability where technically possible.
@@ -30,9 +30,11 @@ body: |-
   8. Deprecated wrappers MUST identify replacement, emit the governed warning, and have a tracked removal target.
   9. CamelCase/lowercase transitions MUST retain the prior public form through the compatibility window unless an accepted ADR authorizes immediate removal.
   10. Compatibility tests remain linked until the deprecated surface is removed and its lifecycle record is closed.
-
+  11. Product classmethod delegates are compatibility surfaces rather than identity aliases. They MUST identify one canonical functional target and preserve its return category, side-effect class, exception behavior, and sync or async mode.
+  12. Adding a classmethod delegate is compatible when the canonical functional API remains unchanged. Replacing a function with a classmethod, or manufacturing an instance method on a passive specification, is breaking.
+  
   ## Required verification
-
+  
   - Signature and descriptor snapshots for stable public surfaces.
   - Import and identity checks for compatibility re-exports.
   - Warning and delegation tests for wrappers.

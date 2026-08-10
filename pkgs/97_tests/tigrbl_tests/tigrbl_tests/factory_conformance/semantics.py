@@ -20,3 +20,22 @@ def assert_surface_shape(surface: FactorySurface) -> None:
         assert surface.side_effects == "none", (
             f"define surface {surface.path} must be declarative"
         )
+    if surface.verb == "derive":
+        assert surface.side_effects == "none", (
+            f"derive surface {surface.path} must be deterministic"
+        )
+    if surface.verb == "make":
+        assert surface.side_effects == "construction", (
+            f"make surface {surface.path} must construct its declared product"
+        )
+    if surface.verb == "activate":
+        assert surface.side_effects in {
+            "binding",
+            "initialization",
+            "registration",
+            "runtime-mutation",
+        }, f"activate surface {surface.path} must declare runtime effects"
+    if surface.form == "classmethod":
+        assert surface.canonical, (
+            f"classmethod surface {surface.path} must declare a canonical function"
+        )

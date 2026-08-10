@@ -13,13 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created for repo-wide factory inventory and enforcement."
     at: "2026-07-24T13:42:59Z"
+    note: "Created for repo-wide factory inventory and enforcement."
+    status: "draft"
 references: []
 body: |-
   ## Contract
-
+  
   1. The repository MUST maintain one machine-readable inventory of governed public factory surfaces and explicit internal exemptions.
   2. Each surface row records canonical symbol, owner package, verb, form, aliases, descriptor kind, sync/async mode, return category, permitted side effects, stability, and deprecation state.
   3. Supported forms are standalone, direct identity alias, re-export, wrapper, classmethod, staticmethod, inherited, descriptor alias, async factory, CamelCase authoring, provider factory, instance provider/accessor, and internal helper exemption.
@@ -28,9 +28,12 @@ body: |-
   6. A discovered public candidate absent from the manifest fails conformance after enforcement is enabled.
   7. A manifest row whose symbol or alias cannot be resolved fails conformance.
   8. The manifest is reviewed in the same change as any new, renamed, moved, deprecated, or removed public factory.
-
+  9. Supported governed verbs include `make`, `define`, `derive`, `provide`, and `activate`.
+  10. Product classmethod rows identify one canonical functional target and a concrete product receiver.
+  11. Supported forms are declared per family; no family is required to expose every form.
+  
   ## Required fields
-
+  
   - `canonical`
   - `owner`
   - `verb`
@@ -42,9 +45,9 @@ body: |-
   - `stability`
   - `aliases`
   - optional `deprecated_since`, `replacement`, and `remove_after`
-
+  
   ## Required verification
-
+  
   - AST discovery and import-level resolution agree.
   - Canonical and alias symbols exist.
   - Identity-required aliases are identical.

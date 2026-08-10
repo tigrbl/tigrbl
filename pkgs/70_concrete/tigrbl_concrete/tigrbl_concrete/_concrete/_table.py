@@ -36,6 +36,41 @@ class Table(TableBase):
     }
 
     @classmethod
+    def define(cls, **kwargs):
+        """Define declarative table configuration through the canonical factory."""
+        from tigrbl_concrete.factories.table import defineTableSpec
+
+        return defineTableSpec(**kwargs)
+
+    @classmethod
+    def derive(cls, model: type, **kwargs) -> TableSpec:
+        """Derive a table specification through the canonical factory."""
+        from tigrbl_concrete.factories.table import deriveTableSpec
+
+        return deriveTableSpec(model, **kwargs)
+
+    @classmethod
+    def derive_class(cls, model: type, **kwargs) -> type[Table]:
+        """Derive a concrete table subclass through the canonical factory."""
+        from tigrbl_concrete.factories.table import deriveTable
+
+        return deriveTable(model, **kwargs)
+
+    @classmethod
+    def provide(cls, source: type | TableSpec) -> TableSpec:
+        """Provide a validated table specification through the canonical factory."""
+        from tigrbl_concrete.factories.table import provideTableSpec
+
+        return provideTableSpec(source)
+
+    @classmethod
+    def activate(cls, source: type | TableSpec):
+        """Activate a table specification through the canonical factory."""
+        from tigrbl_concrete.factories.activation import activateTableSpec
+
+        return activateTableSpec(source)
+
+    @classmethod
     def should_wire_canonical(cls, op: str) -> bool:
         from tigrbl_core.config.constants import (
             TIGRBL_DEFAULTS_EXCLUDE_ATTR,

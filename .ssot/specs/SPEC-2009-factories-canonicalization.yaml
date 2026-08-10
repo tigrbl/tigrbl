@@ -1,4 +1,4 @@
-﻿schema_version: "0.8.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2009"
 number: 2009
@@ -19,42 +19,50 @@ status_notes:
 references: []
 body: |-
   ## Contract
-
+  
   ### Verb semantics
-
+  
   1. `define` returns declarative configuration, a spec, or a definition and MUST NOT perform runtime initialization or external I/O.
   2. `derive` projects an existing definition, type, or initialized object deterministically. It MUST document whether it returns a type, spec, projection, or configured service.
   3. `make<Product>` returns a usable instance. A standalone public factory MUST qualify its product in the callable name and MUST NOT export a bare module-level `make`. Initialization, I/O, caching, and awaitability MUST be explicit public contract fields.
   4. `provide` exposes or acquires a dependency. An instance accessor returning existing state MUST NOT be described as a factory alias. `provider_*` and `prov` are provider factories and MUST be classified separately.
-
+  
   ### Governed forms
-
+  
   5. The factory manifest MUST classify standalone, qualified, direct alias, re-export, wrapper, classmethod, staticmethod, inherited, descriptor, async, CamelCase, provider, instance-accessor, and internal-helper forms.
   6. Public status, not spelling alone, determines applicability. Internal closures and private semantic helpers are exempt unless exported.
   7. Class, static, inherited, and descriptor aliases MUST preserve binding semantics. A classmethod-to-instance-method or sync-to-async change is breaking.
   8. CamelCase authoring forms and lowercase factory verbs MAY coexist only when both are manifested with distinct canonical roles.
-
+  
   ### Alias and re-export parity
-
+  
   9. Direct aliases MUST preserve object identity.
   10. Facade and shortcut re-exports MUST preserve identity, signature, annotations, descriptor kind, async behavior, return category, documented side effects, and exceptions.
   11. Wrappers MUST be classified as wrappers, delegate to one canonical owner, expose signature parity or an explicit compatibility signature, and carry deprecation/removal metadata when noncanonical.
   12. Canonical factories MUST preserve runtime and documentation projection consistency.
-
+  
   ### Ownership
-
+  
   13. Public construction and projection factories are implemented by their semantic owner. Concrete authoring factories belong in `tigrbl_concrete`; `tigrbl` is a re-export facade.
   14. Core, base, and runtime MUST NOT own public concrete construction factories except manifested compatibility shims.
   15. Provider/session factories remain with provider/session owners.
   16. Experimental packages MUST conform to the same form and verb semantics before promotion.
-
+  
   ### Evolution
-
+  
   17. Changes to identity, signature, descriptor, awaitability, return category, side effects, or owner are compatibility changes and require the factory compatibility contract.
   18. New public candidates MUST be added to the manifest in the same change.
-
+  
+  ### Activation and product classmethods
+  
+  19. `activate` realizes a provided specification through declared registration, binding, initialization, or runtime mutation. Its side effects, return category, repeat behavior, and sync or async mode MUST be explicit.
+  20. Product classmethods MUST delegate to one canonical functional factory and preserve its public return category, side-effect class, exception behavior, and awaitability.
+  21. Functional, classmethod, and instance-method forms are an applicability matrix. A factory family MUST NOT manufacture unsupported forms solely for symmetry.
+  22. Core `*Spec` values MUST remain passive declarative contracts and MUST NOT call upward into concrete factory implementations.
+  23. Adding a product classmethod does not transfer canonical implementation ownership away from the product factory module.
+  
   ## Required verification
-
+  
   - AST inventory completeness against the manifest.
   - Identity and signature parity for aliases/re-exports.
   - Descriptor and awaitability parity.
@@ -62,9 +70,9 @@ body: |-
   - Package ownership architecture tests.
   - Negative corpus for unknown, misplaced, or falsely classified surfaces.
   - Compatibility/deprecation tests for wrappers and migrations.
-
+  
   ## Non-conformance
-
+  
   An unmanifested public factory candidate, independent facade implementation, false identity alias, undocumented descriptor/async change, or verb that violates its return/side-effect contract is non-conforming.
   spec_kind: normative
   adr_ids:
