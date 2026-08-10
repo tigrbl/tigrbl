@@ -35,9 +35,11 @@ Application developers, data platform engineers, and operators choosing concrete
 
 It exposes `tigrbl.engine` and `tigrbl.engine_plugins` entry points plus a package `register()` hook so Tigrbl can discover or load the backend at runtime. The default builder returns a SQLAlchemy `duckdb-engine` session for ORM DDL and canonical table operations; `mode="native"` preserves the pure `duckdb.Connection` session path.
 
-DuckDB locations can be supplied as direct `*.duckdb` files or as `quack://`
-URIs. For example, `data/app.duckdb` and `quack://data/app.duckdb` both open
-the local `data/app.duckdb` database.
+DuckDB locations can be supplied as direct `*.duckdb` files or as remote
+`quack:` / `quack://` URIs. A file opens embedded DuckDB storage. A Quack URI
+creates an in-memory DuckDB client, attaches the remote Quack catalog over
+HTTP(S), and makes that catalog the default for Tigrbl operations. Quack
+requires DuckDB 1.5.3 or newer and remains an actively evolving DuckDB feature.
 
 
 ## Install
@@ -112,13 +114,33 @@ app = TigrblApp.from_spec(
 app.initialize()
 ```
 
-The same engine may be selected with a direct location string:
+Connect to a Quack server with an engine mapping. The server token is escaped as
+a DuckDB SQL literal for `ATTACH` and is not embedded in the SQLAlchemy URL:
 
 ```python
 app = TigrblApp.from_spec(
-    AppSpec(engine="quack://.data/app.duckdb", tables=(Widget,))
+    AppSpec(
+        engine={
+            "kind": "duckdb",
+            "dsn": "quack://groupsum-duckdb:9494",
+            "token": "replace-with-server-token",
+            "catalog": "remote",
+            "disable_ssl": True,
+        },
+        tables=(Widget,),
+    )
 )
 ```
+
+`disable_ssl=True` is appropriate for a trusted plain-HTTP container network.
+For non-local endpoints, Quack defaults to HTTPS and the DuckDB documentation
+recommends TLS termination through a reverse proxy. If a scoped DuckDB Quack
+secret is configured separately, omit `token` from the engine mapping.
+
+DuckDB auto-installs and auto-loads the Quack extension on first use. Runtime
+images without outbound extension-repository access should install the Quack
+extension while building the image so the first application connection does
+not depend on network egress.
 
 ### Use the native DuckDB session mode
 

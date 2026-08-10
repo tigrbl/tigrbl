@@ -53,6 +53,8 @@ class EngineSpec(SerdeMixin):
           "sqlite+aiosqlite:///./file.db" ,
           "postgresql://user:pwd@host:5432/db" ,
           "postgresql+asyncpg://user:pwd@host:5432/db"
+          "analytics.duckdb" ,
+          "quack://analytics.internal:9494"
       • Mapping (recommended for clarity/portability):
           {"kind":"sqlite","async":True,"path":"./file.db"}
           {"kind":"postgres","async":True,"host":"db","db":"app_db",...}
@@ -164,7 +166,7 @@ class EngineSpec(SerdeMixin):
                 return EngineSpec(kind="postgres", async_=False, dsn=s)
 
             # DuckDB accepts its quack URI as well as a direct database file.
-            if s.lower().startswith("quack://") or s.lower().endswith(".duckdb"):
+            if s.lower().startswith("quack:") or s.lower().endswith(".duckdb"):
                 return EngineSpec(kind="duckdb", async_=False, dsn=s)
 
             raise ValueError(f"Unsupported DSN: {s}")
@@ -364,7 +366,13 @@ class EngineSpec(SerdeMixin):
                 return None
             redacted: dict[str, object] = {}
             for key, value in mapping.items():
-                if str(key).lower() in {"pwd", "password", "pass", "secret"}:
+                if str(key).lower() in {
+                    "pwd",
+                    "password",
+                    "pass",
+                    "secret",
+                    "token",
+                }:
                     redacted[key] = "***"
                 else:
                     redacted[key] = value

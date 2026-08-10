@@ -40,6 +40,7 @@ def test_from_any_rejects_unknown_dsn() -> None:
 def test_from_any_parses_duckdb_file_and_quack_dsn() -> None:
     file_spec = EngineSpec.from_any("data/analytics.duckdb")
     quack_spec = EngineSpec.from_any("quack://data/analytics.duckdb")
+    compact_quack_spec = EngineSpec.from_any("quack:data:9494")
 
     assert file_spec is not None
     assert file_spec.kind == "duckdb"
@@ -47,6 +48,9 @@ def test_from_any_parses_duckdb_file_and_quack_dsn() -> None:
     assert quack_spec is not None
     assert quack_spec.kind == "duckdb"
     assert quack_spec.dsn == "quack://data/analytics.duckdb"
+    assert compact_quack_spec is not None
+    assert compact_quack_spec.kind == "duckdb"
+    assert compact_quack_spec.dsn == "quack:data:9494"
 
 
 def test_build_requires_registered_engine_provider(monkeypatch) -> None:
@@ -107,4 +111,20 @@ def test_repr_redacts_passwords() -> None:
     rendered = repr(spec)
 
     assert "secret" not in rendered
+    assert "***" in rendered
+
+
+def test_repr_redacts_quack_token() -> None:
+    spec = EngineSpec.from_any(
+        {
+            "kind": "duckdb",
+            "dsn": "quack://analytics.internal:9494",
+            "token": "quack-secret-token",
+        }
+    )
+
+    assert spec is not None
+    rendered = repr(spec)
+
+    assert "quack-secret-token" not in rendered
     assert "***" in rendered
