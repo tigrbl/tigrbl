@@ -23,6 +23,13 @@ def test_session_plan_decodes_fragmented_and_coalesced_control_records() -> None
     assert not plan.has_pending()
     plan.project_receive({**base, "data": payload[7:], "more": True})
 
-    assert json.loads(plan.pop_pending()["data"]) == first
-    assert json.loads(plan.pop_pending()["data"]) == second
+    first_event = plan.pop_pending()
+    second_event = plan.pop_pending()
+    assert json.loads(first_event["data"]) == first
+    assert json.loads(second_event["data"]) == second
+    assert first_event["stream_id"] == second_event["stream_id"] == 0
+    assert first_event["more"] is True
+    assert second_event["more"] is True
+    assert first_event["jsonrpc_complete"] is True
+    assert second_event["jsonrpc_complete"] is True
     assert not plan.has_pending()

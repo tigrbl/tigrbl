@@ -72,6 +72,7 @@ class WebTransportSessionPlan:
                 record, separators=(",", ":")
             ).encode("utf-8")
             projected["framing"] = "jsonrpc"
+            projected["jsonrpc_complete"] = True
             self.pending.append(projected)
 
     def close(self) -> None:
