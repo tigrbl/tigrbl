@@ -344,9 +344,11 @@ def initialize(
         # bootstrap synchronously as well. This mirrors previous "initialize_sync"
         # behaviour and allows ``initialize()`` to be invoked without ``await``
         # from async contexts when using sync engines.
-        if not inspect.iscoroutinefunction(
-            prov.get_db
-        ) and not inspect.isasyncgenfunction(prov.get_db):
+        if all(
+            not inspect.iscoroutinefunction(active_provider.get_db)
+            and not inspect.isasyncgenfunction(active_provider.get_db)
+            for active_provider, _ in provider_tables
+        ):
             pending_closes = []
             for active_provider, active_tables in provider_tables:
                 db = next(active_provider.get_db())
@@ -371,17 +373,30 @@ def initialize(
         async def _inner():
             for active_provider, active_tables in provider_tables:
                 if inspect.isasyncgenfunction(active_provider.get_db):
-                    async for adb in active_provider.get_db():
-                        await adb.run_sync(
-                            lambda sync_session: _create_all_on_bind(
-                                sync_session.get_bind(),
+                    agen = active_provider.get_db()
+                    try:
+                        adb = await anext(agen)
+                        if hasattr(adb, "run_sync"):
+                            await adb.run_sync(
+                                lambda sync_session: _create_all_on_bind(
+                                    sync_session.get_bind(),
+                                    schemas=schemas,
+                                    sqlite_attachments=sqlite_attachments,
+                                    tables=active_tables,
+                                )
+                            )
+                        else:
+                            bind = adb.get_bind() if hasattr(adb, "get_bind") else adb
+                            await asyncio.to_thread(
+                                _create_all_on_bind,
+                                bind,
                                 schemas=schemas,
                                 sqlite_attachments=sqlite_attachments,
                                 tables=active_tables,
                             )
-                        )
                         _resolver.mark_schema_ready(active_provider)
-                        break
+                    finally:
+                        await agen.aclose()
                 else:
                     gen = active_provider.get_db()
                     db = next(gen)
