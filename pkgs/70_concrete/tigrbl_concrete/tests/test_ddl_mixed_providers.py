@@ -26,6 +26,9 @@ class _SyncSession:
 class _AsyncMemorySession:
     closed = False
 
+    async def run_sync(self, _fn):
+        raise AssertionError("non-SQL memory sessions must not enter SQL DDL")
+
     async def close(self) -> None:
         self.closed = True
 

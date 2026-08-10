@@ -376,7 +376,7 @@ def initialize(
                     agen = active_provider.get_db()
                     try:
                         adb = await anext(agen)
-                        if hasattr(adb, "run_sync"):
+                        if hasattr(adb, "run_sync") and hasattr(adb, "get_bind"):
                             await adb.run_sync(
                                 lambda sync_session: _create_all_on_bind(
                                     sync_session.get_bind(),
@@ -401,7 +401,7 @@ def initialize(
                     gen = active_provider.get_db()
                     db = next(gen)
                     try:
-                        if hasattr(db, "run_sync"):
+                        if hasattr(db, "run_sync") and hasattr(db, "get_bind"):
                             await db.run_sync(
                                 lambda sync_session: _create_all_on_bind(
                                     sync_session.get_bind(),
