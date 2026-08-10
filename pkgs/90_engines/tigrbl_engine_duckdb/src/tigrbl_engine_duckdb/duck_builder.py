@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Callable, Mapping, Optional, Tuple
-from urllib.parse import unquote
 
 import duckdb
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
@@ -18,6 +17,7 @@ from .sqlalchemy_adapter import DuckDBSqlAlchemyAdapter
 
 SessionFactory = Callable[[], Any]
 _NATIVE_MODES = {"native", "duckdb", "pure"}
+_QUACK_PREFIX = "quack:"
 
 
 def _config(
@@ -35,23 +35,51 @@ def _config(
     return config
 
 
-def _duckdb_path(config: Mapping[str, Any]) -> str:
-    path = (
+def _duckdb_location(config: Mapping[str, Any]) -> str:
+    location = (
         config.get("path")
         or config.get("database")
         or config.get("db")
         or config.get("dsn")
         or ":memory:"
     )
-    location = str(path)
-    if location.lower().startswith("quack://"):
-        # ``quack://relative/file.duckdb`` maps to a relative path, while an
-        # additional slash retains an absolute POSIX path. This also preserves
-        # Windows drive paths such as ``quack://C:/data/app.duckdb``.
-        location = unquote(location[len("quack://") :])
-        if not location:
-            return ":memory:"
-    return location
+    return str(location)
+
+
+def _is_quack_location(location: str) -> bool:
+    return location.lower().startswith(_QUACK_PREFIX)
+
+
+def _quoted_identifier(value: object) -> str:
+    identifier = str(value or "").strip()
+    if not identifier:
+        raise ValueError("DuckDB Quack catalog must be a non-empty identifier")
+    return f'"{identifier.replace(chr(34), chr(34) * 2)}"'
+
+
+def _quoted_literal(value: object) -> str:
+    return "'" + str(value).replace("'", "''") + "'"
+
+
+def _configure_quack_connection(conn: Any, config: Mapping[str, Any]) -> None:
+    """Attach a Quack server and make its catalog the connection default."""
+
+    uri = _duckdb_location(config)
+    if not _is_quack_location(uri):
+        return
+
+    catalog = _quoted_identifier(config.get("catalog") or "remote")
+    options = ["TYPE QUACK"]
+    token = config.get("token")
+    if token is not None:
+        options.append(f"TOKEN {_quoted_literal(token)}")
+    if "disable_ssl" in config:
+        options.append(
+            f"DISABLE_SSL {'TRUE' if bool(config['disable_ssl']) else 'FALSE'}"
+        )
+
+    conn.execute(f"ATTACH {_quoted_literal(uri)} AS {catalog} ({', '.join(options)})")
+    conn.execute(f"USE {catalog}")
 
 
 def _mode(config: Mapping[str, Any]) -> str:
@@ -73,10 +101,14 @@ def native_duckdb_engine(
     config = _config(mapping, spec, dsn)
     if path is not None:
         config["path"] = path
-    db_path = _duckdb_path(config)
+    location = _duckdb_location(config)
+    is_quack = _is_quack_location(location)
+    db_path = ":memory:" if is_quack else location
 
     def mk_session(spec_in: Optional[EngineSessionSpec] = None) -> DuckDBSession:
         conn = duckdb.connect(db_path, read_only=read_only)
+        if is_quack:
+            _configure_quack_connection(conn, config)
         if threads is not None:
             conn.execute(f"PRAGMA threads={int(threads)}")
         if pragmas:
@@ -87,6 +119,10 @@ def native_duckdb_engine(
         return DuckDBSession(conn, spec_in)
 
     engine_handle = {"kind": "duckdb", "path": db_path, "read_only": read_only}
+    if is_quack:
+        engine_handle.update(
+            {"dsn": location, "catalog": config.get("catalog") or "remote"}
+        )
     return engine_handle, mk_session
 
 
@@ -100,7 +136,9 @@ def sqlalchemy_duckdb_engine(
     """Build a SQLAlchemy DuckDB engine for ORM DDL and canonical ops."""
 
     config = _config(mapping, spec, dsn)
-    db_path = _duckdb_path(config)
+    location = _duckdb_location(config)
+    is_quack = _is_quack_location(location)
+    db_path = ":memory:" if is_quack else location
     if db_path != ":memory:":
         Path(db_path).parent.mkdir(parents=True, exist_ok=True)
 
@@ -109,6 +147,12 @@ def sqlalchemy_duckdb_engine(
         future=True,
         poolclass=NullPool,
     )
+    if is_quack:
+
+        @event.listens_for(engine, "connect")
+        def _attach_quack(dbapi_conn: Any, _: Any) -> None:
+            _configure_quack_connection(dbapi_conn, config)
+
     maker = sessionmaker(
         bind=engine,
         expire_on_commit=False,
@@ -151,12 +195,10 @@ def duckdb_engine(
 
     if _mode(config) in _NATIVE_MODES:
         return native_duckdb_engine(
-            path=_duckdb_path(config),
+            path=_duckdb_location(config),
             read_only=bool(config.get("read_only", False)),
             threads=(
-                int(config["threads"])
-                if config.get("threads") is not None
-                else None
+                int(config["threads"]) if config.get("threads") is not None else None
             ),
             pragmas=config.get("pragmas"),
             mapping=config,
