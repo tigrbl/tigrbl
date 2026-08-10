@@ -1,17 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from typing import Any
+from pathlib import Path
+from typing import Any, Sequence
 
 from ._table_registry import TableRegistry
-from ._websocket import WebSocket
 from ._request import Request
 from tigrbl_base._base import AppBase
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
 from ._engine import Engine
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_core._spec.app_spec import AppSpec
+from tigrbl_core._spec.binding_spec import Exchange, TransportBindingSpec
 from tigrbl_core._spec.engine_spec import EngineCfg
+from tigrbl_core._spec.op_spec import TxScope
 from ._route import (
     ROUTE_OPS_MODEL_NAME,
     add_route as _add_route_impl,
@@ -175,8 +177,67 @@ class App(AppBase):
             if callable(invalidate):
                 invalidate(self)
 
-    def add_route(self, path: str, endpoint: Any, *, methods: list[str] | tuple[str, ...], **kwargs: Any) -> None:
-        _add_route_impl(self, path, endpoint, methods=methods, **kwargs)
+    def add_route(
+        self,
+        path: str,
+        endpoint: Any,
+        *,
+        methods: Sequence[str],
+        name: str | None = None,
+        summary: str | None = None,
+        description: str | None = None,
+        tags: Sequence[str] | None = None,
+        deprecated: bool = False,
+        request_schema: dict[str, Any] | None = None,
+        response_schema: dict[str, Any] | None = None,
+        path_param_schemas: dict[str, dict[str, Any]] | None = None,
+        query_param_schemas: dict[str, dict[str, Any]] | None = None,
+        include_in_schema: bool = True,
+        operation_id: str | None = None,
+        response_model: Any | None = None,
+        request_model: Any | None = None,
+        responses: dict[int, dict[str, Any]] | None = None,
+        status_code: int | None = None,
+        dependencies: list[Any] | None = None,
+        security_dependencies: list[Any] | None = None,
+        inherit_owner_dependencies: bool = True,
+        tigrbl_model: Any | None = None,
+        tigrbl_alias: str | None = None,
+        tigrbl_binding: TransportBindingSpec | None = None,
+        tigrbl_exchange: Exchange | None = None,
+        tigrbl_tx_scope: TxScope | None = None,
+        tigrbl_default_root: bool = False,
+    ) -> None:
+        _add_route_impl(
+            self,
+            path,
+            endpoint,
+            methods=methods,
+            name=name,
+            summary=summary,
+            description=description,
+            tags=tags,
+            deprecated=deprecated,
+            request_schema=request_schema,
+            response_schema=response_schema,
+            path_param_schemas=path_param_schemas,
+            query_param_schemas=query_param_schemas,
+            include_in_schema=include_in_schema,
+            operation_id=operation_id,
+            response_model=response_model,
+            request_model=request_model,
+            responses=responses,
+            status_code=status_code,
+            dependencies=dependencies,
+            security_dependencies=security_dependencies,
+            inherit_owner_dependencies=inherit_owner_dependencies,
+            tigrbl_model=tigrbl_model,
+            tigrbl_alias=tigrbl_alias,
+            tigrbl_binding=tigrbl_binding,
+            tigrbl_exchange=tigrbl_exchange,
+            tigrbl_tx_scope=tigrbl_tx_scope,
+            tigrbl_default_root=tigrbl_default_root,
+        )
         self._bump_runtime_plan_revision()
 
     def route(self, path: str, *, methods: Any, **kwargs: Any):
@@ -197,28 +258,52 @@ class App(AppBase):
     def delete(self, path: str, **kwargs: Any):
         return self.route(path, methods=["DELETE"], **kwargs)
 
-    def mount_openapi(self, *, path: str = "/openapi.json", name: str = "__openapi__") -> Any:
-        from tigrbl_concrete.system.docs.openapi.mount import mount_openapi as _mount_openapi
+    def mount_openapi(
+        self, *, path: str = "/openapi.json", name: str = "__openapi__"
+    ) -> Any:
+        from tigrbl_concrete.system.docs.openapi.mount import (
+            mount_openapi as _mount_openapi,
+        )
+
         return _mount_openapi(self, path=path, name=name)
 
-    def mount_swagger(self, *, path: str = "/docs", openapi_url: str | None = None, title: str | None = None) -> Any:
+    def mount_swagger(
+        self,
+        *,
+        path: str = "/docs",
+        openapi_url: str | None = None,
+        title: str | None = None,
+    ) -> Any:
         from tigrbl_concrete.system.docs.swagger import mount_swagger as _mount_swagger
+
         return _mount_swagger(self, path=path, openapi_url=openapi_url, title=title)
 
-    def mount_openrpc(self, *, path: str = "/openrpc.json", name: str = "openrpc_json") -> Any:
+    def mount_openrpc(
+        self, *, path: str = "/openrpc.json", name: str = "openrpc_json"
+    ) -> Any:
         from tigrbl_concrete.system.docs.openrpc import mount_openrpc as _mount_openrpc
+
         return _mount_openrpc(self, path=path, name=name)
 
-    def mount_lens(self, *, path: str = "/lens", openrpc_url: str | None = None, title: str | None = None) -> Any:
+    def mount_lens(
+        self,
+        *,
+        path: str = "/lens",
+        openrpc_url: str | None = None,
+        title: str | None = None,
+    ) -> Any:
         from tigrbl_concrete.system.docs.lens import mount_lens as _mount_lens
+
         return _mount_lens(self, path=path, openrpc_url=openrpc_url, title=title)
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         from tigrbl_concrete.system.docs.json_schema import _mount_json_schema
+
         return _mount_json_schema(self, path=path)
 
     def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
         from tigrbl_concrete.system.static import _mount_static
+
         return _mount_static(self, directory=directory, path=path)
 
     def mount_app(self, *, app: Any, path: str) -> Any:
@@ -249,9 +334,7 @@ class App(AppBase):
                     handler=handler,
                     name=route_name,
                     protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
-                    exchange=str(
-                        kwargs.get("exchange", "bidirectional_stream")
-                    ),
+                    exchange=str(kwargs.get("exchange", "bidirectional_stream")),
                     framing=str(framing),
                     summary=kwargs.get("summary"),
                     description=kwargs.get("description"),
@@ -272,6 +355,7 @@ class App(AppBase):
             if callable(bump):
                 bump()
             return handler
+
         return _decorator
 
     @property
@@ -279,6 +363,7 @@ class App(AppBase):
         runtime = getattr(self, "_runtime_instance", None)
         if runtime is None:
             from tigrbl_runtime.runtime import Runtime
+
             runtime = Runtime(default_executor=self._runtime_default_executor)
             self._runtime_instance = runtime
         return runtime
@@ -539,7 +624,9 @@ class App(AppBase):
             _prefix_model_bindings(model, normalized_prefix)
             if name == ROUTE_OPS_MODEL_NAME and name in self.tables:
                 hooks = getattr(model, "hooks", None)
-                for spec in tuple(getattr(getattr(model, "ops", None), "all", ()) or ()):
+                for spec in tuple(
+                    getattr(getattr(model, "ops", None), "all", ()) or ()
+                ):
                     handler_step = None
                     alias_hooks = getattr(hooks, str(getattr(spec, "alias", "")), None)
                     if alias_hooks is not None:
@@ -552,16 +639,31 @@ class App(AppBase):
         for ws_route in list(getattr(routed, "websocket_routes", ()) or []):
             path_template = ws_route.path_template
             if normalized_prefix:
-                path_template = f"{normalized_prefix}{path_template}" if path_template != "/" else normalized_prefix
+                path_template = (
+                    f"{normalized_prefix}{path_template}"
+                    if path_template != "/"
+                    else normalized_prefix
+                )
             pattern, param_names = compile_path(path_template)
             self.websocket_routes.append(
-                replace(ws_route, path_template=path_template, pattern=pattern, param_names=param_names)
+                replace(
+                    ws_route,
+                    path_template=path_template,
+                    pattern=pattern,
+                    param_names=param_names,
+                )
             )
         for mount in list(getattr(routed, "_static_mounts", ()) or []):
             static_path = mount.get("path", "/static")
             if normalized_prefix:
-                static_path = f"{normalized_prefix}{static_path}" if static_path != "/" else normalized_prefix
-            self._static_mounts.append({"path": static_path, "directory": mount["directory"]})
+                static_path = (
+                    f"{normalized_prefix}{static_path}"
+                    if static_path != "/"
+                    else normalized_prefix
+                )
+            self._static_mounts.append(
+                {"path": static_path, "directory": mount["directory"]}
+            )
         routed_mounted_apps = list(getattr(routed, "_mounted_apps", ()) or ())
         if routed_mounted_apps:
             owner_mounted_apps = list(getattr(self, "_mounted_apps", []) or [])
@@ -573,9 +675,7 @@ class App(AppBase):
                         if mount_path != "/"
                         else normalized_prefix
                     )
-                owner_mounted_apps.append(
-                    {"path": mount_path, "app": mount.get("app")}
-                )
+                owner_mounted_apps.append({"path": mount_path, "app": mount.get("app")})
             self._mounted_apps = owner_mounted_apps
         routed_jsonrpc_mounts = getattr(routed, "_jsonrpc_endpoint_mounts", None)
         if isinstance(routed_jsonrpc_mounts, dict):
@@ -586,8 +686,14 @@ class App(AppBase):
             for mount_path, endpoint in routed_jsonrpc_mounts.items():
                 path = mount_path
                 if normalized_prefix:
-                    path = f"{normalized_prefix}{path}" if path != "/" else normalized_prefix
-                normalized_path = (path if path.startswith("/") else f"/{path}").rstrip("/") or "/"
+                    path = (
+                        f"{normalized_prefix}{path}"
+                        if path != "/"
+                        else normalized_prefix
+                    )
+                normalized_path = (path if path.startswith("/") else f"/{path}").rstrip(
+                    "/"
+                ) or "/"
                 owner_mounts[normalized_path] = endpoint
                 if normalized_path != "/":
                     owner_mounts[f"{normalized_path}/"] = endpoint
@@ -608,13 +714,17 @@ def _serve_mounted_app(host: Any, scope: dict[str, Any], receive: Any, send: Any
         mounted_app = mount.get("app")
         if mounted_app is None:
             continue
-        remainder = request_path[len(mount_path) :] if mount_path != "/" else request_path
-        nested_path = (remainder or "/")
+        remainder = (
+            request_path[len(mount_path) :] if mount_path != "/" else request_path
+        )
+        nested_path = remainder or "/"
         if not str(nested_path).startswith("/"):
             nested_path = f"/{nested_path}"
         nested_scope = dict(scope)
         nested_scope["path"] = nested_path
-        nested_scope["root_path"] = f"{str(scope.get('root_path', '') or '').rstrip('/')}{mount_path}"
+        nested_scope["root_path"] = (
+            f"{str(scope.get('root_path', '') or '').rstrip('/')}{mount_path}"
+        )
         raw_path = scope.get("raw_path")
         if isinstance(raw_path, (bytes, bytearray)):
             nested_scope["raw_path"] = nested_path.encode("utf-8")

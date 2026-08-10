@@ -692,14 +692,6 @@ class TigrblApp(_App):
             bump()
         return router
 
-    def add_router_route(self, path: str, endpoint: Any, **kwargs: Any) -> None:
-        """Register a route directly on this app instance."""
-        super().add_route(path, endpoint, **kwargs)
-
-    def add_route(self, path: str, endpoint: Any, **kwargs: Any) -> None:
-        """Register a route directly on this app instance."""
-        super().add_route(path, endpoint, **kwargs)
-
     def mount_well_known(self, resources: Any, **kwargs: Any) -> tuple[str, ...]:
         from tigrbl_concrete.system.well_known import mount_well_known
 

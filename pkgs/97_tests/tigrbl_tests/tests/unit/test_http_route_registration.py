@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import inspect
+
+import pytest
+
 import tigrbl
 
 from tigrbl import TigrblApp, TigrblRouter
@@ -13,6 +17,26 @@ def _route_specs(owner):
     return tuple(getattr(getattr(route_model, "ops", None), "all", ()) or ())
 
 
+def test_add_route_contract_is_explicit_and_rejects_unknown_keywords() -> None:
+    for owner_type in (TigrblApp, TigrblRouter):
+        signature = inspect.signature(owner_type.add_route)
+        assert all(
+            parameter.kind is not inspect.Parameter.VAR_KEYWORD
+            for parameter in signature.parameters.values()
+        )
+        assert "tigrbl_binding" in signature.parameters
+        assert "tigrbl_exchange" in signature.parameters
+
+    app = TigrblApp(title="Explicit Route Contract")
+    with pytest.raises(TypeError, match="unexpected keyword argument 'typo'"):
+        app.add_route(
+            "/healthz",
+            lambda: {"ok": True},
+            methods=("GET",),
+            typo=True,  # type: ignore[call-arg]
+        )
+
+
 def test_app_add_route_materializes_neutral_route_op_carrier() -> None:
     app = TigrblApp(title="HTTP Route Registration")
 
@@ -21,7 +45,9 @@ def test_app_add_route_materializes_neutral_route_op_carrier() -> None:
 
     app.add_route("/healthz", health, methods=["GET", "POST"], name="health")
 
-    spec = next(item for item in _route_specs(app) if getattr(item, "alias", None) == "health")
+    spec = next(
+        item for item in _route_specs(app) if getattr(item, "alias", None) == "health"
+    )
     binding = spec.bindings[0]
 
     assert spec.target == "custom"
@@ -39,13 +65,17 @@ def test_duplicate_route_alias_merges_http_bindings() -> None:
     app.add_route("/system/healthz", health, methods=["GET"], name="health")
     app.add_route("/healthz", health, methods=["POST"], name="health")
 
-    specs = [item for item in _route_specs(app) if getattr(item, "alias", None) == "health"]
+    specs = [
+        item for item in _route_specs(app) if getattr(item, "alias", None) == "health"
+    ]
     assert len(specs) == 1
 
     bindings = tuple(specs[0].bindings)
     assert len(bindings) == 2
     primary = next(binding for binding in bindings if binding.path == "/healthz")
-    secondary = next(binding for binding in bindings if binding.path == "/system/healthz")
+    secondary = next(
+        binding for binding in bindings if binding.path == "/system/healthz"
+    )
     assert primary.methods == ("GET", "POST")
     assert secondary.methods == ("GET",)
 
@@ -60,7 +90,9 @@ def test_router_routes_register_prefixed_bindings_on_app_include() -> None:
     router.add_route("/healthz", health, methods=["GET"], name="health")
     app.include_router(router, prefix="/system")
 
-    spec = next(item for item in _route_specs(app) if getattr(item, "alias", None) == "health")
+    spec = next(
+        item for item in _route_specs(app) if getattr(item, "alias", None) == "health"
+    )
     assert spec.bindings[0].path == "/system/healthz"
     assert spec.bindings[0].methods == ("GET",)
 
@@ -82,7 +114,9 @@ def test_system_document_mounts_register_as_ordinary_route_backed_ops() -> None:
     assert doc_routes["__docs__"].inherit_owner_dependencies is False
 
 
-def test_kernel_plan_indexes_registered_http_route_bindings_without_kernel_changes() -> None:
+def test_kernel_plan_indexes_registered_http_route_bindings_without_kernel_changes() -> (
+    None
+):
     app = TigrblApp(title="Kernel Route Registration")
 
     def health() -> dict[str, bool]:
@@ -92,7 +126,11 @@ def test_kernel_plan_indexes_registered_http_route_bindings_without_kernel_chang
 
     plan = Kernel().compile_plan(app)
     rest_index = plan.proto_indices["http.rest"]
-    exact = rest_index.get("exact", rest_index) if isinstance(rest_index, dict) else rest_index
+    exact = (
+        rest_index.get("exact", rest_index)
+        if isinstance(rest_index, dict)
+        else rest_index
+    )
 
     assert "GET /healthz" in exact
     meta = plan.opmeta[exact["GET /healthz"]]
@@ -100,7 +138,7 @@ def test_kernel_plan_indexes_registered_http_route_bindings_without_kernel_chang
 
 
 def test_public_surface_no_longer_exports_legacy_http_registration_helper() -> None:
-    legacy_name = "register_" "http_route"
+    legacy_name = "register_http_route"
 
     assert legacy_name not in getattr(tigrbl, "__all__", ())
     assert not hasattr(tigrbl, legacy_name)

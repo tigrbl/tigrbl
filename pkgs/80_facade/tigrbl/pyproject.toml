@@ -68,7 +68,6 @@ dependencies = [
     "aiosqlite>=0.19.0",
     "httpx>=0.27.0",
     "greenlet>=3.2.3",
-    "uvicorn",
 ]
 
 
@@ -92,7 +91,21 @@ templates = [
     "jinja2>=3.1.4",
 ]
 servers = [
+    "uvicorn",
+    "tigrcorn",
     "hypercorn>=0.16.0",
+    "gunicorn>=21.2.0",
+]
+uvicorn = [
+    "uvicorn",
+]
+tigrcorn = [
+    "tigrcorn",
+]
+hypercorn = [
+    "hypercorn>=0.16.0",
+]
+gunicorn = [
     "gunicorn>=21.2.0",
 ]
 tests = [

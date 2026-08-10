@@ -4,13 +4,15 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Sequence
 from types import SimpleNamespace
 
 from tigrbl_base._base import RouterBase
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_core._spec.app_spec import _seqify
+from tigrbl_core._spec.binding_spec import Exchange, TransportBindingSpec
 from tigrbl_core._spec.engine_spec import EngineCfg
+from tigrbl_core._spec.op_spec import TxScope
 from ._table_registry import TableRegistry
 from ._httpx import ensure_httpx_sync_transport
 from ._route import (
@@ -233,10 +235,62 @@ class Router(RouterBase):
         path: str,
         endpoint: Any,
         *,
-        methods: list[str] | tuple[str, ...],
-        **kwargs: Any,
+        methods: Sequence[str],
+        name: str | None = None,
+        summary: str | None = None,
+        description: str | None = None,
+        tags: Sequence[str] | None = None,
+        deprecated: bool = False,
+        request_schema: dict[str, Any] | None = None,
+        response_schema: dict[str, Any] | None = None,
+        path_param_schemas: dict[str, dict[str, Any]] | None = None,
+        query_param_schemas: dict[str, dict[str, Any]] | None = None,
+        include_in_schema: bool = True,
+        operation_id: str | None = None,
+        response_model: Any | None = None,
+        request_model: Any | None = None,
+        responses: dict[int, dict[str, Any]] | None = None,
+        status_code: int | None = None,
+        dependencies: list[Any] | None = None,
+        security_dependencies: list[Any] | None = None,
+        inherit_owner_dependencies: bool = True,
+        tigrbl_model: Any | None = None,
+        tigrbl_alias: str | None = None,
+        tigrbl_binding: TransportBindingSpec | None = None,
+        tigrbl_exchange: Exchange | None = None,
+        tigrbl_tx_scope: TxScope | None = None,
+        tigrbl_default_root: bool = False,
     ) -> None:
-        _add_route_impl(self, path, endpoint, methods=methods, **kwargs)
+        _add_route_impl(
+            self,
+            path,
+            endpoint,
+            methods=methods,
+            name=name,
+            summary=summary,
+            description=description,
+            tags=tags,
+            deprecated=deprecated,
+            request_schema=request_schema,
+            response_schema=response_schema,
+            path_param_schemas=path_param_schemas,
+            query_param_schemas=query_param_schemas,
+            include_in_schema=include_in_schema,
+            operation_id=operation_id,
+            response_model=response_model,
+            request_model=request_model,
+            responses=responses,
+            status_code=status_code,
+            dependencies=dependencies,
+            security_dependencies=security_dependencies,
+            inherit_owner_dependencies=inherit_owner_dependencies,
+            tigrbl_model=tigrbl_model,
+            tigrbl_alias=tigrbl_alias,
+            tigrbl_binding=tigrbl_binding,
+            tigrbl_exchange=tigrbl_exchange,
+            tigrbl_tx_scope=tigrbl_tx_scope,
+            tigrbl_default_root=tigrbl_default_root,
+        )
         self._bump_runtime_plan_revision()
 
     def _merge_tags(self, tags: list[str] | None) -> list[str] | None:

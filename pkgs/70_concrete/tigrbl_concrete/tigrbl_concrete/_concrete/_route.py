@@ -21,9 +21,11 @@ from typing import (
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from tigrbl_concrete.security.dependencies import Dependency
 from tigrbl_core._spec.binding_spec import (
+    Exchange,
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
     SseBindingSpec,
+    TransportBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
 )
@@ -32,7 +34,7 @@ from tigrbl_core.config.constants import (
     TIGRBL_DEFAULT_ROOT_METHOD,
     TIGRBL_DEFAULT_ROOT_PATH,
 )
-from tigrbl_core._spec.op_spec import OpSpec
+from tigrbl_core._spec.op_spec import OpSpec, TxScope
 
 from ._request import Request
 from ._response import Response
@@ -601,7 +603,30 @@ def add_route(
     endpoint: Handler,
     *,
     methods: Sequence[str],
-    **kwargs: Any,
+    name: str | None = None,
+    summary: str | None = None,
+    description: str | None = None,
+    tags: Sequence[str] | None = None,
+    deprecated: bool = False,
+    request_schema: dict[str, Any] | None = None,
+    response_schema: dict[str, Any] | None = None,
+    path_param_schemas: dict[str, dict[str, Any]] | None = None,
+    query_param_schemas: dict[str, dict[str, Any]] | None = None,
+    include_in_schema: bool = True,
+    operation_id: str | None = None,
+    response_model: Any | None = None,
+    request_model: Any | None = None,
+    responses: dict[int, dict[str, Any]] | None = None,
+    status_code: int | None = None,
+    dependencies: list[Any] | None = None,
+    security_dependencies: list[Any] | None = None,
+    inherit_owner_dependencies: bool = True,
+    tigrbl_model: Any | None = None,
+    tigrbl_alias: str | None = None,
+    tigrbl_binding: TransportBindingSpec | None = None,
+    tigrbl_exchange: Exchange | None = None,
+    tigrbl_tx_scope: TxScope | None = None,
+    tigrbl_default_root: bool = False,
 ) -> Route:
     normalized_methods = normalize_methods(methods)
     base_prefix = normalize_prefix(getattr(owner, "prefix", ""))
@@ -610,13 +635,13 @@ def add_route(
     full_path = f"{base_prefix}{path}" if base_prefix else path
     normalized_path = full_path.rstrip("/") or "/"
     pattern, param_names = compile_path(normalized_path)
-    is_default_root = bool(kwargs.pop("tigrbl_default_root", False))
+    is_default_root = bool(tigrbl_default_root)
     if normalized_path == TIGRBL_DEFAULT_ROOT_PATH and (
         is_default_root or TIGRBL_DEFAULT_ROOT_METHOD in normalized_methods
     ):
         _remove_default_root(owner)
 
-    binding = kwargs.pop("tigrbl_binding", None)
+    binding = tigrbl_binding
     if binding is None:
         binding = HttpRestBindingSpec(
             proto="http.rest",
@@ -630,29 +655,29 @@ def add_route(
         pattern=pattern,
         param_names=param_names,
         handler=endpoint,
-        name=kwargs.pop("name", getattr(endpoint, "__name__", "route")),
-        summary=kwargs.pop("summary", None),
-        description=kwargs.pop("description", None),
-        tags=merge_tags(getattr(owner, "tags", None), kwargs.pop("tags", None)),
-        deprecated=bool(kwargs.pop("deprecated", False)),
-        request_schema=kwargs.pop("request_schema", None),
-        response_schema=kwargs.pop("response_schema", None),
-        path_param_schemas=kwargs.pop("path_param_schemas", None),
-        query_param_schemas=kwargs.pop("query_param_schemas", None),
-        include_in_schema=kwargs.pop("include_in_schema", True),
-        operation_id=kwargs.pop("operation_id", None),
-        response_model=kwargs.pop("response_model", None),
-        request_model=kwargs.pop("request_model", None),
-        responses=kwargs.pop("responses", None),
-        status_code=kwargs.pop("status_code", None),
-        dependencies=kwargs.pop("dependencies", None),
-        security_dependencies=kwargs.pop("security_dependencies", None),
-        inherit_owner_dependencies=bool(kwargs.pop("inherit_owner_dependencies", True)),
-        tigrbl_model=kwargs.pop("tigrbl_model", None),
-        tigrbl_alias=kwargs.pop("tigrbl_alias", None),
+        name=name if name is not None else getattr(endpoint, "__name__", "route"),
+        summary=summary,
+        description=description,
+        tags=merge_tags(getattr(owner, "tags", None), tags),
+        deprecated=bool(deprecated),
+        request_schema=request_schema,
+        response_schema=response_schema,
+        path_param_schemas=path_param_schemas,
+        query_param_schemas=query_param_schemas,
+        include_in_schema=include_in_schema,
+        operation_id=operation_id,
+        response_model=response_model,
+        request_model=request_model,
+        responses=responses,
+        status_code=status_code,
+        dependencies=dependencies,
+        security_dependencies=security_dependencies,
+        inherit_owner_dependencies=bool(inherit_owner_dependencies),
+        tigrbl_model=tigrbl_model,
+        tigrbl_alias=tigrbl_alias,
         tigrbl_binding=binding,
-        tigrbl_exchange=kwargs.pop("tigrbl_exchange", None),
-        tigrbl_tx_scope=kwargs.pop("tigrbl_tx_scope", None),
+        tigrbl_exchange=tigrbl_exchange,
+        tigrbl_tx_scope=tigrbl_tx_scope,
         tigrbl_default_root=is_default_root,
     )
     owner.routes.append(route)
