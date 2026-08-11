@@ -160,7 +160,6 @@ _EXPORTS = {
     "get_builtin_table_profile_definition": "table_profile_spec",
     "get_table_profile": "table_profile_spec",
     "iter_builtin_table_profile_definitions": "table_profile_spec",
-    "make_builtin_table_profile": "table_profile_spec",
     "register_table_profile": "table_profile_spec",
     "TableRegistrySpec": "table_registry_spec",
     "BINDING_STACK_PROJECTIONS": "transport_stack",

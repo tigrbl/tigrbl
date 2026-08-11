@@ -414,69 +414,6 @@ class TableProfileSpec(SerdeMixin):
         )
 
 
-def make_profile_op(
-    target: TargetOp,
-    *,
-    alias: str | None = None,
-    bindings: Sequence[Any] = (),
-    exchange: Any = "request_response",
-) -> OpSpec:
-    selected_alias = alias or str(target)
-    return OpSpec(
-        alias=selected_alias,
-        target=target,
-        arity="collection" if target in _COLLECTION_TARGETS else "member",
-        bindings=tuple(bindings or ()),
-        exchange=exchange,
-        persist="default",
-        handler=None,
-        request_model=None,
-        response_model=None,
-        hooks=(),
-        status_code=None,
-        extra={},
-    )
-
-
-def make_table_profile(
-    kind: str,
-    targets: Sequence[TargetOp],
-    *,
-    role: TableProfileRole = "concrete",
-    default_bindings: Sequence[BindingSpec | TransportBindingSpec] = (),
-    docs_exposure: DocsExposure = "none",
-    runtime_exposure: RuntimeExposure = "none",
-    custom: bool = False,
-    namespace: str | None = None,
-) -> TableProfileSpec:
-    return TableProfileSpec(
-        kind=kind,
-        role=role,
-        ops=tuple(make_profile_op(target) for target in targets),
-        default_bindings=tuple(default_bindings or ()),
-        docs_exposure=docs_exposure,
-        runtime_exposure=runtime_exposure,
-        custom=custom,
-        namespace=namespace,
-    )
-
-
-def make_builtin_table_profile(kind: str) -> TableProfileSpec:
-    try:
-        row = BUILTIN_TABLE_PROFILE_DEFINITIONS[kind]
-    except KeyError as exc:
-        raise TableProfileError(
-            f"unknown built-in table profile kind {kind!r}"
-        ) from exc
-    return make_table_profile(
-        row.kind,
-        row.targets,
-        role=row.role,
-        docs_exposure=row.docs_exposure,
-        runtime_exposure=row.runtime_exposure,
-    )
-
-
 def get_builtin_table_profile_definition(kind: str) -> BuiltinTableProfile:
     try:
         return BUILTIN_TABLE_PROFILE_DEFINITIONS[kind]
@@ -491,7 +428,21 @@ def iter_builtin_table_profile_definitions() -> tuple[BuiltinTableProfile, ...]:
 
 
 _BUILTIN_TABLE_PROFILES: dict[str, TableProfileSpec] = {
-    kind: make_builtin_table_profile(kind) for kind in BUILTIN_TABLE_PROFILE_DEFINITIONS
+    kind: TableProfileSpec(
+        kind=row.kind,
+        role=row.role,
+        ops=tuple(
+            OpSpec(
+                alias=str(target),
+                target=target,
+                arity=("collection" if target in _COLLECTION_TARGETS else "member"),
+            )
+            for target in row.targets
+        ),
+        docs_exposure=row.docs_exposure,
+        runtime_exposure=row.runtime_exposure,
+    )
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
 }
 
 PLAIN_TABLE_PROFILE = _BUILTIN_TABLE_PROFILES["plain"]
@@ -553,8 +504,5 @@ __all__ = [
     "get_builtin_table_profile_definition",
     "get_table_profile",
     "iter_builtin_table_profile_definitions",
-    "make_profile_op",
-    "make_builtin_table_profile",
-    "make_table_profile",
     "register_table_profile",
 ]

@@ -32,7 +32,6 @@ from tigrbl_core._spec import (
     lower_binding_tokens_for_ops,
     lower_table_profile_bindings,
 )
-from tigrbl_core._spec.table_profile_spec import make_table_profile
 
 
 def _tokens(table: type):
@@ -68,7 +67,8 @@ def test_table_profile_defaults_lower_to_ordered_binding_tokens() -> None:
     )
     assert {token.binding_kind for token in tokens} == {"http.jsonrpc"}
     assert tuple(token.rpc_method for token in tokens) == tuple(
-        f"JsonRpcTable.{alias}" for alias in (
+        f"JsonRpcTable.{alias}"
+        for alias in (
             "create",
             "read",
             "update",
@@ -91,9 +91,7 @@ def test_rest_jsonrpc_profile_lowers_to_ordered_dual_tokens() -> None:
     )
     assert {token.binding_kind for token in tokens} == {"http.rest", "http.jsonrpc"}
     assert {
-        token.rpc_method
-        for token in tokens
-        if token.binding_kind == "http.jsonrpc"
+        token.rpc_method for token in tokens if token.binding_kind == "http.jsonrpc"
     } == {
         f"RestJsonRpcTable.{alias}"
         for alias in ("create", "read", "update", "replace", "delete", "list", "clear")
@@ -214,9 +212,11 @@ def test_websocket_binding_tokens_include_framing_and_session_lanes() -> None:
     assert {token.framing_kind for token in tokens} == {"jsonrpc"}
     assert {token.framing_spec for token in tokens} == {"JsonRpcFramingSpec"}
     assert {token.required_subprotocol for token in tokens} == {"jsonrpc"}
-    assert {tuple(binding.subprotocols) for op in TableSpec.collect(WebSocketJsonRpcTable).ops for binding in op.bindings} == {
-        ("jsonrpc",)
-    }
+    assert {
+        tuple(binding.subprotocols)
+        for op in TableSpec.collect(WebSocketJsonRpcTable).ops
+        for binding in op.bindings
+    } == {("jsonrpc",)}
 
 
 def test_webtransport_binding_tokens_include_stream_and_datagram_lanes() -> None:
@@ -241,7 +241,9 @@ def test_webtransport_op_lane_binding_contract() -> None:
         ),
     )
 
-    lowered = lower_table_profile_bindings(WebTransportBidiTable, profile, tuple(profile.ops))
+    lowered = lower_table_profile_bindings(
+        WebTransportBidiTable, profile, tuple(profile.ops)
+    )
     by_target = {op.target: op.bindings[0] for op in lowered}
 
     assert (by_target["create"].lane, by_target["create"].inner_framing) == (
@@ -297,7 +299,7 @@ def test_canonical_binding_token_typed_framing_fields() -> None:
 
 
 def test_binding_token_lowering_rejects_unsupported_transport_profile_pairs() -> None:
-    profile = make_table_profile("stream", ())
+    profile = TableProfileSpec(kind="stream", ops=())
     op = OpSpec(alias="create", target="create")
 
     with pytest.raises(TableProfileError, match="stream target"):

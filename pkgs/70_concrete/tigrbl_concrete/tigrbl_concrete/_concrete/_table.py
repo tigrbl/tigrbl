@@ -10,7 +10,7 @@ from ._engine import Engine  # reuse the collector
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete._mapping.model_helpers import _ensure_model_namespaces
 from tigrbl_core._spec.table_spec import TableSpec
-from tigrbl_core._spec.table_profile_spec import make_builtin_table_profile
+from tigrbl_core._spec.table_profile_spec import get_table_profile
 from tigrbl_base._base._table_base import CrudTableBase, RealtimeTableBase, TableBase
 
 
@@ -157,27 +157,27 @@ class RealtimeTable(Table, RealtimeTableBase):
 
 class RestTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest")
+    TABLE_PROFILE = get_table_profile("rest")
 
 
 class JsonRpcTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("jsonrpc")
+    TABLE_PROFILE = get_table_profile("jsonrpc")
 
 
 class RestJsonRpcTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc")
+    TABLE_PROFILE = get_table_profile("rest_jsonrpc")
 
 
 class RestBulkCrudTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest_bulk_crud")
+    TABLE_PROFILE = get_table_profile("rest_bulk_crud")
 
 
 class JsonRpcBulkCrudTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("jsonrpc_bulk_crud")
+    TABLE_PROFILE = get_table_profile("jsonrpc_bulk_crud")
 
 
 BulkCrudTable = RestBulkCrudTable
@@ -185,17 +185,17 @@ BulkCrudTable = RestBulkCrudTable
 
 class RestOltpTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest_oltp")
+    TABLE_PROFILE = get_table_profile("rest_oltp")
 
 
 class JsonRpcOltpTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("jsonrpc_oltp")
+    TABLE_PROFILE = get_table_profile("jsonrpc_oltp")
 
 
 class RestJsonRpcOltpTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc_oltp")
+    TABLE_PROFILE = get_table_profile("rest_jsonrpc_oltp")
 
 
 class OltpTable(RestOltpTable):
@@ -204,17 +204,17 @@ class OltpTable(RestOltpTable):
 
 class RestOlapTable(Table):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest_olap")
+    TABLE_PROFILE = get_table_profile("rest_olap")
 
 
 class JsonRpcOlapTable(Table):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("jsonrpc_olap")
+    TABLE_PROFILE = get_table_profile("jsonrpc_olap")
 
 
 class RestJsonRpcOlapTable(Table):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc_olap")
+    TABLE_PROFILE = get_table_profile("rest_jsonrpc_olap")
 
 
 class OlapTable(RestOlapTable):
@@ -223,52 +223,52 @@ class OlapTable(RestOlapTable):
 
 class StreamTable(RealtimeTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("stream")
+    TABLE_PROFILE = get_table_profile("stream")
 
 
 class SseTable(StreamTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("sse")
+    TABLE_PROFILE = get_table_profile("sse")
 
 
 class EventStreamTable(SseTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("event_stream")
+    TABLE_PROFILE = get_table_profile("event_stream")
 
 
 class WebSocketTable(RealtimeTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("websocket")
+    TABLE_PROFILE = get_table_profile("websocket")
 
 
 class WebSocketJsonRpcTable(WebSocketTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("websocket_jsonrpc")
+    TABLE_PROFILE = get_table_profile("websocket_jsonrpc")
 
 
 class WebTransportTable(RealtimeTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("webtransport")
+    TABLE_PROFILE = get_table_profile("webtransport")
 
 
 class WebTransportBidiTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("webtransport_bidi")
+    TABLE_PROFILE = get_table_profile("webtransport_bidi")
 
 
 class WebTransportClientStreamTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("webtransport_client_stream")
+    TABLE_PROFILE = get_table_profile("webtransport_client_stream")
 
 
 class WebTransportServerStreamTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("webtransport_server_stream")
+    TABLE_PROFILE = get_table_profile("webtransport_server_stream")
 
 
 class WebTransportDatagramTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("webtransport_datagram")
+    TABLE_PROFILE = get_table_profile("webtransport_datagram")
 
 
 __all__ = [

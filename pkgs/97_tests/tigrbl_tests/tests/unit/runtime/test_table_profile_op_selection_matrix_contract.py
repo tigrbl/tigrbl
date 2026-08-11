@@ -21,7 +21,6 @@ from tigrbl import (
 )
 from tigrbl_core._spec import OpSpec, TableProfileError, TableProfileSpec, TableSpec
 from tigrbl_core._spec.table_profile_bindings import lower_table_profile_bindings
-from tigrbl_core._spec.table_profile_spec import make_table_profile
 
 
 def _targets(table: type) -> tuple[str, ...]:
@@ -43,7 +42,9 @@ def test_abstract_crud_profile_selects_crud_ops_without_transport_bindings() -> 
     assert all(not op.bindings for op in spec.ops)
 
 
-def test_abstract_realtime_profile_selects_realtime_ops_without_transport_bindings() -> None:
+def test_abstract_realtime_profile_selects_realtime_ops_without_transport_bindings() -> (
+    None
+):
     spec = TableSpec.collect(RealtimeTable)
 
     assert _targets(RealtimeTable) == ("publish", "subscribe", "tail")
@@ -114,7 +115,12 @@ def test_olap_profile_selects_read_only_analytical_ops() -> None:
 
 
 def test_checkpoint_profile_selects_checkpoint_ops_only() -> None:
-    profile = make_table_profile("tests.checkpoint", ("checkpoint",), custom=True, namespace="tests")
+    profile = TableProfileSpec(
+        kind="tests.checkpoint",
+        ops=(OpSpec(alias="checkpoint", target="checkpoint", arity="collection"),),
+        custom=True,
+        namespace="tests",
+    )
 
     assert tuple(op.target for op in profile.ops) == ("checkpoint",)
 
@@ -173,7 +179,9 @@ def test_datagram_profile_rejects_stream_and_session_ops() -> None:
     )
 
     with pytest.raises(TableProfileError, match="WebTransport target"):
-        lower_table_profile_bindings(WebTransportDatagramTable, profile, tuple(profile.ops))
+        lower_table_profile_bindings(
+            WebTransportDatagramTable, profile, tuple(profile.ops)
+        )
 
 
 def test_custom_ops_are_not_selected_by_profile_defaults() -> None:
@@ -200,5 +208,11 @@ def test_unknown_table_profile_fails_closed() -> None:
 
 
 def test_profile_operation_selection_is_deterministic() -> None:
-    assert TableSpec.collect(RestBulkCrudTable).ops == TableSpec.collect(RestBulkCrudTable).ops
-    assert TableSpec.collect(JsonRpcBulkCrudTable).ops == TableSpec.collect(JsonRpcBulkCrudTable).ops
+    assert (
+        TableSpec.collect(RestBulkCrudTable).ops
+        == TableSpec.collect(RestBulkCrudTable).ops
+    )
+    assert (
+        TableSpec.collect(JsonRpcBulkCrudTable).ops
+        == TableSpec.collect(JsonRpcBulkCrudTable).ops
+    )

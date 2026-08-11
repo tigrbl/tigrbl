@@ -11,7 +11,6 @@ from tigrbl_core._spec.table_profile_spec import (
     TableProfileSpec,
     get_table_profile,
     iter_builtin_table_profile_definitions,
-    make_profile_op,
     register_table_profile,
 )
 from tigrbl_spec import CURRENT_SCHEMA_VERSION, validate_payload, with_identity
@@ -21,7 +20,7 @@ def test_table_profile_spec_round_trips_with_ops() -> None:
     profile = TableProfileSpec(
         kind="acme.audit",
         role="concrete",
-        ops=(make_profile_op("read"),),
+        ops=(OpSpec(alias="read", target="read", arity="member"),),
         default_bindings=(),
         docs_exposure="declared",
         runtime_exposure="none",
