@@ -35,6 +35,19 @@ Application developers, data platform engineers, and operators choosing concrete
 
 It exposes a `tigrbl.engine` entry point and a package `register()` hook so Tigrbl can discover or load the backend at runtime.
 
+The package separates three responsibilities:
+
+- `DedupeSet` owns the thread-safe exact TTL membership algorithm.
+- `DedupeEngine` conforms to `EngineBase` and owns the process-local store.
+- `DedupeSession` conforms to `EngineSessionBase` and exposes dedupe operations.
+
+Use `await session.forget(key)` when the caller needs to know whether an active
+key was removed. The inherited `await session.delete(key)` follows the generic
+session contract and returns `None`. ORM `add`/`get` and statement execution are
+not supported; their concrete session hooks raise actionable `TypeError`
+messages. Session lifecycle methods are asynchronous, but the in-memory store
+itself is synchronous and process-local.
+
 
 ## Install
 

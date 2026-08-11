@@ -3,7 +3,8 @@ from __future__ import annotations
 from tigrbl.engine.registry import register_engine
 
 from .dedupe import DedupeSet
-from .session import DedupeSession, AsyncDedupeSession
+from .engine import DedupeEngine
+from .session import DedupeSession
 
 
 class _Registration:
@@ -22,27 +23,30 @@ def capabilities() -> dict:
     return {
         "engine": "memdedupe",
         "transactional": False,
-        "async_native": True,
+        "async_native": False,
         "persistence": "process",
-        "features": {"ttl_set", "exact_membership"},
+        "engine_base": True,
+        "session_base": True,
+        "generic_crud": False,
+        "statement_execution": False,
+        "features": {"ttl_set", "exact_membership", "forget"},
     }
 
 
 def build_memdedupe(*, mapping=None, spec=None, dsn=None, **_) -> tuple[object, object]:
     mapping = dict(mapping or {})
-    async_ = bool(getattr(spec, "async_", False))
-
     default_ttl_s = float(mapping.get("default_ttl_s", 60.0))
     max_items = int(mapping.get("max_items", 1_000_000))
     namespace = str(mapping.get("namespace", "default"))
 
-    engine = DedupeSet(default_ttl_s=default_ttl_s, max_items=max_items, namespace=namespace)
+    store = DedupeSet(
+        default_ttl_s=default_ttl_s,
+        max_items=max_items,
+        namespace=namespace,
+    )
+    engine = DedupeEngine(store, spec=spec)
 
-    if async_:
-        def sessionmaker():
-            return AsyncDedupeSession(engine)
-    else:
-        def sessionmaker():
-            return DedupeSession(engine)
+    def sessionmaker(session_spec=None):
+        return DedupeSession(engine, spec=session_spec)
 
     return engine, sessionmaker

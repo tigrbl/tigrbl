@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import heapq
+import warnings
 from dataclasses import dataclass
 from threading import RLock
 from time import monotonic
@@ -81,11 +82,20 @@ class DedupeSet:
             self._enforce_max(now)
             return True
 
-    def delete(self, key: str) -> bool:
+    def discard(self, key: str) -> bool:
         now = monotonic()
         with self._lock:
             self._gc(now)
             return self._m.pop(key, None) is not None
+
+    def delete(self, key: str) -> bool:
+        """Compatibility alias for :meth:`discard`."""
+        warnings.warn(
+            "DedupeSet.delete() is deprecated; use discard()",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.discard(key)
 
     def size(self) -> int:
         now = monotonic()
