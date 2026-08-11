@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
-import tomllib
+
+try:
+    import tomllib
+except ImportError:  # pragma: no cover - exercised on Python 3.10
+    import tomli as tomllib
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
