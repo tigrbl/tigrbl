@@ -53,7 +53,7 @@ class ColumnBase(ColumnSpec, MappedColumn):
             dtype = s.type_ or lower_datatype_to_sqla_type(
                 getattr(spec, "datatype", None), field=field
             )
-            args: list[Any] = [dtype]
+            args: list[Any] = [] if dtype is None else [dtype]
             fk = getattr(s, "fk", None)
             if fk is not None:
                 args.append(
@@ -80,7 +80,8 @@ class ColumnBase(ColumnSpec, MappedColumn):
                 comment=s.comment,
                 **kw,
             )
-            self.type = dtype
+            if dtype is not None:
+                self.type = dtype
         else:
             MappedColumn.__init__(self, **kw)
 

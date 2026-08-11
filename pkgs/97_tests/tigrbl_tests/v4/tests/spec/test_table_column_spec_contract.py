@@ -6,11 +6,13 @@ import pytest
 from sqlalchemy import Integer, String
 
 from tigrbl import (
+    Column,
     ColumnSpec,
     FieldSpec,
     ForeignKeySpec,
     IOSpec,
     StorageSpec,
+    Table,
     TableSpec,
 )
 
@@ -26,6 +28,23 @@ def test_tablespec_model_ref_is_portable_without_model_import() -> None:
 def test_tablespec_rejects_string_column_entries() -> None:
     with pytest.raises(TypeError, match="columns entries must be nested column specs"):
         TableSpec.from_dict({"model_ref": "pkg.models:Book", "columns": ["title"]})
+
+
+def test_facade_column_owns_specs_and_lowers_field_python_types() -> None:
+    class FacadeColumnSpecBook(Table):
+        __tablename__ = "facade_column_spec_books"
+
+        id = Column(
+            storage=Column.S(primary_key=True, nullable=False),
+            field=Column.F(py_type=str, constraints={"max_length": 64}),
+            io=Column.IO(out_verbs=("read", "list")),
+        )
+
+    assert Column.S is StorageSpec
+    assert Column.F is FieldSpec
+    assert Column.IO is IOSpec
+    assert FacadeColumnSpecBook.id.type.length == 64
+    assert FacadeColumnSpecBook.id.storage.primary_key is True
 
 
 def test_columnspec_keeps_storage_field_and_io_metadata_separate() -> None:

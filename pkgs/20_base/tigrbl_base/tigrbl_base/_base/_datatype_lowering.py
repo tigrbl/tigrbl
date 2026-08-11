@@ -1,15 +1,47 @@
 from __future__ import annotations
 
+import datetime as dt
+from decimal import Decimal
+from types import UnionType
 from typing import Any
+from typing import Union, get_args, get_origin
+from uuid import UUID
 
 from tigrbl_core._spec.datatypes import DataTypeSpec
 
 
-def lower_datatype_to_sqla_type(datatype: DataTypeSpec | None, *, field: Any = None) -> Any:
+def lower_datatype_to_sqla_type(
+    datatype: DataTypeSpec | None, *, field: Any = None
+) -> Any:
     """Lower a canonical datatype into a SQLAlchemy type/instance."""
 
     if datatype is None:
-        return None
+        py_type = getattr(field, "py_type", None)
+        origin = get_origin(py_type)
+        if origin in (Union, UnionType):
+            members = tuple(
+                member for member in get_args(py_type) if member is not type(None)
+            )
+            py_type = members[0] if len(members) == 1 else py_type
+
+        logical_by_python_type = {
+            str: "string",
+            int: "integer",
+            float: "number",
+            Decimal: "decimal",
+            bool: "boolean",
+            bytes: "bytes",
+            dt.date: "date",
+            dt.datetime: "datetime",
+            dt.time: "time",
+            dict: "object",
+            list: "array",
+            UUID: "uuid",
+        }
+        logical_name = logical_by_python_type.get(py_type)
+        if logical_name is None:
+            return None
+        datatype = DataTypeSpec(logical_name=logical_name)
 
     from sqlalchemy import (
         JSON,
