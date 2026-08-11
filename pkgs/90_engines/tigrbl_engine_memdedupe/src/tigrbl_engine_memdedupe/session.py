@@ -20,7 +20,7 @@ class DedupeSession(EngineSessionBase):
     async def _tx_rollback_impl(self) -> None:
         return
 
-    def close(self) -> None:
+    async def _close_impl(self) -> None:
         self._closed = True
 
     def seen(self, key: str) -> bool:
@@ -35,8 +35,11 @@ class DedupeSession(EngineSessionBase):
         self._require_open()
         return self._engine.mark_if_absent(key, ttl_s=ttl_s)
 
-    def delete(self, key: str) -> bool:
+    async def delete(self, key: str) -> bool:  # type: ignore[override]
         self._require_open()
+        if self._spec and self._spec.read_only:
+            raise RuntimeError("write attempted in read-only engine session (delete)")
+        self._dirty = True
         return self._engine.delete(key)
 
     def size(self) -> int:
@@ -57,5 +60,4 @@ class DedupeSession(EngineSessionBase):
 
 
 class AsyncDedupeSession(DedupeSession):
-    async def close(self) -> None:  # type: ignore[override]
-        super().close()
+    pass
