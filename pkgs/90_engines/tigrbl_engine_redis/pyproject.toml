@@ -56,7 +56,7 @@ Homepage = "https://github.com/tigrbl/tigrbl"
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_redis"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
-[project.entry-points."tigrbl.engine"]
+[project.entry-points."tigrbl.engine_plugins"]
 redis = "tigrbl_engine_redis:register"
 
 [tool.uv.sources]

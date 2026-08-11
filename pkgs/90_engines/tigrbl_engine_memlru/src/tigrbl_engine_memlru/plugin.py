@@ -6,8 +6,16 @@ from .lru import LRUCache
 from .session import LRUSession, AsyncLRUSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_memlru(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(kind="memlru", build=build_memlru, capabilities=capabilities)
+    register_engine("memlru", _Registration())
 
 
 def capabilities() -> dict:

@@ -6,12 +6,16 @@ from .cache import InMemCache
 from .session import AsyncCacheSession, CacheSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_cache(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(
-        kind="inmemcache",
-        build=build_cache,
-        capabilities=capabilities,
-    )
+    register_engine("inmemcache", _Registration())
 
 
 def capabilities() -> dict:

@@ -18,14 +18,30 @@ from .sessions.postgres_wal_session import PostgresWALSession
 from .sessions.sqlite_wal_session import SqliteWALSession
 
 
+class _Registration:
+    def __init__(self, builder, capability_provider):
+        self._builder = builder
+        self._capability_provider = capability_provider
+
+    def build(self, *, mapping, spec, dsn):
+        return self._builder(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return self._capability_provider()
+
+
 def register() -> None:
     # Late import to avoid importing tigrbl at module import-time
     from tigrbl.engine.registry import register_engine
 
     register_engine(
-        "postgres_wal", build_postgres_wal_engine, postgres_wal_capabilities
+        "postgres_wal",
+        _Registration(build_postgres_wal_engine, postgres_wal_capabilities),
     )
-    register_engine("sqlite_wal", build_sqlite_wal_engine, sqlite_wal_capabilities)
+    register_engine(
+        "sqlite_wal",
+        _Registration(build_sqlite_wal_engine, sqlite_wal_capabilities),
+    )
 
 
 __all__ = [

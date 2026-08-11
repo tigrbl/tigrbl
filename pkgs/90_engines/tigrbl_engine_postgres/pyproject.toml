@@ -61,8 +61,8 @@ Homepage = "https://github.com/tigrbl/tigrbl"
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_postgres"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
-[project.entry-points."tigrbl.engine"]
-postgres = "tigrbl_engine_postgres:register"
+[project.entry-points."tigrbl.engine_plugins"]
+postgres = "tigrbl_engine_postgres.plugin:register"
 
 [dependency-groups]
 dev = [

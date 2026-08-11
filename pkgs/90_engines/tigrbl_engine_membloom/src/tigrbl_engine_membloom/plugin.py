@@ -6,12 +6,16 @@ from .bloom import BloomFilter, BloomRing
 from .session import AsyncBloomSession, BloomSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_membloom(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(
-        kind="membloom",
-        build=build_membloom,
-        capabilities=capabilities,
-    )
+    register_engine("membloom", _Registration())
 
 
 def capabilities() -> dict:

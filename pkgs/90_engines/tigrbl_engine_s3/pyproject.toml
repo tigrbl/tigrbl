@@ -31,7 +31,7 @@ Homepage = "https://github.com/tigrbl/tigrbl"
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_s3"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
-[project.entry-points."tigrbl.engine"]
+[project.entry-points."tigrbl.engine_plugins"]
 s3 = "tigrbl_engine_s3:register"
 
 [dependency-groups]

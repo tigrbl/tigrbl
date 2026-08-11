@@ -12,30 +12,16 @@ __all__ = [
 ]
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return dataframe_engine(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return dataframe_capabilities()
+
+
 def register() -> None:
-    """
-    Entry point target for group 'tigrbl.engine'. This function will be loaded
-    by Tigrbl's plugin system. It attempts to register the 'dataframe' kind
-    with whatever registry is exposed by the installed Tigrbl version.
-    """
-    register_fn = None
-    try:
-        from tigrbl.engine.registry import register_engine as _reg
+    """Register the DataFrame provider with Tigrbl's current protocol."""
+    from tigrbl.engine.registry import register_engine
 
-        register_fn = _reg
-    except Exception:
-        try:
-            from tigrbl.engine.plugins import register_engine as _reg2
-
-            register_fn = _reg2
-        except Exception:
-            try:
-                from tigrbl.engine import register_engine as _reg3  # type: ignore
-
-                register_fn = _reg3
-            except Exception as exc:
-                raise RuntimeError(
-                    "Could not locate Tigrbl engine registry to register plugin"
-                ) from exc
-
-    register_fn("dataframe", dataframe_engine, dataframe_capabilities)
+    register_engine("dataframe", _Registration())

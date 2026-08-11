@@ -61,9 +61,6 @@ Homepage = "https://github.com/tigrbl/tigrbl"
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_duckdb"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
-[project.entry-points."tigrbl.engine"]
-duckdb = "tigrbl_engine_duckdb.plugin:register"
-
 [project.entry-points."tigrbl.engine_plugins"]
 duckdb = "tigrbl_engine_duckdb.plugin:register"
 

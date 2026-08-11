@@ -2,16 +2,25 @@ from .engine import BigQueryEngine, bigquery_engine
 from .session import BigQuerySession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return bigquery_engine(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return {
+            "engine": "bigquery",
+            "transactional": False,
+            "async_native": False,
+            "isolation_levels": set(),
+            "read_only_enforced": False,
+        }
+
+
 def register() -> None:
     """Entry point hook invoked by tigrbl to register the engine kind."""
-    try:
-        # Preferred path in the current tigrbl
-        from tigrbl.engine.registry import register_engine
-    except Exception:  # pragma: no cover
-        # Fallback, in case of older packaging
-        from tigrbl.engine import register_engine  # type: ignore
-    # Register the builder under kind='bigquery'
-    register_engine("bigquery", bigquery_engine)
+    from tigrbl.engine.registry import register_engine
+
+    register_engine("bigquery", _Registration())
 
 
 __all__ = [

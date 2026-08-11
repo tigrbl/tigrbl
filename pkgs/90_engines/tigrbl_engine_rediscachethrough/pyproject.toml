@@ -61,7 +61,7 @@ Homepage = "https://github.com/tigrbl/tigrbl"
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_rediscachethrough"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
-[project.entry-points."tigrbl.engine"]
+[project.entry-points."tigrbl.engine_plugins"]
 rediscachethrough = "tigrbl_engine_rediscachethrough:register"
 
 [dependency-groups]
