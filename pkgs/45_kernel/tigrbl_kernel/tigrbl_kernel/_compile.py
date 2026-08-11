@@ -336,8 +336,11 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                             binding, (WsBindingSpec, WebSocketProtocolBindingSpec)
                         )
                         and framing_kind(getattr(binding, "framing", None)) == "jsonrpc"
-                        and target != "custom"
+                        and bool(getattr(sp, "expose_method", True))
                     ):
+                        # JSON-RPC method operations are dispatched inside the
+                        # framework-owned WebSocket session. Only the hidden
+                        # transport operation may own the socket path itself.
                         continue
                     selector = binding.path
                     route_metadata = _route_metadata_for_binding(binding)

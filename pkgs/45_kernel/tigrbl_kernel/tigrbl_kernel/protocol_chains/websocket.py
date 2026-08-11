@@ -464,6 +464,10 @@ def build_websocket_jsonrpc_session_handler(
 
     async def _websocket_jsonrpc_session(ctx: Any) -> None:
         await _websocket_transport.accept(ctx, subprotocol=subprotocol)
+        channel = ctx.get("channel")
+        channel_state = getattr(channel, "state", None)
+        if isinstance(channel_state, dict):
+            channel_state["transport_sent"] = True
         temp = ctx.get("temp", {})
         if isinstance(temp, dict):
             ws_state = temp.setdefault("websocket", {})

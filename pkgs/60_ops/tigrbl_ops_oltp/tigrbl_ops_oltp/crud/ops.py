@@ -37,6 +37,20 @@ from .helpers import (
 logger = logging.getLogger("uvicorn")
 
 _MAPPED_MODELS: "WeakSet[type]" = WeakSet()
+_NO_NATIVE_OPERATION = object()
+
+
+async def _call_native_operation(
+    db: Any,
+    name: str,
+    *args: Any,
+    **kwargs: Any,
+) -> Any:
+    operation = getattr(db, name, None)
+    if not callable(operation):
+        return _NO_NATIVE_OPERATION
+    result = operation(*args, **kwargs)
+    return await result if inspect.isawaitable(result) else result
 
 
 @lru_cache(maxsize=512)
@@ -126,9 +140,12 @@ async def create(
     Flush-only (commit happens later in TX_COMMIT).
     """
     logger.debug("create called with model=%s data=%s", model, data)
-    _ensure_model_mapped(model)
     data = _filter_in_values(model, data or {}, "create")
     _validate_enum_values(model, data)
+    native = await _call_native_operation(db, "create_record", model, data)
+    if native is not _NO_NATIVE_OPERATION:
+        return native
+    _ensure_model_mapped(model)
     obj = model(**data)
     if hasattr(db, "add"):
         try:
@@ -169,6 +186,9 @@ async def read(model: type, ident: Any, db: Union[Session, AsyncSession]) -> Any
     Load a single row by primary key. Raises NoResultFound if not found.
     """
     logger.debug("read called with model=%s ident=%s", model, ident)
+    native = await _call_native_operation(db, "read_record", model, ident)
+    if native is not _NO_NATIVE_OPERATION:
+        return native
     _ensure_model_mapped(model)
     obj = await _maybe_get(db, model, ident)
     if obj is None:
@@ -258,6 +278,9 @@ async def delete(
     Flush-only.
     """
     logger.debug("delete called with model=%s ident=%s", model, ident)
+    native = await _call_native_operation(db, "delete_record", model, ident)
+    if native is not _NO_NATIVE_OPERATION:
+        return native
     _ensure_model_mapped(model)
     obj = await read(model, ident, db)
     await _maybe_delete(db, obj)
@@ -278,13 +301,23 @@ async def list(*_args: Any, **_kwargs: Any) -> List[Any]:  # noqa: A001  (shadow
     """
     logger.debug("list called with args=%s kwargs=%s", _args, _kwargs)
     model, params = _normalize_list_call(_args, _kwargs)
-    _ensure_model_mapped(model)
-
     filters: Mapping[str, Any] = _authorize_filters(model, params["filters"])
     skip: Optional[int] = params["skip"]
     limit: Optional[int] = params["limit"]
     db: Union[Session, AsyncSession] = params["db"]
     sort = params["sort"]
+    native = await _call_native_operation(
+        db,
+        "list_records",
+        model,
+        filters=filters,
+        skip=skip,
+        limit=limit,
+        sort=sort,
+    )
+    if native is not _NO_NATIVE_OPERATION:
+        return native
+    _ensure_model_mapped(model)
 
     if select is None:  # pragma: no cover
         # Fallback: legacy query API
@@ -329,13 +362,21 @@ async def clear(
     # Reuse normalizer to accept the same shapes
     logger.debug("clear called with args=%s kwargs=%s", args, kwargs)
     model, params = _normalize_list_call(args, kwargs)
-    _ensure_model_mapped(model)
-    raw_filters: Mapping[str, Any] = params["filters"]
+    filters: Mapping[str, Any] = _authorize_filters(model, params["filters"])
     db: Union[Session, AsyncSession] = params["db"]
+    native = await _call_native_operation(
+        db,
+        "clear_records",
+        model,
+        filters=filters,
+    )
+    if native is not _NO_NATIVE_OPERATION:
+        return native
+    _ensure_model_mapped(model)
 
     if sa_delete is None:  # pragma: no cover
         # Fallback path: manual iteration
-        items = await list(model, raw_filters, db=db)
+        items = await list(model, filters, db=db)
         n = 0
         for obj in items:
             await _maybe_delete(db, obj)
@@ -343,8 +384,7 @@ async def clear(
         await _maybe_flush(db)
         return {"deleted": n}
 
-    filt = _authorize_filters(model, raw_filters)
-    where = _apply_filters(model, filt)
+    where = _apply_filters(model, filters)
     stmt = sa_delete(model)
     if where is not None:
         stmt = stmt.where(where)
@@ -359,10 +399,17 @@ async def clear(
 async def count(*args: Any, **kwargs: Any) -> Dict[str, int]:
     """Count rows matching equality filters."""
     model, params = _normalize_list_call(args, kwargs)
-    _ensure_model_mapped(model)
-
     filters: Mapping[str, Any] = _authorize_filters(model, params["filters"])
     db: Union[Session, AsyncSession] = params["db"]
+    native = await _call_native_operation(
+        db,
+        "count_records",
+        model,
+        filters=filters,
+    )
+    if native is not _NO_NATIVE_OPERATION:
+        return native
+    _ensure_model_mapped(model)
     stmt = select(func.count()).select_from(model)
     where = _apply_filters(model, filters)
     if where is not None:
@@ -376,6 +423,9 @@ async def exists(
     model: type, ident: Any, db: Union[Session, AsyncSession]
 ) -> Dict[str, bool]:
     """Check whether a row exists by primary key."""
+    native = await _call_native_operation(db, "exists_record", model, ident)
+    if native is not _NO_NATIVE_OPERATION:
+        return native
     _ensure_model_mapped(model)
     obj = await _maybe_get(db, model, ident)
     return {"exists": obj is not None}

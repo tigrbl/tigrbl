@@ -18,7 +18,6 @@ from tigrbl_core._spec.binding_spec import (
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
     SseBindingSpec,
-    WebTransportBindingSpec,
     WsBindingSpec,
     framing_kind,
     resolve_rest_nested_prefix,
@@ -634,6 +633,33 @@ def _resolve_schema_arg(model: type, arg: Any) -> Any:
     return arg
 
 
+def _schema_io_kwargs(
+    model: type,
+    verb: str,
+    *,
+    direction: str,
+) -> dict[str, Set[str]]:
+    """Select schema fields from Column IO declarations for one direction."""
+    if verb.startswith("bulk_"):
+        return {}
+    specs = ColumnSpec.collect(model)
+    if not specs:
+        return {}
+
+    included: Set[str] = set()
+    for name, column in specs.items():
+        io = getattr(column, "io", None)
+        in_verbs = set(getattr(io, "in_verbs", ()) or ())
+        out_verbs = set(getattr(io, "out_verbs", ()) or ())
+        selected = in_verbs if direction == "in" else out_verbs
+        if verb in selected or not (in_verbs or out_verbs):
+            included.add(name)
+
+    if included:
+        return {"include": included}
+    return {"exclude": set(specs)}
+
+
 def _materialize_schemas(model: type, specs: Tuple[OpSpec, ...]) -> None:
     schemas = getattr(model, "schemas", None)
     if not isinstance(schemas, SimpleNamespace):
@@ -667,6 +693,7 @@ def _materialize_schemas(model: type, specs: Tuple[OpSpec, ...]) -> None:
                     model,
                     verb=spec.target,
                     name=f"{model.__name__}{spec.alias.replace('_', ' ').title().replace(' ', '')}Request",
+                    **_schema_io_kwargs(model, spec.target, direction="in"),
                 )
             setattr(alias_ns, "in_", request_model)
 
@@ -679,6 +706,7 @@ def _materialize_schemas(model: type, specs: Tuple[OpSpec, ...]) -> None:
                     model,
                     verb=response_verb,
                     name=f"{model.__name__}{spec.alias.replace('_', ' ').title().replace(' ', '')}Response",
+                    **_schema_io_kwargs(model, spec.target, direction="out"),
                 )
             setattr(alias_ns, "out", response_item_model)
 

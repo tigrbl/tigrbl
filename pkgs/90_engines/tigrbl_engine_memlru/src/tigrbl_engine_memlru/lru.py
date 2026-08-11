@@ -53,6 +53,15 @@ class LRUCache:
             self._od.move_to_end(key, last=True)
             return e.value
 
+    def get_entry(self, key: str, default: Any = None) -> Any:
+        """Return value and cost while applying the same recency touch as get()."""
+        with self._lock:
+            entry = self._od.get(key)
+            if entry is None:
+                return default
+            self._od.move_to_end(key, last=True)
+            return entry.value, entry.cost
+
     def set(self, key: str, value: Any, *, cost: float | None = None) -> None:
         if cost is None:
             cost = self.default_cost
@@ -91,6 +100,14 @@ class LRUCache:
                 "max_cost": self.max_cost,
                 "default_cost": self.default_cost,
             }
+
+    def snapshot(self) -> list[dict[str, Any]]:
+        """Return entries from least to most recently used without touching them."""
+        with self._lock:
+            return [
+                {"key": key, "value": entry.value, "cost": entry.cost}
+                for key, entry in self._od.items()
+            ]
 
     def _evict(self) -> None:
         while len(self._od) > self.max_items:

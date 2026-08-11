@@ -90,7 +90,8 @@ class RealtimeRouteMetadataTable:
     ops = (
         OpSpec(
             alias="ws_rpc",
-            target="read",
+            target="custom",
+            expose_method=False,
             bindings=(
                 WsBindingSpec(
                     proto="ws",
@@ -101,7 +102,8 @@ class RealtimeRouteMetadataTable:
         ),
         OpSpec(
             alias="ws_rpc_item",
-            target="read",
+            target="custom",
+            expose_method=False,
             bindings=(
                 WsBindingSpec(
                     proto="ws",
@@ -118,6 +120,34 @@ class RealtimeRouteMetadataTable:
                     path="/wt/create",
                     profile="bidi_stream",
                     inner_framing=JsonRpcFramingSpec(),
+                ),
+            ),
+        ),
+    )
+
+
+class JsonRpcMethodAndSessionTable:
+    ops = (
+        OpSpec(
+            alias="claim",
+            target="custom",
+            bindings=(
+                WsBindingSpec(
+                    proto="ws",
+                    path="/ws/dedupe",
+                    framing=JsonRpcFramingSpec(),
+                ),
+            ),
+        ),
+        OpSpec(
+            alias="session",
+            target="custom",
+            expose_method=False,
+            bindings=(
+                WsBindingSpec(
+                    proto="ws",
+                    path="/ws/dedupe",
+                    framing=JsonRpcFramingSpec(),
                 ),
             ),
         ),
@@ -171,6 +201,16 @@ def test_compile_plan_preserves_derived_websocket_route_metadata() -> None:
     assert templated_metadata["framing"] == "jsonrpc"
     assert templated_metadata["framing_spec"] == "JsonRpcFramingSpec"
     assert templated_metadata["subprotocols"] == ("jsonrpc",)
+
+
+def test_jsonrpc_session_owns_socket_path_over_custom_method() -> None:
+    compiler = CompilerFixture()
+    app = AppFixture(tables=(JsonRpcMethodAndSessionTable,))
+
+    plan = _compile_plan(compiler, app)
+
+    assert plan.proto_indices["ws"]["exact"]["/ws/dedupe"] == 1
+    assert plan.opkey_to_meta[OpKey("ws", "/ws/dedupe")] == 1
 
 
 def test_compile_plan_preserves_webtransport_lane_framing_metadata() -> None:
@@ -230,14 +270,14 @@ def test_compile_plan_keeps_table_profile_rest_jsonrpc_bindings_separate() -> No
     assert len(plan.opmeta) == 1
     assert plan.opmeta[0].alias == "create"
     assert plan.opmeta[0].target == "create"
-    assert plan.opkey_to_meta[OpKey("http.rest", "POST /create")] == 0
+    assert plan.opkey_to_meta[OpKey("http.rest", "POST /restjsonrpctable")] == 0
     assert (
         plan.opkey_to_meta[
             OpKey("http.jsonrpc", "default:RestJsonRpcTable.create")
         ]
         == 0
     )
-    assert plan.proto_indices["http.rest"]["exact"]["POST /create"] == 0
+    assert plan.proto_indices["http.rest"]["exact"]["POST /restjsonrpctable"] == 0
     jsonrpc = plan.proto_indices["http.jsonrpc"]["endpoints"]["default"]
     assert jsonrpc["RestJsonRpcTable.create"]["meta_index"] == 0
     assert jsonrpc["RestJsonRpcTable.create"]["selector"] == (
