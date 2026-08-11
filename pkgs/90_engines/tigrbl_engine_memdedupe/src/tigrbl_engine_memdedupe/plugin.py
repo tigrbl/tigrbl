@@ -6,8 +6,16 @@ from .dedupe import DedupeSet
 from .session import DedupeSession, AsyncDedupeSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_memdedupe(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(kind="memdedupe", build=build_memdedupe, capabilities=capabilities)
+    register_engine("memdedupe", _Registration())
 
 
 def capabilities() -> dict:

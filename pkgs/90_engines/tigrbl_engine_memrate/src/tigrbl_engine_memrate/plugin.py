@@ -6,8 +6,16 @@ from .rate import RateLimiter
 from .session import RateSession, AsyncRateSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_memrate(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(kind="memrate", build=build_memrate, capabilities=capabilities)
+    register_engine("memrate", _Registration())
 
 
 def capabilities() -> dict:

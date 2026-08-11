@@ -17,8 +17,8 @@ dependencies = [
 ]
 
 [project.entry-points."tigrbl.engine_plugins"]
-mariadb = "tigrbl_engine_mariadb:register"
-mysql = "tigrbl_engine_mariadb:register"
+mariadb = "tigrbl_engine_mariadb.plugin:register"
+mysql = "tigrbl_engine_mariadb.plugin:register"
 
 [project.urls]
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_mariadb"

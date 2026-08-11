@@ -6,8 +6,16 @@ from .queuehub import QueueHub
 from .session import QueueSession, AsyncQueueSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_memqueue(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(kind="memqueue", build=build_memqueue, capabilities=capabilities)
+    register_engine("memqueue", _Registration())
 
 
 def capabilities() -> dict:

@@ -58,7 +58,7 @@ Homepage = "https://github.com/tigrbl/tigrbl"
 Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_memqueue"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
-[project.entry-points."tigrbl.engine"]
+[project.entry-points."tigrbl.engine_plugins"]
 memqueue = "tigrbl_engine_memqueue.plugin:register"
 
 [tool.uv.sources]

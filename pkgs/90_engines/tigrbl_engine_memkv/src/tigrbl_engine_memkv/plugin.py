@@ -6,8 +6,16 @@ from .kv import KVStore
 from .session import KVSession, AsyncKVSession
 
 
+class _Registration:
+    def build(self, *, mapping, spec, dsn):
+        return build_memkv(mapping=mapping, spec=spec, dsn=dsn)
+
+    def capabilities(self, *, spec, mapping=None):
+        return capabilities()
+
+
 def register() -> None:
-    register_engine(kind="memkv", build=build_memkv, capabilities=capabilities)
+    register_engine("memkv", _Registration())
 
 
 def capabilities() -> dict:
