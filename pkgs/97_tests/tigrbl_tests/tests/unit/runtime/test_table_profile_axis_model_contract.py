@@ -4,11 +4,13 @@ import pytest
 
 from tigrbl import CrudTable, RestTable, StreamTable
 from tigrbl_core._spec import (
+    BindingSpec,
     HttpRestBindingSpec,
     OpSpec,
     TableProfileError,
     TableProfileSpec,
     TableSpec,
+    WsBindingSpec,
     get_table_profile,
 )
 
@@ -78,6 +80,46 @@ def test_default_bindings_do_not_override_per_op_bindings() -> None:
         TABLE_PROFILE = profile
 
     assert _spec(ExplicitBinding).ops[0].bindings == (explicit,)
+
+
+def test_default_bindings_apply_to_canonical_and_custom_operations() -> None:
+    binding = WsBindingSpec(proto="ws", path="/ws/items")
+    profile = TableProfileSpec(
+        kind="tests.default-binding-lowering",
+        ops=(
+            OpSpec(alias="read", target="read"),
+            OpSpec(alias="inspect", target="custom"),
+        ),
+        default_bindings=(binding,),
+        custom=True,
+        namespace="tests",
+    )
+
+    class DefaultBindings(RestTable):
+        __abstract__ = True
+        TABLE_PROFILE = profile
+
+    assert [op.bindings for op in _spec(DefaultBindings).ops] == [
+        (binding,),
+        (binding,),
+    ]
+
+
+def test_named_default_binding_is_unwrapped_during_lowering() -> None:
+    transport = WsBindingSpec(proto="ws", path="/ws/items")
+    profile = TableProfileSpec(
+        kind="tests.named-default-binding",
+        ops=(OpSpec(alias="read", target="read"),),
+        default_bindings=(BindingSpec(name="items", spec=transport),),
+        custom=True,
+        namespace="tests",
+    )
+
+    class NamedDefaultBinding(RestTable):
+        __abstract__ = True
+        TABLE_PROFILE = profile
+
+    assert _spec(NamedDefaultBinding).ops[0].bindings == (transport,)
 
 
 def test_abstract_profile_cannot_declare_default_network_bindings() -> None:

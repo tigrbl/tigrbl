@@ -4,6 +4,7 @@ from dataclasses import dataclass, replace
 from typing import Any, Iterable, Literal, Sequence
 
 from .binding_spec import (
+    BindingSpec,
     BytesFramingSpec,
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
@@ -234,6 +235,24 @@ def lower_default_bindings_for_op(
     profile: TableProfileSpec,
     op: OpSpec,
 ) -> tuple[LoweredBinding, ...]:
+    profile_bindings = tuple(
+        binding.spec if isinstance(binding, BindingSpec) else binding
+        for binding in profile.default_bindings
+    )
+    if profile_bindings:
+        return tuple(
+            LoweredBinding(
+                token=_token_from_binding(
+                    source="table_profile",
+                    profile=profile.kind,
+                    op=op,
+                    binding=binding,
+                    precedence=1,
+                ),
+                binding=binding,
+            )
+            for binding in profile_bindings
+        )
     if _is_custom_or_unknown(op):
         return ()
 
