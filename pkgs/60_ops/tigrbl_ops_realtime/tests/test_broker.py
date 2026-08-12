@@ -26,14 +26,42 @@ def test_room_channels_are_isolated_and_disconnect_cleans_up() -> None:
         await broker.subscribe(channel="room:a", sink=room_a, session_id="a")
         await broker.subscribe(channel="room:b", sink=room_b, session_id="b")
 
-        result = await broker.publish(channel="room:a", event={"message": "hello"})
+        result = await broker.publish(
+            channel="room:a",
+            event={"message": "hello"},
+            publication_id="pub-room-a",
+        )
         await asyncio.sleep(0)
 
         assert result.queued == 1
+        assert result.publication_id == "pub-room-a"
+        assert room_a.events[0].publication_id == "pub-room-a"
         assert [item.event for item in room_a.events] == [{"message": "hello"}]
         assert room_b.events == []
         assert await broker.unsubscribe_session("a") == 1
         assert broker.subscriber_count("room:a") == 0
+        await broker.close()
+
+    asyncio.run(exercise())
+
+
+def test_one_publication_has_distinct_subscriber_notification_ids() -> None:
+    async def exercise() -> None:
+        broker = InMemoryRealtimeBroker()
+        first = RecordingSink()
+        second = RecordingSink()
+        await broker.subscribe(channel="room", sink=first, session_id="first")
+        await broker.subscribe(channel="room", sink=second, session_id="second")
+
+        result = await broker.publish(channel="room", event={"sequence": 1})
+        await asyncio.sleep(0)
+
+        assert result.publication_id.startswith("pub_")
+        assert first.events[0].publication_id == result.publication_id
+        assert second.events[0].publication_id == result.publication_id
+        assert first.events[0].published_at == result.published_at
+        assert second.events[0].published_at == result.published_at
+        assert first.events[0].notification_id != second.events[0].notification_id
         await broker.close()
 
     asyncio.run(exercise())
@@ -78,5 +106,8 @@ def test_transport_sinks_own_transport_projection() -> None:
         assert webtransport_messages[0]["stream_id"] == "realtime-events"
         assert webtransport_messages[0]["more"] is True
         assert webtransport_messages[0]["emit_id"]
+        websocket_frame = __import__("json").loads(websocket_messages[0]["text"])
+        assert websocket_frame["params"]["publication_id"] == envelope.publication_id
+        assert websocket_frame["params"]["notification_id"] == envelope.notification_id
 
     asyncio.run(exercise())

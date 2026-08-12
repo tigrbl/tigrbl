@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass
 from dataclasses import field
+from datetime import datetime, timezone
 import inspect
 import json
 import struct
@@ -18,12 +19,23 @@ class RealtimeEnvelope:
     channel: str
     event: Any
     method: str = "realtime.publish"
+    publication_id: str = field(default_factory=lambda: f"pub_{uuid4().hex}")
+    notification_id: str = field(default_factory=lambda: f"ntf_{uuid4().hex}")
+    published_at: str = field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
 
     def jsonrpc(self) -> dict[str, Any]:
         return {
             "jsonrpc": "2.0",
             "method": self.method,
-            "params": {"channel": self.channel, "event": self.event},
+            "params": {
+                "publication_id": self.publication_id,
+                "notification_id": self.notification_id,
+                "published_at": self.published_at,
+                "channel": self.channel,
+                "event": self.event,
+            },
         }
 
 
@@ -66,7 +78,9 @@ class WebTransportRealtimeSink:
     carrier: Any
     session_id: str
     stream_id: str = "realtime-events"
-    _send_lock: asyncio.Lock = field(default_factory=asyncio.Lock, init=False, repr=False)
+    _send_lock: asyncio.Lock = field(
+        default_factory=asyncio.Lock, init=False, repr=False
+    )
     _closed_streams: set[str] = field(default_factory=set, init=False, repr=False)
 
     async def send_realtime(self, envelope: RealtimeEnvelope) -> None:

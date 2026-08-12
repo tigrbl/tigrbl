@@ -13,6 +13,18 @@ def _body(payload: Any) -> Mapping[str, Any]:
     return payload
 
 
+def _publication_id(body: Mapping[str, Any]) -> str | None:
+    value = body.get("publication_id")
+    if value is None:
+        return None
+    resolved = str(value).strip()
+    if not resolved:
+        raise ValueError("publication_id must not be empty")
+    if len(resolved) > 200:
+        raise ValueError("publication_id must be at most 200 characters")
+    return resolved
+
+
 def _ctx_get(ctx: Any, key: str, default: Any = None) -> Any:
     if isinstance(ctx, Mapping):
         return ctx.get(key, default)
@@ -66,10 +78,17 @@ async def publish(payload: Any, *, ctx: Any = None) -> Dict[str, Any]:
     jsonrpc = _ctx_get(ctx, "jsonrpc", {})
     method = str(body.get("method") or _ctx_get(jsonrpc, "method", "realtime.publish"))
     broker = _broker(ctx)
-    result = await broker.publish(channel=channel, event=event, method=method)
+    result = await broker.publish(
+        channel=channel,
+        event=event,
+        method=method,
+        publication_id=_publication_id(body),
+    )
     await asyncio.sleep(0)
     return {
         "published": True,
+        "publication_id": result.publication_id,
+        "published_at": result.published_at,
         "channel": channel,
         "event": event,
         "subscriber_count": result.subscriber_count,

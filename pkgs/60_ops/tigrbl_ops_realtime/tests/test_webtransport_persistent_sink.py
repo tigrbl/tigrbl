@@ -31,3 +31,6 @@ async def test_realtime_notifications_reuse_one_nonterminal_server_stream() -> N
         size = struct.unpack("!I", data[:4])[0]
         decoded.append(json.loads(data[4 : 4 + size]))
     assert [item["params"]["event"]["sequence"] for item in decoded] == [1, 2]
+    assert all(item["params"]["publication_id"].startswith("pub_") for item in decoded)
+    assert all(item["params"]["notification_id"].startswith("ntf_") for item in decoded)
+    assert all("id" not in item for item in decoded)

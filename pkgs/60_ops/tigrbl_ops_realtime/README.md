@@ -70,6 +70,19 @@ Implementation orientation:
 
 - Import roots: `tigrbl_ops_realtime`.
 - Public symbols: `append_chunk`, `checkpoint`, `download`, `publish`, `send_datagram`, `subscribe`, `tail`, `upload`.
+
+## Publication identity
+
+Realtime fanout remains a JSON-RPC notification and therefore omits the
+top-level JSON-RPC `id`. Tigrbl adds application-level identity inside
+`params`: `publication_id` identifies one publish attempt, while
+`notification_id` identifies one subscriber notification. `published_at`
+records when the broker accepted the publication. A caller may provide a
+bounded `publication_id`; otherwise the broker generates one.
+
+The publish response reports `queued`, `failed`, and `dropped`. The legacy
+`delivered` field remains a compatibility alias for `queued`; it is not an
+end-client acknowledgement.
 - Workspace dependencies: none declared.
 - External runtime dependencies: none declared.
 

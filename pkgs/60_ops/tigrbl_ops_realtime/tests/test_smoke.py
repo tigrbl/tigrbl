@@ -37,7 +37,11 @@ async def test_subscribe_publish_fanout_through_context_broker() -> None:
         ctx=ctx,
     )
     published = await publish(
-        {"channel": "thread:alpha", "event": {"body": "hello"}},
+        {
+            "channel": "thread:alpha",
+            "event": {"body": "hello"},
+            "publication_id": "pub-client-1",
+        },
         ctx={"realtime": {"broker": broker}},
     )
 
@@ -45,14 +49,29 @@ async def test_subscribe_publish_fanout_through_context_broker() -> None:
     assert subscribed["subscription_id"] == "session-1"
     assert subscribed["subscriber_count"] == 1
     assert published["delivered"] == 1
-    assert json.loads(str(sent[0]["text"])) == {
+    assert published["publication_id"] == "pub-client-1"
+    notification = json.loads(str(sent[0]["text"]))
+    assert "id" not in notification
+    assert notification == {
         "jsonrpc": "2.0",
         "method": "realtime.publish",
         "params": {
+            "publication_id": "pub-client-1",
+            "notification_id": notification["params"]["notification_id"],
+            "published_at": published["published_at"],
             "channel": "thread:alpha",
             "event": {"body": "hello"},
         },
     }
+    assert notification["params"]["notification_id"].startswith("ntf_")
+
+
+@pytest.mark.asyncio
+async def test_publish_validates_optional_publication_id() -> None:
+    with pytest.raises(ValueError, match="must not be empty"):
+        await publish({"channel": "room", "publication_id": "  "})
+    with pytest.raises(ValueError, match="at most 200"):
+        await publish({"channel": "room", "publication_id": "x" * 201})
 
 
 @pytest.mark.asyncio

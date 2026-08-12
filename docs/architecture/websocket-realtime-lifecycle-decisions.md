@@ -107,6 +107,14 @@ after the lifecycle and atom model is finalized.
    reuse the existing fanout pattern where possible, including shape/prepare
    before emission and delivery in the transport emission phase.
 
+   Fanout envelopes carry application-level identity independently of JSON-RPC
+   request correlation. `publication_id` is shared by every subscriber message
+   from one publish attempt; `notification_id` is unique per subscriber
+   notification; `published_at` is shared publication metadata. The top-level
+   JSON-RPC `id` remains absent because fanout frames are notifications, not
+   server-originated requests. Queue acceptance is reported as `queued` and
+   must not be described as end-client acknowledgement.
+
 9. WebSocket bindings do not carry JSON-RPC method identity.
 
    `WsBindingSpec` and `WebSocketBindingSpec` declare transport reachability:

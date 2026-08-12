@@ -4,6 +4,7 @@ import asyncio
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Mapping
+from uuid import uuid4
 
 from .sinks import RealtimeEnvelope, RealtimeSink
 
@@ -27,6 +28,8 @@ class RealtimeSubscription:
 
 @dataclass(frozen=True, slots=True)
 class PublicationResult:
+    publication_id: str
+    published_at: str
     subscriber_count: int
     queued: int
     dropped: int
@@ -119,11 +122,21 @@ class InMemoryRealtimeBroker:
         channel: str,
         event: Any,
         method: str = "realtime.publish",
+        publication_id: str | None = None,
     ) -> PublicationResult:
         subscriptions = tuple(self._subscriptions.get(channel, {}).values())
-        envelope = RealtimeEnvelope(channel=channel, event=event, method=method)
+        resolved_publication_id = publication_id or f"pub_{uuid4().hex}"
+        published_at = datetime.now(timezone.utc).isoformat()
         queued = dropped = 0
         for subscription in subscriptions:
+            envelope = RealtimeEnvelope(
+                channel=channel,
+                event=event,
+                method=method,
+                publication_id=resolved_publication_id,
+                notification_id=f"ntf_{uuid4().hex}",
+                published_at=published_at,
+            )
             try:
                 subscription.queue.put_nowait(envelope)
                 queued += 1
@@ -131,6 +144,8 @@ class InMemoryRealtimeBroker:
                 subscription.dropped += 1
                 dropped += 1
         return PublicationResult(
+            publication_id=resolved_publication_id,
+            published_at=published_at,
             subscriber_count=len(subscriptions),
             queued=queued,
             dropped=dropped,
