@@ -4,6 +4,7 @@ import sqlite3
 
 import pytest
 
+from tigrbl_migrations.ledger import _execute
 from tigrbl_migrations import (
     DatabaseObject,
     DeploymentLock,
@@ -113,3 +114,25 @@ def test_transfer_prevalidation_prevents_partial_ownership_change() -> None:
     assert connection.execute(
         "SELECT owner_component_id FROM tigrbl_schema_ownership"
     ).fetchone() == ("tigrbl.test.storage.alpha",)
+
+
+def test_execute_rewrites_asyncpg_numeric_dollar_parameters() -> None:
+    class Dialect:
+        paramstyle = "numeric_dollar"
+
+    class Connection:
+        dialect = Dialect()
+
+        def exec_driver_sql(self, sql, values):
+            return sql, values
+
+    result = _execute(
+        Connection(),
+        "INSERT INTO records (first, second) VALUES (?, ?)",
+        ("one", "two"),
+    )
+
+    assert result == (
+        "INSERT INTO records (first, second) VALUES ($1, $2)",
+        ("one", "two"),
+    )

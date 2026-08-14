@@ -54,9 +54,10 @@ def _execute(connection: Any, sql: str, params: Any = None) -> Any:
         paramstyle = getattr(getattr(connection, "dialect", None), "paramstyle", "qmark")
         if values and paramstyle in {"format", "pyformat"}:
             sql = sql.replace("?", "%s")
-        elif values and paramstyle == "numeric":
+        elif values and paramstyle in {"numeric", "numeric_dollar"}:
+            prefix = "$" if paramstyle == "numeric_dollar" else ":"
             for index in range(1, len(values) + 1):
-                sql = sql.replace("?", f":{index}", 1)
+                sql = sql.replace("?", f"{prefix}{index}", 1)
         return connection.exec_driver_sql(sql, values)
     if params is None:
         return connection.execute(sql)
