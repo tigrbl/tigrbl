@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import pytest
 
-pytest.importorskip("tigrbl")
-
 from tigrbl_core._spec import (
     AppSpec,
     EngineSpec,
@@ -12,8 +10,7 @@ from tigrbl_core._spec import (
     RouterSpec,
     TableSpec,
 )
-from tigrbl import TigrblApp
-from tigrbl_concrete._concrete import engine_resolver as resolver
+from tigrbl_concrete._concrete import TigrblApp, engine_resolver as resolver
 from tigrbl_concrete._mapping.appspec import lower_concrete_engine_inputs
 from tigrbl_concrete.webhooks import DefineWebhook
 

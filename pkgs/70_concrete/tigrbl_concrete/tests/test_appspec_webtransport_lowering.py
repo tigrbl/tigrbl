@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from tigrbl import TableBase, TigrblApp
-from tigrbl.types import Column, String
+from sqlalchemy import Column, String
+from tigrbl_base._base import TableBase
+from tigrbl_concrete._concrete import TigrblApp
 from tigrbl_core._spec import (
     AppSpec,
     JsonRpcFramingSpec,
