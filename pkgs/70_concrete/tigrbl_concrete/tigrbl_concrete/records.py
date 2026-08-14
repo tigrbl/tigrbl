@@ -6,6 +6,8 @@ import inspect
 from collections.abc import Awaitable, Callable, Mapping
 from typing import Any
 
+from sqlalchemy import select
+
 
 async def maybe_await(value: object | Awaitable[object]) -> object:
     return await value if inspect.isawaitable(value) else value
@@ -133,6 +135,15 @@ async def list_table_records(
 
 
 async def first_table_record(table: type, db: Any, filters: Mapping[str, Any]) -> Any:
+    """Return the first exact internal match without public filter authorization."""
+
+    if getattr(table, "__table__", None) is not None and callable(
+        getattr(db, "execute", None)
+    ):
+        statement = select(table).filter_by(**dict(filters)).limit(1)
+        result = await maybe_await(db.execute(statement))
+        return result.scalars().first()
+
     rows = await list_table_records(table, db, filters)
     return rows[0] if rows else None
 

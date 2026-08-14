@@ -2,6 +2,8 @@ import asyncio
 from types import SimpleNamespace
 
 import pytest
+from sqlalchemy import String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 from tigrbl import (
     first_table_record,
@@ -90,3 +92,30 @@ def test_list_and_first_record_pass_filters_as_operation_payload():
     assert rows == [{"widget_key": "item-1"}]
     assert first == {"widget_key": "item-1"}
     assert [ctx["payload"] for ctx in contexts] == [filters, filters]
+
+
+def test_first_record_applies_internal_filters_to_mapped_tables():
+    class Base(DeclarativeBase):
+        pass
+
+    class Identity(Base):
+        __tablename__ = "concrete_record_identities"
+
+        id: Mapped[int] = mapped_column(primary_key=True)
+        email: Mapped[str] = mapped_column(String, unique=True)
+
+    engine = create_engine("sqlite://")
+    Base.metadata.create_all(engine)
+
+    with Session(engine) as session:
+        session.add_all(
+            [Identity(email="admin@example.com"), Identity(email="user@example.com")]
+        )
+        session.commit()
+
+        found = asyncio.run(
+            first_table_record(Identity, session, {"email": "user@example.com"})
+        )
+
+    assert found is not None
+    assert found.email == "user@example.com"
