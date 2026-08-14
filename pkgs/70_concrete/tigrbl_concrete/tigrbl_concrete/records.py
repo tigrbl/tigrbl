@@ -128,9 +128,7 @@ async def list_table_records(
     table: type, db: Any, filters: Mapping[str, Any] | None = None
 ) -> list[Any]:
     selected = dict(filters or {})
-    result = await invoke_table_operation(
-        table, "list", db=db, payload={"filters": selected}
-    )
+    result = await invoke_table_operation(table, "list", db=db, payload=selected)
     return normalize_items(result)
 
 

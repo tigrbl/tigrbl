@@ -3,7 +3,13 @@ from types import SimpleNamespace
 
 import pytest
 
-from tigrbl import invoke_table_operation, provideTableHandler, read_table_record
+from tigrbl import (
+    first_table_record,
+    invoke_table_operation,
+    list_table_records,
+    provideTableHandler,
+    read_table_record,
+)
 
 
 def table_with_operation(alias, target, core):
@@ -66,3 +72,21 @@ def test_provided_handler_validates_payload_before_dispatch():
         asyncio.run(handler({"db": object(), "payload": {"name": "widget"}}))
 
     assert called is False
+
+
+def test_list_and_first_record_pass_filters_as_operation_payload():
+    contexts = []
+
+    async def core(ctx):
+        contexts.append(ctx)
+        return {"items": [{"widget_key": "item-1"}]}
+
+    widget = table_with_operation("list", "list", core)
+    filters = {"widget_key": "item-1"}
+
+    rows = asyncio.run(list_table_records(widget, object(), filters))
+    first = asyncio.run(first_table_record(widget, object(), filters))
+
+    assert rows == [{"widget_key": "item-1"}]
+    assert first == {"widget_key": "item-1"}
+    assert [ctx["payload"] for ctx in contexts] == [filters, filters]
