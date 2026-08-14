@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import inspect
 import re
+from contextlib import AsyncExitStack, aclosing, closing
 from dataclasses import dataclass, replace
 from types import SimpleNamespace
 from typing import (
@@ -440,70 +441,91 @@ def _resolve_route_from_ctx(ctx: Any) -> Route | None:
     return None
 
 
+async def _resolve_dependency_value(
+    stack: AsyncExitStack, resolver: Callable[[], Any]
+) -> Any:
+    resolved = resolver()
+    if inspect.isasyncgen(resolved):
+        generator = await stack.enter_async_context(aclosing(resolved))
+        try:
+            return await anext(generator)
+        except StopAsyncIteration as exc:
+            raise RuntimeError("Async dependency did not yield a value.") from exc
+    if inspect.isgenerator(resolved):
+        generator = stack.enter_context(closing(resolved))
+        try:
+            return next(generator)
+        except StopIteration as exc:
+            raise RuntimeError("Dependency did not yield a value.") from exc
+    if inspect.isawaitable(resolved):
+        return await resolved
+    return resolved
+
+
 async def _invoke_route_handler(route: Route, ctx: Any) -> None:
-    request: Any | None = None
-    path_params = _route_path_params(route, ctx)
-    kwargs: dict[str, Any] = {}
-    signature = inspect.signature(route.handler)
-    params = list(signature.parameters.items())
-    for name, param in params:
-        if name in path_params:
-            kwargs[name] = path_params[name]
-            continue
-        default = param.default
-        dep_callable = getattr(default, "dependency", None)
-        if callable(dep_callable):
-            owner = getattr(ctx, "app", None) or getattr(ctx, "router", None)
-            overrides = getattr(owner, "dependency_overrides", {}) or {}
-            resolver = overrides.get(dep_callable, dep_callable)
-            resolved = resolver()
-            if inspect.isawaitable(resolved):
-                resolved = await resolved
-            kwargs[name] = resolved
-            continue
-        annotation = param.annotation
-        if name in {"ctx", "_ctx"} or annotation is dict or annotation is Any:
-            kwargs[name] = ctx
-            continue
-        if (
-            name in {"request", "_request"}
-            or getattr(annotation, "__name__", None) == "Request"
-        ):
-            if request is None:
-                request = _route_request(route, ctx, coerce_concrete=True)
-            kwargs[name] = request
-            continue
-        if len(params) == 1 and not path_params and param.default is inspect._empty:
-            if request is None:
-                request = _route_request(route, ctx, coerce_concrete=False)
-            kwargs[name] = request
+    async with AsyncExitStack() as dependency_stack:
+        request: Any | None = None
+        path_params = _route_path_params(route, ctx)
+        kwargs: dict[str, Any] = {}
+        signature = inspect.signature(route.handler)
+        params = list(signature.parameters.items())
+        for name, param in params:
+            if name in path_params:
+                kwargs[name] = path_params[name]
+                continue
+            default = param.default
+            dep_callable = getattr(default, "dependency", None)
+            if callable(dep_callable):
+                owner = getattr(ctx, "app", None) or getattr(ctx, "router", None)
+                overrides = getattr(owner, "dependency_overrides", {}) or {}
+                resolver = overrides.get(dep_callable, dep_callable)
+                kwargs[name] = await _resolve_dependency_value(
+                    dependency_stack, resolver
+                )
+                continue
+            annotation = param.annotation
+            if name in {"ctx", "_ctx"} or annotation is dict or annotation is Any:
+                kwargs[name] = ctx
+                continue
+            if (
+                name in {"request", "_request"}
+                or getattr(annotation, "__name__", None) == "Request"
+            ):
+                if request is None:
+                    request = _route_request(route, ctx, coerce_concrete=True)
+                kwargs[name] = request
+                continue
+            if len(params) == 1 and not path_params and param.default is inspect._empty:
+                if request is None:
+                    request = _route_request(route, ctx, coerce_concrete=False)
+                kwargs[name] = request
 
-    response = route.handler(**kwargs) if kwargs else route.handler()
-    if inspect.isawaitable(response):
-        response = await response
+        response = route.handler(**kwargs) if kwargs else route.handler()
+        if inspect.isawaitable(response):
+            response = await response
 
-    if isinstance(response, Response):
-        payload = {
-            "status_code": int(getattr(response, "status_code", 200) or 200),
-            "headers": dict(getattr(response, "headers", ()) or ()),
-            "body": (
-                response
-                if hasattr(response, "body_iterator")
-                else getattr(response, "body", b"")
-            ),
-        }
+        if isinstance(response, Response):
+            payload = {
+                "status_code": int(getattr(response, "status_code", 200) or 200),
+                "headers": dict(getattr(response, "headers", ()) or ()),
+                "body": (
+                    response
+                    if hasattr(response, "body_iterator")
+                    else getattr(response, "body", b"")
+                ),
+            }
+            temp = getattr(ctx, "temp", None)
+            if isinstance(temp, dict):
+                temp.setdefault("route", {})["short_circuit"] = True
+                temp.setdefault("egress", {})["transport_response"] = payload
+                temp["egress"]["suppress_asgi_send"] = True
+            setattr(ctx, "transport_response", payload)
+            return
+
+        setattr(ctx, "result", response)
         temp = getattr(ctx, "temp", None)
         if isinstance(temp, dict):
-            temp.setdefault("route", {})["short_circuit"] = True
-            temp.setdefault("egress", {})["transport_response"] = payload
-            temp["egress"]["suppress_asgi_send"] = True
-        setattr(ctx, "transport_response", payload)
-        return
-
-    setattr(ctx, "result", response)
-    temp = getattr(ctx, "temp", None)
-    if isinstance(temp, dict):
-        temp.setdefault("egress", {})["result"] = response
+            temp.setdefault("egress", {})["result"] = response
 
 
 async def _shared_route_step(ctx: Any) -> None:
