@@ -3,8 +3,6 @@ from __future__ import annotations
 import sqlite3
 
 import pytest
-
-from tigrbl_migrations.ledger import _execute
 from tigrbl_migrations import (
     DatabaseObject,
     DeploymentLock,
@@ -17,6 +15,7 @@ from tigrbl_migrations import (
     StorageComposition,
     StorageManifest,
 )
+from tigrbl_migrations.ledger import _execute
 
 
 def storage() -> StorageManifest:
@@ -44,14 +43,19 @@ def drop_table(connection) -> None:
     connection.execute("DROP TABLE alpha_records")
 
 
-def orchestrator(connection: sqlite3.Connection, *, reversible: bool = True):
+def orchestrator(
+    connection: sqlite3.Connection,
+    *,
+    reversible: bool = True,
+    upgrade=create_table,
+):
     manifest = storage()
     migration = Migration(
         revision="alpha-1",
         component=manifest.component_id,
         kind=MigrationKind.STANDARD,
         reversible=reversible,
-        upgrade=create_table,
+        upgrade=upgrade,
         downgrade=drop_table if reversible else None,
     )
     return MigrationOrchestrator(
@@ -71,6 +75,30 @@ def test_fresh_apply_records_head_and_ownership() -> None:
         "SELECT owner_component_id FROM tigrbl_schema_ownership"
     ).fetchone() == ("tigrbl.test.storage.alpha",)
     assert runner.plan().ordered == ()
+    assert connection.execute(
+        "SELECT COUNT(*) FROM tigrbl_schema_execution_lock"
+    ).fetchone() == (0,)
+
+
+def test_failed_apply_preserves_original_error_without_releasing_lock(
+    monkeypatch,
+) -> None:
+    connection = sqlite3.connect(":memory:")
+
+    def failed_upgrade(_connection) -> None:
+        raise RuntimeError("original migration failure")
+
+    runner = orchestrator(connection, upgrade=failed_upgrade)
+    monkeypatch.setattr(
+        MigrationLedger,
+        "release_lock",
+        lambda _self, _execution_id: pytest.fail(
+            "failed transaction must roll back its lock"
+        ),
+    )
+
+    with pytest.raises(RuntimeError, match="original migration failure"):
+        runner.apply()
 
 
 def test_forward_only_requires_acknowledgement() -> None:

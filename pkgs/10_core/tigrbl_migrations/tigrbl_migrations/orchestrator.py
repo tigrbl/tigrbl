@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Mapping
 
 from .composition import StorageComposition
 from .errors import MigrationError
 from .ledger import MigrationLedger
-from .migration import Migration, MigrationGraph, MigrationKind, MigrationPlan, build_plan
+from .migration import (
+    Migration,
+    MigrationGraph,
+    MigrationKind,
+    MigrationPlan,
+    build_plan,
+)
 
 
 @dataclass(slots=True)
@@ -36,6 +42,7 @@ class MigrationOrchestrator:
                 "forward-only migrations require acknowledgement: " + ", ".join(plan.forward_only)
             )
         execution_id = self.ledger.acquire_lock()
+        completed = False
         try:
             by_component = self.composition.by_component
             for migration in plan.ordered:
@@ -72,6 +79,8 @@ class MigrationOrchestrator:
                     manifest,
                     artifact_version=self.artifact_versions[manifest.component_id],
                 )
+            completed = True
             return plan
         finally:
-            self.ledger.release_lock(execution_id)
+            if completed:
+                self.ledger.release_lock(execution_id)
