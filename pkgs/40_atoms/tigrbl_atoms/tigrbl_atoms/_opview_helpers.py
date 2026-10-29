@@ -6,6 +6,7 @@ from typing import Any
 from tigrbl_core.schema.builder.helpers import (
     _spec_python_type,
     _input_selector_entries,
+    _input_filter_entries,
 )
 
 _READ_ONLY_TARGETS = frozenset(
@@ -238,7 +239,10 @@ def _normalize_schema_from_specs(ctx: Any) -> None:
             by_field_stored[field_name] = stored_meta
 
     target = str(getattr(ctx, "target", None) or op)
-    for name, meta in _input_selector_entries(specs, target).items():
+    for name, meta in {
+        **_input_filter_entries(specs, target),
+        **_input_selector_entries(specs, target),
+    }.items():
         if name not in by_field_in:
             in_fields.append(name)
             by_field_in[name] = meta

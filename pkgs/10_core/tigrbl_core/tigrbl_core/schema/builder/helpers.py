@@ -149,6 +149,52 @@ def _input_selector_entries(
     return entries
 
 
+def _input_filter_entries(
+    specs: Mapping[str, Any], target: str
+) -> Dict[str, Dict[str, Any]]:
+    """Declare list predicates separately from writable column inputs."""
+    if target != "list":
+        return {}
+    entries = {}
+    for name, spec in specs.items():
+        for op in getattr(getattr(spec, "io", None), "filter_ops", ()) or ():
+            op = {
+                "=": "eq",
+                "==": "eq",
+                "!=": "ne",
+                "<>": "ne",
+                "<": "lt",
+                ">": "gt",
+                "<=": "lte",
+                "le": "lte",
+                ">=": "gte",
+                "ge": "gte",
+                "nin": "not_in",
+            }.get(op, op)
+            annotation = _spec_python_type(spec)
+            key = name if op == "eq" else f"{name}__{op}"
+            if op in {"in", "not_in"}:
+                annotation = list[annotation]
+            entries[key] = {
+                "py_type": annotation,
+                "required": False,
+                "nullable": True,
+                "in_enabled": False,
+            }
+    for name, annotation in {
+        "skip": int,
+        "limit": int,
+        "sort": str | list[str],
+    }.items():
+        entries[name] = {
+            "py_type": annotation,
+            "required": False,
+            "nullable": True,
+            "in_enabled": False,
+        }
+    return entries
+
+
 def _is_required(col: Any, verb: str) -> bool:
     """Decide if a column should be required for the given verb."""
     if getattr(col, "primary_key", False):
@@ -174,5 +220,6 @@ __all__ = [
     "_storage_python_type",
     "_spec_python_type",
     "_input_selector_entries",
+    "_input_filter_entries",
     "_is_required",
 ]

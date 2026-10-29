@@ -7,6 +7,7 @@ from tigrbl_core.schema.builder.helpers import (
     _storage_python_type,
     _spec_python_type,
     _input_selector_entries,
+    _input_filter_entries,
 )
 
 from .models import OpView, SchemaIn, SchemaOut, SchemaStored
@@ -248,7 +249,10 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
                 required_from_client.append(name)
             by_field_stored[name] = stored_meta
 
-    for name, meta in _input_selector_entries(specs, target).items():
+    for name, meta in {
+        **_input_filter_entries(specs, target),
+        **_input_selector_entries(specs, target),
+    }.items():
         if name not in by_field_in:
             in_fields.append(name)
             by_field_in[name] = meta
