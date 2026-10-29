@@ -101,3 +101,94 @@ The Streamable HTTP endpoint defaults to `http://127.0.0.1:8000/mcp`.
 ```bash
 uv run --group dev pytest -q --basetemp .pytest-tmp
 ```
+
+## What is tigrbl-mcp?
+
+Experimental low-level MCP SDK integration for Tigrbl operations.
+
+## Why use tigrbl-mcp?
+
+Use this project for experimental low-level MCP SDK integration for Tigrbl operations.
+
+## When should I install tigrbl-mcp?
+
+Use it when your application or development task needs the surface described below.
+Examples and experimental projects should be run from this checkout.
+
+## Who is tigrbl-mcp for?
+
+Tigrbl maintainers and application developers working with this project’s APIs.
+
+## Where does tigrbl-mcp fit?
+
+Source: `pkgs/98_experimental/tigrbl_mcp` in the Tigrbl workspace.
+
+## How does tigrbl-mcp work?
+
+TigrblMCP operation projection and SDK server integration. The examples and implementation above describe the configuration and execution flow.
+
+## Certification Status
+
+No independent release qualification is claimed by this README. Inspect current
+repository test results and the applicable release gates before deployment.
+
+## Install
+
+From the repository root:
+
+```console
+uv sync --project pkgs/98_experimental/tigrbl_mcp
+```
+
+## Surface Coverage
+
+| Surface | Value |
+| --- | --- |
+| Project | `tigrbl-mcp` |
+| Python requirement | `>=3.10,<3.15` |
+| Python range | 3.10 \| 3.11 \| 3.12 \| 3.13 \| 3.14 |
+| Source/import surface | `tigrbl_mcp.py` |
+
+Supported Python versions: 3.10 | 3.11 | 3.12 | 3.13 | 3.14.
+
+## What It Owns
+
+Experimental low-level MCP SDK integration for Tigrbl operations.
+
+## Public API and Import Surface
+
+TigrblMCP operation projection and SDK server integration. See the project source and existing examples above for supported call signatures.
+
+## Usage Examples
+
+The walkthrough above is retained. The entry surface can be loaded with:
+
+```python
+import tigrbl_mcp
+```
+
+## How To Choose This Package
+
+Choose this project when its stated surface matches your task. Examples and
+experimental integrations do not imply production support for every transport.
+
+## Related Packages
+
+See [the workspace package catalog](https://github.com/tigrbl/tigrbl/tree/master/pkgs)
+and the dependencies in [pyproject.toml](pyproject.toml).
+
+## Documentation Links
+
+- [Tigrbl documentation](https://github.com/tigrbl/tigrbl/tree/master/docs)
+- [Project source](https://github.com/tigrbl/tigrbl/tree/master/pkgs/98_experimental/tigrbl_mcp)
+
+## Support
+
+Report reproducible issues at [GitHub](https://github.com/tigrbl/tigrbl/issues)
+or discuss usage on [Discord](https://discord.gg/K4YTAPapjR).
+
+## License
+
+[Apache 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.
+
+![License](https://img.shields.io/badge/license-Apache%202.0-525252)

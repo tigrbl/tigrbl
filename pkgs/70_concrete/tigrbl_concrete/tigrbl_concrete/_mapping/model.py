@@ -1363,6 +1363,10 @@ def _materialize_rest_router(
             # For GET endpoints (list), expose request fields as query params
             is_get_only = methods == ("GET",)
             in_model = getattr(alias_ns, "in_", None)
+            if is_get_only and spec.target == "list":
+                from tigrbl_core.schema.builder import _build_list_params
+
+                in_model = _build_list_params(model)
             query_schemas = None
             if (
                 is_get_only

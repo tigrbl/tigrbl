@@ -77,7 +77,7 @@ async def test_request_schema_reflects_io_spec(widget_setup):
 async def test_response_schema_reflects_io_spec(widget_setup):
     _, app, _ = widget_setup
     schema = app.schemas.Widget.read.out.model_json_schema()
-    assert set(schema["properties"]) == {"id", "name", "created_at", "secret"}
+    assert set(schema["properties"]) == {"id", "name", "created_at"}
 
 
 @pytest.mark.i9n
@@ -113,7 +113,7 @@ async def test_openapp_reflects_io_spec(widget_setup):
     client, _, _ = widget_setup
     spec = (await client.get("/openapi.json")).json()
     props = spec["components"]["schemas"]["WidgetReadResponse"]["properties"]
-    assert "secret" in props
+    assert "secret" not in props
 
 
 @pytest.mark.i9n

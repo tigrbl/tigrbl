@@ -91,6 +91,12 @@ _DECODER_TIME = 9
 _WS_FAST_PATH_BYPASS_ATOM_NAMES = frozenset(
     {
         "ingress.ctx_init",
+        "ingress.transport_extract",
+        "transport.sink_bind",
+        "ingress.input_prepare",
+        "dispatch.binding_match",
+        "dispatch.binding_parse",
+        "dispatch.input_normalize",
         "dispatch.op_resolve",
         "schema.collect_in",
         "handler.custom",

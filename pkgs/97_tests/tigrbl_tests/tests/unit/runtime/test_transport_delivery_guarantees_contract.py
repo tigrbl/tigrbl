@@ -70,12 +70,12 @@ def test_webtransport_stream_preserves_order_per_stream_id() -> None:
     first = session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
     )
     second = session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
     )
 
     assert first["streams"]["st1"]["chunks_received"] == 1
@@ -107,7 +107,7 @@ def test_replay_uses_attempt_session_stream_and_trace_identity() -> None:
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
     )
 
     assert session.snapshot()["session_id"] == "s1"

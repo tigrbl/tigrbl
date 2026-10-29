@@ -35,15 +35,35 @@ def test_stream_id_is_owned_by_exact_session_id() -> None:
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"},
     )
 
     with pytest.raises(ValueError, match="session_id"):
         session.apply_event(
             event="webtransport.stream.receive",
             channel="receive",
-            payload={"session_id": "s2", "stream_id": "st1", "stream_direction": "bidi"},
+            payload={"more": True, "session_id": "s2", "stream_id": "st1", "stream_direction": "bidi"},
         )
+
+
+@pytest.mark.parametrize("more", [True, False])
+def test_stream_event_accepts_explicit_continuation_flag(more) -> None:
+    session = WebTransportSessionState(session_id="s1")
+    session.apply_event(
+        event="webtransport.stream.receive",
+        channel="receive",
+        payload={"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi", "more": more},
+    )
+
+
+@pytest.mark.parametrize("more", [None, 0, 1, "false"])
+def test_stream_event_rejects_missing_or_non_boolean_continuation_flag(more) -> None:
+    session = WebTransportSessionState(session_id="s1")
+    payload = {"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi"}
+    if more is not None:
+        payload["more"] = more
+    with pytest.raises(ValueError, match="Boolean more"):
+        session.apply_event(event="webtransport.stream.receive", channel="receive", payload=payload)
 
 
 def test_datagram_id_is_owned_by_exact_session_id() -> None:
@@ -84,7 +104,7 @@ def test_trace_and_qlog_events_preserve_session_parentage() -> None:
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "trace-1", "stream_id": "st1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "trace-1", "stream_id": "st1", "stream_direction": "bidi"},
     )
 
     assert session.snapshot()["session_id"] == "trace-1"

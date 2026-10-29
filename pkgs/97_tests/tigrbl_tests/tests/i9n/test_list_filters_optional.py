@@ -18,3 +18,10 @@ async def test_list_filters_optional(app_client):
     r2 = await client.get("/tenant", params={"name": "foo"})
     assert r2.status_code == 200
     assert r2.json() == []
+
+    for name in ("foo", "bar"):
+        created = await client.post("/tenant", json={"name": name})
+        assert created.status_code == 201, created.text
+    filtered = await client.get("/tenant", params={"name": "foo"})
+    assert filtered.status_code == 200
+    assert [row["name"] for row in filtered.json()] == ["foo"]
