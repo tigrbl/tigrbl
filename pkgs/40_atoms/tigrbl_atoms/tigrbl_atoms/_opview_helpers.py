@@ -3,8 +3,23 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
+from tigrbl_core.schema.builder.helpers import (
+    _spec_python_type,
+    _input_selector_entries,
+)
+
 _READ_ONLY_TARGETS = frozenset(
-    {"read", "list", "count", "exists", "aggregate", "group_by", "subscribe", "tail", "download"}
+    {
+        "read",
+        "list",
+        "count",
+        "exists",
+        "aggregate",
+        "group_by",
+        "subscribe",
+        "tail",
+        "download",
+    }
 )
 _NON_PERSISTING_TARGETS = frozenset(
     {"delete", "clear", "bulk_delete", "close_stream", "close_session"}
@@ -77,7 +92,9 @@ def _stored_required(spec: Any, storage: Any, op: str, *, derived: bool) -> bool
         return False
     if derived:
         return True
-    return not bool(getattr(storage, "nullable", True)) and not _storage_has_server_default(
+    return not bool(
+        getattr(storage, "nullable", True)
+    ) and not _storage_has_server_default(
         spec,
         storage,
     )
@@ -127,7 +144,7 @@ def _normalize_schema_from_specs(ctx: Any) -> None:
             in_meta: dict[str, Any] = {"in_enabled": True}
             if storage is None:
                 in_meta["virtual"] = True
-            py_type = getattr(fs, "py_type", None)
+            py_type = _spec_python_type(spec)
             if py_type is not None and py_type is not Any:
                 in_meta["py_type"] = py_type
             constraints = getattr(fs, "constraints", {}) or {}
@@ -219,6 +236,14 @@ def _normalize_schema_from_specs(ctx: Any) -> None:
             if stored_meta["required_from_client"]:
                 required_from_client.append(field_name)
             by_field_stored[field_name] = stored_meta
+
+    target = str(getattr(ctx, "target", None) or op)
+    for name, meta in _input_selector_entries(specs, target).items():
+        if name not in by_field_in:
+            in_fields.append(name)
+            by_field_in[name] = meta
+        elif meta.get("selector"):
+            by_field_in[name] = {**meta, **by_field_in[name], "selector": True}
 
     in_fields_sorted = tuple(sorted(in_fields))
     out_fields_sorted = tuple(sorted(out_fields))

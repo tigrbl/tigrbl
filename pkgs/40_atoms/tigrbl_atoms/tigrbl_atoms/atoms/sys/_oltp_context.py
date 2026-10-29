@@ -24,6 +24,21 @@ def _ctx_get(ctx: Mapping[str, Any], key: str, default: Any = None) -> Any:
 def payload(ctx: Mapping[str, Any]) -> Any:
     temp = _ctx_get(ctx, "temp", None)
     raw = _ctx_get(ctx, "payload", None)
+    if isinstance(temp, Mapping) and temp.get("in_invalid") is False:
+        validated = temp.get("in_values")
+        if isinstance(validated, Mapping):
+            raw = {**raw, **validated} if isinstance(raw, Mapping) else dict(validated)
+        elif isinstance(validated, list):
+            raw = (
+                [
+                    {**original, **item}
+                    if isinstance(original, Mapping) and isinstance(item, Mapping)
+                    else item
+                    for original, item in zip(raw, validated)
+                ]
+                if isinstance(raw, list) and len(raw) == len(validated)
+                else validated
+            )
     if isinstance(temp, Mapping):
         assembled_values = temp.get("assembled_values")
         if isinstance(assembled_values, Mapping):
@@ -55,6 +70,11 @@ def payload(ctx: Mapping[str, Any]) -> Any:
                 merged.update(assembled_values)
                 return merged
             return assembled_values
+
+        if temp.get("in_invalid") is False and isinstance(
+            temp.get("in_values"), (Mapping, list)
+        ):
+            return raw
 
         route = temp.get("route")
         if isinstance(route, Mapping):
@@ -130,6 +150,11 @@ def request(ctx: Mapping[str, Any]) -> Any:
 
 
 def path_params(ctx: Mapping[str, Any]) -> Mapping[str, Any]:
+    temp = _ctx_get(ctx, "temp", None)
+    if isinstance(temp, Mapping):
+        validated = temp.get("validated_path_params")
+        if isinstance(validated, Mapping):
+            return validated
     params = _ctx_get(ctx, "path_params", None)
     if isinstance(params, Mapping):
         return params

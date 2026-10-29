@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from typing import Any, Dict, Mapping
 
-from tigrbl_core.schema.builder.helpers import _normalize_py_type, _storage_python_type
+from tigrbl_core.schema.builder.helpers import (
+    _normalize_py_type,
+    _storage_python_type,
+    _spec_python_type,
+    _input_selector_entries,
+)
 
 from .models import OpView, SchemaIn, SchemaOut, SchemaStored
 
@@ -105,7 +110,9 @@ def _stored_required(storage: Any, spec: Any, target: str, *, derived: bool) -> 
         return False
     if derived:
         return True
-    return not bool(getattr(storage, "nullable", True)) and not _storage_has_server_default(
+    return not bool(
+        getattr(storage, "nullable", True)
+    ) and not _storage_has_server_default(
         spec,
         storage,
     )
@@ -117,9 +124,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
     target = str(getattr(sp, "target", alias) or alias)
     semantic_verbs = tuple(
         dict.fromkeys(
-            name
-            for name in (alias, target)
-            if isinstance(name, str) and name
+            name for name in (alias, target) if isinstance(name, str) and name
         )
     )
 
@@ -144,7 +149,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
             meta: Dict[str, object] = {"in_enabled": True}
             if storage is None:
                 meta["virtual"] = True
-            py_type = getattr(fs, "py_type", None)
+            py_type = _spec_python_type(spec)
             if py_type is not None and py_type is not Any:
                 meta["py_type"] = py_type
             constraints = getattr(fs, "constraints", {}) or {}
@@ -165,7 +170,13 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
                     getattr(io, "header_required_in", False)
                 )
             required = bool(
-                (fs and any(name in getattr(fs, "required_in", ()) for name in semantic_verbs))
+                (
+                    fs
+                    and any(
+                        name in getattr(fs, "required_in", ())
+                        for name in semantic_verbs
+                    )
+                )
                 or _storage_requires_input(storage, target)
             )
             meta["required"] = required
@@ -237,6 +248,13 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
                 required_from_client.append(name)
             by_field_stored[name] = stored_meta
 
+    for name, meta in _input_selector_entries(specs, target).items():
+        if name not in by_field_in:
+            in_fields.append(name)
+            by_field_in[name] = meta
+        elif meta.get("selector"):
+            by_field_in[name] = {**meta, **by_field_in[name], "selector": True}
+
     schema_in = SchemaIn(
         fields=tuple(sorted(in_fields)),
         by_field={field: by_field_in.get(field, {}) for field in sorted(in_fields)},
@@ -251,8 +269,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
         SchemaStored(
             fields=stored_fields_sorted,
             by_field={
-                field: by_field_stored.get(field, {})
-                for field in stored_fields_sorted
+                field: by_field_stored.get(field, {}) for field in stored_fields_sorted
             },
             required_from_client=tuple(sorted(required_from_client)),
         )

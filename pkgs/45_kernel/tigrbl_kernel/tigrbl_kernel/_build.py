@@ -1158,8 +1158,18 @@ def _pack_kernel_plan(
         )
         alias_name = str(getattr(meta, "alias", "") or "")
         target_name = str(getattr(meta, "target", "") or "")
+        opview = opviews[program_id] if program_id < len(opviews) else None
         compiled_param_eligible = not (
-            alias_name.startswith("bulk_") or target_name.startswith("bulk_")
+            alias_name.startswith("bulk_")
+            or target_name.startswith("bulk_")
+            # Selector aliases and URL precedence are validated by wire.validate_in.
+            # The scalar compiled decoder does not implement that contract yet.
+            or any(
+                entry.get("selector")
+                for entry in (
+                    getattr(getattr(opview, "schema_in", None), "by_field", {}) or {}
+                ).values()
+            )
         )
         compiled_param_phase_steps = (
             program_compiled_param_phase_steps[program_id]

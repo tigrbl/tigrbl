@@ -35,6 +35,17 @@ Framework maintainers, extension authors, and advanced users composing Tigrbl fr
 
 It owns a narrow layer in the split workspace and is consumed by higher-level packages through explicit dependencies.
 
+Inbound materialization belongs to `wire.validate_in`, which uses the core schema
+materializer and declared field types (or mapped storage types when no field type
+is declared). Member identifiers are selector inputs even when the primary key
+is not writable. Route selectors take precedence over payload identifiers and
+invalid selectors raise 422 before persistence. Persistence atoms consume the
+validated payload and path carriers, including bulk values; CRUD helpers do not
+repeat type coercion. Selector operations currently use the full atom pipeline
+because the compiled scalar input shortcut does not implement route alias and
+selector precedence validation. CRUD operations retain their existing flush-only
+transaction contract; the caller owns commit or rollback.
+
 
 ## Install
 
