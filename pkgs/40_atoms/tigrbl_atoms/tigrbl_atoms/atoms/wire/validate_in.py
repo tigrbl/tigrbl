@@ -54,6 +54,17 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     by_field: Mapping[str, Mapping[str, Any]] = schema_in.get("by_field", {})  # type: ignore[assignment]
     required: Tuple[str, ...] = tuple(schema_in.get("required", ()))  # type: ignore[assignment]
 
+    path_values, selectors, path_errors = _materialize_path_params(ctx, by_field)
+    if path_errors:
+        temp["in_errors"] = path_errors
+        temp["in_invalid"] = True
+        raise HTTPException(
+            status_code=_status.HTTP_422_UNPROCESSABLE_ENTITY, detail=path_errors
+        )
+    temp["validated_path_params"] = path_values
+    if isinstance(raw_in_values, Mapping):
+        raw_in_values = {**raw_in_values, **selectors}
+
     if isinstance(raw_in_values, list):
         errors: list[Dict[str, Any]] = []
         coerced: list[str] = []
@@ -200,6 +211,42 @@ def _run(obj: Optional[object], ctx: Any) -> None:
 # ──────────────────────────────────────────────────────────────────────────────
 # Internals
 # ──────────────────────────────────────────────────────────────────────────────
+
+
+def _materialize_path_params(ctx: Any, by_field: Mapping[str, Mapping[str, Any]]):
+    """Validate route carriers through the same declared annotations as payloads."""
+    raw = getattr(ctx, "path_params", None)
+    if not isinstance(raw, Mapping):
+        route = _ensure_temp(ctx).get("route", {})
+        raw = route.get("path_params", {}) if isinstance(route, Mapping) else {}
+    values = dict(raw) if isinstance(raw, Mapping) else {}
+    selector_fields = [
+        (name, meta) for name, meta in by_field.items() if meta.get("selector")
+    ]
+    selectors: Dict[str, Any] = {}
+    errors: list[Dict[str, Any]] = []
+    for key, value in values.items():
+        name, meta = key, by_field.get(key, {})
+        if not meta and len(selector_fields) == 1:
+            pk, candidate = selector_fields[0]
+            if key in {"id", "item_id", f"{pk}_id"}:
+                name, meta = pk, candidate
+        annotation = meta.get("py_type")
+        if annotation is None:
+            continue
+        try:
+            values[key] = _materialize_field_value(value, annotation)
+            if meta.get("selector"):
+                selectors[name] = values[key]
+        except Exception:
+            errors.append(
+                _err(
+                    f"path.{key}",
+                    "type_mismatch",
+                    f"Could not materialize {_type_name(annotation)}.",
+                )
+            )
+    return values, selectors, errors
 
 
 def _reject_unknown(ctx: Any) -> bool:

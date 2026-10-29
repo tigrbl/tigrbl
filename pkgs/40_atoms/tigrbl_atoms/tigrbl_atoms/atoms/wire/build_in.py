@@ -66,6 +66,9 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     payload = _coerce_payload(ctx)
     schema_in = _ensure_schema_in(ctx)
     payload = _inject_path_params_for_bulk(payload, ctx)
+    ids_entry = schema_in.get("by_field", {}).get("ids", {})
+    if isinstance(payload, list) and ids_entry.get("selector_collection"):
+        payload = {"ids": payload}
     if payload is not getattr(ctx, "payload", None):
         setattr(ctx, "payload", payload)
 

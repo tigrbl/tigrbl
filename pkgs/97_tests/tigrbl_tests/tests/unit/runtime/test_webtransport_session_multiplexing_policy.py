@@ -132,19 +132,19 @@ def test_webtransport_session_exposes_provisioning_and_caps_distinct_streams() -
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "sess-1", "stream_id": "stream-1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "sess-1", "stream_id": "stream-1", "stream_direction": "bidi"},
     )
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "sess-1", "stream_id": "stream-2", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "sess-1", "stream_id": "stream-2", "stream_direction": "bidi"},
     )
 
     with pytest.raises(ValueError, match="max_streams"):
         session.apply_event(
             event="webtransport.stream.receive",
             channel="receive",
-            payload={"session_id": "sess-1", "stream_id": "stream-3", "stream_direction": "bidi"},
+            payload={"more": True, "session_id": "sess-1", "stream_id": "stream-3", "stream_direction": "bidi"},
         )
 
 
@@ -192,7 +192,7 @@ def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_indepen
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={
+        payload={"more": True,
             "session_id": "sess-1",
             "stream_id": "bidi-1",
             "stream_direction": "bidi",
@@ -203,7 +203,7 @@ def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_indepen
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={
+        payload={"more": True,
             "session_id": "sess-1",
             "stream_id": "client-1",
             "stream_direction": "client_to_server",
@@ -213,7 +213,7 @@ def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_indepen
     session.apply_event(
         event="webtransport.stream.send",
         channel="send",
-        payload={
+        payload={"more": True,
             "session_id": "sess-1",
             "stream_id": "server-1",
             "stream_direction": "server_to_client",
@@ -249,14 +249,14 @@ def test_webtransport_session_rejects_lane_metadata_changes_for_existing_stream_
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "sess-1", "stream_id": "stream-1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "sess-1", "stream_id": "stream-1", "stream_direction": "bidi"},
     )
 
     with pytest.raises(ValueError, match="lane metadata changed"):
         session.apply_event(
             event="webtransport.stream.receive",
             channel="receive",
-            payload={
+            payload={"more": True,
                 "session_id": "sess-1",
                 "stream_id": "stream-1",
                 "stream_direction": "client_to_server",
@@ -269,12 +269,12 @@ def test_webtransport_session_close_cascades_to_active_stream_lanes() -> None:
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "sess-1", "stream_id": "bidi-1", "stream_direction": "bidi"},
+        payload={"more": True, "session_id": "sess-1", "stream_id": "bidi-1", "stream_direction": "bidi"},
     )
     session.apply_event(
         event="webtransport.stream.send",
         channel="send",
-        payload={"session_id": "sess-1", "stream_id": "server-1", "stream_direction": "server_to_client"},
+        payload={"more": True, "session_id": "sess-1", "stream_id": "server-1", "stream_direction": "server_to_client"},
     )
 
     snapshot = session.apply_event(
@@ -325,5 +325,5 @@ def test_webtransport_session_close_is_idempotent_but_blocks_further_payload_eve
         session.apply_event(
             event="webtransport.stream.receive",
             channel="receive",
-            payload={"session_id": "sess-1", "stream_id": "bidi-1", "stream_direction": "bidi"},
+            payload={"more": True, "session_id": "sess-1", "stream_id": "bidi-1", "stream_direction": "bidi"},
         )

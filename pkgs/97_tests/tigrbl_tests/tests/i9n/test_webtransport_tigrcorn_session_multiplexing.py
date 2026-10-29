@@ -333,7 +333,7 @@ def test_webtransport_tigrcorn_session_close_cascade_blocks_late_lanes() -> None
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={"session_id": "session-1", "stream_id": "bidi-1", "stream_direction": "bidi", "framing": "text"},
+        payload={"more": True, "session_id": "session-1", "stream_id": "bidi-1", "stream_direction": "bidi", "framing": "text"},
     )
     session.apply_event(
         event="webtransport.datagram.receive",

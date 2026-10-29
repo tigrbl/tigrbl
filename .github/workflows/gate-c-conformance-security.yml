@@ -28,6 +28,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip uv
           uv sync --all-groups --no-install-workspace --frozen
+          uv pip install --no-deps -e pkgs/00_typing/tigrbl_typing
 
       - name: Compute workspace PYTHONPATH
         shell: bash

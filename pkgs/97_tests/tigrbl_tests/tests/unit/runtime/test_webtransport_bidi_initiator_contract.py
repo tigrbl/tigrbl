@@ -11,7 +11,7 @@ def test_webtransport_bidi_projection_distinguishes_client_and_server_initiator(
     client = validate_webtransport_event_payload(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={
+        payload={"more": True,
             "session_id": "s1",
             "stream_id": "client-bidi",
             "stream_direction": "bidi",
@@ -21,7 +21,7 @@ def test_webtransport_bidi_projection_distinguishes_client_and_server_initiator(
     server = validate_webtransport_event_payload(
         event="webtransport.stream.send",
         channel="send",
-        payload={
+        payload={"more": True,
             "session_id": "s1",
             "stream_id": "server-bidi",
             "stream_direction": "bidi",
@@ -65,7 +65,7 @@ def test_webtransport_session_snapshot_preserves_bidi_initiator_and_lane_id() ->
     first = session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={
+        payload={"more": True,
             "session_id": "s1",
             "stream_id": "st1",
             "stream_direction": "bidi",
@@ -76,7 +76,7 @@ def test_webtransport_session_snapshot_preserves_bidi_initiator_and_lane_id() ->
     second = session.apply_event(
         event="webtransport.stream.send",
         channel="send",
-        payload={
+        payload={"more": True,
             "session_id": "s1",
             "stream_id": "st1",
             "stream_direction": "bidi",
@@ -96,7 +96,7 @@ def test_webtransport_session_rejects_initiator_drift_for_existing_bidi_stream()
     session.apply_event(
         event="webtransport.stream.receive",
         channel="receive",
-        payload={
+        payload={"more": True,
             "session_id": "s1",
             "stream_id": "st1",
             "stream_direction": "bidi",
@@ -108,7 +108,7 @@ def test_webtransport_session_rejects_initiator_drift_for_existing_bidi_stream()
         session.apply_event(
             event="webtransport.stream.send",
             channel="send",
-            payload={
+            payload={"more": True,
                 "session_id": "s1",
                 "stream_id": "st1",
                 "stream_direction": "bidi",

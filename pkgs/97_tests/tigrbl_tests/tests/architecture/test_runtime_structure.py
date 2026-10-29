@@ -32,8 +32,11 @@ def test_runtime_gateway_owns_runtime_entrypoint_and_send():
     assert "class RuntimeWebSocket" in channel_source
 
 
-def test_docs_generation_reads_secdeps_metadata():
-    openapi = (PKG / "system" / "docs" / "openapi" / "schema.py").read_text()
-    openrpc = (PKG / "system" / "docs" / "openrpc.py").read_text()
-    assert "secdeps" in openapi
-    assert 'item["name"]' in openrpc
+def test_docs_facades_delegate_to_canonical_generators():
+    from tigrbl.system.docs.openapi.schema import openapi
+    from tigrbl.system.docs.openrpc import build_openrpc_spec
+    from tigrbl_concrete.system.docs.openapi.schema import openapi as canonical_openapi
+    from tigrbl_concrete.system.docs.openrpc import build_openrpc_spec as canonical_openrpc
+
+    assert openapi is canonical_openapi
+    assert build_openrpc_spec is canonical_openrpc

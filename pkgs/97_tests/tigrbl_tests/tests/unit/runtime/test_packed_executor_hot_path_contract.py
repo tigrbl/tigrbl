@@ -239,6 +239,30 @@ def test_websocket_transport_route_compiles_to_fast_runner() -> None:
     assert callable(hot_op_plan.websocket_direct_endpoint)
 
 
+@pytest.mark.parametrize("atom_name", ["application.custom_hook", "dep.security", "dep.extra"])
+def test_websocket_fast_runner_preserves_custom_and_security_steps(atom_name) -> None:
+    from tigrbl_kernel._build import _runtime_websocket_fast_path_spec
+
+    def endpoint(ws):
+        return None
+
+    def endpoint_step(ctx):
+        return None
+
+    endpoint_step.__tigrbl_websocket_endpoint__ = endpoint
+    endpoint_step.__tigrbl_websocket_path__ = "/ws/echo"
+    endpoint_step.__tigrbl_websocket_protocol__ = "ws"
+    endpoint_step.__tigrbl_websocket_framing__ = "text"
+    endpoint_step.__tigrbl_websocket_exact__ = True
+
+    def guarded_step(ctx):
+        return None
+
+    guarded_step.__tigrbl_atom_name__ = atom_name
+    guarded_step.__tigrbl_has_direct_dep__ = True
+    assert _runtime_websocket_fast_path_spec((endpoint_step, guarded_step)) is None
+
+
 def test_streaming_transport_route_compiles_to_compiled_runner() -> None:
     app = create_tigrbl_streaming_transport_app(Path("dummy.sqlite3"))
     packed = build_kernel_plan(app).packed

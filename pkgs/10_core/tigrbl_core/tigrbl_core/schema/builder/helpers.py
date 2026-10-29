@@ -3,7 +3,16 @@
 from __future__ import annotations
 
 from types import UnionType
-from typing import Any, Dict, Tuple, Union, get_args, get_origin, get_type_hints
+from typing import (
+    Mapping,
+    Any,
+    Dict,
+    Tuple,
+    Union,
+    get_args,
+    get_origin,
+    get_type_hints,
+)
 
 from pydantic import Field
 
@@ -86,6 +95,106 @@ def _storage_python_type(storage_type: Any) -> type | Any:
     return Any
 
 
+def _spec_python_type(spec: Any) -> Any:
+    """Resolve a declared field annotation, including mapped-column specs."""
+    annotation = getattr(getattr(spec, "field", None), "py_type", None)
+    if annotation is not None and annotation is not Any:
+        return _normalize_py_type(annotation)
+    return _storage_python_type(getattr(getattr(spec, "storage", None), "type_", None))
+
+
+def _input_selector_entries(
+    specs: Mapping[str, Any], target: str
+) -> Dict[str, Dict[str, Any]]:
+    """Describe operation identifiers as schema inputs, not writable columns."""
+    if target not in {
+        "read",
+        "exists",
+        "update",
+        "replace",
+        "merge",
+        "delete",
+        "bulk_update",
+        "bulk_replace",
+        "bulk_merge",
+        "bulk_delete",
+    }:
+        return {}
+    primary = [
+        (name, spec)
+        for name, spec in specs.items()
+        if bool(getattr(getattr(spec, "storage", None), "primary_key", False))
+    ]
+    if len(primary) != 1:
+        return {}
+    name, spec = primary[0]
+    annotation = _spec_python_type(spec)
+    entries = {
+        name: {
+            "py_type": annotation,
+            "selector": True,
+            "required": False,
+            "nullable": False,
+            "in_enabled": False,
+        }
+    }
+    if target == "bulk_delete":
+        entries["ids"] = {
+            "py_type": list[annotation],
+            "selector_collection": True,
+            "required": False,
+            "nullable": False,
+            "in_enabled": False,
+        }
+    return entries
+
+
+def _input_filter_entries(
+    specs: Mapping[str, Any], target: str
+) -> Dict[str, Dict[str, Any]]:
+    """Declare list predicates separately from writable column inputs."""
+    if target != "list":
+        return {}
+    entries = {}
+    for name, spec in specs.items():
+        for op in getattr(getattr(spec, "io", None), "filter_ops", ()) or ():
+            op = {
+                "=": "eq",
+                "==": "eq",
+                "!=": "ne",
+                "<>": "ne",
+                "<": "lt",
+                ">": "gt",
+                "<=": "lte",
+                "le": "lte",
+                ">=": "gte",
+                "ge": "gte",
+                "nin": "not_in",
+            }.get(op, op)
+            annotation = _spec_python_type(spec)
+            key = name if op == "eq" else f"{name}__{op}"
+            if op in {"in", "not_in"}:
+                annotation = list[annotation]
+            entries[key] = {
+                "py_type": annotation,
+                "required": False,
+                "nullable": True,
+                "in_enabled": False,
+            }
+    for name, annotation in {
+        "skip": int,
+        "limit": int,
+        "sort": str | list[str],
+    }.items():
+        entries[name] = {
+            "py_type": annotation,
+            "required": False,
+            "nullable": True,
+            "in_enabled": False,
+        }
+    return entries
+
+
 def _is_required(col: Any, verb: str) -> bool:
     """Decide if a column should be required for the given verb."""
     if getattr(col, "primary_key", False):
@@ -109,5 +218,8 @@ __all__ = [
     "_normalize_py_type",
     "_python_type",
     "_storage_python_type",
+    "_spec_python_type",
+    "_input_selector_entries",
+    "_input_filter_entries",
     "_is_required",
 ]

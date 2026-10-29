@@ -196,7 +196,24 @@ def _validate_input(
     if in_model and inspect.isclass(in_model) and issubclass(in_model, BaseModel):
         try:
             inst = in_model.model_validate(payload)  # type: ignore[arg-type]
-            return inst.model_dump(exclude_none=True)
+            normalized = inst.model_dump(exclude_none=True)
+            # Request schemas describe writable fields; selectors and filters are
+            # validated separately by the input atom and must survive this proxy.
+            from tigrbl_core._spec.column_spec import ColumnSpec
+            from tigrbl_core.schema.builder.helpers import (
+                _input_selector_entries,
+                _input_filter_entries,
+            )
+
+            specs = ColumnSpec.collect(model)
+            operation_inputs = {
+                **_input_filter_entries(specs, target),
+                **_input_selector_entries(specs, target),
+            }
+            for name in operation_inputs:
+                if name in payload:
+                    normalized[name] = payload[name]
+            return normalized
         except Exception as e:
             # Let the executor/runtime error mappers standardize later; pass original payload
             logger.debug(
