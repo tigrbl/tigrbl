@@ -49,7 +49,12 @@ def test_finalize_keeps_already_stable_versions() -> None:
     assert str(Version.parse("0.3.19").bump("finalize")) == "0.3.19"
 
 
-def test_release_plan_uses_required_github_tag_shape() -> None:
+def test_release_plan_uses_required_github_tag_shape(monkeypatch) -> None:
+    # Tag formatting is independent of local-only example project versions.
+    monkeypatch.setattr(release_automation, "python_projects", lambda: [
+        {"name": "tigrbl", "version": "0.4.5.dev4", "path": "tigrbl.toml"},
+        {"name": "tigrbl-migrations", "version": "0.4.5.dev4", "path": "migrations.toml"},
+    ])
     plan = build_plan("patch", write_changes=False)
     tags = [release["tag"] for release in plan["github_releases"]]
     tigrbl_release = next(
@@ -70,6 +75,24 @@ def test_release_plan_can_select_one_python_package() -> None:
         f"tigrbl=={plan['python'][0]['version']}"
     ]
     assert plan["package_selection"] == ["tigrbl"]
+
+
+def test_selected_release_ignores_unselected_local_versions(monkeypatch) -> None:
+    projects = [
+        {"name": "tigrbl-migrations", "version": "0.4.5.dev4", "path": "selected.toml"},
+        {"name": "local-demo", "version": "0.0.0+local", "path": "demo.toml"},
+        {"name": "experimental", "version": "0.1.0", "path": "experimental.toml"},
+    ]
+    monkeypatch.setattr(release_automation, "python_projects", lambda: projects)
+    plan = build_plan("dev", write_changes=False, packages="tigrbl-migrations")
+    assert [(row["name"], row["version"]) for row in plan["pypi"]] == [
+        ("tigrbl-migrations", "0.4.5.dev5")
+    ]
+    assert plan["changed_files"] == []
+    with pytest.raises(ValueError, match="unsupported version"):
+        build_plan("dev", write_changes=False, packages="local-demo")
+    with pytest.raises(ValueError, match="below the required floor"):
+        build_plan("dev", write_changes=False, packages="experimental")
 
 
 def test_release_plan_can_select_package_subset() -> None:

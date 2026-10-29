@@ -230,7 +230,7 @@ def build_plan(
     ]
 
     is_prerelease = any(Version.parse(release["version"]).dev is not None for release in all_releases)
-    ensure_all_versions_meet_floor(all_py_projects, py_releases)
+    ensure_all_versions_meet_floor(py_projects, py_releases)
 
     return {
         "semver": semver,
