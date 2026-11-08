@@ -1,19 +1,7 @@
 from __future__ import annotations
 
-import datetime as dt
-
 from tigrbl.specs import IO
-from tigrbl.types import UUID
-
-
-def tzutcnow() -> dt.datetime:
-    """Return an aware UTC ``datetime``."""
-    return dt.datetime.now(dt.timezone.utc)
-
-
-def tzutcnow_plus_day() -> dt.datetime:
-    """Return an aware UTC ``datetime`` one day in the future."""
-    return tzutcnow() + dt.timedelta(days=1)
+from tigrbl.types import UUID, tzutcnow, tzutcnow_plus_day
 
 
 def _infer_schema(cls, default: str = "public") -> str:
