@@ -160,7 +160,6 @@ Choose `tigrbl-orm` when the quick-answer table matches your use case. Choose [`
 - [Package catalog](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_CATALOG.md)
 - [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)
 - [Current target](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_TARGET.md)
-- [Current state](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_STATE.md)
 - [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json)
 - [Release workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml)
 
