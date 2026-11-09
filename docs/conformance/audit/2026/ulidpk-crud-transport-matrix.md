@@ -23,4 +23,11 @@ The focused suite reproduced the [Gate E failures](https://github.com/tigrbl/tig
 - A test-only experiment awaited the session-close tasks scheduled by each HTTP request. All four deletion assertions passed, and the two teardown timeouts cleared. The run still reported nine expected failures for scalar HTTP write persistence, malformed-ID error mapping, and WebSocket bulk write persistence.
 - A separate filtered-clear probe inserted one matching row and one nonmatching row. Both transports deleted both rows. The clear handler passed empty filters to the persistence operation, and the SQL trace showed a delete without a `WHERE` clause.
 
-The transport matrix remains failing and issue #43 stays open.
+## Runtime fixes and focused verification
+
+- The request executors await async session cleanup before returning. The Linux run completed without the teardown timeouts or lost deletes.
+- Storage assembly writes to hydrated instances and preserves ORM descriptors on the table class. Scalar HTTP updates and replaces and WebSocket bulk updates, replaces, and merges now persist in the transport tests.
+- Selector validation applies the declared ULID pattern and length before persistence. Malformed IDs return client errors, while well-formed missing IDs keep their existing not-found responses.
+- Filtered clear preserves nonmatching rows and rejects unsupported filters. The REST and HTTP JSON-RPC tests verify both outcomes.
+
+The focused suite passed on Linux and Windows with 103 passes and five existing skips per platform, including all 16 transport cases. Issue #43 stays open.
