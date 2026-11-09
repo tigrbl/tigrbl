@@ -3895,7 +3895,7 @@ wheels = [
 
 [[package]]
 name = "tigrbl"
-version = "0.4.5.dev8"
+version = "0.4.5.dev9"
 source = { editable = "pkgs/80_facade/tigrbl" }
 dependencies = [
     { name = "aiosqlite" },
@@ -4011,7 +4011,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-atoms"
-version = "0.4.5.dev6"
+version = "0.4.5.dev7"
 source = { editable = "pkgs/40_atoms/tigrbl_atoms" }
 dependencies = [
     { name = "jinja2" },
@@ -4173,7 +4173,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-concrete"
-version = "0.4.5.dev8"
+version = "0.4.5.dev9"
 source = { editable = "pkgs/70_concrete/tigrbl_concrete" }
 dependencies = [
     { name = "orjson" },
@@ -4224,7 +4224,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-core"
-version = "0.4.5.dev6"
+version = "0.4.5.dev7"
 source = { editable = "pkgs/10_core/tigrbl_core" }
 dependencies = [
     { name = "pydantic" },
@@ -5096,7 +5096,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-kernel"
-version = "0.4.5.dev6"
+version = "0.4.5.dev7"
 source = { editable = "pkgs/45_kernel/tigrbl_kernel" }
 dependencies = [
     { name = "tigrbl-atoms" },
@@ -5236,7 +5236,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-oltp"
-version = "0.4.5.dev4"
+version = "0.4.5.dev5"
 source = { editable = "pkgs/60_ops/tigrbl_ops_oltp" }
 dependencies = [
     { name = "tigrbl-base" },
@@ -5303,7 +5303,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-orm"
-version = "0.4.5.dev4"
+version = "0.4.5.dev5"
 source = { editable = "pkgs/30_orm/tigrbl_orm" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -5326,7 +5326,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-runtime"
-version = "0.4.5.dev8"
+version = "0.4.5.dev9"
 source = { editable = "pkgs/50_runtime/tigrbl_runtime" }
 dependencies = [
     { name = "numba" },
@@ -5443,7 +5443,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-typing"
-version = "0.4.5.dev4"
+version = "0.4.5.dev5"
 source = { editable = "pkgs/00_typing/tigrbl_typing" }
 dependencies = [
     { name = "pydantic" },
@@ -5455,6 +5455,7 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-timeout" },
     { name = "ruff" },
+    { name = "sqlalchemy" },
 ]
 
 [package.metadata]
@@ -5466,6 +5467,7 @@ dev = [
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "ruff", specifier = ">=0.9" },
+    { name = "sqlalchemy", specifier = ">=2.0" },
 ]
 
 [[package]]

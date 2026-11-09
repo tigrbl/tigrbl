@@ -391,7 +391,7 @@ def test_handler_clear_delegates_to_core_clear_with_empty_filter(
 
     monkeypatch.setattr(handler_clear._core, "clear", fake_clear)
 
-    ctx = SimpleNamespace(payload={"ignored": True}, db="db-handle")
+    ctx = SimpleNamespace(payload={}, db="db-handle")
     asyncio.run(handler_clear._run(Model, ctx))
 
     assert ctx.result == {"cleared": True}
