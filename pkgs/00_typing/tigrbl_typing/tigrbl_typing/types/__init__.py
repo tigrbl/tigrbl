@@ -60,6 +60,7 @@ from ..status.exceptions import StatusDetailError
 
 # ── Local Package ─────────────────────────────────────────────────────────
 from .channel import OpChannel, OpChannelFamily, OpChannelKind, OpChannelSubevent
+from ._datetime import tzutcnow, tzutcnow_plus_day
 from .op import _Op, _SchemaVerb
 from .uuid import PgUUID, SqliteUUID
 from .authn_abc import AuthNProvider
@@ -123,6 +124,8 @@ __all__: list[str] = [
     "Boolean",
     "DateTime",
     "TZDateTime",
+    "tzutcnow",
+    "tzutcnow_plus_day",
     "Float",
     "Text",
     "SAEnum",

@@ -103,7 +103,7 @@ The root `pyproject.toml` is a uv workspace manifest and is not itself a publish
 | Workspace package roots | `pkgs/<layer-id>/*` |
 | Python import roots | `tigrbl`, `tigrbl_core`, `tigrbl_base`, `tigrbl_concrete`, `tigrbl_runtime`, `tigrbl_atoms`, `tigrbl_kernel`, `tigrbl_orm`, operation packs, engine packages, and support packages |
 | Console scripts | `tigrbl` from the facade package |
-| Current package line | `0.4.1` |
+| Current package line | [Package metadata](pkgs/80_facade/tigrbl/pyproject.toml) |
 | Supported Python | `3.10, 3.11, 3.12, 3.13, 3.14` |
 | Legal files | `LICENSE`, `NOTICE`, package-local legal files |
 | Governance docs | `docs/README.md`, `docs/governance/DOC_POINTERS.md`, `.ssot/registry.json` |
