@@ -1,34 +1,10 @@
 name: Branch Coverage
 
 on:
-  push:
-    branches:
-      - master
-      - main
-      - release/**
-  pull_request:
   workflow_dispatch:
-    inputs:
-      pytest_filter:
-        description: "Optional pytest -k expression. Default excludes perf tests."
-        required: false
-        default: "not perf"
-      fail_under:
-        description: "Optional branch coverage threshold. 0 disables fail-under."
-        required: false
-        default: "0"
-  workflow_call:
-    inputs:
-      pytest_filter:
-        description: "Optional pytest -k expression. Default excludes perf tests."
-        required: false
-        type: string
-        default: "not perf"
-      fail_under:
-        description: "Optional branch coverage threshold. 0 disables fail-under."
-        required: false
-        type: string
-        default: "0"
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -36,18 +12,22 @@ concurrency:
 
 jobs:
   branch-coverage:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     env:
       PYTHONDONTWRITEBYTECODE: "1"
-      PYTEST_FILTER: ${{ inputs.pytest_filter || 'not perf' }}
-      COVERAGE_FAIL_UNDER: ${{ inputs.fail_under || '0' }}
+      PYTEST_FILTER: "not perf"
+      COVERAGE_FAIL_UNDER: "0"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5

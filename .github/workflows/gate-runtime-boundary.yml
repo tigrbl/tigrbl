@@ -1,23 +1,20 @@
 name: Gate Runtime Boundary
 
 on:
-  pull_request:
-    paths:
-      - "pkgs/50_runtime/tigrbl_runtime/**"
-      - "tools/ci/validate_runtime_boundary.py"
-      - ".github/workflows/gate-runtime-boundary.yml"
-  push:
-    branches: [master, main]
-    paths:
-      - "pkgs/50_runtime/tigrbl_runtime/**"
-      - "tools/ci/validate_runtime_boundary.py"
-      - ".github/workflows/gate-runtime-boundary.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   runtime-boundary:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v5
       - uses: actions/setup-python@v5
         with:

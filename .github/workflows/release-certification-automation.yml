@@ -1,23 +1,23 @@
 name: Release Certification Automation
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
   workflow_dispatch:
-  release:
-    types:
-      - published
+
+permissions:
+  contents: read
 
 jobs:
   governance:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     env:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -43,13 +43,17 @@ jobs:
           -p no:cacheprovider
 
   next-target-python:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     needs: governance
     env:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -96,7 +100,8 @@ jobs:
           -p no:cacheprovider
 
   evidence-lanes:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     needs: governance
     strategy:
       fail-fast: false
@@ -137,6 +142,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -173,7 +181,8 @@ jobs:
         run: uv run --no-sync ${{ matrix.cmd }}
 
   bundle-dry-run:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     needs:
       - governance
     env:
@@ -181,6 +190,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -220,21 +232,3 @@ jobs:
         with:
           name: certification-dry-run
           path: dist/certification-dry-run/
-
-  release-publish:
-    if: github.event_name == 'release'
-    runs-on: ubuntu-latest
-    needs:
-      - governance
-      - bundle-dry-run
-    steps:
-      - name: Download dry-run bundle
-        uses: actions/download-artifact@v4
-        with:
-          name: certification-dry-run
-          path: release-artifacts/
-
-      - name: Publish certification artifacts to release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: release-artifacts/**/*

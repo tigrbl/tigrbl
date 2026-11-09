@@ -1,13 +1,15 @@
 name: Evidence Lanes
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   evidence-lane:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     strategy:
       fail-fast: false
       matrix:
@@ -89,6 +91,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5

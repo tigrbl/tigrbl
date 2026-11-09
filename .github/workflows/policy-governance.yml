@@ -1,13 +1,10 @@
 name: Policy Governance
 
 on:
-  push:
-    branches:
-      - master
-      - main
-      - release/**
-  pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -15,7 +12,8 @@ concurrency:
 
 jobs:
   validate-policy:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     strategy:
       fail-fast: false
       matrix:
@@ -26,6 +24,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Set up Python
@@ -62,14 +62,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          RANGE=""
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            git fetch origin "${{ github.base_ref }}" --depth=1
-            BASE_COMMIT="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
-            RANGE="${BASE_COMMIT}..HEAD"
-          elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-            RANGE="HEAD~1..HEAD"
-          fi
+          git fetch origin master
+          BASE_COMMIT="$(git merge-base HEAD origin/master)"
+          RANGE="${BASE_COMMIT}..HEAD"
           echo "GATE_A_DIFF_RANGE=${RANGE}" >> "$GITHUB_ENV"
 
       - name: Validate policy governance

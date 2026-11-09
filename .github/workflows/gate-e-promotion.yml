@@ -1,14 +1,10 @@
 name: Gate E Promotion
 
 on:
-  push:
-    branches:
-      - master
-      - main
-      - release/**
-  pull_request:
   workflow_dispatch:
-  workflow_call:
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -16,12 +12,16 @@ concurrency:
 
 jobs:
   gate-e-promotion:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: public-shortlived
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: 7cb4c5f559ec4a975a88735cd85f6969f14c281d
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
