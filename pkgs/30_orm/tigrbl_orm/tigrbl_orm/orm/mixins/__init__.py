@@ -16,7 +16,15 @@ from .utils import (
     CRUD_IO,
     RO_IO,
 )
-from .principals import GUIDPk, ULIDPk, TenantColumn, UserColumn, OrgColumn, Principal
+from .principals import (
+    GUIDPk,
+    UUID7Pk,
+    ULIDPk,
+    TenantColumn,
+    UserColumn,
+    OrgColumn,
+    Principal,
+)
 from .bound import OwnerBound, UserBound
 from .lifecycle import (
     Created,
@@ -59,6 +67,7 @@ __all__ = [
     "CRUD_IO",
     "RO_IO",
     "GUIDPk",
+    "UUID7Pk",
     "ULIDPk",
     "TenantColumn",
     "UserColumn",

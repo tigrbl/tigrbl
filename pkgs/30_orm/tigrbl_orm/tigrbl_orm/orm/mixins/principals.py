@@ -4,6 +4,7 @@ import re
 from secrets import randbits
 from time import time_ns
 
+from pydantic import UUID7
 from sqlalchemy import String, TypeDecorator
 
 from tigrbl.specs import ColumnSpec, F, S, acol
@@ -24,6 +25,36 @@ def _new_ulid() -> str:
     return "".join(
         _ULID_ALPHABET[(value >> shift) & 31] for shift in range(125, -1, -5)
     )
+
+
+def _new_uuid7() -> UUID:
+    timestamp_ms = time_ns() // 1_000_000
+    # RFC 9562 §5.7: 48-bit time, version, 12 random bits, variant, 62 random bits.
+    return UUID(
+        int=(timestamp_ms << 80)
+        | (7 << 76)
+        | (randbits(12) << 64)
+        | (2 << 62)
+        | randbits(62)
+    )
+
+
+class _UUID7Type(TypeDecorator[UUID]):
+    impl = PgUUID
+    cache_ok = True
+
+    @property
+    def python_type(self) -> type[UUID]:
+        return UUID
+
+    def process_bind_param(self, value: UUID | str | None, dialect) -> UUID | None:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            value = UUID(value)
+        if not isinstance(value, UUID) or value.version != 7:
+            raise ValueError("Expected an RFC 9562 UUID version 7")
+        return value
 
 
 class _ULIDString(TypeDecorator[str]):
@@ -55,6 +86,28 @@ class GUIDPk:
             ),
             field=F(py_type=UUID, constraints={"examples": [uuid_example]}),
             io=RO_IO,
+        )
+    )
+
+
+@declarative_mixin
+class UUID7Pk:
+    """Add a UUIDv7 primary key generated on insert."""
+
+    id: Mapped[UUID] = acol(
+        spec=ColumnSpec(
+            storage=S(
+                type_=_UUID7Type(),
+                primary_key=True,
+                nullable=False,
+                default=_new_uuid7,
+            ),
+            field=F(
+                py_type=UUID7,
+                constraints={"examples": ["017f22e2-79b0-7cc3-98c4-dc0c0c07398f"]},
+            ),
+            io=RO_IO,
+            datatype=DataTypeSpec(logical_name="uuid"),
         )
     )
 
@@ -152,6 +205,7 @@ class Principal:
 
 __all__ = [
     "GUIDPk",
+    "UUID7Pk",
     "ULIDPk",
     "TenantColumn",
     "UserColumn",

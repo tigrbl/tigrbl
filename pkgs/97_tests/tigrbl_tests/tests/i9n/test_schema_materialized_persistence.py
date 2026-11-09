@@ -141,9 +141,6 @@ async def test_rest_selector_and_uuid_body_materialize_before_database(
         assert isinstance(ident, UUID)
         assert isinstance(data["id"], UUID)
         result = await update(model, ident, data, db)
-        # CRUD promises a flush, while transaction ownership stays with the caller.
-        db.expire(result)
-        assert result.name == "changed"
         seen.append(ident)
         return result
 
@@ -166,6 +163,9 @@ async def test_rest_selector_and_uuid_body_materialize_before_database(
         assert changed.json()["id"] == first, changed.text
         assert changed.json()["name"] == "changed", changed.text
         assert seen == [UUID(first)]
+        assert (await client.get(f"/materialized-widget/{first}")).json()[
+            "name"
+        ] == "changed"
         assert (await client.get(f"/materialized-widget/{second}")).json()[
             "name"
         ] == "second"

@@ -134,11 +134,16 @@ async def test_schema_ctx_openapi(schema_ctx_client):
 async def test_schema_ctx_storage_sqlalchemy(schema_ctx_client):
     client, _, Widget, SessionLocal = schema_ctx_client
     resp = await client.post("/widget", json={"name": "B", "secret": "abc"})
+    assert resp.status_code == 201, resp.text
     item_id = resp.json()["id"]
-    with SessionLocal() as session:
-        obj = session.get(Widget, item_id)
+    session = SessionLocal()
+    try:
+        obj = await session.get(Widget, item_id)
         assert obj is not None
+        assert obj.secret == "ABC"
         assert isinstance(Widget.__table__.c.name.type, String)
+    finally:
+        await session.close()
 
 
 @pytest.mark.i9n
@@ -172,11 +177,14 @@ async def test_schema_ctx_rpc_methods(schema_ctx_client):
 @pytest.mark.i9n
 @pytest.mark.asyncio
 async def test_schema_ctx_core_crud(schema_ctx_client):
-    _, router, Widget, SessionLocal = schema_ctx_client
-    with SessionLocal() as session:
+    _, _, Widget, SessionLocal = schema_ctx_client
+    session = SessionLocal()
+    try:
         obj = await crud.create(Widget, {"name": "core", "secret": "def"}, db=session)
-        session.commit()
-    assert obj.age == 5
+        await session.commit()
+        assert obj.age == 5
+    finally:
+        await session.close()
 
 
 @pytest.mark.i9n
