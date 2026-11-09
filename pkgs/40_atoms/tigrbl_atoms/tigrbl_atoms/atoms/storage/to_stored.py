@@ -46,8 +46,8 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     slog = _ensure_list(temp, "storage_log")
     serr = _ensure_list(temp, "storage_errors")
 
-    # Packed execution can pass the table class. Only hydrated instances can
-    # receive stored values without replacing their ORM descriptors.
+    # Packed execution can pass the table class. Assigning to it replaces ORM
+    # descriptors, so only mirror storage values onto a hydrated instance.
     target_obj = obj if obj is not None else getattr(ctx, "model", None)
     if isinstance(target_obj, type):
         target_obj = None
