@@ -44,6 +44,7 @@ PACKAGE_README_REQUIRED_STRINGS = [
 
 POINTER_DOCS = [
     Path("README.md"),
+    Path("CONTRIBUTING.md"),
     Path("docs/README.md"),
     Path("docs/governance/DOC_POINTERS.md"),
 ]

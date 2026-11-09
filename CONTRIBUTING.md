@@ -4,10 +4,10 @@
 
 The authoritative documentation tree is `docs/`. Before changing code, confirm the target boundary and current state in:
 
-- `docs/conformance/CURRENT_TARGET.md`
-- `docs/conformance/CURRENT_STATE.md`
-- `docs/conformance/NEXT_STEPS.md`
-- `docs/governance/DOC_POINTERS.md`
+- [Current target narrative](docs/conformance/CURRENT_TARGET.md)
+- [SSOT registry for current feature and claim state](.ssot/registry.json)
+- [SSOT snapshots for boundary and release state](.ssot/releases/)
+- [Documentation pointer map](docs/governance/DOC_POINTERS.md)
 
 ## Contribution expectations
 
