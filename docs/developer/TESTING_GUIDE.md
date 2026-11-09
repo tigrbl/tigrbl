@@ -1,5 +1,19 @@
 # Testing Guide
 
+## Run one test file
+
+From the repository root, sync the development dependencies and run the path
+length tests:
+
+```sh
+uv sync --frozen --only-group dev
+uv run --no-sync python -m pytest -q tools/ci/tests/test_path_length_policy.py
+```
+
+These tests inspect the checkout and run without a database or external
+service. Replace the test path to select a different file. Tests that import
+workspace packages may also need those packages installed.
+
 ## Required lane classes for the current certification program
 
 The governed evidence model now uses these lane classes:
