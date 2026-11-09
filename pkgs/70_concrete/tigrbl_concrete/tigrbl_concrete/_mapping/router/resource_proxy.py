@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import logging
 from typing import Any, Awaitable, Callable, Dict, Mapping, Optional
 
@@ -104,7 +105,9 @@ class _ResourceProxy:
             finally:
                 if release_db is not None:
                     try:
-                        release_db()
+                        cleanup = release_db()
+                        if inspect.isawaitable(cleanup):
+                            await cleanup
                     except Exception:
                         logger.debug("Error releasing core proxy DB", exc_info=True)
 

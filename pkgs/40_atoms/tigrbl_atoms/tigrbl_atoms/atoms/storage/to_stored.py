@@ -46,8 +46,11 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     slog = _ensure_list(temp, "storage_log")
     serr = _ensure_list(temp, "storage_errors")
 
-    # Prefer explicit obj (hydrated instance), else ctx.model if adapter provided it
-    target_obj = obj or getattr(ctx, "model", None)
+    # Packed execution can pass the table class. Only hydrated instances can
+    # receive stored values without replacing their ORM descriptors.
+    target_obj = obj if obj is not None else getattr(ctx, "model", None)
+    if isinstance(target_obj, type):
+        target_obj = None
 
     # Ensure paired fields are considered even when absent from inbound schema.
     # schema_in["fields"] may omit columns like "digest" that generate their

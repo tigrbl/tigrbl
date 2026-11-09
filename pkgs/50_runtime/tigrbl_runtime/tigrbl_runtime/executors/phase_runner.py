@@ -236,7 +236,7 @@ async def _invoke(
     if isinstance(temp, Mapping):
         release = temp.pop("__sys_db_release__", None)
     if callable(release):
-        release()
+        await _maybe_await(release())
 
     if skip_egress:
         result_source = ctx.get("result")

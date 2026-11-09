@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from types import UnionType
 from typing import (
+    Annotated,
     Mapping,
     Any,
     Dict,
@@ -129,6 +130,15 @@ def _input_selector_entries(
         return {}
     name, spec = primary[0]
     annotation = _spec_python_type(spec)
+    if annotation is str:
+        constraints = getattr(getattr(spec, "field", None), "constraints", {}) or {}
+        string_constraints = {
+            key: constraints[key]
+            for key in ("min_length", "max_length", "pattern")
+            if key in constraints
+        }
+        if string_constraints:
+            annotation = Annotated[str, Field(**string_constraints)]
     entries = {
         name: {
             "py_type": annotation,

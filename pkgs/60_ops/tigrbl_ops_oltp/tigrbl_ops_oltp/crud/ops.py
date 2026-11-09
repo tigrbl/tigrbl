@@ -362,7 +362,9 @@ async def clear(
     # Reuse normalizer to accept the same shapes
     logger.debug("clear called with args=%s kwargs=%s", args, kwargs)
     model, params = _normalize_list_call(args, kwargs)
-    filters: Mapping[str, Any] = _authorize_filters(model, params["filters"])
+    filters: Mapping[str, Any] = _authorize_filters(
+        model, params["filters"], strict=True
+    )
     db: Union[Session, AsyncSession] = params["db"]
     native = await _call_native_operation(
         db,

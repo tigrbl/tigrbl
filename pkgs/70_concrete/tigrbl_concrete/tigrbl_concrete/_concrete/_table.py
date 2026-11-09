@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
+from asyncio import Task
 from typing import Any, Callable
 
 from ._engine import AsyncSession, Session
@@ -138,7 +139,7 @@ class Table(TableBase):
     @classmethod
     def acquire(
         cls, *, op_alias: str | None = None
-    ) -> tuple[Session | AsyncSession, Callable[[], None]]:
+    ) -> tuple[Session | AsyncSession, Callable[[], Task[Any] | None]]:
         db, release = _resolver.acquire(model=cls, op_alias=op_alias)
         return db, release
 

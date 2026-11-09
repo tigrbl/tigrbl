@@ -377,7 +377,7 @@ def acquire(
     op_alias: str | None = None,
     engine_name: str | None = None,
     require_ready: bool = False,
-) -> tuple[SessionT, Callable[[], None]]:
+) -> tuple[SessionT, Callable[[], asyncio.Task[Any] | None]]:
     """
     Acquire a DB session from the resolved Provider.
 
@@ -407,7 +407,7 @@ def acquire(
                 gen = db_or_gen
                 db = next(gen)
 
-            def _release() -> None:
+            def _release() -> asyncio.Task[Any] | None:
                 if gen is not None:
                     try:
                         next(gen)
@@ -425,9 +425,11 @@ def acquire(
                             except RuntimeError:
                                 asyncio.run(rv)
                             else:
-                                loop.create_task(rv)
+                                return loop.create_task(rv)
                     except Exception:
                         pass
+
+                return None
 
             return db, _release
     if p is None:
@@ -442,7 +444,7 @@ def acquire(
     db: SessionT = p.session()
     logger.debug("acquire: session %r acquired from provider %r", db, p)
 
-    def _release() -> None:
+    def _release() -> asyncio.Task[Any] | None:
         logger.debug("_release: attempting to release session %r", db)
         close = getattr(db, "close", None)
         if callable(close):
@@ -458,13 +460,14 @@ def acquire(
                         asyncio.run(rv)
                     else:
                         logger.debug("_release: scheduling close on running loop")
-                        loop.create_task(rv)
+                        return loop.create_task(rv)
                 # If close is sync, it has already executed
             except Exception:
                 logger.debug("_release: error during close", exc_info=True)
                 # best-effort close; swallow to avoid masking handler errors
                 pass
         logger.debug("_release: release complete for session %r", db)
+        return None
 
     return db, _release
 

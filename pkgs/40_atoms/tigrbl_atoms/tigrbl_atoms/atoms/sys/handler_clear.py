@@ -16,7 +16,9 @@ async def _run(obj: object | None, ctx: Any) -> None:
     model = obj if isinstance(obj, type) else getattr(ctx, "model", None)
     if not isinstance(model, type):
         raise TypeError("handler_clear requires a model type")
-    setattr(ctx, "result", await _core.clear(model, {}, db=_ctx.db(ctx)))
+    setattr(
+        ctx, "result", await _core.clear(model, _ctx.clear_filters(ctx), db=_ctx.db(ctx))
+    )
 
 
 class AtomImpl(Atom[Resolved, Operated, Exception]):

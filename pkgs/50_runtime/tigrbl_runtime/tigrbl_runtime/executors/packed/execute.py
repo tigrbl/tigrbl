@@ -308,7 +308,9 @@ class _PackedExecuteMixin:
         finally:
             if callable(release_db):
                 try:
-                    release_db()
+                    cleanup = release_db()
+                    if inspect.isawaitable(cleanup):
+                        await cleanup
                 except Exception:
                     pass
 

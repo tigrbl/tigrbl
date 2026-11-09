@@ -167,8 +167,22 @@ async def test_ulidpk_builtin_crud(via_rpc):
         await call("delete", "DELETE", ident=ident)
         missing = await client.get(f"{path}/{ident}")
         assert missing.status_code == 404, missing.text
-        await call("clear", "DELETE", body={"filters": {"name": "second"}})
-        assert await call("list", "GET") == []
+        keeper = await call("create", "POST", body={"name": "keep"})
+        rejected = {"filters": {"unknown_field": "second"}}
+        if via_rpc:
+            envelope = await rpc(client, model, "clear", rejected)
+            assert envelope["error"]["code"] == -32602
+        else:
+            response = await client.request("DELETE", path, json=rejected)
+            assert response.status_code == 422
+        assert {row["id"] for row in await call("list", "GET")} == {
+            second["id"],
+            keeper["id"],
+        }
+        assert await call("clear", "DELETE", body={"filters": {"name": "second"}}) == {
+            "deleted": 1,
+        }
+        assert await call("list", "GET") == [keeper]
 
 
 @pytest.mark.asyncio
@@ -410,11 +424,6 @@ async def test_ulidpk_websocket_jsonrpc(monkeypatch):
 
 
 @pytest.mark.asyncio
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
-    reason="Scalar HTTP update and replace currently return values that do not persist.",
-)
 @pytest.mark.parametrize("verb,method", [("update", "PATCH"), ("replace", "PUT")])
 @pytest.mark.parametrize("via_rpc", [False, True], ids=["rest", "jsonrpc"])
 async def test_ulidpk_scalar_mutation_persists(verb, method, via_rpc):
@@ -437,11 +446,6 @@ async def test_ulidpk_scalar_mutation_persists(verb, method, via_rpc):
 
 
 @pytest.mark.asyncio
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
-    reason="Malformed member IDs currently surface as internal errors.",
-)
 @pytest.mark.parametrize("via_rpc", [False, True], ids=["rest", "jsonrpc"])
 async def test_ulidpk_malformed_id_is_a_client_error(via_rpc):
     model = "UlidRpcInvalid" if via_rpc else "UlidRestInvalid"
@@ -461,11 +465,6 @@ async def test_ulidpk_malformed_id_is_a_client_error(via_rpc):
 
 
 @pytest.mark.asyncio
-@pytest.mark.xfail(
-    strict=True,
-    raises=AssertionError,
-    reason="WebSocket bulk mutations currently return values that do not persist.",
-)
 @pytest.mark.parametrize("verb", ["bulk_update", "bulk_replace", "bulk_merge"])
 async def test_ulidpk_websocket_bulk_mutation_persists(verb, monkeypatch):
     call = await websocket_rpc(
