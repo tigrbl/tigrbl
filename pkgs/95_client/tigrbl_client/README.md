@@ -71,7 +71,7 @@ Implementation orientation:
 - Import roots: `tigrbl_client`.
 - Public symbols: `NestedCRUDMixin`, `TigrblClient`, `_Schema`.
 - Workspace dependencies: none declared.
-- External runtime dependencies: `fastapi>=0.100.0`, `pydantic>=2.0.0`.
+- External runtime dependencies: `httpx>=0.27.0`, `pydantic>=2.0.0`.
 
 ## Usage Examples
 
