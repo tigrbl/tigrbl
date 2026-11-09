@@ -5,6 +5,8 @@ from typing import Any
 
 from tigrbl_atoms.atoms.framing import websocket_jsonrpc as _jsonrpc_framing
 from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
+from tigrbl_typing.status.converters import http_exc_to_rpc
+from tigrbl_typing.status.exceptions import HTTPException
 
 ANCHORS: tuple[str, ...] = (
     "transport.accept",
@@ -422,6 +424,9 @@ async def _dispatch_jsonrpc_payload(
         result = await rpc_call(model, alias, params, **kwargs)
     except AttributeError:
         return _jsonrpc_error(-32601, "Method not found", request_id)
+    except HTTPException as exc:
+        code, message, data = http_exc_to_rpc(exc)
+        return _jsonrpc_error(code, message, request_id, data=data)
     except Exception as exc:
         return _jsonrpc_error(
             -32603,

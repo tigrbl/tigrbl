@@ -1,3 +1,5 @@
+from inspect import isawaitable
+
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
@@ -13,6 +15,10 @@ from tigrbl.orm.tables import TableBase as Base3
 from tigrbl.decorators.schema import schema_ctx
 from tigrbl._spec import IO, F, S
 from tigrbl.factories.column import acol
+
+
+async def _resolve_session_result(result):
+    return await result if isawaitable(result) else result
 
 
 @pytest_asyncio.fixture
@@ -68,11 +74,13 @@ async def schema_ctx_client():
     app.include_table(Widget, prefix="")
     app.mount_jsonrpc()
     app.attach_diagnostics()
-    app.initialize()
-    prov = _resolver.resolve_provider()
+    await app.initialize()
+    prov = _resolver.resolve_provider(router=app, model=Widget)
     _, SessionLocal = prov.ensure()
-    client = AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
-    return client, app, Widget, SessionLocal
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        yield client, app, Widget, SessionLocal
 
 
 @pytest.mark.i9n
@@ -138,12 +146,12 @@ async def test_schema_ctx_storage_sqlalchemy(schema_ctx_client):
     item_id = resp.json()["id"]
     session = SessionLocal()
     try:
-        obj = await session.get(Widget, item_id)
+        obj = await _resolve_session_result(session.get(Widget, item_id))
         assert obj is not None
         assert obj.secret == "ABC"
         assert isinstance(Widget.__table__.c.name.type, String)
     finally:
-        await session.close()
+        await _resolve_session_result(session.close())
 
 
 @pytest.mark.i9n
@@ -181,10 +189,10 @@ async def test_schema_ctx_core_crud(schema_ctx_client):
     session = SessionLocal()
     try:
         obj = await crud.create(Widget, {"name": "core", "secret": "def"}, db=session)
-        await session.commit()
+        await _resolve_session_result(session.commit())
         assert obj.age == 5
     finally:
-        await session.close()
+        await _resolve_session_result(session.close())
 
 
 @pytest.mark.i9n
@@ -212,4 +220,3 @@ async def test_schema_ctx_system_steps(schema_ctx_client):
     kernelz = (await client.get("/system/kernelz")).json()
     assert "Widget" in kernelz
     assert "create" in kernelz["Widget"]
-

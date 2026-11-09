@@ -70,7 +70,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
         )
         return
     if target == "clear":
-        setattr(ctx, "result", await _core.clear(model, db=db))
+        setattr(ctx, "result", await _core.clear(model, _ctx.clear_filters(ctx), db=db))
         return
 
     if target == "bulk_create":

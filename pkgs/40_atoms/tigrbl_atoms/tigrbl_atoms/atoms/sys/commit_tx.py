@@ -40,7 +40,9 @@ async def _run(obj: object | None, ctx: Any) -> None:
         temp["__sys_tx_open__"] = False
         release = temp.pop("__sys_db_release__", None)
         if callable(release):
-            release()
+            rv = release()
+            if hasattr(rv, "__await__"):
+                await rv
 
 
 class AtomImpl(Atom[Operated, Operated, Exception]):

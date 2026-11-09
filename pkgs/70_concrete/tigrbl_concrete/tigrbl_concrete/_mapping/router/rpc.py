@@ -432,7 +432,9 @@ async def rpc_call(
     finally:
         if _release_db is not None:
             try:
-                _release_db()
+                cleanup = _release_db()
+                if inspect.isawaitable(cleanup):
+                    await cleanup
                 logger.debug(
                     "Released DB for rpc_call %s.%s",
                     getattr(mdl, "__name__", mdl),

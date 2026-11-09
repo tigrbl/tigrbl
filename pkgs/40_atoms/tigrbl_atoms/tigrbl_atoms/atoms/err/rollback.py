@@ -37,7 +37,9 @@ async def run(obj: object | None, ctx: Any) -> None:
     if isinstance(temp, dict):
         release = temp.pop("__sys_db_release__", None)
         if callable(release):
-            release()
+            rv = release()
+            if hasattr(rv, "__await__"):
+                await rv
 
 
 __all__ = ["ANCHOR", "run"]

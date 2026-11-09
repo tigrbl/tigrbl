@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from typing import Any, Mapping, Sequence
 
+from tigrbl_typing.status.exceptions import HTTPException
+
 try:  # pragma: no cover
     from sqlalchemy.inspection import inspect as _sa_inspect  # type: ignore
 except Exception:  # pragma: no cover
@@ -139,6 +141,32 @@ def payload(ctx: Mapping[str, Any]) -> Any:
     if isinstance(raw, Sequence) and not isinstance(raw, (str, bytes)):
         return raw
     return {}
+
+
+def clear_filters(ctx: Mapping[str, Any]) -> Mapping[str, Any]:
+    values = payload(ctx)
+    if not values:
+        # The generic payload resolver can fall back to {} on invalid JSON.
+        body = _ctx_get(ctx, "body", None)
+        if body is None:
+            body = getattr(request(ctx), "body", None)
+        if isinstance(body, (bytes, bytearray, str)) and body:
+            try:
+                decoded = json.loads(body)
+            except ValueError:
+                decoded = None
+            if not isinstance(decoded, Mapping):
+                raise HTTPException(
+                    status_code=422, detail="Clear request body must be a JSON object."
+                )
+    if not isinstance(values, Mapping) or values.keys() - {"filters"}:
+        raise HTTPException(
+            status_code=422, detail="Clear accepts only a filters object."
+        )
+    filters = values.get("filters", {})
+    if not isinstance(filters, Mapping):
+        raise HTTPException(status_code=422, detail="Clear filters must be an object.")
+    return filters
 
 
 def db(ctx: Mapping[str, Any]) -> Any:

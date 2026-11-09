@@ -4,6 +4,8 @@ from typing import Any, Dict, Iterable, Mapping, Optional, Sequence
 
 import logging
 
+from tigrbl_typing.status.exceptions import HTTPException
+
 from . import select, and_, asc, desc
 from .model import _model_columns, _colspecs
 
@@ -37,7 +39,7 @@ _CANON_OPS = {
 
 
 def _authorize_filters(
-    model: type, filters: Optional[Mapping[str, Any]]
+    model: type, filters: Optional[Mapping[str, Any]], *, strict: bool = False
 ) -> Dict[str, Any]:
     logger.debug("_authorize_filters called with filters=%s", filters)
     cols = set(_model_columns(model))
@@ -46,16 +48,20 @@ def _authorize_filters(
     out: Dict[str, Any] = {}
     for k, v in raw.items():
         name, op = k.split("__", 1) if "__" in k else (k, "eq")
-        if name not in cols:
-            continue
         canon = _CANON_OPS.get(op, op)
         sp = specs.get(name)
-        if sp is not None:
-            io = getattr(sp, "io", None)
-            ops = set(getattr(io, "filter_ops", ()) or [])
-            ops = {_CANON_OPS.get(o, o) for o in ops}
-            if not ops or canon not in ops:
-                continue
+        io = getattr(sp, "io", None)
+        ops = {_CANON_OPS.get(o, o) for o in getattr(io, "filter_ops", ()) or ()}
+        if (
+            name not in cols
+            or (sp is not None and canon not in ops)
+            or (strict and op not in _CANON_OPS)
+        ):
+            if strict:
+                raise HTTPException(
+                    status_code=422, detail=f"Unsupported clear filter: {k}"
+                )
+            continue
         key = name if canon == "eq" else f"{name}__{canon}"
         out[key] = v
     logger.debug("_authorize_filters returning %s", out)

@@ -91,7 +91,7 @@ class _PackedErrorEdgesMixin:
                 )
             return None
 
-        def _release(db: Any) -> None:
+        def _release(db: Any) -> asyncio.Task[Any] | None:
             close = getattr(db, "close", None)
             if not callable(close):
                 return
@@ -103,9 +103,10 @@ class _PackedErrorEdgesMixin:
                     except RuntimeError:
                         asyncio.run(rv)
                     else:
-                        loop.create_task(rv)
+                        return loop.create_task(rv)
             except Exception:
-                return
+                pass
+            return None
 
         def _acquire_from_provider(provider: Any) -> tuple[Any, Any]:
             db = provider.session()
