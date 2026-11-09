@@ -13,3 +13,14 @@ Ruff format and lint passed for the new integration test. The combined pytest ru
 ```text
 python -m pytest -q pkgs/97_tests/tigrbl_tests/tests/i9n/test_v3_default_rest_ops.py pkgs/97_tests/tigrbl_tests/tests/i9n/test_v3_default_rpc_ops.py pkgs/97_tests/tigrbl_tests/tests/i9n/test_ulidpk_crud_transports.py pkgs/97_tests/tigrbl_tests/tests/unit/test_ulidpk_mixin.py
 ```
+
+## Linux CI investigation
+
+The focused suite reproduced the [Gate E failures](https://github.com/tigrbl/tigrbl/actions/runs/42429009109) on Linux with Python 3.12.13, SQLite 3.46.1, and the locked development dependencies. It reported four failures, three passes, nine expected failures, and two teardown errors. On Windows the same focused suite reported seven passes and nine expected failures.
+
+- REST and HTTP JSON-RPC reported successful `clear` and `bulk_delete` operations, but the deleted rows remained. The SQL trace showed a prior read session rolling back on the shared in-memory SQLite connection between the delete and its commit.
+- Malformed IDs returned HTTP 500 and JSON-RPC error `-32603`. The Linux pytest runner timed out while cancelling pending session-close tasks during teardown.
+- A test-only experiment awaited the session-close tasks scheduled by each HTTP request. All four deletion assertions passed, and the two teardown timeouts cleared. The run still reported nine expected failures for scalar HTTP write persistence, malformed-ID error mapping, and WebSocket bulk write persistence.
+- A separate filtered-clear probe inserted one matching row and one nonmatching row. Both transports deleted both rows. The clear handler passed empty filters to the persistence operation, and the SQL trace showed a delete without a `WHERE` clause.
+
+The transport matrix remains failing and issue #43 stays open.
