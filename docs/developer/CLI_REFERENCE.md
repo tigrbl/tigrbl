@@ -6,16 +6,17 @@ The `tigrbl` command is the unified framework CLI for the current cycle.
 
 ## App target syntax
 
-Commands that operate on an application accept either:
+Commands that operate on an application accept a dotted Python module name or
+a `.py` file path. Append `:attr` to select an attribute. When `:attr` is
+omitted, the CLI loads the `app` attribute.
 
-- `<module:attr>`
-- `<path.py:attr>`
-
-Examples:
-
-- `tigrbl routes mypkg.api:app`
-- `tigrbl openapi ./examples/my_app.py:app`
-- `tigrbl dev ./examples/my_app.py:build_app`
+| Target | Example |
+| --- | --- |
+| Bare module | `tigrbl routes mypkg.api` |
+| Module with an explicit attribute | `tigrbl routes mypkg.api:app` |
+| Bare Python file | `tigrbl openapi ./examples/my_app.py` |
+| Python file with an explicit attribute | `tigrbl openapi ./examples/my_app.py:app` |
+| Python file with a factory attribute | `tigrbl dev ./examples/my_app.py:build_app` |
 
 If the resolved target is a zero-argument factory, the CLI calls it. If the resolved target is a `TigrblRouter`, the CLI wraps it in a `TigrblApp` for serving and inspection.
 
