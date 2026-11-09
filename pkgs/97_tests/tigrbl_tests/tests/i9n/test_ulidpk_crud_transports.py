@@ -168,21 +168,41 @@ async def test_ulidpk_builtin_crud(via_rpc):
         missing = await client.get(f"{path}/{ident}")
         assert missing.status_code == 404, missing.text
         keeper = await call("create", "POST", body={"name": "keep"})
-        rejected = {"filters": {"unknown_field": "second"}}
-        if via_rpc:
-            envelope = await rpc(client, model, "clear", rejected)
-            assert envelope["error"]["code"] == -32602
-        else:
-            response = await client.request("DELETE", path, json=rejected)
-            assert response.status_code == 422
-        assert {row["id"] for row in await call("list", "GET")} == {
-            second["id"],
-            keeper["id"],
-        }
+        for rejected in (
+            {"filters": {"unknown_field": "second"}},
+            {"filters": None},
+            {"filter": {"name": "second"}},
+            {"filters": {"name": "second"}, "filter": {"name": "keep"}},
+        ):
+            if via_rpc:
+                envelope = await rpc(client, model, "clear", rejected)
+                assert envelope["error"]["code"] == -32602
+            else:
+                response = await client.request("DELETE", path, json=rejected)
+                assert response.status_code == 422
+            assert {row["id"] for row in await call("list", "GET")} == {
+                second["id"],
+                keeper["id"],
+            }
+        if not via_rpc:
+            for content in (b"null", b'"not-an-object"', b"[]", b"{invalid"):
+                response = await client.request(
+                    "DELETE",
+                    path,
+                    content=content,
+                    headers={"content-type": "application/json"},
+                )
+                assert response.status_code == 422
+                assert {row["id"] for row in await call("list", "GET")} == {
+                    second["id"],
+                    keeper["id"],
+                }
         assert await call("clear", "DELETE", body={"filters": {"name": "second"}}) == {
             "deleted": 1,
         }
         assert await call("list", "GET") == [keeper]
+        assert await call("clear", "DELETE") == {"deleted": 1}
+        assert await call("list", "GET") == []
 
 
 @pytest.mark.asyncio
@@ -395,7 +415,10 @@ async def test_ulidpk_websocket_jsonrpc(monkeypatch):
     assert (await call("count", {}))["result"] == {"count": 1}
     assert [row["id"] for row in (await call("list", {}))["result"]] == [ident]
     assert (await call("delete", {"id": ident}))["result"] == {"deleted": 1}
-    assert "error" in await call("read", {"id": ident})
+    missing = await call("read", {"id": ident})
+    assert missing["error"]["code"] == -32003
+    invalid = await call("read", {"id": "not-a-ulid"})
+    assert invalid["error"]["code"] == -32602
 
     created = await call("bulk_create", [{"name": "first"}, {"name": "second"}])
     assert "result" in created, created
@@ -417,6 +440,11 @@ async def test_ulidpk_websocket_jsonrpc(monkeypatch):
         }
 
     assert (await call("bulk_delete", [ids["first"]]))["result"] == {"deleted": 1}
+    for rejected in ({"filters": None}, {"filter": {"name": "second"}}):
+        assert (await call("clear", rejected))["error"]["code"] == -32602
+        assert [row["id"] for row in (await call("list", {}))["result"]] == [
+            ids["second"]
+        ]
     assert (await call("clear", {"filters": {"name": "second"}}))["result"] == {
         "deleted": 1,
     }

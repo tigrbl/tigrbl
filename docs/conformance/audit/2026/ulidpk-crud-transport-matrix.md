@@ -31,3 +31,8 @@ The focused suite reproduced the [Gate E failures](https://github.com/tigrbl/tig
 - Filtered clear preserves nonmatching rows and rejects unsupported filters. The REST and HTTP JSON-RPC tests verify both outcomes.
 
 The focused suite passed on Linux and Windows with 103 passes and five existing skips per platform, including all 16 transport cases. Issue #43 stays open.
+
+## Clear and WebSocket error regressions
+
+- REST, HTTP JSON-RPC, and WebSocket JSON-RPC reject malformed clear filters before deleting any rows. REST also rejects invalid JSON and non-object bodies. A valid filter preserves nonmatching rows, and an omitted filter still clears the collection.
+- WebSocket JSON-RPC returns `-32602` for malformed ULIDs and `-32003` for well-formed IDs that do not identify a row, matching HTTP JSON-RPC.
