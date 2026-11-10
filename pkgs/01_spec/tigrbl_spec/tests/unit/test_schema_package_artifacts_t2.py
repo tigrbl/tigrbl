@@ -21,7 +21,6 @@ def test_built_wheel_and_sdist_contain_schema_migration_and_model_artifacts() ->
                 "build",
                 "--package",
                 "tigrbl_spec",
-                "--no-build-isolation",
                 "--out-dir",
                 str(out_dir),
             ],

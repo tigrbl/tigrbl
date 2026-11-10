@@ -140,7 +140,7 @@ def op_payload() -> dict[str, object]:
 
 def session_payload() -> dict[str, object]:
     return with_identity(
-        "EngineSessionSpec",
+        "SessionSpec",
         {
             "isolation": None,
             "read_only": None,
@@ -185,5 +185,5 @@ def representative_payloads() -> dict[str, dict[str, object]]:
         "ColumnSpec": column_payload(),
         "EngineSpec": engine_payload(),
         "HeadersSpec": headers_payload(),
-        "EngineSessionSpec": session_payload(),
+        "SessionSpec": session_payload(),
     }

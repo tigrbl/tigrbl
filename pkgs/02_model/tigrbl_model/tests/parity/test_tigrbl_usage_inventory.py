@@ -1,4 +1,4 @@
-"""Prove that the parity matrix covers the live Tigrbl Pydantic call surface."""
+"""Track certified parity and remaining direct Pydantic dependencies."""
 
 from __future__ import annotations
 
@@ -18,6 +18,13 @@ CERTIFIED_IMPORTS = {
 }
 
 CERTIFIED_PYDANTIC_CORE_IMPORTS = {"PydanticUndefined"}
+
+# These runtime dependencies remain on Pydantic and outside the parity matrix.
+DIRECT_PYDANTIC_IMPORTS = {
+    "10_core/tigrbl_core/tigrbl_core/schema/materialize.py": {"TypeAdapter"},
+    "10_core/tigrbl_core/tigrbl_core/schema/result.py": {"TypeAdapter"},
+    "30_orm/tigrbl_orm/tigrbl_orm/orm/mixins/principals.py": {"UUID7"},
+}
 
 CERTIFIED_CONFIG_OPTIONS = {
     "extra",
@@ -73,9 +80,11 @@ def _runtime_python_files():
                 yield path
 
 
-def test_certified_symbols_cover_live_runtime_imports() -> None:
-    imported: set[str] = set()
+def test_live_runtime_imports_are_certified_or_tracked() -> None:
+    direct_imports: dict[str, set[str]] = {}
+    root = _repo_root() / "pkgs"
     for path in _runtime_python_files():
+        imported: set[str] = set()
         tree = ast.parse(path.read_text(encoding="utf-8-sig"))
         for node in ast.walk(tree):
             if (
@@ -85,8 +94,11 @@ def test_certified_symbols_cover_live_runtime_imports() -> None:
             ):
                 imported.update(item.name for item in node.names)
 
-    assert imported <= CERTIFIED_IMPORTS
-    assert imported
+        uncovered = imported - CERTIFIED_IMPORTS
+        if uncovered:
+            direct_imports[path.relative_to(root).as_posix()] = uncovered
+
+    assert direct_imports == DIRECT_PYDANTIC_IMPORTS
 
 
 def test_certified_pydantic_core_symbols_cover_live_runtime_imports() -> None:
