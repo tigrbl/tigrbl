@@ -7,6 +7,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import tomllib
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -104,6 +105,11 @@ def python_projects() -> list[dict[str, str]]:
     projects: list[dict[str, str]] = []
     for pyproject in sorted(ROOT.glob("pkgs/*/*/pyproject.toml")):
         text = read(pyproject)
+        tool = tomllib.loads(text).get("tool", {})
+        if tool.get("tigrbl", {}).get("publish") is False:
+            continue
+        if tool.get("uv", {}).get("package") is False:
+            continue
         name_match = re.search(r'(?m)^name\s*=\s*"([^"]+)"', text)
         version_match = PYPROJECT_VERSION_RE.search(text)
         if not name_match or not version_match:

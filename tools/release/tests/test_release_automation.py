@@ -77,6 +77,16 @@ def test_release_plan_can_select_one_python_package() -> None:
     assert plan["package_selection"] == ["tigrbl"]
 
 
+def test_finalize_all_excludes_packages_marked_unpublishable() -> None:
+    plan = build_plan("finalize", write_changes=False, packages="all")
+
+    names = {release["name"] for release in plan["python"]}
+    assert "tigrbl" in names
+    assert "tigrbl-examples" in names
+    assert "tigrbl-equivalence-contracts" not in names
+    assert "tigrbl-mcp" not in names
+
+
 def test_selected_release_ignores_unselected_local_versions(monkeypatch) -> None:
     projects = [
         {"name": "tigrbl-migrations", "version": "0.4.5.dev4", "path": "selected.toml"},
