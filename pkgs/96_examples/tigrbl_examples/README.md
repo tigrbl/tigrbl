@@ -58,8 +58,8 @@ Use [Tigrbl Skills](https://github.com/tigrbl/tigrbl-skills) alongside the
 examples for guidance on setting up an app, composing routers, and mounting
 protocol bindings. The lessons above run independently.
 
-Access to the source repository requires GitHub permission. If you have access,
-look for the Codex marketplace manifest at `.agents/plugins/marketplace.json`.
+Access to the source repository requires GitHub permission. In that repository,
+the Codex marketplace manifest is at .agents/plugins/marketplace.json.
 
 ## Install
 
