@@ -285,6 +285,11 @@ class App(AppBase):
 
         return _mount_openrpc(self, path=path, name=name)
 
+    def mount_zdoc(self, **kwargs: Any) -> Any:
+        from tigrbl_concrete.system import mount_zdoc
+
+        return mount_zdoc(self, **kwargs)
+
     def mount_lens(
         self,
         *,
@@ -292,9 +297,10 @@ class App(AppBase):
         openrpc_url: str | None = None,
         title: str | None = None,
     ) -> Any:
-        from tigrbl_concrete.system.docs.lens import mount_lens as _mount_lens
+        from warnings import warn
 
-        return _mount_lens(self, path=path, openrpc_url=openrpc_url, title=title)
+        warn("mount_lens is deprecated. Use mount_zdoc instead.", DeprecationWarning, stacklevel=2)
+        return self.mount_zdoc(path=path, spec_path=openrpc_url, title=title)
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         from tigrbl_concrete.system.docs.json_schema import _mount_json_schema

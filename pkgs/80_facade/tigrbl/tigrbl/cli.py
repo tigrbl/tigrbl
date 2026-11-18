@@ -13,13 +13,14 @@ import os
 import shutil
 import subprocess
 import sys
+import warnings
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
 
 from . import TigrblApp, TigrblRouter
 from .engine import known_engine_kinds, load_engine_plugins
-from .system import mount_lens, mount_openapi, mount_openrpc, mount_swagger
+from .system import mount_openapi, mount_openrpc, mount_swagger, mount_zdoc
 from tigrbl_core._spec.engine_spec import EngineSpec
 from tigrbl_core._spec.serde import SerdeMixin
 
@@ -30,6 +31,7 @@ DEFAULT_DOCS_PATH = "/docs"
 DEFAULT_OPENAPI_PATH = "/openapi.json"
 DEFAULT_OPENRPC_PATH = "/openrpc.json"
 DEFAULT_LENS_PATH = "/lens"
+DEFAULT_ZDOC_PATH = "/zdoc"
 COMMAND_NAMES = (
     "run",
     "serve",
@@ -53,6 +55,7 @@ CLI_FLAG_NAMES = (
     "--openapi-path",
     "--openrpc-path",
     "--lens-path",
+    "--zdoc-path",
     "--statsd-addr",
     "--dogstatsd-tags",
     "--otel-endpoint",
@@ -99,7 +102,7 @@ class ServeConfig:
     docs_path: str = DEFAULT_DOCS_PATH
     openapi_path: str = DEFAULT_OPENAPI_PATH
     openrpc_path: str = DEFAULT_OPENRPC_PATH
-    lens_path: str = DEFAULT_LENS_PATH
+    lens_path: str | None = None
     statsd_addr: str | None = None
     dogstatsd_tags: tuple[str, ...] = ()
     otel_endpoint: str | None = None
@@ -126,6 +129,13 @@ class ServeConfig:
     origin_static_policy: str = "strict"
     quic_metrics: tuple[str, ...] = ("connections", "handshake", "retry", "migration")
     qlog_dir: str | None = None
+    zdoc_path: str = DEFAULT_ZDOC_PATH
+
+    def __post_init__(self) -> None:
+        if self.lens_path is not None:
+            warnings.warn("lens_path and --lens-path are deprecated. Use zdoc_path or --zdoc-path.",
+                          DeprecationWarning, stacklevel=3)
+            self.lens_path = _normalize_path(self.lens_path, DEFAULT_LENS_PATH)
 
 
 class _RootPathWrapper:
@@ -295,7 +305,8 @@ def _ensure_docs_mounts(app: Any, cfg: ServeConfig) -> None:
     cfg.openapi_path = _normalize_path(cfg.openapi_path, DEFAULT_OPENAPI_PATH)
     cfg.docs_path = _normalize_path(cfg.docs_path, DEFAULT_DOCS_PATH)
     cfg.openrpc_path = _normalize_path(cfg.openrpc_path, DEFAULT_OPENRPC_PATH)
-    cfg.lens_path = _normalize_path(cfg.lens_path, DEFAULT_LENS_PATH)
+    lens_path = _normalize_path(cfg.lens_path or DEFAULT_LENS_PATH, DEFAULT_LENS_PATH)
+    cfg.zdoc_path = _normalize_path(cfg.zdoc_path, DEFAULT_ZDOC_PATH)
 
     if hasattr(app, "openapi_url"):
         setattr(app, "openapi_url", cfg.openapi_path)
@@ -309,8 +320,9 @@ def _ensure_docs_mounts(app: Any, cfg: ServeConfig) -> None:
         mount_swagger(app, path=cfg.docs_path)
     if not _route_exists(app, cfg.openrpc_path):
         mount_openrpc(app, path=cfg.openrpc_path)
-    if not _route_exists(app, cfg.lens_path):
-        mount_lens(app, path=cfg.lens_path, spec_path=cfg.openrpc_path)
+    for path, name in ((cfg.zdoc_path, "__zdoc__"), (lens_path, "__lens__")):
+        if not _route_exists(app, path):
+            mount_zdoc(app, path=path, name=name)
 
 
 def _wrap_app_for_root_path(app: Any, root_path: str) -> Any:
@@ -441,7 +453,8 @@ def _build_doctor_payload(app: Any, cfg: ServeConfig, target: str) -> dict[str, 
             "docs": cfg.docs_path,
             "openapi": cfg.openapi_path,
             "openrpc": cfg.openrpc_path,
-            "lens": cfg.lens_path,
+            "lens": cfg.lens_path or DEFAULT_LENS_PATH,
+            "zdoc": cfg.zdoc_path,
         },
         "engine_capabilities": _engine_supports(app),
         "supported_servers": _installed_servers(),
@@ -608,7 +621,8 @@ def _build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--docs-path", default=DEFAULT_DOCS_PATH)
         sp.add_argument("--openapi-path", default=DEFAULT_OPENAPI_PATH)
         sp.add_argument("--openrpc-path", default=DEFAULT_OPENRPC_PATH)
-        sp.add_argument("--lens-path", default=DEFAULT_LENS_PATH)
+        sp.add_argument("--lens-path", help="Deprecated. Use --zdoc-path.")
+        sp.add_argument("--zdoc-path", default=DEFAULT_ZDOC_PATH)
 
     def add_server_flags(sp: argparse.ArgumentParser) -> None:
         sp.add_argument("--server", choices=SUPPORTED_SERVERS, default="uvicorn")
@@ -710,7 +724,8 @@ def _serve_config_from_args(args: argparse.Namespace) -> ServeConfig:
         docs_path=str(getattr(args, "docs_path", DEFAULT_DOCS_PATH) or DEFAULT_DOCS_PATH),
         openapi_path=str(getattr(args, "openapi_path", DEFAULT_OPENAPI_PATH) or DEFAULT_OPENAPI_PATH),
         openrpc_path=str(getattr(args, "openrpc_path", DEFAULT_OPENRPC_PATH) or DEFAULT_OPENRPC_PATH),
-        lens_path=str(getattr(args, "lens_path", DEFAULT_LENS_PATH) or DEFAULT_LENS_PATH),
+        lens_path=getattr(args, "lens_path", None),
+        zdoc_path=getattr(args, "zdoc_path", DEFAULT_ZDOC_PATH),
         statsd_addr=getattr(args, "statsd_addr", None),
         dogstatsd_tags=_csv_tuple(getattr(args, "dogstatsd_tags", "")),
         otel_endpoint=getattr(args, "otel_endpoint", None),

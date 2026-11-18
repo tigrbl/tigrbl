@@ -24,7 +24,7 @@ def test_system_build_helpers_return_documents() -> None:
     assert openrpc_doc["openrpc"] == "1.2.6"
     assert openrpc_doc["servers"] == [{"name": app.title, "url": "/rpc"}]
     assert "swagger-ui" in swagger_html
-    assert "tigrbl-lens" in lens_html
+    assert "tigrbl-zdoc" in lens_html
 
 
 @pytest.mark.unit

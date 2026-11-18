@@ -244,8 +244,8 @@ def _mount_docs_uix(router: Any, path_spec: PathSpec) -> None:
         return
     if uix.kind == "swagger":
         router.mount_swagger(path=path_spec.path)
-    elif uix.kind == "lens":
-        router.mount_lens(path=path_spec.path, spec_path=uix.payload_path)
+    elif uix.kind in {"lens", "zdoc"}:
+        router.mount_zdoc(path=path_spec.path, spec_path=uix.payload_path)
     else:
         raise NotImplementedError(f"Docs UIX kind {uix.kind!r} is not supported by canonical lowering.")
 

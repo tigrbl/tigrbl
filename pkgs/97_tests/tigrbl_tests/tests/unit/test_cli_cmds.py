@@ -56,6 +56,8 @@ def test_routes_command_smoke_lists_http_websocket_and_docs_routes() -> None:
         "/rpc.json",
         "--lens-path",
         "/rpc-ui",
+        "--zdoc-path",
+        "/reference",
     )
 
     assert result.returncode == 0, result.stderr
@@ -96,6 +98,8 @@ def test_doctor_command_smoke_outputs_app_summary() -> None:
         "/rpc.json",
         "--lens-path",
         "/rpc-ui",
+        "--zdoc-path",
+        "/reference",
         "--statsd-addr",
         "127.0.0.1:8125",
         "--dogstatsd-tags",
@@ -158,6 +162,7 @@ def test_doctor_command_smoke_outputs_app_summary() -> None:
         "openapi": "/schema.json",
         "openrpc": "/rpc.json",
         "lens": "/rpc-ui",
+        "zdoc": "/reference",
     }
     assert payload["routes"]["count"] >= 1
     assert payload["routes"]["websocket_count"] >= 1

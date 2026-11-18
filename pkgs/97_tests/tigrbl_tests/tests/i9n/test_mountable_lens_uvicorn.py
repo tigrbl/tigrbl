@@ -21,11 +21,11 @@ async def test_lens_mountable_on_tigrbl_app_uvicorn():
         assert 'id="root"' in response.text
         assert 'type="importmap"' in response.text
         assert (
-            '"@tigrbljs/tigrbl-lens": "https://esm.sh/@tigrbljs/tigrbl-lens@latest"'
+            '"@tigrbljs/tigrbl-zdoc": "https://esm.sh/@tigrbljs/tigrbl-zdoc@0.1.1?external=react,react-dom"'
             in response.text
         )
         assert (
-            'href="https://esm.sh/@tigrbljs/tigrbl-lens@latest/dist/tigrbl-lens.css?css"'
+            'href="https://esm.sh/@tigrbljs/tigrbl-zdoc@0.1.1/dist/tigrbl-zdoc.css?css"'
             in response.text
         )
         assert 'import { createRoot } from "react-dom/client";' in response.text
@@ -48,7 +48,7 @@ async def test_lens_mountable_on_tigrbl_router_uvicorn():
         assert response.status_code == 200
         assert "text/html" in response.headers.get("content-type", "")
         assert 'id="root"' in response.text
-        assert 'url: "/openrpc.json"' in response.text
+        assert '"url":"/openrpc.json"' in response.text
         assert '"id":"jsonrpc"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
@@ -70,7 +70,7 @@ async def test_lens_mountable_with_openrpc_spec_path_uvicorn():
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{base_url}/custom/lens")
         assert response.status_code == 200
-        assert 'url: "/custom/openrpc.json"' in response.text
+        assert '"url":"/custom/openrpc.json"' in response.text
         assert '"id":"rest"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
@@ -89,7 +89,7 @@ async def test_lens_mountable_with_tigrbl_app_method_uvicorn():
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{base_url}/custom/lens")
         assert response.status_code == 200
-        assert 'url: "/custom/openrpc.json"' in response.text
+        assert '"url":"/custom/openrpc.json"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
 
@@ -105,6 +105,6 @@ async def test_lens_mountable_with_tigrbl_router_method_uvicorn():
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{base_url}/custom/lens")
         assert response.status_code == 200
-        assert 'url: "/openrpc.json"' in response.text
+        assert '"url":"/openrpc.json"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
