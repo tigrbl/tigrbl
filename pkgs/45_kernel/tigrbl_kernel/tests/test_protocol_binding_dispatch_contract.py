@@ -36,7 +36,7 @@ class CompilerFixture:
     def _build_egress(self, app: Any) -> dict[str, list[Any]]:
         return {"EGRESS": [lambda *_: app]}
 
-    def _build_op(self, model: type, alias: str) -> dict[str, list[Any]]:
+    def _build_op(self, model: type, alias: str, *, security_dependencies=None) -> dict[str, list[Any]]:
         def _step(*_: Any) -> tuple[type, str]:
             return model, alias
 
@@ -130,6 +130,17 @@ class WidgetProtocolTable:
                 ),
             ),
         ),
+        OpSpec(
+            alias="socket_session",
+            target="custom",
+            expose_method=False,
+            bindings=(
+                WebSocketProtocolBindingSpec(
+                    path="/ws/widgets",
+                    framing=JsonRpcFramingSpec(),
+                ),
+            ),
+        ),
     )
 
 
@@ -165,6 +176,7 @@ def test_websocket_jsonrpc_route_derives_subprotocol_from_framing() -> None:
 
     metadata = plan.proto_indices["ws"]["exact_metadata"]["/ws/widgets"]
 
+    assert plan.opmeta[metadata["meta_index"]].alias == "socket_session"
     assert metadata["framing"] == "jsonrpc"
     assert metadata["websocket_subprotocol"] == "jsonrpc"
     assert "subprotocols" not in metadata
