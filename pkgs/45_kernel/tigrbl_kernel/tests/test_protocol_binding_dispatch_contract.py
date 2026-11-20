@@ -130,17 +130,6 @@ class WidgetProtocolTable:
                 ),
             ),
         ),
-        OpSpec(
-            alias="socket_session",
-            target="custom",
-            expose_method=False,
-            bindings=(
-                WebSocketProtocolBindingSpec(
-                    path="/ws/widgets",
-                    framing=JsonRpcFramingSpec(),
-                ),
-            ),
-        ),
     )
 
 
@@ -172,11 +161,27 @@ def test_multiple_ops_compile_to_jsonrpc_methods_on_same_path() -> None:
 
 
 def test_websocket_jsonrpc_route_derives_subprotocol_from_framing() -> None:
-    plan = _compile_plan(CompilerFixture(), AppFixture(tables=(WidgetProtocolTable,)))
+    class SocketTable(WidgetProtocolTable):
+        ops = (
+            *WidgetProtocolTable.ops,
+            OpSpec(
+                alias="socket",
+                target="socket",
+                expose_method=False,
+                bindings=(
+                    WebSocketProtocolBindingSpec(
+                        path="/ws/widgets",
+                        framing=JsonRpcFramingSpec(),
+                    ),
+                ),
+            ),
+        )
+
+    plan = _compile_plan(CompilerFixture(), AppFixture(tables=(SocketTable,)))
+    assert plan.opkey_to_meta[OpKey("ws", "/ws/widgets")] == len(WidgetProtocolTable.ops)
 
     metadata = plan.proto_indices["ws"]["exact_metadata"]["/ws/widgets"]
 
-    assert plan.opmeta[metadata["meta_index"]].alias == "socket_session"
     assert metadata["framing"] == "jsonrpc"
     assert metadata["websocket_subprotocol"] == "jsonrpc"
     assert "subprotocols" not in metadata
