@@ -153,9 +153,11 @@ async def test_mount_policy_is_local_to_the_app_with_a_shared_model() -> None:
             raise HTTPException(status_code=401, detail="Missing test identity")
         return {"sub": "allowed"}
 
-    protected = TigrblApp(engine=mem(async_=False))
-    protected.set_auth(authn=require_identity)
-    public = TigrblApp(engine=mem(async_=False))
+    app = TigrblApp(engine=mem(async_=False))
+    app.set_auth(authn=require_identity)
+    protected = app
+    app = TigrblApp(engine=mem(async_=False))
+    public = app
     for app in (protected, public):
         router = TigrblRouter(prefix="/api")
         router.include_table(SharedWidget)
