@@ -86,6 +86,7 @@ _EXPORTS = {
     "merge_mro_mapping_attr": "monotone",
     "merge_mro_sequence_attr": "monotone",
     "OpSpec": "op_spec",
+    "OperationSecurity": "operation_security",
     "sequence_union": "monotone",
     "stable_keyed_overlay": "monotone",
     "stable_unique": "monotone",

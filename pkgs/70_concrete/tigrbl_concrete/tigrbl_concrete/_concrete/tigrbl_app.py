@@ -1044,6 +1044,34 @@ class TigrblApp(_App):
         return (*((authn,) if authn is not None else ()), *authorize, *declared)
 
     # Optional: let callers set auth knobs used by some middlewares/dispatchers
+    def set_operation_authorizer(self, authorize: Callable[..., Any]) -> None:
+        """Set the decision callback for operations declaring protected access."""
+        if not callable(authorize):
+            raise TypeError("operation authorizer must be callable")
+        self._tigrbl_operation_authorizer = authorize
+
+    def operation_security_catalog(self) -> tuple[dict[str, Any], ...]:
+        """Export classified operations and the selectors in the kernel plan."""
+        plan = self.runtime.kernel.kernel_plan(self)
+        selectors: dict[int, list[dict[str, str]]] = {}
+        for key, index in sorted(
+            plan.opkey_to_meta.items(), key=lambda item: (item[0].proto, item[0].selector)
+        ):
+            selectors.setdefault(index, []).append({"protocol": key.proto, "selector": key.selector})
+        return tuple(sorted(
+            (
+                {
+                    "action_id": meta.security.action_id,
+                    "resource_type": meta.security.resource_type,
+                    "access": meta.security.access,
+                    "bindings": selectors.get(index, []),
+                }
+                for index, meta in enumerate(plan.opmeta)
+                if meta.security is not None
+            ),
+            key=lambda entry: entry["action_id"],
+        ))
+
     def set_auth(
         self,
         *,

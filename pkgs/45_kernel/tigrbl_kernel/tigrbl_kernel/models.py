@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterator, Mapping, Tuple
 
 from tigrbl_atoms.types import PhaseTreeNode
+from tigrbl_core._spec.operation_security import OperationSecurity
 
 try:
     from tigrbl_typing.phases import MAINLINE_PHASES, ERROR_PHASES, phase_info
@@ -80,6 +81,7 @@ class OpMeta:
     model: type
     alias: str
     target: str
+    security: OperationSecurity | None = None
 
 
 @dataclass(frozen=True, slots=True)
