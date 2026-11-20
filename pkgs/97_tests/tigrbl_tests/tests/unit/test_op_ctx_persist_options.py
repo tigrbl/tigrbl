@@ -38,7 +38,7 @@ async def test_op_ctx_persist_options(
     chain = [fn.__name__ for fn in Model.hooks.create.HANDLER]
     assert chain == ["create"]
 
-    def fake_build(model, alias):
+    def fake_build(model, alias, *, security_dependencies=None):
         return {"HANDLER": Model.hooks.create.HANDLER}
 
     monkeypatch.setattr(_diag._default_kernel, "_build_op", fake_build)

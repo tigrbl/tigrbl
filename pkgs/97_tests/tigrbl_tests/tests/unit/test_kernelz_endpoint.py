@@ -44,7 +44,7 @@ async def test_kernelz_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
     router = Router()
     router.tables = {"Model": Model}
 
-    def fake_build(model, alias):
+    def fake_build(model, alias, *, security_dependencies=None):
         assert model is Model and alias == "create"
         return {"PRE_HANDLER": [sample_atom, sample_hook], "HANDLER": [handler]}
 
