@@ -86,10 +86,11 @@ class _PackedExecuteMixin:
             except StatusDetailError as exc:
                 if hot.scope_type != "http":
                     raise
-                await _send_json(
-                    env, exc.status_code, {"detail": exc.detail}, headers=exc.headers
-                )
-                return
+                temp.setdefault("egress", {})["transport_response"] = {
+                    "status_code": exc.status_code,
+                    "headers": exc.headers,
+                    "body": {"detail": exc.detail},
+                }
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
             wt_selection = temp.get("webtransport_selection")
