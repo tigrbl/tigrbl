@@ -40,6 +40,7 @@ _EXPORTS = {
     "MultipartFormDataFramingSpec": "binding_spec",
     "NdjsonFramingSpec": "binding_spec",
     "HttpRestBindingSpec": "binding_spec",
+    "RestRequestJson": "binding_spec",
     "HttpJsonRpcBindingSpec": "binding_spec",
     "HttpStreamBindingSpec": "binding_spec",
     "SseBindingSpec": "binding_spec",

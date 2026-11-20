@@ -1168,7 +1168,8 @@ def _pack_kernel_plan(
         target_name = str(getattr(meta, "target", "") or "")
         opview = opviews[program_id] if program_id < len(opviews) else None
         compiled_param_eligible = not (
-            alias_name.startswith("bulk_")
+            program_id in plan.rest_array_programs
+            or alias_name.startswith("bulk_")
             or target_name.startswith("bulk_")
             # Selector aliases and URL precedence are validated by wire.validate_in.
             # The scalar compiled decoder does not implement that contract yet.
@@ -1199,7 +1200,9 @@ def _pack_kernel_plan(
             param_shape_id=param_shape_id,
             transport_kind_id=transport_kind_id,
             compiled_param_eligible=compiled_param_eligible,
-            exact_http_like_no_input=exact_http_like_no_input,
+            exact_http_like_no_input=(
+                exact_http_like_no_input and program_id not in plan.rest_array_programs
+            ),
             websocket_fast_path=websocket_fast_path is not None,
         )
         program_hot_runner_ids.append(hot_runner_id)

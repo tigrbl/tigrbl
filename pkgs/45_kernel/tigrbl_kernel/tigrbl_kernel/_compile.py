@@ -10,6 +10,7 @@ from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcProtocolBindingSpec,
     HttpRestBindingSpec,
     HttpRestProtocolBindingSpec,
+    RestRequestJson,
     WebSocketProtocolBindingSpec,
     WebTransportProtocolBindingSpec,
     derive_websocket_subprotocol_for_framing,
@@ -240,6 +241,8 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
     phase_chains: dict[int, Mapping[str, list[StepFn]]] = {}
     opviews: list[OpView | None] = []
     rest_exact_route_to_program: dict[tuple[str, str], int] = {}
+    rest_exact_request_json: dict[str, RestRequestJson] = {}
+    rest_array_programs: set[int] = set()
     ingress_chain = self._build_ingress(app)
     egress_chain = self._build_egress(app)
     phases, mainline_phases, error_phases = _phase_info_map(DEFAULT_PHASE_ORDER)
@@ -297,7 +300,12 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                         opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (
                             meta_index
                         )
+                        policy = getattr(binding, "request_json", None)
+                        policies = bucket.setdefault("request_json", {})
+                        if policy is not None and policy.shape == "array":
+                            rest_array_programs.add(meta_index)
                         if "{" in binding.path and "}" in binding.path:
+                            policies.setdefault(selector, policy)
                             pattern, names = _compile_path_pattern(binding.path)
                             bucket["templated"].append(
                                 {
@@ -311,6 +319,11 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                             )
                         else:
                             bucket["exact"][selector] = meta_index
+                            policies[selector] = policy
+                            if policy is None:
+                                rest_exact_request_json.pop(selector, None)
+                            else:
+                                rest_exact_request_json[selector] = policy
                             method, _, path = selector.partition(" ")
                             if path:
                                 rest_exact_route_to_program[(method.upper(), path)] = (
@@ -420,6 +433,8 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
 
     semantic = KernelPlan(
         proto_indices=route_data,
+        rest_exact_request_json=rest_exact_request_json,
+        rest_array_programs=frozenset(rest_array_programs),
         opmeta=tuple(opmeta),
         opkey_to_meta=opkey_to_meta,
         ingress_chain=ingress_chain,

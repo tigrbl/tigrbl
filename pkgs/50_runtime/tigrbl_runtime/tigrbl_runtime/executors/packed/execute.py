@@ -81,7 +81,15 @@ class _PackedExecuteMixin:
         if program_id < 0 and hot.scope_type != "webtransport":
             program_id = self._prime_exact_channel_program(ctx, env, plan, packed)
         if program_id < 0:
-            program_id = await self._probe_ingress_for_program(ctx, plan, packed)
+            try:
+                program_id = await self._probe_ingress_for_program(ctx, plan, packed)
+            except StatusDetailError as exc:
+                if hot.scope_type != "http":
+                    raise
+                await _send_json(
+                    env, exc.status_code, {"detail": exc.detail}, headers=exc.headers
+                )
+                return
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
             wt_selection = temp.get("webtransport_selection")

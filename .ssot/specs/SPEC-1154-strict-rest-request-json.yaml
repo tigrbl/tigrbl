@@ -1,0 +1,20 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1154"
+number: 1154
+slug: "strict-rest-request-json"
+title: "Strict REST JSON request contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "JSON-framed REST bindings opt in via request_json. Nonempty requests require application/json, matched case-insensitively with parameters allowed. Unsupported or missing media type returns 415. Malformed JSON or invalid UTF-8 returns 400. Valid JSON of the wrong top-level shape returns the configured 400 or 422, defaulting to 422. An empty body follows normal absence handling. Reject invalid input before handler invocation or path/query fallback. Object and array policies preserve existing normalization and bulk item validation. Bindings without the policy preserve existing behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  JSON-framed REST bindings opt in via request_json. Nonempty requests require application/json, matched case-insensitively with parameters allowed. Unsupported or missing media type returns 415. Malformed JSON or invalid UTF-8 returns 400. Valid JSON of the wrong top-level shape returns the configured 400 or 422, defaulting to 422. An empty body follows normal absence handling. Reject invalid input before handler invocation or path/query fallback. Object and array policies preserve existing normalization and bulk item validation. Bindings without the policy preserve existing behavior.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1206"

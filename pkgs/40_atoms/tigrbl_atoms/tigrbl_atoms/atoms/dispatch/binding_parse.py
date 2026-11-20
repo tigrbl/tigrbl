@@ -4,6 +4,9 @@ import json
 import uuid
 from typing import Any, Mapping
 
+from tigrbl_core._spec.binding_spec import RestRequestJson
+from tigrbl_typing.status.exceptions import HTTPException
+
 from ... import events as _ev
 from ...stages import Bound
 from ...types import Atom, BoundCtx, Ctx
@@ -21,6 +24,36 @@ def _dispatch_dict(ctx: Any) -> dict[str, object]:
         return obj
     temp["dispatch"] = {}
     return temp["dispatch"]
+
+
+def rest_request_json_policy(
+    plan: Any, protocol: str, selector: str
+) -> RestRequestJson | None:
+    indices = getattr(plan, "proto_indices", {})
+    return indices.get(protocol, {}).get("request_json", {}).get(selector)
+
+
+def _reject_json_constant(value: str) -> None:
+    raise ValueError(f"Invalid JSON constant: {value}")
+
+
+def parse_rest_request_json(
+    body: bytes, content_type: str, policy: RestRequestJson
+) -> dict | list | None:
+    if not body:
+        return None
+    if content_type.partition(";")[0].strip().lower() != "application/json":
+        raise HTTPException(415, "Expected Content-Type application/json.")
+    try:
+        parsed = json.loads(body.decode("utf-8"), parse_constant=_reject_json_constant)
+    except (ValueError, RecursionError) as exc:
+        raise HTTPException(400, "Malformed JSON request body.") from exc
+    expected_type = dict if policy.shape == "object" else list
+    if not isinstance(parsed, expected_type):
+        raise HTTPException(
+            policy.wrong_shape_status, f"Expected a JSON {policy.shape}."
+        )
+    return parsed
 
 
 def _coerce_json_body(body: object, hot: dict[str, object]) -> tuple[object, bool]:
@@ -50,7 +83,21 @@ def _run(obj: object | None, ctx: Any) -> None:
     dispatch["parsed_payload_is_normalized"] = False
 
     if isinstance(hot, dict):
-        body, body_from_json_bytes = _coerce_json_body(body, hot)
+        plan = getattr(ctx, "kernel_plan", None) or getattr(ctx, "plan", None)
+        selector = str(dispatch.get("binding_selector") or "")
+        policy = rest_request_json_policy(plan, protocol, selector)
+        if policy is not None and isinstance(body, (bytes, bytearray, memoryview)):
+            if hot.get("strict_json_policy") != policy:
+                headers = getattr(ctx, "headers", {}) or {}
+                hot["parsed_json"] = parse_rest_request_json(
+                    bytes(body), str(headers.get("content-type", "")), policy
+                )
+                hot["parsed_json_loaded"] = True
+                hot["strict_json_policy"] = policy
+            body = hot["parsed_json"]
+            body_from_json_bytes = True
+        else:
+            body, body_from_json_bytes = _coerce_json_body(body, hot)
 
     if not protocol and isinstance(body, list):
         endpoint = dispatch.get("endpoint") or route.get("endpoint")
