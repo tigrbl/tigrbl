@@ -15,6 +15,7 @@ def test_kernel_plan_compiles_typed_ok_err_phase_tree_nodes() -> None:
                         alias="create",
                         target="create",
                         persist="default",
+                        security=None,
                         bindings=(),
                     )
                 ]

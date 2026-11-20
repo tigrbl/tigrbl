@@ -26,7 +26,7 @@ class CompilerFixture:
     def _build_egress(self, app: Any) -> dict[str, list[Any]]:
         return {}
 
-    def _build_op(self, model: type, alias: str) -> dict[str, list[Any]]:
+    def _build_op(self, model: type, alias: str, *, security_dependencies=None) -> dict[str, list[Any]]:
         return {}
 
     def get_specs(self, model: type) -> dict[str, Any]:
