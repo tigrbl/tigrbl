@@ -344,6 +344,15 @@ uv run --frozen --package tigrbl-examples python -m pytest -q \
   pkgs/96_examples/tigrbl_examples/tigrbl_examples/05_beginner_app_api/test_03_jsonrpc_mount.py
 ```
 
+**Tigrbl Skills for Codex**
+
+Use [Tigrbl Skills](https://github.com/tigrbl/tigrbl-skills) alongside the
+examples for guidance on setting up an app, composing routers, and mounting
+protocol bindings. The lessons above run independently.
+
+Access to the source repository requires GitHub permission. In that repository,
+the Codex marketplace manifest is at .agents/plugins/marketplace.json.
+
 **Install**
 
 ```bash
