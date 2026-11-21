@@ -1,87 +1,126 @@
-<div align="center">
-<h1>tigrbl_engine_duckdb</h1>
-<img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
-<p><strong>DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.</strong></p>
-<a href="https://pypi.org/project/tigrbl_engine_duckdb/"><img src="https://img.shields.io/pypi/v/tigrbl_engine_duckdb?label=PyPI" alt="PyPI version for tigrbl_engine_duckdb"/></a>
-<a href="https://pypi.org/project/tigrbl_engine_duckdb/"><img src="https://static.pepy.tech/badge/tigrbl_engine_duckdb" alt="Downloads for tigrbl_engine_duckdb"/></a>
-<a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_engine_duckdb"/></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/README.md.svg?label=hits" alt="Repository hits for tigrbl_engine_duckdb README"/></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
-<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl_engine_duckdb"/></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-engines-1f6feb" alt="Workspace group for tigrbl_engine_duckdb"/></a>
-</div>
+# tigrbl_engine_duckdb
 
-## What is tigrbl_engine_duckdb?
+<!-- readme-standards:begin branding -->
+<p align="center"><a href="https://github.com/tigrbl/tigrbl"><img src="https://raw.githubusercontent.com/tigrbl/tigrbl/master/assets/tigrbl.brand.theme.svg" alt="Tigrbl" width="300"></a></p>
+<p align="center"><strong>tigrbl_engine_duckdb</strong></p>
+<p align="center">DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.</p>
+<p align="center">
+<a href="https://pypi.org/project/tigrbl_engine_duckdb/"><img alt="pypi: tigrbl_engine_duckdb" src="https://img.shields.io/pypi/v/tigrbl_engine_duckdb"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml"><img alt="Source version: 0.4.6.dev2" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.4.6.dev2&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml"><img alt="Python: &gt;=3.10,&lt;3.15" src="https://img.shields.io/static/v1?label=Python&amp;message=%3E%3D3.10%2C%3C3.15&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml"><img alt="Layer: 90_engines" src="https://img.shields.io/static/v1?label=Layer&amp;message=90_engines&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/README.md#lifecycle-and-migration"><img alt="Lifecycle: active" src="https://img.shields.io/static/v1?label=Lifecycle&amp;message=active&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/static/v1?label=License&amp;message=Apache-2.0&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/NOTICE"><img alt="Notice: attribution" src="https://img.shields.io/static/v1?label=Notice&amp;message=attribution&amp;color=525252"></a>
+</p>
+<p align="center">
+<a href="https://pypi.org/project/tigrbl_engine_duckdb/"><img alt="Monthly PyPI downloads: tigrbl_engine_duckdb" src="https://img.shields.io/pypi/dm/tigrbl_engine_duckdb"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/README.md"><img alt="README hits: tigrbl_engine_duckdb" src="https://hits.sh/github.com/tigrbl/tigrbl/pkgs/90_engines/tigrbl_engine_duckdb/README.md.svg?label=README%20hits"></a>
+</p>
+<p align="center">
+<a href="https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/docs/readme/test_examples.py"><img alt="Tests: example source" src="https://img.shields.io/static/v1?label=Tests&amp;message=example%20source&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/README.md#certification-status"><img alt="Certification: not certified" src="https://img.shields.io/static/v1?label=Certification&amp;message=not%20certified&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"><img alt="Governance: repository policy" src="https://img.shields.io/static/v1?label=Governance&amp;message=repository%20policy&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"><img alt="Evidence: source and CI" src="https://img.shields.io/static/v1?label=Evidence&amp;message=source%20and%20CI&amp;color=525252"></a>
+</p>
+<p align="center"><a href="#overview">Overview</a> · <a href="#installation">Installation</a> · <a href="#quick-start">Quick Start</a> · <a href="#usage">Usage</a> · <a href="#public-api-and-import-surfaces">API</a> · <a href="#contributing">Contributing</a> · <a href="#governance">Governance</a> · <a href="#license">License</a></p>
+<!-- readme-standards:end branding -->
 
-DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
+---
 
-## Why use tigrbl_engine_duckdb?
+## Overview
+
+### Summary
+
+`tigrbl_engine_duckdb`: DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
+
+### Why This Package
 
 Use it when a Tigrbl application needs this backend without installing every engine package.
 
-## When should I install tigrbl_engine_duckdb?
+### When to Use
 
-Install it when the storage, analytics, cache, or integration workload named by this package is the intended runtime backend.
+Choose `tigrbl_engine_duckdb` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
 
-## Who is tigrbl_engine_duckdb for?
+### Features
 
-Application developers, data platform engineers, and operators choosing concrete persistence or data-plane behavior.
+- `DuckDBSession`: Transactional session over a synchronous duckdb.Connection.
+- `DuckDBSqlAlchemyAdapter`: DuckDB SQLAlchemy session adapter wrapped by Tigrbl EngineSession.
 
-## Where does tigrbl_engine_duckdb fit?
+### Non-Goals
 
-`tigrbl_engine_duckdb` lives at `pkgs/90_engines/tigrbl_engine_duckdb` and serves embedded analytical SQL and local OLAP workflows.
+`tigrbl_engine_duckdb` owns duckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration. Its imports do not by themselves configure credentials, deploy a service, or certify the behavior of its consumers. Dependencies and neighboring packages retain their own documented responsibilities.
 
-## How does tigrbl_engine_duckdb work?
+---
 
-It exposes `tigrbl.engine` and `tigrbl.engine_plugins` entry points plus a package `register()` hook so Tigrbl can discover or load the backend at runtime. The default builder returns a SQLAlchemy `duckdb-engine` session for ORM DDL and canonical table operations; `mode="native"` preserves the pure `duckdb.Connection` session path.
+## Getting Started
 
-DuckDB locations can be supplied as direct `*.duckdb` files or as remote
-`quack:` / `quack://` URIs. A file opens embedded DuckDB storage. A Quack URI
-creates an in-memory DuckDB client, attaches the remote Quack catalog over
-HTTP(S), and makes that catalog the default for Tigrbl operations. Quack
-requires DuckDB 1.5.3 or newer and remains an actively evolving DuckDB feature.
+### Prerequisites
 
+Python `>=3.10,<3.15` is required. The [manifest](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml) declares runtime dependencies including `duckdb`, `duckdb-engine`, `tigrbl`. Read the example’s inputs and service requirements before execution.
 
-## Install
+### Installation
 
+#### uv
+
+<!-- readme-standards:begin installation.uv -->
 ```bash
 uv add tigrbl_engine_duckdb
 ```
+<!-- readme-standards:end installation.uv -->
 
+#### pip
+
+<!-- readme-standards:begin installation.pip -->
 ```bash
-pip install tigrbl_engine_duckdb
+python -m pip install tigrbl_engine_duckdb
 ```
+<!-- readme-standards:end installation.pip -->
 
-## Surface Coverage
+#### Poetry
 
-| Surface | Value |
-|---|---|
-| PyPI package | [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) |
-| Repository path | [`pkgs/90_engines/tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_duckdb) |
-| Python import root | `tigrbl_engine_duckdb` |
-| Console scripts | none declared |
-| Entry points | `tigrbl.engine`, `tigrbl.engine_plugins` |
-| Optional extras | none declared |
-| Legal files | `LICENSE`, `NOTICE` |
-| Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
+<!-- readme-standards:begin installation.poetry -->
+```bash
+poetry add tigrbl_engine_duckdb
+```
+<!-- readme-standards:end installation.poetry -->
 
-## What It Owns
+### Quick Start
 
-`tigrbl_engine_duckdb` owns the `engine plugin` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
+#### Example
 
-Implementation orientation:
-- `tigrbl_engine_duckdb`: duck_builder, duck_session, sqlalchemy_adapter, plugin
+<!-- readme-standards:begin example.quick-start -->
+Source: [docs/readme/quick_start.py](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/docs/readme/quick_start.py).
 
-## Public API and Import Surface
+```python
+from tigrbl_engine_duckdb import register
 
-- Import roots: `tigrbl_engine_duckdb`.
-- Public symbols: `DuckDBSession`, `duckdb_capabilities`, `duckdb_engine`, `native_duckdb_engine`, `sqlalchemy_duckdb_engine`, `register`.
-- Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/).
-- External runtime dependencies: `duckdb>=1.0.0`, `duckdb-engine>=0.17.0`.
+register()
+```
+<!-- readme-standards:end example.quick-start -->
 
-## Usage Examples
+#### Expected Result
 
-### Verify the installed package
+The example demonstrates the documented `tigrbl_engine_duckdb` source boundary or workflow. Complete its required configuration first. README CI checks the maintained source’s syntax and declarations; it does not claim that external services or the application workflow were exercised.
+
+---
+
+## Usage
+
+### Common Workflows
+
+<!-- readme-standards:begin example.usage -->
+Source: [docs/readme/usage.py](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/docs/readme/usage.py).
+
+```python
+from tigrbl_engine_duckdb import register
+
+register()
+```
+<!-- readme-standards:end example.usage -->
+
+**Verify the installed package**
 
 ```bash
 python -m pip show tigrbl_engine_duckdb
@@ -91,15 +130,10 @@ print(version("tigrbl_engine_duckdb"))
 PY
 ```
 
-### Register the engine plugin explicitly
+**Register the engine plugin explicitly**
 
-```python
-from tigrbl_engine_duckdb import register
 
-register()
-```
-
-### Use DuckDB for Tigrbl ORM DDL
+**Use DuckDB for Tigrbl ORM DDL**
 
 ```python
 from tigrbl import TigrblApp
@@ -142,7 +176,7 @@ images without outbound extension-repository access should install the Quack
 extension while building the image so the first application connection does
 not depend on network egress.
 
-### Use the native DuckDB session mode
+**Use the native DuckDB session mode**
 
 ```python
 from tigrbl_engine_duckdb import duckdb_engine
@@ -153,7 +187,7 @@ engine, session_factory = duckdb_engine(
 session = session_factory()
 ```
 
-### Discover the engine through package metadata
+**Discover the engine through package metadata**
 
 ```python
 from importlib.metadata import entry_points
@@ -164,27 +198,128 @@ for entry_point in entry_points(group="tigrbl.engine_plugins"):
         plugin_register()
 ```
 
-### Install alongside the facade
+**Install alongside the facade**
 
 ```bash
 uv add tigrbl tigrbl_engine_duckdb
 pip install tigrbl tigrbl_engine_duckdb
 ```
 
-## How To Choose This Package
+### Configuration
 
-Choose `tigrbl_engine_duckdb` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
+Configure `tigrbl_engine_duckdb` through the APIs in [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/src/tigrbl_engine_duckdb/__init__.py); its [manifest](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml) describes installation requirements, not an implicit service configuration. No additional package-global configuration contract is inferred from dependencies.
 
-## Related Packages
+### Error Handling
 
-- [`tigrbl`](https://pypi.org/project/tigrbl/)
-- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
-- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
-- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/)
-- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/)
-- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/)
+The inspected `tigrbl_engine_duckdb` source raises `NoResultFound`, `NotImplementedError`, `ValueError`. Handle these at the calling boundary and consult the implementation for the triggering conditions.
 
-## Documentation Links
+### Best Practices
+
+Use the explicit `tigrbl_engine_duckdb` imports documented below and keep collaborator configuration with the caller. Run the package’s relevant tests after changing `DuckDBSession`, `duckdb_capabilities`, `duckdb_engine`, `native_duckdb_engine`, `register`, `sqlalchemy_duckdb_engine`; an import or successful installation alone does not establish its runtime guarantees.
+
+---
+
+## Package Boundary
+
+### What It Owns
+
+`tigrbl_engine_duckdb` owns the `engine plugin` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
+
+Implementation orientation:
+- `tigrbl_engine_duckdb`: duck_builder, duck_session, sqlalchemy_adapter, plugin
+
+This README is the package-local distribution entry point for `tigrbl_engine_duckdb`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
+
+### Public API and Import Surfaces
+
+- Import roots: `tigrbl_engine_duckdb`.
+- Public symbols: `DuckDBSession`, `duckdb_capabilities`, `duckdb_engine`, `native_duckdb_engine`, `sqlalchemy_duckdb_engine`, `register`.
+- Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/).
+- External runtime dependencies: `duckdb>=1.0.0`, `duckdb-engine>=0.17.0`.
+
+### Entry Points
+
+<!-- readme-standards:begin entry-points -->
+- `tigrbl.engine_plugins` → `duckdb` → `tigrbl_engine_duckdb.plugin:register`
+<!-- readme-standards:end entry-points -->
+
+### Injected Dependencies
+
+The direct installation dependencies of `tigrbl_engine_duckdb` are `duckdb`, `duckdb-engine`, `tigrbl`. These declarations do not imply automatic provider selection. Pass collaborators through the explicit constructors or call signatures in [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/src/tigrbl_engine_duckdb/__init__.py).
+
+### Protocol Consumers
+
+No direct package-manifest dependency on `tigrbl_engine_duckdb` was found in the audited three-repository inventory. External consumers may still use its documented imports or commands.
+
+### Extensions
+
+For `tigrbl_engine_duckdb`, use the source-declared public interfaces (`DuckDBSession`, `duckdb_capabilities`, `duckdb_engine`, `native_duckdb_engine`, `register`, `sqlalchemy_duckdb_engine`) when composing or extending behavior. Its entry-point section below is authoritative for registered plugins; no additional extension loader is inferred from the package name.
+
+---
+
+## Operations and Readiness
+
+### Operational Requirements
+
+Operate `tigrbl_engine_duckdb` according to its actual entry points and collaborators. The dependency and Python requirements in the [manifest](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml) are prerequisites; deployment topology, credentials, and readiness remain the responsibility of the consuming application unless explicitly documented above.
+
+### Health and Observability
+
+This README does not establish a standalone health endpoint for `tigrbl_engine_duckdb`. Observe the concrete caller’s results, exceptions, and existing test reports. An application that embeds this package must define its own health and telemetry contract.
+
+### Security and Resource Limits
+
+Apply the input, credential, and resource constraints implemented in [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/src/tigrbl_engine_duckdb/__init__.py). The `tigrbl_engine_duckdb` README gate is a documentation check, not a security review or a substitute for the implementation’s limits and caller authorization.
+
+### Compatibility
+
+This source version of `tigrbl_engine_duckdb` declares Python `>=3.10,<3.15`. Consult its dependency constraints before upgrading. Source-version and registry-version badges have separate meanings; this migration makes no additional platform or interoperability certification claim.
+
+---
+
+## Verification
+
+### Tests
+
+Run `python -m pytest docs/readme/test_examples.py` from the `tigrbl_engine_duckdb` package directory for the maintained example source checks (Python compilation and non-Python file presence). Existing package tests include:
+
+- [tests/test_smoke.py](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/tests/test_smoke.py)
+
+The repository README gate also checks the required heading tree, metadata, managed fragments, and referenced files.
+
+### Certification Status
+
+- Package status: governed package in the `tigrbl/tigrbl` workspace.
+- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
+- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
+- Local certification guard: `pkgs/97_tests/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
+- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
+
+### Evidence
+
+The [README standards CI](https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml) records mechanical documentation results for its tested commit. The [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/src/tigrbl_engine_duckdb/__init__.py) and example sources support the package-boundary description; external runtime behavior requires its own test evidence.
+
+---
+
+## FAQ
+
+### Why
+
+**Why select this package?** `tigrbl_engine_duckdb` provides duckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration; use its own API boundary rather than assuming neighboring packages are bundled or configured automatically.
+
+### How
+
+**How do I start?** Install or synchronize the environment under Getting Started, follow the maintained example for `tigrbl_engine_duckdb`, and consult [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/src/tigrbl_engine_duckdb/__init__.py) for the exact types and signatures involved.
+
+### When
+
+**When should I validate an upgrade?** Recheck `tigrbl_engine_duckdb` whenever its source version, declared collaborators, configuration, or caller changes. Run relevant behavioral tests in addition to the README gate before promotion.
+
+---
+
+## Documentation and Related Packages
+
+### More Documentation
 
 - [Workspace docs](https://github.com/tigrbl/tigrbl/blob/master/docs/README.md)
 - [Package catalog](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_CATALOG.md)
@@ -194,24 +329,123 @@ Choose `tigrbl_engine_duckdb` when the quick-answer table matches your use case.
 - [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json)
 - [Release workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml)
 
-## Support
+### Related Packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
+- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/)
+- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/)
+- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/)
+
+### Project Links
+
+<!-- readme-standards:begin project-links -->
+- [Discord](https://discord.gg/K4YTAPapjR)
+- [Homepage](https://github.com/tigrbl/tigrbl)
+- [Issues](https://github.com/tigrbl/tigrbl/issues)
+- [Organization](https://github.com/tigrbl)
+- [Repository](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_duckdb)
+- [pypi: tigrbl_engine_duckdb](https://pypi.org/project/tigrbl_engine_duckdb/)
+<!-- readme-standards:end project-links -->
 
 - Community: [Discord](https://discord.gg/K4YTAPapjR).
 - Issues: [GitHub Issues](https://github.com/tigrbl/tigrbl/issues).
 - Repository: [pkgs/90_engines/tigrbl_engine_duckdb](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_duckdb).
 
-## Package-local Boundary
+---
 
-This README is the package-local distribution entry point for `tigrbl_engine_duckdb`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
+## Contributing
 
-## Certification Status
+### How to Contribute
 
-- Package status: governed package in the `tigrbl/tigrbl` workspace.
-- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
-- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
-- Local certification guard: `pkgs/97_tests/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
-- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
+Follow the [contribution guide](https://github.com/tigrbl/tigrbl/blob/master/CONTRIBUTING.md) and include a focused example or regression for changes to `tigrbl_engine_duckdb`. Keep package behavior, its documented boundary, and its tests aligned.
 
-## License
+### Development Setup
+
+Work from the `pkgs/90_engines/tigrbl_engine_duckdb` checkout. Synchronize its declared development environment with uv, then run the relevant package tests and `python -m pytest docs/readme/test_examples.py`. The repository’s dedicated README job installs `readme-standards==0.1.1` without resolving unrelated runtime packages.
+
+### Notes for Maintainers
+
+**What is tigrbl_engine_duckdb?**
+
+DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
+
+**When should I install tigrbl_engine_duckdb?**
+
+Install it when the storage, analytics, cache, or integration workload named by this package is the intended runtime backend.
+
+**Who is tigrbl_engine_duckdb for?**
+
+Application developers, data platform engineers, and operators choosing concrete persistence or data-plane behavior.
+
+**Where does tigrbl_engine_duckdb fit?**
+
+`tigrbl_engine_duckdb` lives at `pkgs/90_engines/tigrbl_engine_duckdb` and serves embedded analytical SQL and local OLAP workflows.
+
+**How does tigrbl_engine_duckdb work?**
+
+It exposes `tigrbl.engine` and `tigrbl.engine_plugins` entry points plus a package `register()` hook so Tigrbl can discover or load the backend at runtime. The default builder returns a SQLAlchemy `duckdb-engine` session for ORM DDL and canonical table operations; `mode="native"` preserves the pure `duckdb.Connection` session path.
+
+DuckDB locations can be supplied as direct `*.duckdb` files or as remote
+`quack:` / `quack://` URIs. A file opens embedded DuckDB storage. A Quack URI
+creates an in-memory DuckDB client, attaches the remote Quack catalog over
+HTTP(S), and makes that catalog the default for Tigrbl operations. Quack
+requires DuckDB 1.5.3 or newer and remains an actively evolving DuckDB feature.
+
+**Install**
+
+```bash
+uv add tigrbl_engine_duckdb
+```
+
+```bash
+pip install tigrbl_engine_duckdb
+```
+
+**Surface Coverage**
+
+| Surface | Value |
+|---|---|
+| PyPI package | [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) |
+| Repository path | [`pkgs/90_engines/tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_duckdb) |
+| Python import root | `tigrbl_engine_duckdb` |
+| Console scripts | none declared |
+| Entry points | `tigrbl.engine`, `tigrbl.engine_plugins` |
+| Optional extras | none declared |
+| Legal files | `LICENSE`, `NOTICE` |
+| Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
+
+---
+
+## Governance
+
+### Ownership and Decision Making
+
+Changes to `tigrbl_engine_duckdb` follow the maintainer review process of [tigrbl/tigrbl](https://github.com/tigrbl/tigrbl) and its contribution guide. Author attribution remains in the [manifest](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/pyproject.toml); this README does not assign new publishing or administrative authority.
+
+### Standards and Policies
+
+`tigrbl_engine_duckdb` follows the versioned [package-guide-v1 outline](https://github.com/groupsum/readme-standards/blob/master/docs/outline.md). All fixed headings, hierarchy, order, separators, and package-specific branding are checked by CI; reviewers assess the accuracy and usefulness of authored claims.
+
+### Lifecycle and Migration
+
+Source and published versions are identified separately in the branding badges above. This change standardizes documentation and adds a development-only gate; it does not publish a new runtime version or declare a previously unpublished package released. Preserve explicit deprecation and replacement instructions where present.
+
+---
+
+## License and Attribution
+
+### License
+
+<!-- readme-standards:begin license -->
+Licensed under `Apache-2.0`. See [LICENSE](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/LICENSE).
+<!-- readme-standards:end license -->
 
 Licensed under the Apache License, Version 2.0. See `LICENSE`, `NOTICE`, and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
+
+### Notices
+
+<!-- readme-standards:begin notices -->
+See [NOTICE](https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_duckdb/NOTICE) for attribution.
+<!-- readme-standards:end notices -->

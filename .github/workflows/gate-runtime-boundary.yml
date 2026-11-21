@@ -1,11 +1,7 @@
 name: Gate Runtime Boundary
 
 on:
-  pull_request:
-    paths:
-      - "pkgs/50_runtime/tigrbl_runtime/**"
-      - "tools/ci/validate_runtime_boundary.py"
-      - ".github/workflows/gate-runtime-boundary.yml"
+  workflow_call:
   push:
     branches: [master, main]
     paths:
@@ -15,7 +11,7 @@ on:
 
 jobs:
   runtime-boundary:
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["self-hosted","Linux","X64","trusted-public-ci"]') || 'ubuntu-24.04' }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

@@ -84,11 +84,7 @@ def _parse_scalar(value: str) -> Any:
         return value
 
 
-def _declared_import_roots() -> set[str]:
-    data = tomllib.loads(PYPROJECT_PATH.read_text(encoding="utf-8"))
-    deps = data.get("project", {}).get("dependencies", [])
-    if not isinstance(deps, list):
-        raise AssertionError("pyproject.toml [project].dependencies must be a list")
+def _dependency_roots(deps: list[str]) -> set[str]:
     roots = set()
     for dep in deps:
         name = str(dep).split(";", 1)[0].split("[", 1)[0]
@@ -100,6 +96,18 @@ def _declared_import_roots() -> set[str]:
     return roots
 
 
+def _declared_import_roots() -> tuple[set[str], set[str]]:
+    data = tomllib.loads(PYPROJECT_PATH.read_text(encoding="utf-8"))
+    project = data.get("project", {})
+    required = project.get("dependencies", [])
+    if not isinstance(required, list):
+        raise AssertionError("pyproject.toml [project].dependencies must be a list")
+    optional = project.get("optional-dependencies", {})
+    return _dependency_roots(required), _dependency_roots(
+        [dep for extra in optional.values() for dep in extra]
+    )
+
+
 def _runtime_py_files() -> list[Path]:
     return sorted(RUNTIME_ROOT.rglob("*.py"))
 
@@ -108,16 +116,21 @@ def _relative(path: Path) -> str:
     return path.relative_to(RUNTIME_ROOT).as_posix()
 
 
-def _top_level_imports(path: Path) -> set[str]:
-    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+def _import_roots(tree: ast.AST, *, include_function_bodies: bool = True) -> set[str]:
     roots: set[str] = set()
-    for node in ast.walk(tree):
+    nodes = [tree]
+    while nodes:
+        node = nodes.pop()
         if isinstance(node, ast.Import):
             for alias in node.names:
                 roots.add(alias.name.split(".", maxsplit=1)[0])
         elif isinstance(node, ast.ImportFrom):
             if node.level == 0 and node.module:
                 roots.add(node.module.split(".", maxsplit=1)[0])
+        if include_function_bodies or not isinstance(
+            node, (ast.FunctionDef, ast.AsyncFunctionDef)
+        ):
+            nodes.extend(ast.iter_child_nodes(node))
     return roots
 
 
@@ -136,8 +149,10 @@ def validate() -> None:
     if boundary["package"] != "tigrbl_runtime":
         raise AssertionError("BOUNDARY.yaml package must be tigrbl_runtime")
 
-    declared = _declared_import_roots()
-    allowed = set(sys.stdlib_module_names) | declared | {"tigrbl_runtime"}
+    required, optional = _declared_import_roots()
+    always_available = set(sys.stdlib_module_names) | required | {"tigrbl_runtime"}
+    optional -= always_available
+    allowed = always_available | optional
     forbidden = set(boundary.get("forbidden_import_roots", []))
     max_loc = int(boundary["max_python_file_loc"])
     allowed_files = set(boundary["allowed_runtime_files"])
@@ -152,6 +167,7 @@ def validate() -> None:
         )
 
     bad_imports: dict[str, list[str]] = {}
+    eager_optional_imports: dict[str, list[str]] = {}
     forbidden_imports: dict[str, list[str]] = {}
     long_files: dict[str, int] = {}
     token_counts = {key: 0 for key in boundary["legacy_token_ratchets"]}
@@ -163,10 +179,17 @@ def validate() -> None:
         if line_count > max_loc:
             long_files[rel] = line_count
 
-        imports = _top_level_imports(path)
+        tree = ast.parse(text, filename=str(path))
+        imports = _import_roots(tree)
         disallowed = sorted(root for root in imports if root not in allowed)
         if disallowed:
             bad_imports[rel] = disallowed
+
+        if imports & optional:
+            eager = _import_roots(tree, include_function_bodies=False)
+            eager_optional = sorted(eager & optional)
+            if eager_optional:
+                eager_optional_imports[rel] = eager_optional
 
         forbidden_hits = sorted(root for root in imports if root in forbidden)
         if forbidden_hits:
@@ -179,6 +202,10 @@ def validate() -> None:
         raise AssertionError(f"Runtime Python files exceed {max_loc} LoC: {long_files}")
     if bad_imports:
         raise AssertionError(f"Runtime imports undeclared roots: {bad_imports}")
+    if eager_optional_imports:
+        raise AssertionError(
+            f"Runtime loads optional imports at module import time: {eager_optional_imports}"
+        )
     if forbidden_imports:
         raise AssertionError(f"Runtime imports forbidden roots: {forbidden_imports}")
 

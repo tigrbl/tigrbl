@@ -7,7 +7,8 @@ from common import repo_root, fail
 ROOT = repo_root()
 
 BANNED_PATTERNS = {
-    r"\bcertified\b": "certified",
+    # Explicit negative status is not a certification claim, including badge URLs.
+    r"(?<!not )(?<!not%20)\bcertified\b": "certified",
     r"\bcertifiably\b": "certifiably",
     r"\bconformant\b": "conformant",
     r"\bfully[- ]featured\b": "fully featured",

@@ -81,7 +81,16 @@ class _PackedExecuteMixin:
         if program_id < 0 and hot.scope_type != "webtransport":
             program_id = self._prime_exact_channel_program(ctx, env, plan, packed)
         if program_id < 0:
-            program_id = await self._probe_ingress_for_program(ctx, plan, packed)
+            try:
+                program_id = await self._probe_ingress_for_program(ctx, plan, packed)
+            except StatusDetailError as exc:
+                if hot.scope_type != "http":
+                    raise
+                temp.setdefault("egress", {})["transport_response"] = {
+                    "status_code": exc.status_code,
+                    "headers": exc.headers,
+                    "body": {"detail": exc.detail},
+                }
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
             wt_selection = temp.get("webtransport_selection")
@@ -196,11 +205,6 @@ class _PackedExecuteMixin:
                 )
 
             try:
-                await self._run_hot_jsonrpc_security_dependencies(
-                    ctx,
-                    hot,
-                    program_hot_runner_id,
-                )
                 if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(
                     hot.parsed_json, dict
                 ):

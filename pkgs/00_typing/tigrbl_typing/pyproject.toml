@@ -1,9 +1,9 @@
 [project]
 name = "tigrbl-typing"
-version = "0.4.5"
+version = "0.4.6.dev2"
 description = "Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "Apache-2.0"
 keywords = [
     "tigrbl",
     "asgi",
@@ -43,6 +43,7 @@ authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 dependencies = [
     "pydantic>=2.10,<3",
 ]
+license-files = ["LICENSE", "NOTICE"]
 
 
 [project.urls]
@@ -62,6 +63,54 @@ packages = [
     { include = "tigrbl_typing" },
 ]
 
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/00_typing/tigrbl_typing"
+layer = "00_typing"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl-typing"
+published = true
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/00_typing/tigrbl_typing/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/00_typing/tigrbl_typing/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
 [dependency-groups]
 dev = [
     "pytest>=8.0",
@@ -69,4 +118,5 @@ dev = [
     "pytest-timeout>=2.3.1",
     "ruff>=0.9",
     "sqlalchemy>=2.0",
+    "readme-standards==0.1.1; python_version >= \"3.11\"",
 ]

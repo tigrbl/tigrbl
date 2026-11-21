@@ -19,6 +19,19 @@ That means:
 - `AuthNProvider`, `set_auth(...)`, `allow_anon`, and authz callback hooks remain the governing abstractions
 - the framework does **not** add a new monolithic generic auth middleware abstraction in this cycle
 
+## Mounted table operations
+
+Configure application policy with `app.set_auth(...)`. Table operations inherit
+it when registered directly or through a mounted router. An app policy change
+invalidates the compiled plan for subsequent requests.
+
+The app and router authorizers run in that order, followed by any declared
+operation security dependencies. A denial stops execution before the operation
+handler. If the app and router both declare authentication, use the same provider.
+The compiled operation rejects conflicting providers. Explicit table-level
+`allow_anon` exemptions retain their existing alias or target scope. Any security
+dependencies declared on an exempt operation still apply.
+
 ## Why
 
 The dependency/hook-based model is already the working framework surface and is aligned with the existing OpenAPI/OpenRPC security machinery. Adding a second generic auth surface in this cycle would widen scope without being required to close the current operator boundary honestly.

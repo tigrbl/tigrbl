@@ -92,6 +92,7 @@ dev = [
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
@@ -1756,6 +1757,18 @@ wheels = [
 ]
 
 [[package]]
+name = "markdown-it-py"
+version = "4.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mdurl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/16/fc/cee2c45553c9a9bf77d8b0c391560c556d7ed756b1f0bb35eb5d48db09ea/markdown_it_py-4.3.0.tar.gz", hash = "sha256:91a58fa5b72c71a40cf7177250fd767480d7a2bb3ac426ccfb76fb90305fdaaa", size = 242701, upload-time = "2026-11-10T16:18:30.467Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c9/31/5f0ac2f1a1c67423c995c731a11cd4ad05d081a2be969d74f868bdb9cc70/markdown_it_py-4.3.0-py3-none-any.whl", hash = "sha256:7aa1511a46c39138de78d9eba92ce47e63124d8003fc98b3a351909e04239efa", size = 96951, upload-time = "2026-11-10T16:18:28.975Z" },
+]
+
+[[package]]
 name = "markupsafe"
 version = "3.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1872,6 +1885,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6e/77/9450b8f251a13affb6281997d0523c4615f8a8b35d0b21ff30db3a5aac9d/mcp-1.28.1.tar.gz", hash = "sha256:d51e36a5f5644faea4f85ea649bfffa6bc6c26770d42798ad6a3de3d2ba69683", size = 638501, upload-time = "2026-06-26T12:57:29.093Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e2/5e/d118fce19f87a2e7d8101c35c8ae0ec289098a4df0ff244cec23e415aca0/mcp-1.28.1-py3-none-any.whl", hash = "sha256:2726bca5e7193f61c5dde8b12500a6de2d9acf6d1a1c0be9e8c2e706437991df", size = 222620, upload-time = "2026-06-26T12:57:27.218Z" },
+]
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
 ]
 
 [[package]]
@@ -3284,6 +3306,21 @@ wheels = [
 ]
 
 [[package]]
+name = "readme-standards"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jsonschema" },
+    { name = "markdown-it-py" },
+    { name = "packaging" },
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0d/dc/b4b129d69751cdce37216ead0b19d4096f3bf1520d179b5bf3f80194bcdd/readme_standards-0.1.1.tar.gz", hash = "sha256:999aa59f1a05b1907482330dd4dfb3fccc1b9d6043ce66464e0cdb65e09f8e51", size = 107164, upload-time = "2026-11-20T02:35:18.393Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/41/a3/a8670b94531f6ffd246c370928b9018bed59822e308a8cb95786f56bd416/readme_standards-0.1.1-py3-none-any.whl", hash = "sha256:c7ecb960a5a7587bbbd0a81840bcb86ffff11f6930da1cdf2c0876a9f294327d", size = 31500, upload-time = "2026-11-20T02:35:17.433Z" },
+]
+
+[[package]]
 name = "redis"
 version = "7.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3909,7 +3946,7 @@ wheels = [
 
 [[package]]
 name = "tigrbl"
-version = "0.4.5"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/80_facade/tigrbl" }
 dependencies = [
     { name = "aiosqlite" },
@@ -3934,6 +3971,9 @@ gunicorn = [
 ]
 hypercorn = [
     { name = "hypercorn" },
+]
+numba = [
+    { name = "tigrbl-runtime", extra = ["numba"] },
 ]
 postgres = [
     { name = "asyncpg" },
@@ -3970,6 +4010,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
     { name = "tigrbl-client" },
@@ -3998,13 +4039,14 @@ requires-dist = [
     { name = "tigrbl-ops-oltp", editable = "pkgs/60_ops/tigrbl_ops_oltp" },
     { name = "tigrbl-orm", editable = "pkgs/30_orm/tigrbl_orm" },
     { name = "tigrbl-runtime", editable = "pkgs/50_runtime/tigrbl_runtime" },
+    { name = "tigrbl-runtime", extras = ["numba"], marker = "extra == 'numba'", editable = "pkgs/50_runtime/tigrbl_runtime" },
     { name = "tigrbl-tests", marker = "extra == 'tests'", editable = "pkgs/97_tests/tigrbl_tests" },
     { name = "tigrcorn", marker = "extra == 'servers'" },
     { name = "tigrcorn", marker = "extra == 'tigrcorn'" },
     { name = "uvicorn", marker = "extra == 'servers'" },
     { name = "uvicorn", marker = "extra == 'uvicorn'" },
 ]
-provides-extras = ["postgres", "templates", "servers", "uvicorn", "tigrcorn", "hypercorn", "gunicorn", "tests"]
+provides-extras = ["numba", "postgres", "templates", "servers", "uvicorn", "tigrcorn", "hypercorn", "gunicorn", "tests"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -4018,6 +4060,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
     { name = "tigrbl-client", editable = "pkgs/95_client/tigrbl_client" },
@@ -4025,7 +4068,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-atoms"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/40_atoms/tigrbl_atoms" }
 dependencies = [
     { name = "jinja2" },
@@ -4044,6 +4087,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-timeout" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "tigrbl-kernel" },
 ]
@@ -4066,13 +4110,14 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "tigrbl-kernel", editable = "pkgs/45_kernel/tigrbl_kernel" },
 ]
 
 [[package]]
 name = "tigrbl-base"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/20_base/tigrbl_base" }
 dependencies = [
     { name = "pydantic" },
@@ -4086,6 +4131,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-timeout" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4102,12 +4148,13 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-canon"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/99_deprecated/tigrbl_canon" }
 dependencies = [
     { name = "tigrbl" },
@@ -4144,7 +4191,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-client"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/95_client/tigrbl_client" }
 dependencies = [
     { name = "httpx" },
@@ -4161,6 +4208,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4181,13 +4229,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-concrete"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/70_concrete/tigrbl_concrete" }
 dependencies = [
     { name = "orjson" },
@@ -4209,6 +4258,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4233,12 +4283,13 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-core"
-version = "0.4.5"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/10_core/tigrbl_core" }
 dependencies = [
     { name = "pydantic" },
@@ -4252,6 +4303,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "sqlalchemy" },
 ]
@@ -4269,13 +4321,14 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-bigquery"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_bigquery" }
 dependencies = [
     { name = "google-cloud-bigquery" },
@@ -4292,6 +4345,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4312,13 +4366,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-clickhouse"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_clickhouse" }
 dependencies = [
     { name = "clickhouse-connect" },
@@ -4335,6 +4390,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4355,13 +4411,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-csv"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_csv" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -4374,6 +4431,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "sqlalchemy" },
 ]
@@ -4389,13 +4447,14 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-dataframe"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_dataframe" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -4413,6 +4472,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4433,13 +4493,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-duckdb"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_duckdb" }
 dependencies = [
     { name = "duckdb" },
@@ -4457,6 +4518,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4478,13 +4540,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-inmemcache"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_inmemcache" }
 dependencies = [
     { name = "tigrbl" },
@@ -4492,6 +4555,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4499,11 +4563,14 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.11.0" }]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "ruff", specifier = ">=0.11.0" },
+]
 
 [[package]]
 name = "tigrbl-engine-inmemory"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_inmemory" }
 dependencies = [
     { name = "tigrbl" },
@@ -4511,6 +4578,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4518,11 +4586,14 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.11.0" }]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "ruff", specifier = ">=0.11.0" },
+]
 
 [[package]]
 name = "tigrbl-engine-mariadb"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_mariadb" }
 dependencies = [
     { name = "pymysql" },
@@ -4534,6 +4605,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4548,12 +4620,13 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8" },
     { name = "pytest-asyncio", specifier = ">=0.24" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11" },
 ]
 
 [[package]]
 name = "tigrbl-engine-membloom"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_membloom" }
 dependencies = [
     { name = "tigrbl" },
@@ -4561,6 +4634,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4568,77 +4642,128 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.11.0" }]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "ruff", specifier = ">=0.11.0" },
+]
 
 [[package]]
 name = "tigrbl-engine-memdedupe"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_memdedupe" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
 [[package]]
 name = "tigrbl-engine-memkv"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_memkv" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
 [[package]]
 name = "tigrbl-engine-memlru"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_memlru" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
 [[package]]
 name = "tigrbl-engine-mempubsub"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_mempubsub" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
 [[package]]
 name = "tigrbl-engine-memqueue"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_memqueue" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
-[package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
-
-[[package]]
-name = "tigrbl-engine-memrate"
-version = "0.4.5"
-source = { editable = "pkgs/90_engines/tigrbl_engine_memrate" }
-dependencies = [
-    { name = "tigrbl" },
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
 ]
 
 [package.metadata]
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
+[[package]]
+name = "tigrbl-engine-memrate"
+version = "0.4.6.dev2"
+source = { editable = "pkgs/90_engines/tigrbl_engine_memrate" }
+dependencies = [
+    { name = "tigrbl" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
 [[package]]
 name = "tigrbl-engine-numpy"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_numpy" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -4650,6 +4775,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "sqlalchemy" },
 ]
@@ -4664,13 +4790,14 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-pandas"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_pandas" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -4688,6 +4815,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4708,13 +4836,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-pgsqli-wal"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_pgsqli_wal" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
@@ -4731,6 +4860,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4751,13 +4881,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-postgres"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_postgres" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
@@ -4769,6 +4900,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4783,12 +4915,13 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-pyspark"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_pyspark" }
 dependencies = [
     { name = "pyspark" },
@@ -4798,6 +4931,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4810,12 +4944,13 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-redis"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_redis" }
 dependencies = [
     { name = "redis" },
@@ -4832,6 +4967,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4852,13 +4988,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-rediscachethrough"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_rediscachethrough" }
 dependencies = [
     { name = "redis" },
@@ -4875,6 +5012,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -4895,13 +5033,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-rom"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_rom" }
 dependencies = [
     { name = "tigrbl" },
@@ -4911,6 +5050,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "sqlalchemy" },
 ]
@@ -4922,13 +5062,14 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-s3"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_s3" }
 dependencies = [
     { name = "boto3" },
@@ -4939,6 +5080,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4952,12 +5094,13 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-s3fs"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_s3fs" }
 dependencies = [
     { name = "s3fs" },
@@ -4968,6 +5111,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -4981,12 +5125,13 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-snowflake"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_snowflake" }
 dependencies = [
     { name = "snowflake-connector-python" },
@@ -5004,6 +5149,7 @@ dev = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "requests" },
     { name = "ruff" },
 ]
@@ -5025,13 +5171,14 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-engine-sqlite"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_sqlite" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -5042,6 +5189,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5055,12 +5203,13 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
 name = "tigrbl-engine-xlsx"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/90_engines/tigrbl_engine_xlsx" }
 dependencies = [
     { name = "openpyxl" },
@@ -5071,6 +5220,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "sqlalchemy" },
 ]
@@ -5085,13 +5235,14 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
 
 [[package]]
 name = "tigrbl-examples"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/96_examples/tigrbl_examples" }
 dependencies = [
     { name = "httpx" },
@@ -5105,6 +5256,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5121,12 +5273,13 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-kernel"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/45_kernel/tigrbl_kernel" }
 dependencies = [
     { name = "tigrbl-atoms" },
@@ -5139,6 +5292,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-timeout" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5154,6 +5308,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24" },
     { name = "pytest-timeout", specifier = ">=2.3" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5172,6 +5327,7 @@ dependencies = [
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
 ]
 
 [package.metadata]
@@ -5186,11 +5342,12 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
 ]
 
 [[package]]
 name = "tigrbl-migrations"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/10_core/tigrbl_migrations" }
 dependencies = [
     { name = "packaging" },
@@ -5203,6 +5360,11 @@ test = [
     { name = "pytest" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "hypothesis", marker = "extra == 'test'", specifier = ">=6" },
@@ -5212,9 +5374,12 @@ requires-dist = [
 ]
 provides-extras = ["test"]
 
+[package.metadata.requires-dev]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+
 [[package]]
 name = "tigrbl-model"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/02_model/tigrbl_model" }
 dependencies = [
     { name = "pyyaml" },
@@ -5227,6 +5392,7 @@ dependencies = [
 dev = [
     { name = "pydantic" },
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5242,17 +5408,19 @@ requires-dist = [
 dev = [
     { name = "pydantic", specifier = ">=2.10,<3" },
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-ops-olap"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/60_ops/tigrbl_ops_olap" }
 
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5261,12 +5429,13 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-ops-oltp"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/60_ops/tigrbl_ops_oltp" }
 dependencies = [
     { name = "tigrbl-base" },
@@ -5277,6 +5446,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5290,18 +5460,20 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-ops-realtime"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/60_ops/tigrbl_ops_realtime" }
 
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5311,17 +5483,19 @@ dev = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-ops-webtransport"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/60_ops/tigrbl_ops_webtransport" }
 
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5330,12 +5504,13 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-orm"
-version = "0.4.5"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/30_orm/tigrbl_orm" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -5344,6 +5519,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5353,15 +5529,15 @@ requires-dist = [{ name = "sqlalchemy", specifier = ">=2.0" }]
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
 [[package]]
 name = "tigrbl-runtime"
-version = "0.4.5"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/50_runtime/tigrbl_runtime" }
 dependencies = [
-    { name = "numba" },
     { name = "tigrbl-atoms" },
     { name = "tigrbl-base" },
     { name = "tigrbl-core" },
@@ -5369,35 +5545,43 @@ dependencies = [
     { name = "tigrbl-typing" },
 ]
 
+[package.optional-dependencies]
+numba = [
+    { name = "numba" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "numba", specifier = ">=0.61.2" },
+    { name = "numba", marker = "extra == 'numba'", specifier = ">=0.61.2" },
     { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
     { name = "tigrbl-base", editable = "pkgs/20_base/tigrbl_base" },
     { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
     { name = "tigrbl-kernel", editable = "pkgs/45_kernel/tigrbl_kernel" },
     { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
 ]
+provides-extras = ["numba"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.23" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
 ]
 
 [[package]]
 name = "tigrbl-spec"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/01_spec/tigrbl_spec" }
 dependencies = [
     { name = "jsonschema" },
@@ -5407,6 +5591,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5419,12 +5604,13 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
 [[package]]
 name = "tigrbl-tests"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/97_tests/tigrbl_tests" }
 dependencies = [
     { name = "asyncpg" },
@@ -5448,6 +5634,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "fastapi" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
 ]
 
@@ -5474,12 +5661,13 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "fastapi", specifier = "==0.136.0" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
 [[package]]
 name = "tigrbl-typing"
-version = "0.4.5"
+version = "0.4.6.dev2"
 source = { editable = "pkgs/00_typing/tigrbl_typing" }
 dependencies = [
     { name = "pydantic" },
@@ -5490,6 +5678,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-timeout" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'" },
     { name = "ruff" },
     { name = "sqlalchemy" },
 ]
@@ -5502,6 +5691,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]

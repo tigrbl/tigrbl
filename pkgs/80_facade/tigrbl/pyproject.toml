@@ -1,9 +1,9 @@
 [project]
 name = "tigrbl"
-version = "0.4.6.dev1"
+version = "0.4.6.dev3"
 description = "Schema-first ASGI framework for REST, JSON-RPC, streaming, SSE, WebSocket, runtime plans, hooks, diagnostics, and engine plugins."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "Apache-2.0"
 keywords = [
     "tigrbl",
     "asgi",
@@ -33,7 +33,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
     "Framework :: AsyncIO",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -59,7 +58,7 @@ dependencies = [
     "tigrbl-concrete>=0.4.5.dev7",
     "tigrbl-canon",
     "tigrbl-orm",
-    "tigrbl-runtime>=0.4.5.dev7",
+    "tigrbl-runtime>=0.4.6.dev1",
     "tigrbl-atoms>=0.4.5.dev5",
     "tigrbl-kernel>=0.4.5.dev5",
     "tigrbl-ops-oltp",
@@ -69,6 +68,7 @@ dependencies = [
     "httpx>=0.27.0",
     "greenlet>=3.2.3",
 ]
+license-files = ["LICENSE", "NOTICE"]
 
 
 
@@ -83,6 +83,9 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 tigrbl = "tigrbl.cli:console_main"
 
 [project.optional-dependencies]
+numba = [
+    "tigrbl-runtime[numba]>=0.4.6.dev1",
+]
 postgres = [
     "asyncpg>=0.30.0",
     "psycopg2-binary>=2.9.9",
@@ -147,6 +150,54 @@ log_cli_format = "%(asctime)s [%(levelname)s] %(message)s"
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 asyncio_default_fixture_loop_scope = "function"
 
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/80_facade/tigrbl"
+layer = "80_facade"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl"
+published = true
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/80_facade/tigrbl/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/80_facade/tigrbl/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -171,4 +222,5 @@ dev = [
     "pytest-benchmark>=4.0.0",
     "asyncpg>=0.30.0",
     "psycopg2-binary>=2.9.9",
+    "readme-standards==0.1.1; python_version >= \"3.11\"",
 ]

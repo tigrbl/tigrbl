@@ -39,6 +39,29 @@
       ],
       "type": "string"
     },
+    "request_json": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "__dataclass__": {
+              "const": "tigrbl_core._spec.binding_spec:RestRequestJson"
+            },
+            "shape": {
+              "enum": ["object", "array"]
+            },
+            "wrong_shape_status": {
+              "default": 422,
+              "enum": [400, 422]
+            }
+          },
+          "required": ["shape"],
+          "type": "object"
+        },
+        {"type": "null"}
+      ],
+      "default": null
+    },
     "spec_kind": {
       "const": "HttpRestBindingSpec",
       "description": "Tigrbl spec payload kind."

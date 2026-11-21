@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tigrbl_engine_s3fs"
-version = "0.4.5"
+version = "0.4.6.dev2"
 description = "S3FS-backed object storage engine plugin for Tigrbl with optional content-addressed storage."
 readme = "README.md"
 license = "Apache-2.0"
@@ -25,6 +25,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
+license-files = ["LICENSE", "NOTICE"]
 
 [project.urls]
 Homepage = "https://github.com/tigrbl/tigrbl"
@@ -35,7 +36,56 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 s3fs = "tigrbl_engine_s3fs:register"
 
 [dependency-groups]
-dev = ["pytest>=8.0", "pytest-asyncio>=0.24.0", "ruff>=0.11.0"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.24.0", "ruff>=0.11.0", "readme-standards==0.1.1; python_version >= \"3.11\""]
 
 [tool.uv.sources]
 tigrbl = { workspace = true }
+
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/90_engines/tigrbl_engine_s3fs"
+layer = "90_engines"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl_engine_s3fs"
+published = true
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_s3fs/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/90_engines/tigrbl_engine_s3fs/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"

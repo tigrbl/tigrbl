@@ -28,6 +28,7 @@ from tigrbl_core._spec.op_utils import (
     _normalize_persist as _core_normalize_persist,
     _unwrap as _core_unwrap,
 )
+from tigrbl_core._spec.operation_security import OperationSecurity
 from tigrbl_core._spec.schema_spec import SchemaArg
 
 
@@ -169,6 +170,7 @@ def op_ctx(
     persist: Optional[PersistPolicy] = None,
     status_code: Optional[int] = None,
     security_deps: Sequence[Any] | None = None,
+    security: OperationSecurity | None = None,
 ):
     """Declare a ctx-only operation whose body is `(cls, ctx)`."""
 
@@ -217,6 +219,7 @@ def op_ctx(
             persist=_normalize_persist(persist),
             status_code=status_code,
             security_deps=tuple(security_deps or ()),
+            security=security,
         )
         f.__tigrbl_op_spec__ = spec
         # Backward-compatible attr name; value is always OpSpec.

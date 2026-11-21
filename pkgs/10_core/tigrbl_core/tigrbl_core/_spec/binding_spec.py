@@ -660,6 +660,23 @@ class WebSocketBindingSpec(SerdeMixin):
 
 
 @dataclass(frozen=True, slots=True)
+class RestRequestJson:
+    """Opt-in media type, syntax, and top-level shape checks for REST input."""
+
+    shape: Literal["object", "array"]
+    wrong_shape_status: Literal[400, 422] = 422
+
+    def __post_init__(self) -> None:
+        if self.shape not in ("object", "array"):
+            raise ValueError("REST JSON request shape must be object or array")
+        if type(self.wrong_shape_status) is not int or self.wrong_shape_status not in (
+            400,
+            422,
+        ):
+            raise ValueError("REST JSON wrong_shape_status must be 400 or 422")
+
+
+@dataclass(frozen=True, slots=True)
 class HttpRestBindingSpec(SerdeMixin):
     proto: Literal["http.rest", "https.rest"]
     methods: tuple[str, ...]
@@ -668,6 +685,8 @@ class HttpRestBindingSpec(SerdeMixin):
     exchange: Exchange = "request_response"
     framing: FramingSpec = field(default_factory=JsonFramingSpec)
 
+    request_json: RestRequestJson | dict[str, Any] | None = None
+
     def __post_init__(self) -> None:
         validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
         framing = validate_app_framing_for_binding(
@@ -675,6 +694,15 @@ class HttpRestBindingSpec(SerdeMixin):
             framing=self.framing,
         )
         object.__setattr__(self, "framing", framing)
+        policy = self.request_json
+        if policy is not None:
+            if not isinstance(framing, JsonFramingSpec):
+                raise ValueError("request_json requires JSON framing")
+            if isinstance(policy, dict):
+                policy = RestRequestJson(**policy)
+            if not isinstance(policy, RestRequestJson):
+                raise TypeError("request_json must be a RestRequestJson policy")
+            object.__setattr__(self, "request_json", policy)
 
 
 @dataclass(frozen=True, slots=True)
@@ -1217,6 +1245,7 @@ __all__ = [
     "HttpJsonRpcBindingSpec",
     "HttpJsonRpcProtocolBindingSpec",
     "HttpRestBindingSpec",
+    "RestRequestJson",
     "HttpRestProtocolBindingSpec",
     "HttpStreamBindingSpec",
     "JsonFramingSpec",

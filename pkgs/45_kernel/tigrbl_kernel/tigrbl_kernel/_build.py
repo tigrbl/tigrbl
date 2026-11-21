@@ -268,14 +268,16 @@ def _batch_policy_for_meta(meta: Any) -> BatchOpPlan:
     )
 
 
-def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
+def _build_op(
+    self, model: type, alias: str, *, security_dependencies: tuple[Any, ...] | None = None
+) -> Dict[str, List[StepFn]]:
     from .core import DEFAULT_PHASE_ORDER
 
     try:
         cache = self._phase_chains.setdefault(model, {})
     except TypeError:
         cache = self._phase_chains_by_id.setdefault(id(model), {})
-    stamp = _phase_stamp(self, model, alias)
+    stamp = (*_phase_stamp(self, model, alias), security_dependencies)
     cached = cache.get(alias)
     if cached is not None and cached[0] == stamp:
         return cached[1]
@@ -316,7 +318,7 @@ def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
             alias,
         )
 
-    _inject_pre_tx_dep_atoms(chains, sp)
+    _inject_pre_tx_dep_atoms(chains, sp, security_dependencies)
 
     for phase in DEFAULT_PHASE_ORDER:
         chains.setdefault(phase, [])
@@ -1166,7 +1168,8 @@ def _pack_kernel_plan(
         target_name = str(getattr(meta, "target", "") or "")
         opview = opviews[program_id] if program_id < len(opviews) else None
         compiled_param_eligible = not (
-            alias_name.startswith("bulk_")
+            program_id in plan.rest_array_programs
+            or alias_name.startswith("bulk_")
             or target_name.startswith("bulk_")
             # Selector aliases and URL precedence are validated by wire.validate_in.
             # The scalar compiled decoder does not implement that contract yet.
@@ -1197,7 +1200,9 @@ def _pack_kernel_plan(
             param_shape_id=param_shape_id,
             transport_kind_id=transport_kind_id,
             compiled_param_eligible=compiled_param_eligible,
-            exact_http_like_no_input=exact_http_like_no_input,
+            exact_http_like_no_input=(
+                exact_http_like_no_input and program_id not in plan.rest_array_programs
+            ),
             websocket_fast_path=websocket_fast_path is not None,
         )
         program_hot_runner_ids.append(hot_runner_id)

@@ -102,6 +102,7 @@ async def test_uuid7_orm_crud_and_bulk(widget, engine):
 def test_uuid7_selector_schema(widget):
     assert "id" not in _build_schema(widget, verb="create").model_fields
     schema = _build_schema(widget, verb="update")
+    assert schema.model_json_schema()["properties"]["id"]["format"] == "uuid7"
     assert schema.model_validate({"id": str(RFC_UUID7)}).id == RFC_UUID7
     wrong_variant = UUID(int=RFC_UUID7.int ^ (1 << 63))
     for invalid in (uuid4(), wrong_variant, "malformed"):

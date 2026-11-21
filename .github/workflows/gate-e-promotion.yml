@@ -6,17 +6,16 @@ on:
       - master
       - main
       - release/**
-  pull_request:
   workflow_dispatch:
   workflow_call:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: gate-e-promotion-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   gate-e-promotion:
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["self-hosted","Linux","X64","trusted-public-ci"]') || 'ubuntu-24.04' }}
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:

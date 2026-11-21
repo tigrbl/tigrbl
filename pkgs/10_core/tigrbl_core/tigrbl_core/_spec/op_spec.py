@@ -24,6 +24,7 @@ from .._spec.hook_spec import HookSpec as OpHook
 from .serde import SerdeMixin
 from .hook_types import StepFn
 from .op_utils import _maybe_await, _normalize_persist, _unwrap
+from .operation_security import OperationSecurity
 
 PersistPolicy = Literal["default", "prepend", "append", "override", "skip"]
 Arity = Literal["collection", "member"]
@@ -138,6 +139,7 @@ class OpSpec(SerdeMixin):
     deps: Tuple[StepFn | str, ...] = field(default_factory=tuple)
     security_deps: Tuple[StepFn | str, ...] = field(default_factory=tuple)
     secdeps: Tuple[StepFn | str, ...] = field(default_factory=tuple)
+    security: OperationSecurity | None = None
 
     def __post_init__(self) -> None:
         if self.security_deps and not self.secdeps:
@@ -572,6 +574,7 @@ def _mro_collect_decorated_ops(table: type) -> List["OpSpec"]:
                         or ()
                     ),
                     secdeps=tuple(getattr(op_spec, "secdeps", ()) or ()),
+                    security=op_spec.security,
                 )
             )
             seen.add(name)

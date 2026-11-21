@@ -3,7 +3,7 @@ from __future__ import annotations
 from httpx import ASGITransport, Client
 import pytest
 
-from tigrbl import HTTPBearer, Request, TableBase, TigrblApp
+from tigrbl import HTTPBearer, Request, TableBase, TigrblApp, TigrblRouter
 from tigrbl._concrete._security.http_bearer import HTTPAuthorizationCredentials
 from tigrbl.decorators.allow_anon import allow_anon
 from tigrbl.factories.engine import mem
@@ -24,7 +24,7 @@ class RequiredBearerAuth(AuthNProvider):
         return {"sub": "operator"}
 
 
-def _build_auth_app(*, authorize=None) -> Client:
+def _build_auth_app(*, authorize=None, mounted=False) -> Client:
     TableBase.metadata.clear()
 
     @allow_anon("list")
@@ -38,16 +38,23 @@ def _build_auth_app(*, authorize=None) -> Client:
         authorize=authorize,
         allow_anon=False,
     )
-    app.include_table(OperatorAuthWidget)
+    if mounted:
+        router = TigrblRouter(prefix="/api")
+        router.include_table(OperatorAuthWidget)
+        app.include_router(router)
+    else:
+        app.include_table(OperatorAuthWidget)
     app.initialize()
     return Client(transport=ASGITransport(app=app), base_url="http://test")
 
 
-def test_operator_auth_surface_is_dependency_based_and_projects_openapi_security() -> None:
-    client = _build_auth_app()
+@pytest.mark.parametrize("mounted", [False, True])
+def test_operator_auth_surface_is_dependency_based_and_projects_openapi_security(mounted) -> None:
+    client = _build_auth_app(mounted=mounted)
     try:
         spec = client.get("/openapi.json").json()
-        path = spec["paths"]["/operatorauthwidget"]
+        prefix = "/api" if mounted else ""
+        path = spec["paths"][f"{prefix}/operatorauthwidget"]
 
         assert path["get"].get("security") in (None, [])
         assert path["get"]["x-tigrbl-auth"] == {

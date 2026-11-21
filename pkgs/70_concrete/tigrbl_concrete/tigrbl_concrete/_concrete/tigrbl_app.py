@@ -28,6 +28,10 @@ from tigrbl_concrete._mapping.router.common import (
     AttrDict,
     _default_prefix,
 )
+from tigrbl_concrete._mapping.router.include import (
+    _authentication_dependency,
+    _security_dependencies,
+)
 from tigrbl_concrete._mapping.router.rpc import rpc_call as _rpc_call
 from tigrbl_concrete._mapping.model import rebind as _rebind, bind as _bind
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
@@ -66,6 +70,7 @@ from tigrbl_core.config.constants import (
     TIGRBL_DEFAULT_ROOT_METHOD,
     TIGRBL_DEFAULT_ROOT_PATH,
     TIGRBL_GET_DB_ATTR,
+    TIGRBL_ALLOW_ANON_ATTR,
     __JSONRPC_DEFAULT_ENDPOINT__,
 )
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
@@ -231,6 +236,7 @@ class TigrblApp(_App):
         self._authorize = None
         self._optional_authn_dep = None
         self._allow_anon_ops: set[str] = set()
+        self._mounted_security_routers: dict[type, list[TigrblRouter]] = {}
         self._middlewares: list[tuple[Any, dict[str, Any]]] = []
         self.middlewares = _seqify(getattr(self, "MIDDLEWARES", ()))
         declared_tables = self._collect_declared_tables(self.__class__)
@@ -686,6 +692,11 @@ class TigrblApp(_App):
 
         if not mount_router:
             return router
+        if isinstance(router, TigrblRouter) and router is not self._default_router:
+            for model in route_models.values():
+                owners = self._mounted_security_routers.setdefault(model, [])
+                if all(router is not owner for owner in owners):
+                    owners.append(router)
         super().include_router(router, prefix=prefix)
         bump = getattr(self, "_bump_runtime_plan_revision", None)
         if callable(bump):
@@ -1002,7 +1013,65 @@ class TigrblApp(_App):
             raise RuntimeError("transactional decorator not available")
         return _txn_decorator(self, *dargs, **dkw)
 
+    def _tigrbl_security_dependencies(self, model: type, spec: OpSpec) -> tuple[Any, ...]:
+        declared = tuple(
+            dep for dep in spec.secdeps
+            if not getattr(dep, "__tigrbl_authenticator__", False)
+            and not getattr(dep, "__tigrbl_authorizer__", None)
+        )
+        if model is self.tables.get(ROUTE_OPS_MODEL_NAME):
+            return tuple(spec.secdeps)
+
+        allow_attr = getattr(model, TIGRBL_ALLOW_ANON_ATTR, ())
+        exemptions = (allow_attr() if callable(allow_attr) else allow_attr) or ()
+        if spec.alias in exemptions or spec.target in exemptions:
+            return declared
+
+        owners = (self, *self._mounted_security_routers.get(model, ()))
+        authn = None
+        authorize = []
+        for owner in owners:
+            for dep in _security_dependencies(owner):
+                if getattr(dep, "__tigrbl_authenticator__", False):
+                    if authn is None:
+                        authn = dep
+                    elif _authentication_dependency(owner) != authn.__wrapped__:
+                        raise ValueError("Mounted router authentication conflicts with the app")
+                    elif getattr(dep, "__tigrbl_require_auth__", False):
+                        authn = dep
+                elif all(dep.__tigrbl_authorizer__ != item.__tigrbl_authorizer__ for item in authorize):
+                    authorize.append(dep)
+        return (*((authn,) if authn is not None else ()), *authorize, *declared)
+
     # Optional: let callers set auth knobs used by some middlewares/dispatchers
+    def set_operation_authorizer(self, authorize: Callable[..., Any]) -> None:
+        """Set the decision callback for operations declaring protected access."""
+        if not callable(authorize):
+            raise TypeError("operation authorizer must be callable")
+        self._tigrbl_operation_authorizer = authorize
+
+    def operation_security_catalog(self) -> tuple[dict[str, Any], ...]:
+        """Export classified operations and the selectors in the kernel plan."""
+        plan = self.runtime.kernel.kernel_plan(self)
+        selectors: dict[int, list[dict[str, str]]] = {}
+        for key, index in sorted(
+            plan.opkey_to_meta.items(), key=lambda item: (item[0].proto, item[0].selector)
+        ):
+            selectors.setdefault(index, []).append({"protocol": key.proto, "selector": key.selector})
+        return tuple(sorted(
+            (
+                {
+                    "action_id": meta.security.action_id,
+                    "resource_type": meta.security.resource_type,
+                    "access": meta.security.access,
+                    "bindings": selectors.get(index, []),
+                }
+                for index, meta in enumerate(plan.opmeta)
+                if meta.security is not None
+            ),
+            key=lambda entry: entry["action_id"],
+        ))
+
     def set_auth(
         self,
         *,
@@ -1031,7 +1100,7 @@ class TigrblApp(_App):
             )
             self._sync_default_router_namespaces()
 
-        # Security refresh is handled by the default router's set_auth call above.
+        self._bump_runtime_plan_revision()
 
     def _refresh_security(self) -> None:
         """Re-seed auth deps on tables and rebuild routers."""

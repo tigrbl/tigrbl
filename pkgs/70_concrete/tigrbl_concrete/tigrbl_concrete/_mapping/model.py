@@ -860,13 +860,14 @@ def _bind_model_hooks(model: type, specs: Tuple[OpSpec, ...]) -> None:
             )
             label = f"hook:wire:tigrbl:core:crud:ops:{alias}@HANDLER"
 
-            scalar_override = (
-                alias in {"update", "replace"}
-                and getattr(op_spec, "target", None) == alias
+            target = getattr(op_spec, "target", None)
+            bound_custom_handler = target == "custom" and callable(op_handler)
+            sets_result = bound_custom_handler or (
+                alias in {"update", "replace"} and target == alias
             )
 
             async def _default_handler_step(
-                ctx: Any, _handler=op_handler, _scalar_override=scalar_override
+                ctx: Any, _handler=op_handler, _sets_result=sets_result
             ) -> Any:
                 if callable(_handler):
                     if getattr(_handler, "__tigrbl_ctx_wrapper__", False):
@@ -875,7 +876,7 @@ def _bind_model_hooks(model: type, specs: Tuple[OpSpec, ...]) -> None:
                         result = _handler(ctx)
                     if inspect.isawaitable(result):
                         result = await result
-                    if _scalar_override and result is not None and result is not ctx:
+                    if _sets_result and result is not None and result is not ctx:
                         ctx["result"] = result
                     return result
                 return None
@@ -897,6 +898,8 @@ def _bind_model_hooks(model: type, specs: Tuple[OpSpec, ...]) -> None:
 
             setattr(_default_handler_step, "__tigrbl_label", label)
 
+            if bound_custom_handler:
+                setattr(_default_handler_step, "__tigrbl_bound_custom_handler__", True)
             alias_ns.HANDLER = [_default_handler_step]
 
         handlers_root = getattr(model, "handlers", None)

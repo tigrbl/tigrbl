@@ -1,21 +1,21 @@
 name: Policy Governance
 
 on:
+  workflow_call:
   push:
     branches:
       - master
       - main
       - release/**
-  pull_request:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: policy-governance-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate-policy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["self-hosted","Linux","X64","trusted-public-ci"]') || 'ubuntu-24.04' }}
     strategy:
       fail-fast: false
       matrix:
@@ -60,12 +60,13 @@ jobs:
 
       - name: Resolve Gate A diff range
         shell: bash
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
           RANGE=""
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            git fetch origin "${{ github.base_ref }}" --depth=1
-            BASE_COMMIT="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+            BASE_COMMIT="$(git merge-base HEAD "$PR_BASE_SHA")"
             RANGE="${BASE_COMMIT}..HEAD"
           elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
             RANGE="HEAD~1..HEAD"

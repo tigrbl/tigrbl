@@ -266,7 +266,9 @@ def _make_dep_atom_step(run_fn: _AtomRun, dep: Any, *, label: str) -> StepFn:
     return _step
 
 
-def _inject_pre_tx_dep_atoms(chains: Dict[str, List[StepFn]], sp: Any | None) -> None:
+def _inject_pre_tx_dep_atoms(
+    chains: Dict[str, List[StepFn]], sp: Any | None, security_dependencies: tuple[Any, ...] | None = None
+) -> None:
     if sp is None:
         return
     try:
@@ -280,7 +282,9 @@ def _inject_pre_tx_dep_atoms(chains: Dict[str, List[StepFn]], sp: Any | None) ->
             return
 
     pre_tx = chains.setdefault("PRE_TX_BEGIN", [])
-    for idx, dep in enumerate(getattr(sp, "secdeps", ()) or ()):
+    if security_dependencies is None:
+        security_dependencies = tuple(getattr(sp, "secdeps", ()) or ())
+    for idx, dep in enumerate(security_dependencies):
         pre_tx.append(
             _make_dep_atom_step(
                 sec_run,
@@ -309,6 +313,10 @@ def _inject_atoms(
     batch_policy: Mapping[str, Any] | None = None,
 ) -> None:
     order = {name: i for i, name in enumerate(_ev.all_events_ordered())}
+    bound_custom_handler = any(
+        getattr(step, "__tigrbl_bound_custom_handler__", False)
+        for step in chains.get("HANDLER", ())
+    )
 
     def _sort_key(item: _DiscoveredAtom) -> tuple[int, int]:
         anchor, run = item
@@ -359,6 +367,8 @@ def _inject_atoms(
             and _subject.startswith("handler_")
         ):
             handler_target = _subject.removeprefix("handler_")
+            if handler_target == "custom" and bound_custom_handler:
+                continue  # The model already wired this operation into HANDLER.
             if handler_target != "persistence" and target and handler_target != target:
                 continue
         if domain == "dep":

@@ -19,6 +19,8 @@ norecursedirs = [
   "docs/notes/archive",
 ]
 
+[tool.readme_standards]
+exclude = ["pkgs/deprecated", "pkgs/99_deprecated", "docs/notes/archive", "docs/examples/package-maintenance/src"]
 [dependency-groups]
 dev = [
   "aiosqlite>=0.19.0",
@@ -52,6 +54,7 @@ dev = [
   "uvicorn",
   "websockets>=13",
   "index-toml-contracts==0.3.0",
+  "readme-standards==0.1.1; python_version >= \"3.11\"",
 ]
 
 [tool.uv.workspace]
