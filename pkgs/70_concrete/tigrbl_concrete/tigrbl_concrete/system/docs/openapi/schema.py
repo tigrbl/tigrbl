@@ -244,21 +244,6 @@ def openapi(
 
             path_item[method.lower()] = op
 
-    seen_paths = getattr(router, "_seen_paths", None)
-    if isinstance(seen_paths, set):
-        for raw_path in seen_paths:
-            if not isinstance(raw_path, str):
-                continue
-            normalized = raw_path.rstrip("/") or "/"
-            if normalized in paths:
-                continue
-            for templated, item in list(paths.items()):
-                matcher = _template_matcher(templated)
-                if matcher is None or matcher.match(normalized) is None:
-                    continue
-                paths[normalized] = item
-                break
-
     doc: dict[str, Any] = {
         "openapi": "3.1.0",
         "jsonSchemaDialect": JSON_SCHEMA_DRAFT_2020_12_DIALECT,
@@ -269,11 +254,3 @@ def openapi(
     if router.description:
         doc["info"]["description"] = router.description
     return doc
-
-
-def _template_matcher(path_template: str):
-    import re
-
-    escaped = re.escape(path_template)
-    pattern = re.sub(r"\\\{[A-Za-z_][A-Za-z0-9_]*\\\}", r"[^/]+", escaped)
-    return re.compile(rf"^{pattern}$")
