@@ -31,6 +31,8 @@
 
 ## Overview
 
+The [Transport Trace Lab](trace_lab/README.md) runs REST, HTTP JSON-RPC, WebSocket, and WebTransport with a live identity timeline.
+
 ### Summary
 
 This UV project collects the transport-surface demos requested for the current checkout into one runnable app:
