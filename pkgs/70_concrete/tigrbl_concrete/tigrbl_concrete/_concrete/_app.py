@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_typing.trace import TraceSink, emit_trace, transport_name
+
 from dataclasses import replace
 from pathlib import Path
 from typing import Any, Sequence
@@ -57,7 +59,13 @@ class App(AppBase):
     JSONRPC_PREFIX = "/rpc"
     SYSTEM_PREFIX = "/system"
 
-    def __init__(self, *, engine: EngineCfg | None = None, **asgi_kwargs: Any) -> None:
+    def __init__(
+        self, *, engine: EngineCfg | None = None, trace_sink: TraceSink | None = None,
+        realtime_broker: Any = None, **asgi_kwargs: Any,
+    ) -> None:
+        self.trace_sink = trace_sink
+        if realtime_broker is not None:
+            self.__realtime_broker__ = realtime_broker
         subscription_policy = asgi_kwargs.pop("subscription_policy", None)
         subscription_identity = asgi_kwargs.pop("subscription_identity", None)
         subscription_operation_limits = asgi_kwargs.pop(
@@ -189,7 +197,7 @@ class App(AppBase):
             self, "_websocket_realtime_broker", None
         )
         if broker is None:
-            broker = InMemoryRealtimeBroker(admission=admission, resume_ttl_seconds=self.subscription_resume_ttl)
+            broker = InMemoryRealtimeBroker(admission=admission, resume_ttl_seconds=self.subscription_resume_ttl, trace_sink=self.trace_sink)
         elif broker.metrics()["subscriber_count"]:
             raise RuntimeError(
                 "cannot replace quota policy while subscriptions are active"
@@ -404,12 +412,16 @@ class App(AppBase):
         return _decorator
 
     @property
+    def realtime_broker(self):
+        return getattr(self, "__realtime_broker__", None)
+
+    @property
     def runtime(self):
         runtime = getattr(self, "_runtime_instance", None)
         if runtime is None:
             from tigrbl_runtime.runtime import Runtime
 
-            runtime = Runtime(default_executor=self._runtime_default_executor)
+            runtime = Runtime(default_executor=self._runtime_default_executor, trace_sink=self.trace_sink)
             self._runtime_instance = runtime
         return runtime
 
@@ -462,10 +474,18 @@ class App(AppBase):
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
         scope["app"] = self
         scope_type = scope.get("type")
-        if scope_type == "http":
+        sink = self.trace_sink
+        if scope_type == "http" or (
+            sink is not None and scope_type in {"websocket", "webtransport"}
+        ):
             from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
 
-            correlation_id = prepare_transport_identity(scope)["correlation_id"].encode("ascii")
+            identity = prepare_transport_identity(scope)
+            if sink is not None:
+                details = {**identity, "path": scope.get("path")}
+                emit_trace(sink, "Scope opened", transport_name(scope_type), details)
+        if scope_type == "http":
+            correlation_id = identity["correlation_id"].encode("ascii")
             send_response = send
 
             async def send(message):
@@ -476,6 +496,8 @@ class App(AppBase):
                         if key.lower() != b"x-correlation-id"
                     ]
                     message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
+                    if sink is not None:
+                        emit_trace(sink, "Response", "HTTP", {**details, "status": message["status"]})
                 await send_response(message)
         if scope_type == "lifespan":
             await self._handle_lifespan(scope, receive, send)

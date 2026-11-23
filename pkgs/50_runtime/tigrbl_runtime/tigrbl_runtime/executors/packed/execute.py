@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
 
+from tigrbl_kernel.trace import record_execution, transaction_history
+
 from ._shared import *
 from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
 
@@ -189,6 +191,8 @@ class _PackedExecuteMixin:
                     if getattr(ctx, "db", None) is None:
                         ctx.db = db
                     ctx.owns_tx = True
+                    if getattr(self.runtime, "trace_sink", None) is not None:
+                        ctx.temp["_trace_transaction_baseline"] = transaction_history(db)
             except Exception:
                 release_db = None
         if (
@@ -382,5 +386,18 @@ class _PackedExecuteMixin:
             db=ctx.get("db") if isinstance(ctx, Mapping) else None,
             seed=ctx,
         )
-        await self._execute_packed(env, base_ctx, plan, packed_plan)
+        sink = getattr(runtime, "trace_sink", None)
+        scope = getattr(env, "scope", None)
+        if sink is None or not isinstance(scope, Mapping):
+            await self._execute_packed(env, base_ctx, plan, packed_plan)
+        else:
+            try:
+                await self._execute_packed(env, base_ctx, plan, packed_plan)
+            finally:
+                hot = base_ctx.temp.get("hot_ctx")
+                record_execution(
+                    sink, scope, base_ctx,
+                    jsonrpc=getattr(hot, "transport_kind_id", None) == _TRANSPORT_KIND_JSONRPC,
+                    owned_session=getattr(base_ctx, "_raw_db", None),
+                )
         return base_ctx.get("result")

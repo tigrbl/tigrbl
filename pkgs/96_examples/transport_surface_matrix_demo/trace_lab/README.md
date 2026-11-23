@@ -11,8 +11,7 @@ Use a Python 3.13 development environment with Tigrbl and Tigrcorn dependencies
 installed, including `httpx`, `websockets>=15`, and the SQLite provider. The runner
 loads the selected source checkouts directly so the identity features are available
 before a package release. It imports Tigrcorn's QUIC test client from that checkout.
-The verified source revisions were Tigrbl `4c845df`, Tigrcorn `264c911`, and
-tigr-asgi-contract `1902171`, or use newer checkouts that include those commits.
+Use the Tigrbl source checkout containing this example and its native tracing API. The lab was verified against Tigrcorn `264c911` and tigr-asgi-contract `1902171`.
 
 From the Tigrbl repository root, run the following. Replace the source paths
 with your checkouts. The flags default to the current Tigrbl repository and its
@@ -55,8 +54,21 @@ loopback ports and exit. The smoke checks the REST write and RPC read, the
 actual WebSocket delivery, the framed WebTransport reply, the QUIC session
 grouping, and the transaction-to-invocation links.
 
-The example captures packed execution snapshots and reads provider lifecycle
-records for the request-owned SQLite session when the fast runner leaves those
-events out of the snapshot. For the declared WebSocket route, the demo adapter
-unwraps encoded operation responses before the existing JSON-RPC dispatcher
-frames them.
+## Use the native trace API
+
+Applications can pass a synchronous `trace_sink(kind, transport, fields)` to
+`TigrblApp` or `TigrblApp.from_spec`. The packed executor emits invocation and
+transaction records. The WebSocket dispatcher emits invocation records, and a
+realtime broker configured with the same sink emits attachment, publication, and
+delivery records. The sink receives identity metadata. For local diagnostics,
+the framework's bounded `Timeline` collects and groups it:
+
+```python
+from tigrbl import TigrblApp, Timeline
+from tigrbl_ops_realtime import InMemoryRealtimeBroker
+
+timeline = Timeline(max_events=750)
+broker = InMemoryRealtimeBroker(trace_sink=timeline.add)
+app = TigrblApp.from_spec(spec, trace_sink=timeline.add, realtime_broker=broker)
+records = timeline.data()
+```
