@@ -1,6 +1,8 @@
 # tigrbl/_concrete/tigrbl_app.py
 from __future__ import annotations
 
+from tigrbl_typing.trace import TraceSink
+
 import asyncio
 import copy
 import inspect
@@ -146,12 +148,20 @@ class TigrblApp(_App):
         return tuple(collected)
 
     @classmethod
-    def from_spec(cls, spec: AppSpec) -> "TigrblApp":
+    def from_spec(
+        cls, spec: AppSpec, *, trace_sink: TraceSink | None = None, realtime_broker: Any = None
+    ) -> "TigrblApp":
         """Materialize an app instance from an :class:`~tigrbl.AppSpec`."""
         spec = lower_concrete_engine_inputs(spec)
         spec = normalize_app_spec(spec)
         spec_tables = tuple(spec.tables or ())
+        diagnostics = {}
+        if trace_sink is not None:
+            diagnostics["trace_sink"] = trace_sink
+        if realtime_broker is not None:
+            diagnostics["realtime_broker"] = realtime_broker
         app = cls(
+            **diagnostics,
             engine=spec.engine,
             jsonrpc_prefix=spec.jsonrpc_prefix,
             system_prefix=spec.system_prefix,
