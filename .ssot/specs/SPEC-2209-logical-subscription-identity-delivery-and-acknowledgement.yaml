@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2209"
+number: 2209
+slug: "logical-subscription-identity-delivery-and-acknowledgement"
+title: "Logical Subscription Identity, Delivery, and Acknowledgement"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the identity, attachment, delivery attribution, and compatible acknowledgement of a logical admitted subscription."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define the identity, attachment, delivery attribution, and compatible acknowledgement of a logical admitted subscription.
+  
+  ## Broker identity and attachment
+  
+  - Allocate an opaque subscription_id after authorization and successful admission and before returning a successful acknowledgement. A distinct admission gets a distinct ID. Preserve the existing channel-and-session replacement policy during migration.
+  - Index active subscriptions by subscription_id, with secondary lookups for channel fan-out and transport-session cleanup. Associate each record with the verified requester and admission partition, channel, opening invocation_id and correlation, current destination transport_session_id and stream where applicable, and the quota lease_id and owner generation. Subscription identity conveys no authorization.
+  - Use the binding resume policy in ADR-1181. Require reauthorization and single-owner fencing when transferring or replacing a lease. An authorized resume of the same logical subscription preserves subscription_id and records the new destination and applicable lease generation. A new logical admission after completion gets a fresh ID.
+  - Match cleanup to both the destination attachment and its active ownership generation. Disconnect, expiry, unsubscribe, and shutdown release or fence the matching attachment through existing lifecycle rules. A late close from the old carrier must leave a resumed attachment active. A completed subscribe/control record leaves continuing work active.
+  
+  ## Versioned acknowledgement
+  
+  A binding selects the acknowledgement version through its declared framing or binding configuration. Keep the existing response format as version 1 during migration. Its legacy subscription_id still represents the transport session where that alias is already supported. Version 2 returns the opaque logical subscription_id, and carries transport_session_id separately when applicable. Existing channel and protocol response semantics, including the JSON-RPC wire ID, follow the selected binding contract. Declare the selected version so clients can distinguish the two acknowledgement shapes. Remove the session-as-subscription alias only with an explicit compatibility transition after supported consumers have migrated.
+  
+  ## Delivery attribution
+  
+  Each publication retains its publication_id. Record each recipient delivery with its own delivery identity and link it to publication_id, subscription_id, the originating invocation and correlation when available, the receiving transport session and stream fields, and the actual outcome. On WT use the receiving session's correlation_id for its timeline and include the origin link when delivery crosses sessions. Preserve subscription_id across an authorized move so export and rollup can join delivery history across destinations.
+  
+  ## Conformance
+  
+  Prove distinct admitted subscriptions on one carrier using the existing channel policy. Exercise both acknowledgement versions, publication fan-out with one record per recipient delivery, authorized resume across reconnect, and stale old-carrier cleanup after resume. Verify refusal and failed admission emit no successful subscription acknowledgement. Verify delivery, unsubscribe, and disconnect preserve lifecycle and quota semantics.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1209"
+  - "adr:1207"
+  - "adr:1181"

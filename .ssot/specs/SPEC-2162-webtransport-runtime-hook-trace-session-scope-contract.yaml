@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2162"
 number: 2162
@@ -8,15 +8,22 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines Tigrbl's WebTransport runtime proof obligations: consume Tigrcorn WT session identity, keep one WT scope alive across lane events until disconnect, isolate per-scope runtime state, expose lane metadata to hooks, and record actual hook execution traces for session, stream, datagram, dispatch, egress, error, and close paths."
+summary: "Consume Tigrcorn WebTransport session identity, keep one isolated WT scope alive through disconnect, and expose lane metadata to hooks. Record actual hook execution for session, stream, datagram, dispatch, egress, error, and close paths."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Defines Tigrbl's WebTransport runtime proof obligations: consume Tigrcorn WT session identity, keep one WT scope alive across lane events until disconnect, isolate per-scope runtime state, expose lane metadata to hooks, and record actual hook execution traces for session, stream, datagram, dispatch, egress, error, and close paths.
+  Consume Tigrcorn WebTransport session identity, keep one isolated WT scope alive through disconnect, and expose lane metadata to hooks. Record actual hook execution for session, stream, datagram, dispatch, egress, error, and close paths.
+  
+  Allocate one correlation_id at WT session acceptance and preserve it across stream and datagram events. For each stream preserve the native stream_id and one stream_correlation_id established at stream open. Carry the session correlation on datagrams without stream fields. Preserve requester session_id separately from transport_session_id and record quic_connection_id when the adapter exposes it. New WT sessions receive fresh correlation even on the same QUIC connection.
+  
+  Allocate invocation_id after complete application-message decoding. On the bidirectional JSON-RPC control stream, prove that fragmented reads allocate no ID early and coalesced reads produce one invocation per decoded record. Verify an interleaved session with multiple streams and datagrams, correlation continuity through errors and close, and isolation from a second session.
 spec_kind: "operational"
 adr_ids:
   - "adr:1136"
   - "adr:1005"
   - "adr:1006"
+  - "adr:1096"
+  - "adr:1202"
+  - "adr:1207"

@@ -17,9 +17,9 @@ status_notes:
     note: "Accepted runtime-wide engine/session lifecycle boundary for Python implementation and optional runtime binding implementation."
     status: "accepted"
   -
-    status: "accepted"
-    note: "Updated accepted engine/session lifecycle boundary for Python-only runtime scope."
     at: "2026-06-17T10:23:37Z"
+    note: "Updated accepted engine/session lifecycle boundary for Python-only runtime scope."
+    status: "accepted"
 references: []
 body: |-
   ## Context
@@ -57,3 +57,7 @@ body: |-
   - Letting request execution repair missing initialization state opportunistically.
   - Keeping optional runtime binding parity language after Tigrbl selects a Python-only runtime.
   - Treating a provider-native session object as certified merely because it can execute a vendor query.
+  
+  ## Draft transaction identity extension
+  
+  Draft ADR-1208 defines a fresh transaction_id on each actual engine transaction begin, including provider autobegin. EngineSessionBase defines the lifecycle contract. Providers report begin once per transaction and the runtime consumes that identity through commit, rollback, and outcome reporting. Adoption requires adapter conformance under SPEC-2170.

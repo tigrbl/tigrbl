@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1103"
 number: 1103
@@ -15,7 +15,19 @@ status_notes: []
 references: []
 body: |-
   Trace/qlog records must use a stable record schema that carries event kind, ordering index or timestamp policy, app_id, router_id, table_id, op_id, atom_id or hook_id, binding_id, runtime_plan_id, schema_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id/connection_id/client_id where applicable, retry_id, replay_id, original_attempt_id, idempotency record id where applicable, lifecycle state, effect fence state, and normalized diagnostic/error classification.
+  
+  ## Draft correlation record fields
+  
+  Under SPEC-2208, record correlation_id on request-scoped HTTP and WebSocket events and on all accepted WebTransport session, stream, and datagram events. Attach transport_session_id to WebSocket and WebTransport events, session_id when requester session identity is available, and quic_connection_id when supplied by the adapter. Stream events carry stream_id and stream_correlation_id. Datagram events carry datagram_id where supplied and have no stream fields.
+  
+  Decoded operation records carry invocation_id, rpc_item_index for a supported JSON-RPC batch item, and rpc_id when present in the wire request. Retain trace_id and span_id as trace context. Transaction lifecycle events carry engine_session_id and transaction_id. Represent transaction participation as a separate association with the applicable invocation_id, attempt_id, and rpc_item_index when applicable. A shared commit emits one transaction outcome and preserves each participating association.
+
+  ## Draft transport identity and subscription extension
+
+  Under draft SPEC-2209, record subscription lifecycle and delivery events with subscription_id and the applicable attachment transport session, stream, and lease generation. A recipient delivery carries publication_id, delivery identity, outcome, and the available originating invocation link. Carrier correlation on outbound WT events follows the receiving session. Preserve origin attribution separately.
 spec_kind: "normative"
 adr_ids:
   - "adr:1165"
   - "adr:1166"
+  - "adr:1207"
+  - "adr:1208"

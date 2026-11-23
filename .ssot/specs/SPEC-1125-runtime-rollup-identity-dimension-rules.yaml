@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1125"
 number: 1125
@@ -15,7 +15,19 @@ status_notes: []
 references: []
 body: |-
   Runtime rollup outputs must preserve grouping dimensions for app_id, router_id, table_id, op_id, atom_id/hook_id provenance, binding_id, runtime_plan_id, schema_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, retry_id, replay_id, idempotency record id, and attempt ranges where applicable.
+  
+  ## Draft correlation rollup dimensions
+  
+  Under SPEC-2208, preserve correlation_id for WebTransport session-wide grouping across session, stream, and datagram records. Preserve stream_correlation_id and the transport-scoped stream_id for stream drillback. Retain transport_session_id and any available quic_connection_id for carrier groupings. Retain invocation and attempt links for drillback to the work behind a rollup.
+  
+  Count a database transaction once per engine_session_id and transaction_id within each aggregate. Several invocation participation links may refer to the same transaction. Preserve those links for drillback without multiplying transaction begin or outcome counts. A retry that begins a new transaction contributes its new transaction identity.
+
+  ## Draft transport identity and subscription extension
+
+  Extend correlation drillback under draft SPEC-2209 from connection to WT session and stream, then to invocation, subscription, and delivery records as applicable. Aggregate subscriptions by logical subscription_id across authorized destination changes and preserve separate publication and delivery drillback. A moved attachment must not multiply the count of logical subscriptions.
 spec_kind: "normative"
 adr_ids:
   - "adr:1171"
   - "adr:1172"
+  - "adr:1207"
+  - "adr:1208"

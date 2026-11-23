@@ -1,0 +1,31 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1208"
+number: 1208
+slug: "engine-owned-transaction-identity"
+title: "Engine-owned transaction identity per begin"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "An operation can open, join, or retry a transaction. A batch can have several invocations in a single transaction. Runtime phase entry and engine-session acquisition do not establish that a database transaction has begun."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  An operation can open, join, or retry a transaction. A batch can have several invocations in a single transaction. Runtime phase entry and engine-session acquisition do not establish that a database transaction has begun.
+  
+  ## Decision
+  
+  - `EngineSessionBase` owns the transaction identity contract. Provider adapters observe or report each actual transaction start, including explicit begin and provider autobegin. Ensure that a wrapper and its provider report a shared begin exactly once.
+  - Allocate a fresh `transaction_id` per confirmed begin on an `engine_session_id`. A begin rejected before a transaction starts emits no transaction-start record. Joining an active transaction reuses its identity. A top-level transaction owns its ID until it ends, with savepoints tracked under it.
+  - Retain the ID through commit, rollback, and outcome reporting. A failed commit does not imply that the transaction ended or rolled back. Preserve the ID while the transaction remains active. Report an unknown outcome when the provider cannot resolve it, and clear active identity only when the transaction is confirmed ended or the session is discarded.
+  - Link every participating invocation or operation attempt to the actual transaction. A batch can share one ID under one authorized owner. Allow multiple transaction links per invocation, including retry attempts. An invocation without a transaction has no transaction link.
+  - Runtime transaction guards and schedulers consume the engine identity. Engine sessions with supported transaction lifecycles prove begin coverage before claiming this contract.
+  
+  ## Verification
+  
+  Cover explicit begin, autobegin including read paths, reusing an engine session, joining, batch ownership, rollback and retry, commit failure and outcome uncertainty, and operations with no transaction.

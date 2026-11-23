@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1143"
 number: 1143
@@ -8,14 +8,22 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Decision: Runtime events must preserve parentage between concrete ids and semantic owners. Parentage examples include attempt_id to op_id to table_id to router_id to app_id, stream_id to session_id, datagram_id to session_id, transaction_id to engine_session_id to attempt_id, and replay_id to original_attempt_id. Context: without explicit parentage, session leakage, engine-session leakage, replay misattribution, retry ambiguity, and trace/qlog mis-correlation are hard to detect. Consequences: runtime context, channel state, trace records, qlog events, replay logs, and rollup records must expose enough parentage to validate scope ownership and drill back from concrete events to compiled semantic owners. Verification: conformance tests must prove attempts, atoms, streams, transactions, and replay records preserve required parentage and fail when parent scope is missing or mismatched."
+summary: "Runtime events preserve parentage between concrete IDs and semantic owners. An attempt identifies an operation execution and links to its op_id, table_id, router_id, and app_id. Replay links to the original attempt. A stream or datagram belongs to a transport_session_id, and the transport session can be associated with the requester’s session_id."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to require parentage links between concrete runtime ids and semantic owners."
     at: "2026-06-04T12:47:31Z"
+    note: "Created to require parentage links between concrete runtime ids and semantic owners."
+    status: "draft"
 references: []
 body: |-
-  Decision: Runtime events must preserve parentage between concrete ids and semantic owners. Parentage examples include attempt_id to op_id to table_id to router_id to app_id, stream_id to session_id, datagram_id to session_id, transaction_id to engine_session_id to attempt_id, and replay_id to original_attempt_id. Context: without explicit parentage, session leakage, engine-session leakage, replay misattribution, retry ambiguity, and trace/qlog mis-correlation are hard to detect. Consequences: runtime context, channel state, trace records, qlog events, replay logs, and rollup records must expose enough parentage to validate scope ownership and drill back from concrete events to compiled semantic owners. Verification: conformance tests must prove attempts, atoms, streams, transactions, and replay records preserve required parentage and fail when parent scope is missing or mismatched.
+  Runtime events preserve parentage between concrete IDs and semantic owners. An attempt identifies an operation execution and links to its op_id, table_id, router_id, and app_id. Replay links to the original attempt. A stream or datagram belongs to a transport_session_id, and the transport session can be associated with the requester’s session_id.
+  
+  A transaction belongs to its engine_session_id. Link that transaction to each participating invocation or attempt. Multiple invocations may link to one transaction under an authorized owner, and one invocation may link to several transactions. These links preserve drillback without transferring commit or rollback authority. Draft ADR-1207 defines request, session, and stream correlation. Draft ADR-1208 defines transaction identity and lifecycle ownership.
+  
+  Runtime context, channel state, traces, qlog, replay, and rollups preserve the applicable parentage. Conformance verifies drillback and rejects missing or mismatched required parent scope.
+
+  ## Connection and subscription parentage
+
+  A connection owns its HTTP exchanges and transport sessions. The upgrade or CONNECT exchange links to the session it opened. A transport session owns its carrier lanes. Draft ADR-1209 links subscriptions to their opening invocation and to a currently authorized destination, with a separate lease and owner generation. Authorized resume updates destination and lease links while preserving the logical subscription. A delivery links a publication to a subscription and retains origin and recipient attribution.

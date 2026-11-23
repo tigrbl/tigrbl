@@ -127,6 +127,17 @@ body: |-
   - `feat:websocket-publish-subscribe-fanout`
   - `feat:websocket-jsonrpc-framing-codec-atoms`
   - `feat:websocket-oltp-publish-effects`
+  
+  ## Draft correlation and invocation extension
+  
+  Under SPEC-2208, WebSocket session establishment resolves requester session_id and identifies the socket with transport_session_id. At the logical request boundary establish correlation_id. A binding with multiple messages per logical request carries that correlation across its messages. After decoding each complete message assign invocation_id. A supported JSON-RPC batch shares one document invocation ID, with rpc_item_index for each item and rpc_id when supplied by the caller.
+  
+  Capture these fields in the originating dispatch or scheduler admission context. Asynchronous execution, acknowledgement, and fan-out preserve origin attribution even after later socket messages arrive. Receiving transport session identity remains separately attributable. Verify interleaved messages and fan-out to multiple recipients.
+
+  ## Draft transport identity and subscription extension
+
+  Use draft SPEC-2209 for subscription acknowledgements and fan-out attribution. Compile the binding's selected acknowledgement version, retain JSON-RPC reply matching semantics, and preserve opening invocation and receiving transport identity through asynchronous delivery. Socket close cleans up only attachments currently owned by that carrier.
 spec_kind: "normative"
 adr_ids:
   - "adr:1199"
+  - "adr:1207"

@@ -65,6 +65,10 @@ body: |-
   This SPEC does not require a production browser WebTransport stack. It governs the Tigrbl-on-Tigrcorn contract bridge proof using canonical ASGI-style WebTransport scope and event payloads.
   
   This SPEC does not relax the existing rule that `message` is not a native WebTransport transport lane.
+
+  ## Draft transport identity and subscription extension
+
+  Require cross-repository conformance with the Tigrcorn and tigr-asgi-contract canonical identity projection. Exercise two accepted WT sessions on one QUIC connection. Verify sharing of the server-issued connection_id, distinct transport_session_id and Tigrbl correlation_id values, stable and distinct per-stream correlation, and attribution of interleaved datagrams without stream fields. Exercise the compatibility projection without the new extension.
 spec_kind: "normative"
 adr_ids:
   - "adr:1096"
