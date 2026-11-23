@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
-
 from tigrbl_kernel.trace import record_execution, transaction_history
 
 from ._shared import *
@@ -388,12 +387,10 @@ class _PackedExecuteMixin:
         )
         sink = getattr(runtime, "trace_sink", None)
         scope = getattr(env, "scope", None)
-        if sink is None or not isinstance(scope, Mapping):
+        try:
             await self._execute_packed(env, base_ctx, plan, packed_plan)
-        else:
-            try:
-                await self._execute_packed(env, base_ctx, plan, packed_plan)
-            finally:
+        finally:
+            if sink is not None and isinstance(scope, Mapping):
                 hot = base_ctx.temp.get("hot_ctx")
                 record_execution(
                     sink, scope, base_ctx,
