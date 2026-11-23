@@ -58,6 +58,12 @@ class App(AppBase):
     SYSTEM_PREFIX = "/system"
 
     def __init__(self, *, engine: EngineCfg | None = None, **asgi_kwargs: Any) -> None:
+        subscription_policy = asgi_kwargs.pop("subscription_policy", None)
+        subscription_identity = asgi_kwargs.pop("subscription_identity", None)
+        subscription_operation_limits = asgi_kwargs.pop(
+            "subscription_operation_limits", None
+        )
+        self.subscription_resume_ttl = asgi_kwargs.pop("subscription_resume_ttl", 0)
         collected_spec = self.__class__._collect_mro_spec()
         collected_spec = self.__class__.bind_spec(collected_spec, parent=self)
 
@@ -155,6 +161,45 @@ class App(AppBase):
         self._runtime_instance = None
         self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
         self._tigrbl_runtime_acquire_db = _resolver.acquire
+        self.subscription_identity = subscription_identity or getattr(
+            self, "SUBSCRIPTION_IDENTITY", None
+        )
+        self.subscription_operation_limits = subscription_operation_limits or {}
+        self.subscription_policy = None
+        if subscription_policy is not None:
+            self.configure_subscriptions(subscription_policy)
+
+    def configure_subscriptions(self, policy) -> None:
+        """Bind scalar policy to the application's trusted identity resolver."""
+        from tigrbl_ops_realtime import InMemoryRealtimeBroker
+        from tigrbl_ops_realtime.quotas import SubscriptionAdmission, SubscriptionPolicy
+
+        if not isinstance(policy, SubscriptionPolicy):
+            raise TypeError("subscription_policy must be SubscriptionPolicy")
+        admission = (
+            SubscriptionAdmission(
+                policy,
+                self.subscription_identity,
+                operation_limits=self.subscription_operation_limits,
+            )
+            if policy.enabled or self.subscription_operation_limits
+            else None
+        )
+        broker = getattr(self, "__realtime_broker__", None) or getattr(
+            self, "_websocket_realtime_broker", None
+        )
+        if broker is None:
+            broker = InMemoryRealtimeBroker(admission=admission, resume_ttl_seconds=self.subscription_resume_ttl)
+        elif broker.metrics()["subscriber_count"]:
+            raise RuntimeError(
+                "cannot replace quota policy while subscriptions are active"
+            )
+        else:
+            broker.admission = admission
+            broker.resume_ttl_seconds = self.subscription_resume_ttl
+        self.__realtime_broker__ = broker
+        self._websocket_realtime_broker = broker
+        self.subscription_policy = policy
 
     @property
     def router(self) -> "App":
@@ -415,7 +460,23 @@ class App(AppBase):
         )
 
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
+        scope["app"] = self
         scope_type = scope.get("type")
+        if scope_type == "http":
+            from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
+
+            correlation_id = prepare_transport_identity(scope)["correlation_id"].encode("ascii")
+            send_response = send
+
+            async def send(message):
+                if message.get("type") == "http.response.start":
+                    headers = [
+                        (key, value)
+                        for key, value in message.get("headers", ())
+                        if key.lower() != b"x-correlation-id"
+                    ]
+                    message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
+                await send_response(message)
         if scope_type == "lifespan":
             await self._handle_lifespan(scope, receive, send)
             return
@@ -530,12 +591,9 @@ class App(AppBase):
                     session_id = extension.get("session_id")
             callbacks = []
             broker = getattr(self, "__realtime_broker__", None)
-            if session_id is not None and callable(
-                getattr(broker, "unsubscribe_session", None)
-            ):
-                callbacks.append(
-                    lambda: broker.unsubscribe_session(str(session_id))
-                )
+            disconnect = getattr(broker, "disconnect_session", None) or getattr(broker, "unsubscribe_session", None)
+            if session_id is not None and callable(disconnect):
+                callbacks.append(lambda: disconnect(str(session_id)))
             hub = getattr(self, "__presentation_hub__", None)
             if session_id is not None and callable(getattr(hub, "disconnect", None)):
                 callbacks.append(lambda: hub.disconnect(str(session_id)))
@@ -595,6 +653,16 @@ class App(AppBase):
         message = await receive()
         if message.get("type") == "lifespan.shutdown":
             try:
+                broker = getattr(self, "__realtime_broker__", None) or getattr(
+                    self, "_websocket_realtime_broker", None
+                )
+                if broker is not None:
+                    await broker.close()
+            except Exception as exc:
+                shutdown = {"type": "lifespan.shutdown.failed", "message": str(exc)}
+            else:
+                shutdown = {"type": "lifespan.shutdown.complete"}
+            try:
                 if callable(run_handlers):
                     await run_handlers("shutdown")
             except Exception:
@@ -605,7 +673,7 @@ class App(AppBase):
                         await ctx_manager.__aexit__(None, None, None)
                     except Exception:
                         pass
-                await send({"type": "lifespan.shutdown.complete"})
+                await send(shutdown)
 
     def _normalize_prefix(self, prefix: str) -> str:
         return _normalize_prefix_impl(prefix)

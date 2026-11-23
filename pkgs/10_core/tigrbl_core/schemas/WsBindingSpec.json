@@ -50,6 +50,14 @@
     },
     "subprotocols": {
       "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "subscription_ack_version": {
+      "default": 1,
+      "enum": [
+        1,
+        2
+      ],
+      "type": "integer"
     }
   },
   "required": [

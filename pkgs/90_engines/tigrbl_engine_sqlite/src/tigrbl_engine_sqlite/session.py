@@ -33,6 +33,8 @@ class SqliteSession(EngineSession):
         self, underlying: _SqliteAlchemySession, spec: EngineSessionSpec | None = None
     ) -> None:
         super().__init__(underlying, spec)
+        if isinstance(underlying, _SASession):
+            self._observe_sqlalchemy_transactions()
 
 
 __all__ = ["SqliteSession"]

@@ -517,7 +517,11 @@ class WebSocketProtocolBindingSpec(SerdeMixin):
     profile: Literal["websocket"] = "websocket"
     exchange: Exchange = "bidirectional_stream"
 
+    subscription_ack_version: Literal[1, 2] = 1
+
     def __post_init__(self) -> None:
+        if type(self.subscription_ack_version) is not int or self.subscription_ack_version not in (1, 2):
+            raise ValueError("subscription_ack_version must be 1 or 2")
         exchange = validate_binding_profile_exchange(
             binding_kind=self.proto,
             exchange=self.exchange,
@@ -768,7 +772,11 @@ class WsBindingSpec(SerdeMixin):
     exchange: Exchange = "bidirectional_stream"
     framing: FramingSpec = field(default_factory=TextFramingSpec)
 
+    subscription_ack_version: Literal[1, 2] = 1
+
     def __post_init__(self) -> None:
+        if type(self.subscription_ack_version) is not int or self.subscription_ack_version not in (1, 2):
+            raise ValueError("subscription_ack_version must be 1 or 2")
         subprotocols = derive_websocket_subprotocols(
             framing=self.framing,
             subprotocols=self.subprotocols,
@@ -805,7 +813,11 @@ class WebTransportBindingSpec(SerdeMixin):
     inner_framing: FramingSpec | None = None
     rpc_method: str | None = None
 
+    subscription_ack_version: Literal[1, 2] = 1
+
     def __post_init__(self) -> None:
+        if type(self.subscription_ack_version) is not int or self.subscription_ack_version not in (1, 2):
+            raise ValueError("subscription_ack_version must be 1 or 2")
         if self.framing is not None:
             raise ValueError(
                 "WebTransportBindingSpec does not accept top-level app framing; "

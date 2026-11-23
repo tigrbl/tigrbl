@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from ..sys.commit_tx import record_transaction_events, record_transaction_participation
+
 import asyncio
 from collections import defaultdict
 from itertools import count
@@ -159,7 +161,15 @@ class ResidentBatchScheduler:
         try:
             if owns_db:
                 await _begin_if_available(db)
-            await self._execute_with_db(group, db)
+            try:
+                await self._execute_with_db(group, db)
+            finally:
+                for admission in group.admissions:
+                    participant = self._ctx_by_admission.get(admission.admission_id)
+                    if participant is not None:
+                        record_transaction_participation(
+                            participant.temp, db, admission.intent.get("identity")
+                        )
             if owns_db:
                 await _commit_if_available(db)
                 self.metrics["commits"] += 1
@@ -169,6 +179,10 @@ class ResidentBatchScheduler:
                 self.metrics["rollbacks"] += 1
             raise
         finally:
+            for admission in group.admissions:
+                participant = self._ctx_by_admission.get(admission.admission_id)
+                if participant is not None:
+                    record_transaction_events(participant.temp, db)
             if release is not None:
                 await _maybe_await(release())
 

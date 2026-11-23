@@ -137,10 +137,12 @@ def event(ctx: Any, name: str, **kv: Any) -> None:
     st = _get_state(ctx)
     if not _active(st) or len(st.events) >= _MAX_EVENTS:
         return
+    identity = _ensure_temp(ctx).get("identity")
     st.events.append(
         {
             "ts": _iso_now(),
             "name": str(name),
+            **(_safe_kv(identity) if isinstance(identity, dict) else {}),
             **_safe_kv(kv),
         }
     )
@@ -200,6 +202,9 @@ def snapshot(ctx: Any) -> Dict[str, Any]:
         "plan": st.plan_labels,
         "steps": tuple(st.steps),  # immutable copy for consumers
         "events": tuple(st.events),
+        "identity": _safe_kv(_ensure_temp(ctx).get("identity") or {}),
+        "transaction_participation": tuple(_ensure_temp(ctx).get("transaction_participation") or ()),
+        "transactions": tuple(_ensure_temp(ctx).get("transaction_events") or ()),
     }
 
 

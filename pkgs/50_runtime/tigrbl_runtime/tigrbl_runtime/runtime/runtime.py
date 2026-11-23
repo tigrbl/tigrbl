@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
 from tigrbl_kernel import Kernel, _kernel
 
 from tigrbl_runtime.channel import complete_channel, prepare_channel_context
@@ -84,6 +85,16 @@ class Runtime(RuntimeBase):
         plan: Any,
         packed_plan: Any | None = None,
     ) -> Any:
+        scope = getattr(env, "scope", None)
+        if isinstance(scope, dict):
+            identity = prepare_transport_identity(scope)
+            state = scope.get("state", {})
+            batch_item = state.get("_tigrbl_rpc_batch_item") if isinstance(state, dict) else None
+            if isinstance(batch_item, dict):
+                identity.update(batch_item)
+            temp = ctx.get("temp")
+            if isinstance(temp, dict) and identity:
+                temp["identity"] = identity
         selected = executor or self.default_executor
         impl = self.executors.get(selected)
         if impl is None:

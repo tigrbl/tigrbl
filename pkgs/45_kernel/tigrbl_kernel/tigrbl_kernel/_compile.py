@@ -116,6 +116,7 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
         metadata["inner_framing"] = framing_kind(inner_framing)
         metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
         metadata["rpc_method"] = getattr(binding, "rpc_method", None)
+        metadata["subscription_ack_version"] = getattr(binding, "subscription_ack_version", 1)
         if inner_framing is not None:
             metadata["inner_framing_kind"] = str(inner_framing)
             metadata["inner_framing_spec"] = framing_spec_name(inner_framing)

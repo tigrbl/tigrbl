@@ -111,3 +111,36 @@ def test_transport_sinks_own_transport_projection() -> None:
         assert websocket_frame["params"]["notification_id"] == envelope.notification_id
 
     asyncio.run(exercise())
+
+
+def test_logical_subscription_resume_fences_stale_carrier_cleanup() -> None:
+    async def exercise() -> None:
+        broker = InMemoryRealtimeBroker()
+        source = RecordingSink()
+        recipient = RecordingSink()
+        subscription = await broker.subscribe(
+            channel="room", sink=source, session_id="old",
+            metadata={"correlation_id": "old-correlation", "stream_id": 3},
+        )
+        resumed = await broker.resume(
+            subscription.subscription_id, expected_generation=subscription.generation,
+            session_id="new", sink=recipient, authorize=lambda *_: True,
+            metadata={"correlation_id": "new-correlation"},
+        )
+        assert resumed.subscription_id == subscription.subscription_id
+        assert resumed.generation != subscription.generation
+        assert await broker.unsubscribe_session("old") == 0
+        result = await broker.publish(channel="room", event={}, origin_invocation_id="origin")
+        await asyncio.sleep(0)
+        event, = broker.delivery_events()
+        assert result.queued == 1
+        assert event["transport_session_id"] == "new"
+        assert event["subscription_id"] == resumed.subscription_id
+        assert event["origin_invocation_id"] == "origin"
+        assert event["correlation_id"] == "new-correlation"
+        assert "stream_id" not in event
+        assert event["outcome"] == "delivered"
+        assert not source.events and len(recipient.events) == 1
+        await broker.close()
+
+    asyncio.run(exercise())

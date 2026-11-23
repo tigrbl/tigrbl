@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+
 from ._shared import *
 from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
 
@@ -49,6 +51,12 @@ class _PackedExecuteMixin:
                 isinstance(hot.parsed_json, Mapping)
                 and hot.parsed_json.get("jsonrpc") == "2.0"
             ):
+                raw_identity = temp.get("identity")
+                if raw_identity:
+                    identity = invocation_identity(raw_identity)
+                    if "id" in hot.parsed_json:
+                        identity["rpc_id"] = hot.parsed_json["id"]
+                    temp["identity"] = identity
                 params = hot.parsed_json.get("params", {})
                 if isinstance(params, Mapping) and set(params) == {"params"}:
                     egress = temp.setdefault("egress", {})
@@ -125,6 +133,10 @@ class _PackedExecuteMixin:
             return
 
         temp["program_id"] = program_id
+        current_identity = temp.get("identity")
+        if current_identity and hot.scope_type in {"http", "webtransport"}:
+            if hot.scope_type == "http" or str((ctx.get("channel_message") or {}).get("type", "")).endswith(".receive"):
+                temp["identity"] = invocation_identity(current_identity)
 
         hot_op_plan = (
             packed.hot_op_plans[program_id]

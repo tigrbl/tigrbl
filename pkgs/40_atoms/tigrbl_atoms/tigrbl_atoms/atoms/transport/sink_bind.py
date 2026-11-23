@@ -6,6 +6,7 @@ from ... import events as _ev
 from ...stages import Ingress
 from ...types import Atom, Ctx, IngressCtx
 from .._temp import _ensure_temp
+from ..ingress.identity import webtransport_lane_identity
 
 ANCHOR = _ev.BATCH_TRANSPORT_SINK_BIND
 
@@ -16,7 +17,9 @@ def _run(obj: object | None, ctx: Any) -> None:
     transport["sink"] = getattr(ctx, "transport_sink", None)
     transport["sink_index"] = getattr(ctx, "transport_sink_index", 0)
     transport["sink_family"] = getattr(ctx, "transport_sink_family", None)
-    transport["correlation_id"] = getattr(ctx, "correlation_id", None)
+    identity = _ensure_temp(ctx).get("identity") or {}
+    transport["identity"] = dict(identity)
+    transport["correlation_id"] = identity.get("correlation_id") or getattr(ctx, "correlation_id", None)
 
     raw = getattr(ctx, "raw", None)
     scope = getattr(raw, "scope", None) if raw is not None else None
@@ -39,9 +42,16 @@ def _run(obj: object | None, ctx: Any) -> None:
     realtime = _ensure_temp(ctx).setdefault("realtime", {})
     realtime["sink"] = send
     realtime["transport"] = scope_type
+    session_id = identity.get("transport_session_id") or session_id
     if session_id is not None:
         realtime["session_id"] = str(session_id)
-    owner = scope.get("app")
+    if scope_type == "webtransport" and identity:
+        def identity_for_stream(stream_id: str) -> dict:
+            lane = webtransport_lane_identity(scope, {"stream_id": stream_id}, identity)
+            return {"stream_correlation_id": lane["stream_correlation_id"]}
+
+        realtime["identity_for_stream"] = identity_for_stream
+    owner = scope.get("app") or getattr(ctx, "app", None)
     broker = getattr(owner, "__realtime_broker__", None)
     if broker is not None:
         realtime["broker"] = broker

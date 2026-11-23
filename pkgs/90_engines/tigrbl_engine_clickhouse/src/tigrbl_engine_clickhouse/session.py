@@ -48,6 +48,8 @@ class ClickHouseSession(EngineSessionBase):
         return self._client
 
     # ---- EngineSessionBase hooks -----------------------------------------
+    _has_transaction_boundary = False
+
     async def _tx_begin_impl(self) -> None:  # no-op; ClickHouse has limited tx support
         return None
 

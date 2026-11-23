@@ -12,6 +12,33 @@ from ._db import _in_transaction, _resolve_db_handle
 ANCHOR = _ev.SYS_TX_COMMIT
 
 
+def record_transaction_participation(temp, db, identity=None) -> None:
+    transaction_id = getattr(db, "transaction_id", None)
+    if transaction_id is None:
+        return
+    invocation = identity or temp.get("identity") or {}
+    link = {
+        key: invocation[key]
+        for key in ("invocation_id", "attempt_id", "rpc_item_index")
+        if key in invocation
+    }
+    link.update(engine_session_id=db.engine_session_id, transaction_id=transaction_id)
+    links = temp.setdefault("transaction_participation", [])
+    if link not in links:
+        links.append(link)
+
+
+def record_transaction_events(temp, db) -> None:
+    events = getattr(db, "transaction_events", None)
+    if callable(events):
+        relevant = {
+            link["transaction_id"] for link in temp.get("transaction_participation", ())
+        }
+        temp["transaction_events"] = tuple(
+            event for event in events() if event["transaction_id"] in relevant
+        )
+
+
 async def _run(obj: object | None, ctx: Any) -> None:
     del obj
     temp = _ensure_temp(ctx)
@@ -29,7 +56,8 @@ async def _run(obj: object | None, ctx: Any) -> None:
     )
 
     try:
-        if not open_flag or db is None:
+        record_transaction_participation(temp, db)
+        if not open_flag or db is None or temp.get("__sys_tx_joined__"):
             return
         commit = getattr(db, "commit", None)
         if callable(commit):
@@ -38,6 +66,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
                 await rv
     finally:
         temp["__sys_tx_open__"] = False
+        record_transaction_events(temp, db)
         release = temp.pop("__sys_db_release__", None)
         if callable(release):
             rv = release()

@@ -27,6 +27,10 @@ async def run(obj: object | None, ctx: Any) -> None:
     if db is None:
         return
 
+    temp = getattr(ctx, "temp", None)
+    if isinstance(temp, dict) and temp.get("__sys_tx_joined__"):
+        return
+
     rollback = getattr(db, "rollback", None)
     if callable(rollback):
         rv = rollback()

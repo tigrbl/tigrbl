@@ -1,0 +1,39 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1204"
+number: 1204
+slug: "subquota"
+title: "Authenticated subscription admission"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl owns authenticated logical subscription quotas independently of transport resources."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  Tigrbl owns authenticated logical subscription quotas independently of transport resources.
+  After authentication and authorization and before starting continuing work, atomically
+  admit all applicable principal, tenant, and operation budgets. Tenant/principal identity
+  comes from verified context and membership, never request-supplied IDs or arbitrary proxy
+  headers. Principal keys include the issuer/security domain to prevent collisions. Tenant
+  budgets span all users; principal budgets span connections/IPs (and verified tenant context
+  only if explicitly configured). Anonymous subscription access is denied unless an explicit
+  bounded anonymous policy exists. Ordinary request records are not subscriptions.
+
+  Each subscription consumes a slot even when many share one WebSocket or WebTransport
+  control stream. Add user/tenant opening-rate buckets; unsubscribe does not refund tokens.
+  Operation-specific caps intersect aggregate quotas rather than replacing them. Transport
+  and subscription budgets remain independent, not duplicate counts of the same resource.
+
+  ## Architecture and alternatives
+
+  KernelPlan compiles admission and lifecycle actions; atoms execute policy and quota-store
+  operations. Runtime is limited to existing carrier lifecycle/context bridging. Do not put
+  generic quotas into handlers or add a runtime-owned policy executor. Reuse verified identity
+  and existing operation identity across REST/SSE, WebSocket, and WebTransport projections.
+  Tigrcorn source-IP protection runs earlier and cannot replace authenticated quotas.

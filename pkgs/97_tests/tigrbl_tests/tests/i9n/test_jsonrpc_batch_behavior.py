@@ -60,3 +60,21 @@ async def test_jsonrpc_batch_reports_errors_per_item(app_client):
     assert "result" in responses[0]
     assert responses[1]["error"]["code"] == -32601
     assert responses[1]["error"]["message"] == "Method not found"
+
+
+@pytest.mark.asyncio
+async def test_rest_and_jsonrpc_response_correlation_is_request_scoped(app_client):
+    client, _, _ = app_client
+    headers = {"X-Correlation-ID": "untrusted-client-value"}
+    rest = await client.get("/tenant", headers=headers)
+    rpc = await client.post("/rpc/", headers=headers, json={
+        "jsonrpc": "2.0", "method": "Tenant.list", "params": {}, "id": "client-id",
+    })
+    missing = await client.get("/correlation-probe-missing", headers=headers)
+
+    assert (rest.status_code, rpc.status_code, missing.status_code) == (200, 200, 404)
+    assert rpc.json()["id"] == "client-id"
+    correlations = {response.headers["x-correlation-id"] for response in (rest, rpc, missing)}
+    assert len(correlations) == 3
+    assert "untrusted-client-value" not in correlations
+    assert "client-id" not in correlations

@@ -1,0 +1,43 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1151"
+number: 1151
+slug: "qstore"
+title: "Shared subscription quota store contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define acquire, renew, transfer/resume, release, and inspect operations with atomic"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Requirements
+
+  Define acquire, renew, transfer/resume, release, and inspect operations with atomic
+  multi-key user/tenant/operation capacity changes and atomic applicable rate-bucket updates.
+  Use a bounded namespace, opaque lease IDs, fencing generations, deadlines, and idempotent
+  release. The process-local provider advertises process scope only. A shared provider
+  (initial reference target: Redis) advertises deployment scope only when its atomicity and
+  ownership guarantees are verified. Do not reuse process-local memrate as distributed proof.
+
+  Use store-authoritative lease time and monotonic local fencing deadlines with a safety
+  margin; renew before expiry. Stop output/work before lease authority expires when renewal
+  fails. Expired leases cannot coexist with still-authorized stale producers. Store outage
+  refuses new admissions and resume; no silent local fallback. Bound retry, cleanup work,
+  cardinality, and retained token debt. Credentials are secret references, never diagnostic text.
+
+  ## Acceptance
+
+  Race many workers/replicas, kill owners, inject partitions, delayed renewals, stale releases,
+  clock skew, Redis transaction failure, and store restart. Verify all-or-none reservations,
+  no stale producer output after fencing, and eventual recovery without oversubscription.
+
+  ## Subscription identity
+
+  A verified resume transfers the existing quota lease to a fresh owner generation while retaining the logical subscription ID defined by SPEC-2209. A configured finite reconnect interval can retain the quota slot after disconnect, bounded by the current lease deadline. Stale cleanup must leave the transferred lease active.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1205"
