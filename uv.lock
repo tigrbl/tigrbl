@@ -5556,6 +5556,7 @@ name = "tigrbl-ops-realtime"
 version = "0.4.6.dev2"
 source = { editable = "pkgs/60_ops/tigrbl_ops_realtime" }
 dependencies = [
+    { name = "tigrbl-typing" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 
@@ -5568,7 +5569,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" }]
+requires-dist = [
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
+]
 
 [package.metadata.requires-dev]
 dev = [

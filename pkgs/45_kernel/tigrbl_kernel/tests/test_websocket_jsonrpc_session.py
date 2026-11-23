@@ -68,10 +68,15 @@ async def test_websocket_jsonrpc_dispatch_snapshots_binding_and_message_identity
         context = kwargs["ctx"]
         await asyncio.sleep(0)
         seen.append(context["identity"])
-        return await subscribe(params, ctx=context)
+        result = await subscribe(params, ctx=context)
+        return {"status_code": 200, "body": json.dumps(result).encode(),
+                "body_iterator": None, "path": None}
 
     broker = InMemoryRealtimeBroker()
-    router = SimpleNamespace(tables={"Topic": Topic}, rpc_call=rpc_call)
+    from tigrbl_kernel.trace import Timeline
+
+    timeline = Timeline()
+    router = SimpleNamespace(tables={"Topic": Topic}, rpc_call=rpc_call, trace_sink=timeline.add)
     channel = SimpleNamespace(receive=receive, send=send, state={}, path="/controls")
     handler = build_websocket_jsonrpc_session_handler(router, realtime_broker=broker)
     await handler({"channel": channel, "temp": {"identity": {"transport_session_id": "ws-live"}}})
@@ -85,4 +90,7 @@ async def test_websocket_jsonrpc_dispatch_snapshots_binding_and_message_identity
     assert seen[0]["correlation_id"] == seen[1]["correlation_id"] != seen[2]["correlation_id"]
     assert [ctx.get("rpc_item_index") for ctx in seen] == [0, 1, None]
     assert len({ctx["span_id"] for ctx in seen}) == 3
+    invocations = timeline.data()["events"]
+    assert [item["kind"] for item in invocations] == ["Invocation"] * 3
+    assert [item["span_id"] for item in invocations] == [item["span_id"] for item in seen]
     assert broker.metrics()["subscriber_count"] == 0

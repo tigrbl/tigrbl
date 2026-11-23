@@ -115,12 +115,17 @@ def test_transport_sinks_own_transport_projection() -> None:
 
 def test_logical_subscription_resume_fences_stale_carrier_cleanup() -> None:
     async def exercise() -> None:
-        broker = InMemoryRealtimeBroker()
+        traces = []
+
+        def capture(kind, transport, fields):
+            traces.append((kind, transport, fields))
+
+        broker = InMemoryRealtimeBroker(trace_sink=capture)
         source = RecordingSink()
         recipient = RecordingSink()
         subscription = await broker.subscribe(
             channel="room", sink=source, session_id="old",
-            metadata={"correlation_id": "old-correlation", "stream_id": 3},
+            metadata={"correlation_id": "old-correlation", "stream_id": 3, "payload": {"secret": "ignored"}},
         )
         resumed = await broker.resume(
             subscription.subscription_id, expected_generation=subscription.generation,
@@ -133,6 +138,14 @@ def test_logical_subscription_resume_fences_stale_carrier_cleanup() -> None:
         result = await broker.publish(channel="room", event={}, origin_invocation_id="origin")
         await asyncio.sleep(0)
         event, = broker.delivery_events()
+        assert [kind for kind, _, _ in traces] == [
+            "Subscription opened", "Attachment detached", "Subscription resumed", "Publication", "Delivery",
+        ]
+        assert all("payload" not in fields for _, _, fields in traces)
+        assert traces[0][2]["subscription_id"] == traces[2][2]["subscription_id"]
+        assert traces[-1][2]["delivery_id"] == event["delivery_id"]
+        assert traces[-1][2]["origin_invocation_id"] == "origin"
+        assert traces[-1][2]["attachment_generation"] == resumed.generation
         assert result.queued == 1
         assert event["transport_session_id"] == "new"
         assert event["subscription_id"] == resumed.subscription_id

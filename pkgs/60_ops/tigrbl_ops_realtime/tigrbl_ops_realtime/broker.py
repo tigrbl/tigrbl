@@ -7,8 +7,10 @@ from datetime import datetime, timezone
 from typing import Any, Callable, Mapping
 from uuid import uuid4
 
+from tigrbl_typing.trace import TraceSink, emit_trace
+
 from .quotas import SubscriptionAdmission, SubscriptionLease, fence_delivery
-from .sinks import RealtimeEnvelope, RealtimeSink
+from .sinks import RealtimeEnvelope, RealtimeSink, WebSocketRealtimeSink, WebTransportRealtimeSink
 
 
 @dataclass(slots=True)
@@ -51,6 +53,7 @@ class InMemoryRealtimeBroker:
         authorize_subscription_resume: Callable[[Any, RealtimeSubscription, str], bool] | None = None,
         resume_ttl_seconds: float = 0,
         admission: SubscriptionAdmission | None = None,
+        trace_sink: TraceSink | None = None,
     ) -> None:
         if queue_size < 1:
             raise ValueError("queue_size must be positive")
@@ -60,6 +63,7 @@ class InMemoryRealtimeBroker:
         self.authorize_subscription_resume = authorize_subscription_resume
         self.resume_ttl_seconds = resume_ttl_seconds
         self.admission = admission
+        self.trace_sink = trace_sink
         self._attachment_lock = asyncio.Lock()
         self._closed = False
         self._closed_sessions: dict[str, None] = {}
@@ -69,10 +73,32 @@ class InMemoryRealtimeBroker:
         self._suspended: dict[str, tuple[RealtimeSubscription, asyncio.TimerHandle]] = {}
         self._delivery_events: deque[dict[str, Any]] = deque(maxlen=1024)
 
-    def _attach(self, subscription: RealtimeSubscription) -> None:
+    @staticmethod
+    def _carrier_name(subscription: RealtimeSubscription) -> str:
+        if isinstance(subscription.sink, WebSocketRealtimeSink):
+            return "WebSocket"
+        if isinstance(subscription.sink, WebTransportRealtimeSink):
+            return "WebTransport"
+        return "Realtime"
+
+    def _trace_attachment(self, kind: str, subscription: RealtimeSubscription) -> None:
+        if self.trace_sink is None:
+            return
+        fields = {
+            **subscription.metadata,
+            "subscription_id": subscription.subscription_id,
+            "transport_session_id": subscription.session_id,
+            "attachment_generation": subscription.generation,
+        }
+        if subscription.quota_lease is not None:
+            fields["lease_id"] = subscription.quota_lease.id
+        emit_trace(self.trace_sink, kind, self._carrier_name(subscription), fields)
+
+    def _attach(self, subscription: RealtimeSubscription, *, resumed: bool = False) -> None:
         self._subscriptions.setdefault(subscription.channel, {})[subscription.session_id] = subscription
         self._by_id[subscription.subscription_id] = subscription
         self._by_session.setdefault(subscription.session_id, set()).add(subscription.subscription_id)
+        self._trace_attachment("Subscription resumed" if resumed else "Subscription opened", subscription)
 
     def _detach(self, subscription: RealtimeSubscription) -> bool:
         if self._by_id.get(subscription.subscription_id) is not subscription:
@@ -86,13 +112,14 @@ class InMemoryRealtimeBroker:
         memberships.remove(subscription.subscription_id)
         if not memberships:
             del self._by_session[subscription.session_id]
+        self._trace_attachment("Attachment detached", subscription)
         return True
 
     def delivery_events(self) -> tuple[dict[str, Any], ...]:
         return tuple(dict(event) for event in self._delivery_events)
 
     def _record_delivery(self, subscription: RealtimeSubscription, envelope: RealtimeEnvelope, outcome: str) -> None:
-        self._delivery_events.append({
+        row = {
             "delivery_id": envelope.notification_id,
             "publication_id": envelope.publication_id,
             "subscription_id": subscription.subscription_id,
@@ -107,7 +134,12 @@ class InMemoryRealtimeBroker:
             "origin_invocation_id": envelope.origin_invocation_id,
             "origin_correlation_id": envelope.origin_correlation_id,
             "outcome": outcome,
-        })
+        }
+        self._delivery_events.append(row)
+        if self.trace_sink is not None:
+            emit_trace(self.trace_sink, "Delivery", self._carrier_name(subscription), {
+                **subscription.metadata, **row,
+            })
 
     def subscriber_count(self, channel: str) -> int:
         return len(self._subscriptions.get(str(channel), {}))
@@ -219,7 +251,7 @@ class InMemoryRealtimeBroker:
                 suspended[1].cancel()
             else:
                 self._detach(previous)
-            self._attach(replacement)
+            self._attach(replacement, resumed=True)
         try:
             await self._stop(previous, retain_queue=True)
         finally:
@@ -314,6 +346,12 @@ class InMemoryRealtimeBroker:
         subscriptions = tuple(self._subscriptions.get(channel, {}).values())
         resolved_publication_id = publication_id or f"pub_{uuid4().hex}"
         published_at = datetime.now(timezone.utc).isoformat()
+        if self.trace_sink is not None:
+            emit_trace(self.trace_sink, "Publication", "Realtime", {
+                "publication_id": resolved_publication_id,
+                "origin_invocation_id": origin_invocation_id,
+                "origin_correlation_id": origin_correlation_id,
+            })
         queued = dropped = 0
         for subscription in subscriptions:
             envelope = RealtimeEnvelope(

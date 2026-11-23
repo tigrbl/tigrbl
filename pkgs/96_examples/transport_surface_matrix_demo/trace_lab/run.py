@@ -165,8 +165,8 @@ async def reply(send, status, payload, content_type="application/json"):
 
 
 async def serve(args):
-    from trace_app import Timeline, build_app
-    from tigrbl import resolver
+    from trace_app import build_app
+    from tigrbl import Timeline, resolver
     from tigrcorn.config.load import build_config
     from tigrcorn.server.runner import TigrCornServer
     from tigrcorn.transports.quic.handshake import generate_self_signed_certificate
@@ -185,7 +185,7 @@ async def serve(args):
             await initialized
         engine, _ = resolver.resolve_provider().ensure()
         stack.callback(engine.dispose)
-        stack.push_async_callback(app.__realtime_broker__.close)
+        stack.push_async_callback(app.realtime_broker.close)
         probe = load_probe(args.tigrcorn_source)
         dashboard = (HERE / "index.html").read_bytes()
 
@@ -225,31 +225,7 @@ async def serve(args):
                             return await reply(send, 500, {"error": str(exc)})
                     return await reply(send, 200, results)
                 return await reply(send, 405, {"error": "Method not supported."})
-            metadata = scope.get("extensions", {}).get("tigr.transport_identity", {})
-            label = {"websocket": "WebSocket", "webtransport": "WebTransport"}.get(
-                transport, "JSON-RPC" if (path or "").rstrip("/") == "/rpc" else "REST"
-            )
-            if transport in {"http", "websocket", "webtransport"}:
-                timeline.add("Scope opened", label, {**metadata, "path": path})
-
-            async def observe(message):
-                if message["type"] == "http.response.start":
-                    correlation = dict(message["headers"]).get(b"x-correlation-id")
-                    timeline.add(
-                        "Response",
-                        label,
-                        {
-                            **metadata,
-                            "path": path,
-                            "status": message["status"],
-                            "correlation_id": correlation.decode()
-                            if correlation
-                            else None,
-                        },
-                    )
-                await send(message)
-
-            await app(scope, receive, observe)
+            await app(scope, receive, send)
 
         tcp = TigrCornServer(
             gateway,

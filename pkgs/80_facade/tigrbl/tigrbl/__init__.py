@@ -419,7 +419,12 @@ def __getattr__(name: str):
     raise AttributeError(name)
 
 
+from tigrbl_kernel.trace import Timeline  # noqa: E402
+from tigrbl_typing.trace import TraceSink  # noqa: E402
+
 __all__ = [
+    "Timeline",
+    "TraceSink",
     "specs",
     "base",
     "concrete",

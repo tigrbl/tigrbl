@@ -26,7 +26,11 @@ def lower_appspec_routers(app: Any, spec: Any) -> None:
             jsonrpc_prefix=getattr(spec, "jsonrpc_prefix", "/rpc"),
             system_prefix=getattr(spec, "system_prefix", "/system"),
             execution_backend=getattr(spec, "execution_backend", None),
+            trace_sink=getattr(app, "trace_sink", None),
         )
+        broker = getattr(app, "realtime_broker", None)
+        if broker is not None:
+            router.__realtime_broker__ = broker
         setattr(router, "name", getattr(router_spec, "name", "router"))
         setattr(router, "engine_name", getattr(router_spec, "engine_name", None))
         setattr(router, "_tigrbl_route_prefix", _normalize_prefix(getattr(router_spec, "prefix", "")))
@@ -207,7 +211,7 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
                 if broker is None:
                     from tigrbl_ops_realtime import InMemoryRealtimeBroker
 
-                    broker = InMemoryRealtimeBroker()
+                    broker = InMemoryRealtimeBroker(trace_sink=getattr(router, "trace_sink", None))
                     setattr(router, "_websocket_realtime_broker", broker)
                 handler_step = build_websocket_jsonrpc_session_handler(
                     router,
