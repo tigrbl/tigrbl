@@ -185,9 +185,20 @@ def test_app_set_auth_refreshes_security_for_preincluded_tables() -> None:
 
     app = TigrblApp(engine=mem(async_=False))
     app.include_table(SecurityRefreshWidget)
-    app.set_auth(authn=lambda cred=Security(HTTPBearer()): cred, allow_anon=False)
 
-    ops_by_alias = getattr(SecurityRefreshWidget.ops, "by_alias", {})
-    assert tuple(ops_by_alias["list"])[0].secdeps == ()
-    assert tuple(ops_by_alias["create"])[0].secdeps == (app._authn,)
+    bearer = HTTPBearer()
 
+    def original_authn(credentials: HTTPAuthorizationCredentials = Security(bearer)):
+        return credentials
+
+    def replacement_authn(credentials: HTTPAuthorizationCredentials = Security(bearer)):
+        return credentials
+
+    for authn in (original_authn, replacement_authn):
+        app.set_auth(authn=authn, allow_anon=False)
+
+        ops_by_alias = SecurityRefreshWidget.ops.by_alias
+        assert tuple(ops_by_alias["list"])[0].secdeps == ()
+        (bound_authn,) = tuple(ops_by_alias["create"])[0].secdeps
+        assert inspect.unwrap(bound_authn) is authn
+        assert bound_authn.__tigrbl_require_auth__ is True
