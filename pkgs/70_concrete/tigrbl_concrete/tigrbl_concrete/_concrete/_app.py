@@ -59,6 +59,9 @@ class App(AppBase):
 
     def __init__(self, *, engine: EngineCfg | None = None, **asgi_kwargs: Any) -> None:
         subscription_policy = asgi_kwargs.pop("subscription_policy", None)
+        subscription_store = asgi_kwargs.pop("subscription_store", None)
+        if subscription_store is not None and subscription_policy is None:
+            raise ValueError("subscription_store requires a subscription_policy")
         subscription_identity = asgi_kwargs.pop("subscription_identity", None)
         subscription_operation_limits = asgi_kwargs.pop(
             "subscription_operation_limits", None
@@ -167,9 +170,9 @@ class App(AppBase):
         self.subscription_operation_limits = subscription_operation_limits or {}
         self.subscription_policy = None
         if subscription_policy is not None:
-            self.configure_subscriptions(subscription_policy)
+            self.configure_subscriptions(subscription_policy, store=subscription_store)
 
-    def configure_subscriptions(self, policy) -> None:
+    def configure_subscriptions(self, policy, *, store=None) -> None:
         """Bind scalar policy to the application's trusted identity resolver."""
         from tigrbl_ops_realtime import InMemoryRealtimeBroker
         from tigrbl_ops_realtime.quotas import SubscriptionAdmission, SubscriptionPolicy
@@ -180,9 +183,10 @@ class App(AppBase):
             SubscriptionAdmission(
                 policy,
                 self.subscription_identity,
+                store=store,
                 operation_limits=self.subscription_operation_limits,
             )
-            if policy.enabled or self.subscription_operation_limits
+            if policy.enabled or self.subscription_operation_limits or store is not None or policy.effective_scope == "deployment"
             else None
         )
         broker = getattr(self, "__realtime_broker__", None) or getattr(

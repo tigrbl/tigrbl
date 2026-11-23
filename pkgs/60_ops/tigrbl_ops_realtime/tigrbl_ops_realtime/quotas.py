@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import asdict, dataclass, fields
+from typing import Protocol
 import hashlib
 import inspect
 import math
@@ -57,9 +59,6 @@ class SubscriptionPolicy:
     open_burst_per_tenant: int | None = None
     lease_ttl_seconds: float = 60
     lease_renewal_seconds: float = 20
-    store: str = "local"
-    store_url_env: str | None = None
-    namespace: str = "tigrbl:subscriptions"
     scope: str | None = None
     max_tracking_entries: int = 4096
 
@@ -67,12 +66,7 @@ class SubscriptionPolicy:
         for field in fields(self):
             name = field.name
             value = getattr(self, name)
-            if value is None or name in {
-                "store",
-                "store_url_env",
-                "namespace",
-                "scope",
-            }:
+            if value is None or name == "scope":
                 continue
             integer = name.startswith("max_") or "_burst_" in name
             if (
@@ -97,18 +91,8 @@ class SubscriptionPolicy:
             raise ValueError(
                 "subscription lease renewal must be less than half the TTL"
             )
-        if self.store not in {"local", "redis"}:
-            raise ValueError("subscription store must be local or redis")
         if self.scope not in {None, "process", "deployment"}:
             raise ValueError("invalid subscription scope")
-        if self.scope == "deployment" and self.store != "redis":
-            raise ValueError("deployment subscription scope requires a shared store")
-        if (
-            not isinstance(self.namespace, str)
-            or not self.namespace
-            or len(self.namespace) > 128
-        ):
-            raise ValueError("subscription namespace must be a bounded nonempty string")
 
     @property
     def enabled(self):
@@ -124,7 +108,7 @@ class SubscriptionPolicy:
 
     @property
     def effective_scope(self):
-        return "deployment" if self.store == "redis" else "process"
+        return self.scope or "process"
 
 
 def _digest(value):
@@ -141,9 +125,35 @@ def quota_keys(identity, operation):
     }
 
 
+class SubscriptionQuotaStore(Protocol):
+    """Atomic quota and owner-generation operations required by admission."""
+
+    policy: SubscriptionPolicy
+    scope: str
+    clock: Callable[[], float]
+
+    async def acquire(
+        self,
+        identity: SubscriptionIdentity,
+        operation: str,
+        *,
+        operation_limit: int | None = None,
+    ) -> SubscriptionLease: ...
+    async def renew(self, lease_id: str, generation: str) -> float: ...
+    async def release(self, lease_id: str, generation: str) -> None: ...
+    async def owns(self, lease: SubscriptionLease) -> bool: ...
+    async def resume(
+        self,
+        lease_id: str,
+        generation: str,
+        identity: SubscriptionIdentity,
+        operation: str,
+    ) -> SubscriptionLease: ...
+
+
 @dataclass
 class SubscriptionLease:
-    store: object
+    store: SubscriptionQuotaStore
     id: str
     generation: str
     deadline: float
@@ -302,29 +312,34 @@ class LocalSubscriptionQuotaStore:
 
 
 class SubscriptionAdmission:
-    def __init__(self, policy, identity_resolver, *, store=None, operation_limits=None):
+    def __init__(
+        self,
+        policy,
+        identity_resolver,
+        *,
+        store: SubscriptionQuotaStore | None = None,
+        operation_limits=None,
+    ):
         if not callable(identity_resolver):
             raise ValueError("subscription quotas require a trusted identity resolver")
         self.policy, self.identity_resolver = policy, identity_resolver
-        self.store = store or (
-            LocalSubscriptionQuotaStore(policy)
-            if policy.store == "local"
-            else self._redis(policy)
-        )
-        if self.store.scope != policy.effective_scope:
+        if store is None:
+            if policy.effective_scope != "process":
+                raise ValueError(
+                    "deployment subscription scope requires an injected quota store"
+                )
+            store = LocalSubscriptionQuotaStore(policy)
+        if store.scope != policy.effective_scope:
             raise ValueError("quota provider scope does not match policy")
+        if store.policy != policy:
+            raise ValueError("quota provider policy does not match admission policy")
+        self.store = store
         self.operation_limits = dict(operation_limits or {})
         for limit in self.operation_limits.values():
             if isinstance(limit, bool) or not isinstance(limit, int) or limit < 1:
                 raise ValueError(
                     "operation subscription caps must be positive integers"
                 )
-
-    @staticmethod
-    def _redis(policy):
-        from .redis_quotas import RedisSubscriptionQuotaStore
-
-        return RedisSubscriptionQuotaStore(policy)
 
     async def identity(self, ctx):
         identity = self.identity_resolver(ctx)
@@ -359,10 +374,8 @@ class SubscriptionAdmission:
         return replacement
 
     def snapshot(self):
-        policy = asdict(self.policy)
-        policy.pop("store_url_env", None)
         return {
-            "policy": policy,
+            "policy": asdict(self.policy),
             "scope": self.store.scope,
             "owner": "tigrbl",
             "enforced": True,
@@ -380,4 +393,7 @@ __all__ = [
     "SubscriptionAdmission",
     "SubscriptionAdmissionError",
     "LocalSubscriptionQuotaStore",
+    "SubscriptionQuotaStore",
+    "SubscriptionLease",
+    "quota_keys",
 ]

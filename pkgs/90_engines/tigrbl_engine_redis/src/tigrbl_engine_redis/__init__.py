@@ -1,5 +1,6 @@
 from .engine import RedisEngine, redis_engine
 from .session import RedisSession
+from .subscription_quotas import RedisSubscriptionQuotaStore
 
 
 class _Registration:
@@ -26,6 +27,7 @@ def register() -> None:
 __all__ = [
     "RedisEngine",
     "RedisSession",
+    "RedisSubscriptionQuotaStore",
     "redis_engine",
     "register",
 ]
