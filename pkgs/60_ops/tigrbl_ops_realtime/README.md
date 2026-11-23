@@ -5,24 +5,24 @@
 <p align="center"><strong>tigrbl-ops-realtime</strong></p>
 <p align="center">Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.</p>
 <p align="center">
-<a href="https://pypi.org/project/tigrbl-ops-realtime/"><img alt="pypi: tigrbl-ops-realtime" src="https://img.shields.io/pypi/v/tigrbl-ops-realtime"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/pyproject.toml"><img alt="Source version: 0.4.6.dev2" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.4.6.dev2&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/pyproject.toml"><img alt="Python: &gt;=3.10,&lt;3.15" src="https://img.shields.io/static/v1?label=Python&amp;message=%3E%3D3.10%2C%3C3.15&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/pyproject.toml"><img alt="Layer: 60_ops" src="https://img.shields.io/static/v1?label=Layer&amp;message=60_ops&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/README.md#lifecycle-and-migration"><img alt="Lifecycle: active" src="https://img.shields.io/static/v1?label=Lifecycle&amp;message=active&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/static/v1?label=License&amp;message=Apache-2.0&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/NOTICE"><img alt="Notice: attribution" src="https://img.shields.io/static/v1?label=Notice&amp;message=attribution&amp;color=525252"></a>
+<a href="https://pypi.org/project/tigrbl-ops-realtime/"><img alt="pypi: tigrbl-ops-realtime" src="https://img.shields.io/pypi/v/tigrbl-ops-realtime?labelColor=1E293B&amp;color=1D4ED8"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/pyproject.toml"><img alt="Source version: 0.4.6.dev2" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.4.6.dev2&amp;labelColor=1E293B&amp;color=4338CA"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/pyproject.toml"><img alt="Python: &gt;=3.10,&lt;3.15" src="https://img.shields.io/static/v1?label=Python&amp;message=%3E%3D3.10%2C%3C3.15&amp;labelColor=1E293B&amp;color=0F766E"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/pyproject.toml"><img alt="Layer: 60_ops" src="https://img.shields.io/static/v1?label=Layer&amp;message=60_ops&amp;labelColor=1E293B&amp;color=6D28D9"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/README.md#lifecycle-and-migration"><img alt="Lifecycle: active" src="https://img.shields.io/static/v1?label=Lifecycle&amp;message=active&amp;labelColor=1E293B&amp;color=166534"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/static/v1?label=License&amp;message=Apache-2.0&amp;labelColor=1E293B&amp;color=86198F"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/NOTICE"><img alt="Notice: attribution" src="https://img.shields.io/static/v1?label=Notice&amp;message=attribution&amp;labelColor=1E293B&amp;color=86198F"></a>
 </p>
 <p align="center">
-<a href="https://pypi.org/project/tigrbl-ops-realtime/"><img alt="Monthly PyPI downloads: tigrbl-ops-realtime" src="https://img.shields.io/pypi/dm/tigrbl-ops-realtime"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/README.md"><img alt="README hits: tigrbl-ops-realtime" src="https://hits.sh/github.com/tigrbl/tigrbl/pkgs/60_ops/tigrbl_ops_realtime/README.md.svg?label=README%20hits"></a>
+<a href="https://pypi.org/project/tigrbl-ops-realtime/"><img alt="Monthly PyPI downloads: tigrbl-ops-realtime" src="https://img.shields.io/pypi/dm/tigrbl-ops-realtime?labelColor=1E293B&amp;color=0E7490"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/README.md"><img alt="README hits: tigrbl-ops-realtime" src="https://hits.sh/github.com/tigrbl/tigrbl/pkgs/60_ops/tigrbl_ops_realtime/README.md.svg?label=README%20hits&amp;labelColor=1E293B&amp;color=0E7490"></a>
 </p>
 <p align="center">
-<a href="https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/docs/readme/test_examples.py"><img alt="Tests: example source" src="https://img.shields.io/static/v1?label=Tests&amp;message=example%20source&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/README.md#certification-status"><img alt="Certification: not certified" src="https://img.shields.io/static/v1?label=Certification&amp;message=not%20certified&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"><img alt="Governance: repository policy" src="https://img.shields.io/static/v1?label=Governance&amp;message=repository%20policy&amp;color=525252"></a>
-<a href="https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"><img alt="Evidence: source and CI" src="https://img.shields.io/static/v1?label=Evidence&amp;message=source%20and%20CI&amp;color=525252"></a>
+<a href="https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;labelColor=1E293B&amp;color=1D4ED8"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/docs/readme/test_examples.py"><img alt="Tests: example source" src="https://img.shields.io/static/v1?label=Tests&amp;message=example%20source&amp;labelColor=1E293B&amp;color=0F766E"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/60_ops/tigrbl_ops_realtime/README.md#certification-status"><img alt="Certification: not certified" src="https://img.shields.io/static/v1?label=Certification&amp;message=not%20certified&amp;labelColor=1E293B&amp;color=92400E"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"><img alt="Governance: repository policy" src="https://img.shields.io/static/v1?label=Governance&amp;message=repository%20policy&amp;labelColor=1E293B&amp;color=4338CA"></a>
+<a href="https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"><img alt="Evidence: source and CI" src="https://img.shields.io/static/v1?label=Evidence&amp;message=source%20and%20CI&amp;labelColor=1E293B&amp;color=6D28D9"></a>
 </p>
 <p align="center"><a href="#overview">Overview</a> · <a href="#installation">Installation</a> · <a href="#quick-start">Quick Start</a> · <a href="#usage">Usage</a> · <a href="#public-api-and-import-surfaces">API</a> · <a href="#contributing">Contributing</a> · <a href="#governance">Governance</a> · <a href="#license">License</a></p>
 <!-- readme-standards:end branding -->
@@ -314,7 +314,7 @@ Follow the [contribution guide](https://github.com/tigrbl/tigrbl/blob/master/CON
 
 ### Development Setup
 
-Work from the `pkgs/60_ops/tigrbl_ops_realtime` checkout. Synchronize its declared development environment with uv, then run the relevant package tests and `python -m pytest docs/readme/test_examples.py`. The repository’s dedicated README job installs `readme-standards==0.1.1` without resolving unrelated runtime packages.
+Work from the `pkgs/60_ops/tigrbl_ops_realtime` checkout. Synchronize its declared development environment with uv, then run the relevant package tests and `python -m pytest docs/readme/test_examples.py`. The repository’s dedicated README job installs `readme-standards==0.1.3` without resolving unrelated runtime packages.
 
 ### Notes for Maintainers
 
