@@ -6,11 +6,13 @@ from tigrbl_ops_realtime.quotas import (
     SubscriptionAdmissionError,
     SubscriptionIdentity,
     SubscriptionPolicy,
+    SubscriptionQuotaStore,
 )
 from tigrbl_ops_realtime.configuration import resolve_subscription_policy
 
 __all__ = [
     "SubscriptionPolicy",
+    "SubscriptionQuotaStore",
     "SubscriptionIdentity",
     "SubscriptionAdmission",
     "SubscriptionAdmissionError",

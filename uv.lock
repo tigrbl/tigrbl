@@ -5038,10 +5038,12 @@ source = { editable = "pkgs/90_engines/tigrbl_engine_redis" }
 dependencies = [
     { name = "redis" },
     { name = "tigrbl" },
+    { name = "tigrbl-ops-realtime" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "fakeredis", extra = ["lua"] },
     { name = "flake8" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -5059,10 +5061,12 @@ dev = [
 requires-dist = [
     { name = "redis", specifier = ">=5.0.0" },
     { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
+    { name = "tigrbl-ops-realtime", editable = "pkgs/60_ops/tigrbl_ops_realtime" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "fakeredis", extras = ["lua"], specifier = ">=2.40" },
     { name = "flake8", specifier = ">=7.0" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
@@ -5556,14 +5560,8 @@ dependencies = [
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 
-[package.optional-dependencies]
-redis = [
-    { name = "redis" },
-]
-
 [package.dev-dependencies]
 dev = [
-    { name = "fakeredis", extra = ["lua"] },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'" },
@@ -5572,15 +5570,12 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "redis", marker = "extra == 'redis'", specifier = ">=5" },
     { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
 ]
-provides-extras = ["redis"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "fakeredis", extras = ["lua"], specifier = ">=2.40" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },

@@ -1,8 +1,14 @@
 # Subscription admission
 
-Tigrbl limits logical subscriptions. The server separately limits connections,
-protocol sessions, transport streams, and opening rates. Many subscriptions may share
-one WebSocket or WebTransport control stream; each broker registration consumes a slot.
+A subscription keeps delivering events after the initial subscribe call. For example,
+one WebSocket can subscribe to orders and inventory, consuming two active slots.
+Subscription limits control how many subscriptions a verified user or tenant can
+keep open and how fast they can open new ones. Each admitted subscription holds a
+lease. When a client resumes a subscription, the store transfers the lease to a
+new owner generation so the old connection can no longer deliver events.
+
+The default store keeps counts and leases in process. Tigrcorn's connection,
+session, and stream limits apply independently.
 
 ```python
 from tigrbl import TigrblApp
@@ -33,7 +39,42 @@ and IPs; tenant quotas aggregate members. Operation caps intersect aggregate cap
 
 Applications can build a policy in Python or call
 `tigrbl.subscriptions.resolve_subscription_policy` and pass the resolved policy
-to the app. Put Redis credentials in the environment variable named by the policy.
+to the app. For deployment-wide quotas, set `scope="deployment"` and inject a
+store that implements `SubscriptionQuotaStore` through `subscription_store`.
+The application owns the store's lifecycle.
+
+The Redis adapter is supplied by `tigrbl_engine_redis`. Pass its URL or an
+existing async Redis client directly to the adapter. Migrate older backend
+settings such as `store`, `store_url_env`, and `namespace` from the policy to
+application wiring. The policy now contains the quota limits and desired scope.
+
+```python
+import os
+from contextlib import asynccontextmanager
+
+from tigrbl_engine_redis import RedisSubscriptionQuotaStore
+
+policy = SubscriptionPolicy(max_active_per_user=10, scope="deployment")
+store = RedisSubscriptionQuotaStore(
+    policy,
+    url=os.environ["APP_SUBSCRIPTION_REDIS_URL"],
+    namespace="orders:subscriptions",
+)
+
+@asynccontextmanager
+async def lifespan(app):
+    try:
+        yield
+    finally:
+        await store.aclose()
+
+app = TigrblApp(
+    lifespan=lifespan,
+    subscription_identity=verified_identity,
+    subscription_policy=policy,
+    subscription_store=store,
+)
+```
 
 Set `subscription_resume_ttl` on the app to retain an attachment briefly after
 disconnect. The broker retains the quota slot for at most that interval and

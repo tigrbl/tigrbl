@@ -38,6 +38,14 @@ body: |-
   ## Subscription identity
 
   A verified resume transfers the existing quota lease to a fresh owner generation while retaining the logical subscription ID defined by SPEC-2209. A configured finite reconnect interval can retain the quota slot after disconnect, bounded by the current lease deadline. Stale cleanup must leave the transferred lease active.
+
+  ## Store ownership
+
+  Layer 60 realtime defines the quota store protocol and supplies the process-local
+  implementation. Layer 90 Redis engine implements that protocol and owns its
+  Redis dependencies, scripts, and integration tests. Application composition
+  injects a deployment store that matches the subscription policy. A deployment
+  policy without a compatible injected store refuses configuration.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1205"
