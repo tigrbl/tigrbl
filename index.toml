@@ -478,7 +478,7 @@ layer = "90_engines"
 order = 0
 path = "pkgs/90_engines/tigrbl_engine_redis"
 ecosystem = "pypi"
-dependencies = ["tigrbl"]
+dependencies = ["tigrbl", "tigrbl_ops_realtime"]
 
 [[packages]]
 id = "tigrbl_engine_rediscachethrough"
