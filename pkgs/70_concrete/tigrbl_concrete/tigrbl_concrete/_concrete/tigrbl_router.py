@@ -68,7 +68,6 @@ class TigrblRouter(_Router):
     _allow_anon: bool = True
     _authorize: Any = None
     _optional_authn_dep: Any = None
-    _operation_authorizer: Callable[..., Any] | None = None
     _allow_anon_ops: set[str] = set()
 
     @staticmethod
@@ -109,7 +108,6 @@ class TigrblRouter(_Router):
         self._allow_anon = True
         self._authorize = None
         self._optional_authn_dep = None
-        self._operation_authorizer = None
         self._mounted_auth_apps: WeakSet[Any] = WeakSet()
         self._allow_anon_ops: set[str] = set()
         self.jsonrpc_prefix = (
@@ -470,13 +468,8 @@ class TigrblRouter(_Router):
         allow_anon: Optional[bool] = None,
         authorize: Any = None,
         optional_authn_dep: Any = None,
-        operation_authorizer: Callable[..., Any] | None = None,
     ) -> None:
         """Configure compiled security dependencies for operations on this router."""
-        if operation_authorizer is not None and not callable(operation_authorizer):
-            raise TypeError("operation_authorizer must be callable")
-        if operation_authorizer is not None:
-            self._operation_authorizer = operation_authorizer
         if authn is not None:
             self._authn = authn
             if allow_anon is None:

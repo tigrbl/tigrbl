@@ -270,17 +270,27 @@ def _inject_dependency_atoms(
     chains: Dict[str, List[StepFn]],
     sp: Any | None,
     security_dependencies: tuple[Any, ...] | None,
-    operation_authorizer: Any,
 ) -> None:
     if sp is None:
         return
     from tigrbl_atoms.atoms.dep.extra import INSTANCE as dep_run
-    from tigrbl_atoms.atoms.dep.security import INSTANCE as sec_run, require_operation_allow
+    from tigrbl_atoms.atoms.dep.security import (
+        INSTANCE as sec_run,
+        bind_operation_authorization,
+        require_operation_allow,
+    )
 
     security_chain = chains.setdefault("SECURITY", [])
     if security_dependencies is None:
         security_dependencies = tuple(getattr(sp, "secdeps", ()) or ())
+    security = getattr(sp, "security", None)
+    protected = security is not None and security.access == "protected"
+    authorizers = []
     for idx, dep in enumerate(security_dependencies):
+        authorize = getattr(dep, "__tigrbl_authorizer__", None)
+        if protected and authorize is not None:
+            authorizers.append(authorize)
+            continue
         security_chain.append(
             _make_dep_atom_step(
                 sec_run,
@@ -290,12 +300,11 @@ def _inject_dependency_atoms(
                 ),
             )
         )
-    security = getattr(sp, "security", None)
-    if security is not None and security.access == "protected":
+    if protected:
         security_chain.append(
             _make_dep_atom_step(
                 require_operation_allow,
-                (security, operation_authorizer),
+                bind_operation_authorization(security, authorizers),
                 label="security:authorize_operation",
             )
         )

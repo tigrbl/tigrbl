@@ -317,9 +317,13 @@ async def test_protected_operations_require_explicit_allow_before_dependencies(
         events.append("authn")
         return principal
 
-    async def authorize(operation, ctx):
-        assert operation.action_id == "proof.item.create"
-        assert ctx["auth_context"] is principal
+    async def authorize(request, model, alias, payload, user, *, ctx):
+        assert request is not None
+        assert model is Item
+        assert alias == "create"
+        assert payload["name"] in {"rest", "rpc"}
+        assert user is principal
+        assert ctx["operation_security"].action_id == "proof.item.create"
         events.append("authorize")
         return decision
 
@@ -341,9 +345,17 @@ async def test_protected_operations_require_explicit_allow_before_dependencies(
             assert events == expected_events
 
         await exercise(503, [])
-        app.set_auth(authn=authenticate, operation_authorizer=authorize)
+        app.set_auth(authn=authenticate, authorize=authorize)
         await exercise(403, ["authn", "authorize"])
         decision = False
         await exercise(403, ["authn", "authorize"])
         decision = True
+        await exercise(201, ["authn", "authorize", "dependency", "pre_tx", "start", "handler"])
+
+        def authorize_without_context(request, model, alias, payload, user):
+            assert model is Item and alias == "create" and user is principal
+            events.append("authorize")
+            return True
+
+        app.set_auth(authorize=authorize_without_context)
         await exercise(201, ["authn", "authorize", "dependency", "pre_tx", "start", "handler"])

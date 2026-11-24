@@ -231,7 +231,6 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
 
     resolve_security = getattr(app, "_tigrbl_security_dependencies", None)
     actions: set[str] = set()
-    resolve_authorizer = getattr(app, "_tigrbl_resolve_operation_authorizer", None)
     for model in _compile_models(app):
         for sp in _opspecs(model):
             meta_index = len(opmeta)
@@ -254,11 +253,6 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                     model,
                     sp.alias,
                     security_dependencies=resolve_security(model, sp) if resolve_security else None,
-                    operation_authorizer=(
-                        resolve_authorizer(model)
-                        if security is not None and security.access == "protected" and resolve_authorizer
-                        else None
-                    ),
                 ),
                 egress_chain,
             )

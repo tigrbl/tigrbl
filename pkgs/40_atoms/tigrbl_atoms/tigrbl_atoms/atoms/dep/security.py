@@ -140,15 +140,44 @@ async def _run(dep: object | None, ctx: Any) -> Any:
     return rv
 
 
+def bind_operation_authorization(
+    security: Any, authorizers: list[Callable[..., Any]]
+) -> tuple[Any, tuple[tuple[Callable[..., Any], bool], ...]]:
+    callbacks = []
+    for authorize in authorizers:
+        try:
+            parameter = inspect.signature(authorize).parameters.get("ctx")
+        except (TypeError, ValueError):
+            parameter = None
+        callbacks.append(
+            (
+                authorize,
+                parameter is not None
+                and parameter.kind is inspect.Parameter.KEYWORD_ONLY,
+            )
+        )
+
+    return security, tuple(callbacks)
+
+
 async def require_operation_allow(binding: tuple[Any, Any], ctx: Ctx[Guarded]) -> None:
-    security, authorize = binding
-    if not callable(authorize):
+    security, callbacks = binding
+    if not callbacks:
         raise HTTPException(status_code=503, detail="Operation authorization unavailable")
-    decision = authorize(security, ctx)
-    if inspect.isawaitable(decision):
-        decision = await decision
-    if decision is not True:
-        raise HTTPException(status_code=403, detail="Operation forbidden")
+    ctx["operation_security"] = security
+    args = (
+        ctx.get("request"),
+        ctx.get("model"),
+        ctx.get("op"),
+        ctx.get("payload"),
+        ctx.get("auth_context"),
+    )
+    for authorize, accepts_ctx in callbacks:
+        decision = authorize(*args, ctx=ctx) if accepts_ctx else authorize(*args)
+        if inspect.isawaitable(decision):
+            decision = await decision
+        if decision is not True:
+            raise HTTPException(status_code=403, detail="Operation forbidden")
 
 
 class AtomImpl(Atom[Planned, Guarded, Exception]):
