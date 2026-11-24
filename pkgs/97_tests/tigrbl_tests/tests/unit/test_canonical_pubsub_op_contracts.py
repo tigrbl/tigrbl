@@ -10,6 +10,7 @@ from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Column, Session, String
+from tigrbl_ops_realtime import InMemoryRealtimeBroker
 
 
 def _route_map(router) -> dict[str, tuple[str, set[str]]]:
@@ -74,6 +75,11 @@ async def test_pubsub_ops_execute_realtime_handlers_through_rpc(
     pubsub_app_and_session,
 ) -> None:
     app, _, db = pubsub_app_and_session
+    broker = InMemoryRealtimeBroker()
+
+    class Sink:
+        async def send(self, message):
+            pass
 
     published = await app.rpc.Topic.publish(
         {"channel": "orders", "event": {"id": "evt-1"}},
@@ -82,6 +88,7 @@ async def test_pubsub_ops_execute_realtime_handlers_through_rpc(
     subscribed = await app.rpc.Topic.subscribe(
         {"channel": "orders", "cursor": "c-10"},
         db=db,
+        ctx={"channel": Sink(), "realtime": {"broker": broker, "session_id": "proof"}},
     )
 
     assert published["published"] is True

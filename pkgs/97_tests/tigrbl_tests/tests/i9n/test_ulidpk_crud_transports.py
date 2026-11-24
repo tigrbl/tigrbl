@@ -414,7 +414,8 @@ async def test_ulidpk_websocket_jsonrpc(monkeypatch):
     assert (await call("exists", {"id": ident}))["result"] == {"exists": True}
     assert (await call("count", {}))["result"] == {"count": 1}
     assert [row["id"] for row in (await call("list", {}))["result"]] == [ident]
-    assert (await call("delete", {"id": ident}))["result"] == {"deleted": 1}
+    deleted = await call("delete", {"id": ident})
+    assert deleted.get("result") == {"deleted": 1}, deleted
     missing = await call("read", {"id": ident})
     assert missing["error"]["code"] == -32003
     invalid = await call("read", {"id": "not-a-ulid"})

@@ -316,6 +316,18 @@ async def rpc_call(
         else:
             final = result
 
+        if isinstance(ctx_dict.get("websocket"), Mapping):
+            runtime_result = _unwrap_runtime_result(final)
+            if (
+                isinstance(runtime_result, Mapping)
+                and isinstance(runtime_result.get("body"), bytes)
+                and isinstance(runtime_result.get("status_code"), int)
+                and "body_iterator" in runtime_result and "path" in runtime_result
+                and runtime_result["body_iterator"] is None and runtime_result["path"] is None
+            ):
+                # The WebSocket binding consumes the completed response.
+                return runtime_result
+
         if _should_fallback_to_crud(
             target=getattr(resolution, "target", method),
             pk_name=pk_name,

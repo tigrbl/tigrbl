@@ -54,10 +54,9 @@ class _PackedExecuteMixin:
             ):
                 raw_identity = temp.get("identity")
                 if raw_identity:
-                    identity = invocation_identity(raw_identity)
-                    if "id" in hot.parsed_json:
-                        identity["rpc_id"] = hot.parsed_json["id"]
-                    temp["identity"] = identity
+                    temp["identity"] = invocation_identity(
+                        raw_identity, rpc_envelope=hot.parsed_json,
+                    )
                 params = hot.parsed_json.get("params", {})
                 if isinstance(params, Mapping) and set(params) == {"params"}:
                     egress = temp.setdefault("egress", {})
