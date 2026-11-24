@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from inspect import isawaitable
 from types import SimpleNamespace
 from typing import Any, Mapping
 
@@ -9,6 +10,7 @@ from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcProtocolBindingSpec,
     HttpRestBindingSpec,
     HttpRestProtocolBindingSpec,
+    RestRequestJson,
     WebSocketProtocolBindingSpec,
     WebTransportProtocolBindingSpec,
     derive_websocket_subprotocol_for_framing,
@@ -18,6 +20,8 @@ from tigrbl_core._spec.binding_spec import (
 )
 from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
 from tigrbl_core._spec.op_spec import OpSpec
+from tigrbl_core._spec.operation_security import OperationSecurity
+from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_core._spec.well_known_spec import well_known_op_alias
 
 from . import events as _ev
@@ -36,6 +40,22 @@ from .utils import (
 
 
 DEFAULT_PHASE_ORDER = tuple(getattr(_ev, "PHASES", ())) or _DEFAULT_PHASE_ORDER
+
+
+def _operation_guard(app: Any, declarations: Mapping[tuple[type, str], OperationSecurity]) -> StepFn:
+    async def guard(ctx: Any) -> None:
+        authorize = getattr(app, "_tigrbl_operation_authorizer", None)
+        security = declarations.get((ctx.get("model"), ctx.get("op")))
+        if security is None or not callable(authorize):
+            raise HTTPException(status_code=503, detail="Operation authorization unavailable")
+        decision = authorize(security, ctx)
+        if isawaitable(decision):
+            decision = await decision
+        if decision is not True:
+            raise HTTPException(status_code=403, detail="Operation forbidden")
+
+    guard.__tigrbl_label__ = "security:authorize_operation"
+    return guard
 
 
 def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
@@ -96,6 +116,7 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
         metadata["inner_framing"] = framing_kind(inner_framing)
         metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
         metadata["rpc_method"] = getattr(binding, "rpc_method", None)
+        metadata["subscription_ack_version"] = getattr(binding, "subscription_ack_version", 1)
         if inner_framing is not None:
             metadata["inner_framing_kind"] = str(inner_framing)
             metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
@@ -221,15 +242,27 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
     phase_chains: dict[int, Mapping[str, list[StepFn]]] = {}
     opviews: list[OpView | None] = []
     rest_exact_route_to_program: dict[tuple[str, str], int] = {}
+    rest_exact_request_json: dict[str, RestRequestJson] = {}
+    rest_array_programs: set[int] = set()
     ingress_chain = self._build_ingress(app)
     egress_chain = self._build_egress(app)
     phases, mainline_phases, error_phases = _phase_info_map(DEFAULT_PHASE_ORDER)
 
+    resolve_security = getattr(app, "_tigrbl_security_dependencies", None)
+    actions: set[str] = set()
+    declarations: dict[tuple[type, str], OperationSecurity] = {}
+    authorize_operation = _operation_guard(app, declarations)
     for model in _compile_models(app):
         for sp in _opspecs(model):
             meta_index = len(opmeta)
             target = (getattr(sp, "target", sp.alias) or sp.alias).lower()
-            opmeta.append(OpMeta(model=model, alias=sp.alias, target=target))
+            security = getattr(sp, "security", None)
+            if security is not None:
+                if security.action_id in actions:
+                    raise ValueError(f"Duplicate operation action: {security.action_id}")
+                actions.add(security.action_id)
+                declarations[model, sp.alias] = security
+            opmeta.append(OpMeta(model=model, alias=sp.alias, target=target, security=security))
             try:
                 opviews.append(
                     self._compile_opview_from_specs(self.get_specs(model), sp)
@@ -238,9 +271,17 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                 opviews.append(None)
             phase_chains[meta_index] = deepmerge_phase_chains(
                 ingress_chain,
-                self._build_op(model, sp.alias),
+                self._build_op(
+                    model,
+                    sp.alias,
+                    security_dependencies=resolve_security(model, sp) if resolve_security else None,
+                ),
                 egress_chain,
             )
+            if security is not None and security.access == "protected":
+                # The first step binds the active transaction for the phase.
+                # Run the gate before model hooks, input transformations or handlers.
+                phase_chains[meta_index]["PRE_HANDLER"].insert(1, authorize_operation)
 
             for binding in getattr(sp, "bindings", ()) or ():
                 if isinstance(
@@ -260,7 +301,12 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                         opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (
                             meta_index
                         )
+                        policy = getattr(binding, "request_json", None)
+                        policies = bucket.setdefault("request_json", {})
+                        if policy is not None and policy.shape == "array":
+                            rest_array_programs.add(meta_index)
                         if "{" in binding.path and "}" in binding.path:
+                            policies.setdefault(selector, policy)
                             pattern, names = _compile_path_pattern(binding.path)
                             bucket["templated"].append(
                                 {
@@ -274,6 +320,11 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                             )
                         else:
                             bucket["exact"][selector] = meta_index
+                            policies[selector] = policy
+                            if policy is None:
+                                rest_exact_request_json.pop(selector, None)
+                            else:
+                                rest_exact_request_json[selector] = policy
                             method, _, path = selector.partition(" ")
                             if path:
                                 rest_exact_route_to_program[(method.upper(), path)] = (
@@ -383,6 +434,8 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
 
     semantic = KernelPlan(
         proto_indices=route_data,
+        rest_exact_request_json=rest_exact_request_json,
+        rest_array_programs=frozenset(rest_array_programs),
         opmeta=tuple(opmeta),
         opkey_to_meta=opkey_to_meta,
         ingress_chain=ingress_chain,

@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
 from tigrbl_kernel import Kernel, _kernel
+from tigrbl_typing.trace import TraceSink
 
 from tigrbl_runtime.channel import complete_channel, prepare_channel_context
 from tigrbl_runtime.executors import (
@@ -33,10 +35,12 @@ class Runtime(RuntimeBase):
         kernel_backend: str = "auto",
         atoms_backend: str = "auto",
         executor_backend: str = "python",
+        trace_sink: TraceSink | None = None,
     ) -> None:
         resolved_kernel = kernel if kernel is not None else _kernel()
         super().__init__(kernel=resolved_kernel)
         self.default_executor = default_executor
+        self.trace_sink = trace_sink
         self.kernel_backend = _normalize_execution_backend(kernel_backend)
         self.atoms_backend = _normalize_execution_backend(atoms_backend)
         self.executor_backend = _normalize_execution_backend(executor_backend)
@@ -84,6 +88,16 @@ class Runtime(RuntimeBase):
         plan: Any,
         packed_plan: Any | None = None,
     ) -> Any:
+        scope = getattr(env, "scope", None)
+        if isinstance(scope, dict):
+            identity = prepare_transport_identity(scope)
+            state = scope.get("state", {})
+            batch_item = state.get("_tigrbl_rpc_batch_item") if isinstance(state, dict) else None
+            if isinstance(batch_item, dict):
+                identity.update(batch_item)
+            temp = ctx.get("temp")
+            if isinstance(temp, dict) and identity:
+                temp["identity"] = identity
         selected = executor or self.default_executor
         impl = self.executors.get(selected)
         if impl is None:

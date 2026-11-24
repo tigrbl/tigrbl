@@ -1,0 +1,17 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1206"
+number: 1206
+slug: "strict-rest-request-json"
+title: "Opt-in strict JSON for REST requests"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declare strict JSON input on individual REST bindings to preserve compatibility for existing clients. The selected binding controls top-level shape and the wrong-shape status. Apply the same request policy in ordinary dispatch and packed input preparation so malformed input cannot fall through to path or query payloads."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Declare strict JSON input on individual REST bindings to preserve compatibility for existing clients. The selected binding controls top-level shape and the wrong-shape status. Apply the same request policy in ordinary dispatch and packed input preparation so malformed input cannot fall through to path or query payloads.

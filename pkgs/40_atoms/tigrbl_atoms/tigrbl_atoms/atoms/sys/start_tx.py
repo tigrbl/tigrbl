@@ -7,7 +7,7 @@ from ...stages import Guarded, Executing
 
 from ... import events as _ev
 from .._temp import _ensure_temp
-from ._db import _is_async_db, _resolve_db_handle
+from ._db import _in_transaction, _is_async_db, _resolve_db_handle
 
 ANCHOR = _ev.SYS_TX_BEGIN
 
@@ -22,6 +22,9 @@ async def _run(obj: object | None, ctx: Any) -> None:
     temp["__sys_tx_open__"] = False
 
     if db is None:
+        return
+    temp["__sys_tx_joined__"] = _in_transaction(db)
+    if temp["__sys_tx_joined__"]:
         return
 
     # Sync SQLAlchemy sessions auto-open transactions on first write.

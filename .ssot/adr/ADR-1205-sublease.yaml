@@ -1,0 +1,45 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1205"
+number: 1205
+slug: "sublease"
+title: "Subscription quota leases and resume semantics"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Quota acquisition uses atomic all-or-none active reservations and distinct nonrefundable"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  Quota acquisition uses atomic all-or-none active reservations and distinct nonrefundable
+  opening tokens. Leases have opaque IDs, owner generations, deadlines, idempotent release,
+  and bounded state. Release on unsubscribe, completion, failed start, cancellation,
+  authorization revocation, disconnect, and shutdown. A completed subscribe/control record
+  does not release a continuing subscription. One refused subscription leaves existing
+  subscriptions and its shared session usable where protocol safety permits.
+
+  Support explicit process-local and shared quota-store modes; diagnostics state scope.
+  Shared mode coordinates users/tenants across workers/replicas. On store outage fail closed
+  for new admissions; do not silently use independent local counters. Renewable leases expire
+  after owner failure, but strict active guarantees require fencing: subscription output/work
+  must stop before the ownership deadline if renewal cannot be confirmed. TTL expiry alone
+  does not prove that a partitioned owner stopped working.
+
+  Resume atomically transfers/renews one existing authorized lease or acquires a replacement;
+  it must never allow two active owners or double-charge overlapping attempts. Reauthorize
+  resume and apply per-attempt rate policy. Durable dormant reservations require an explicit
+  finite grace interval; reconnect does not automatically create unlimited free subscriptions.
+
+  ## Consequences
+
+  Specify store atomicity, trusted clock/deadline semantics, fencing, bounded renewals and
+  cleanup, and deterministic outage behavior before distributed support is advertised.
+
+  ## Subscription identity
+
+  A verified resume transfers the existing quota lease to a fresh owner generation while retaining the logical subscription ID defined by SPEC-2209. A configured finite reconnect interval can retain the quota slot after disconnect, bounded by the current lease deadline. Stale cleanup must leave the transferred lease active.

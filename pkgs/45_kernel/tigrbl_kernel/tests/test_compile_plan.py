@@ -16,6 +16,7 @@ from tigrbl_core._spec.binding_spec import (
 )
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.op_spec import OpSpec
+from tigrbl_core._spec.operation_security import OperationSecurity
 from tigrbl_core._spec.table_spec import TableSpec
 from tigrbl import RestJsonRpcTable
 
@@ -38,11 +39,11 @@ class CompilerFixture:
     def _build_egress(self, app: Any) -> dict[str, list[Any]]:
         return {"EGRESS": [lambda *_: app]}
 
-    def _build_op(self, model: type, alias: str) -> dict[str, list[Any]]:
+    def _build_op(self, model: type, alias: str, *, security_dependencies=None) -> dict[str, list[Any]]:
         def _step(*_: Any) -> tuple[type, str]:
             return model, alias
 
-        return {"HANDLER": [_step]}
+        return {"PRE_HANDLER": [_step], "HANDLER": [_step]}
 
     def _pack_kernel_plan(self, semantic: KernelPlan) -> object:
         return self.packed_marker
@@ -84,6 +85,19 @@ class WidgetTable:
             ),
         ),
     )
+
+
+def test_compile_plan_rejects_duplicate_operation_actions():
+    security = OperationSecurity("app.widget.read", "widget")
+
+    class DuplicateActions:
+        ops = (
+            OpSpec(alias="first", target="read", security=security),
+            OpSpec(alias="second", target="read", security=security),
+        )
+
+    with pytest.raises(ValueError, match="Duplicate operation action: app.widget.read"):
+        _compile_plan(CompilerFixture(), AppFixture(tables=(DuplicateActions,)))
 
 
 class RealtimeRouteMetadataTable:

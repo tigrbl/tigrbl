@@ -111,24 +111,70 @@ def _coerce_model_columns(columns: Any) -> Tuple[str, ...]:
         return ()
 
 
-# --- keep as helper, no behavior change to transports/kernel ---
-def _mark_required_auth_dependency(dep: Any) -> Any:
-    """Tag an auth dependency as required so runtime can reject missing auth."""
-    try:
-        setattr(dep, "__tigrbl_require_auth__", True)
-        return dep
-    except Exception:
-        pass
+def _bind_authentication_dependency(dep: Any, *, required: bool) -> Any:
+    from functools import wraps
 
-    async def _required_auth_wrapper(*args: Any, **kwargs: Any) -> Any:
-        rv = dep(*args, **kwargs)
-        if hasattr(rv, "__await__"):
-            rv = await rv
-        return rv
+    @wraps(dep)
+    async def authenticate(*args: Any, **kwargs: Any) -> Any:
+        result = dep(*args, **kwargs)
+        return await result if hasattr(result, "__await__") else result
 
-    setattr(_required_auth_wrapper, "__tigrbl_require_auth__", True)
-    setattr(_required_auth_wrapper, "__wrapped__", dep)
-    return _required_auth_wrapper
+    setattr(authenticate, "__tigrbl_require_auth__", required)
+    setattr(authenticate, "__tigrbl_authenticator__", True)
+    return authenticate
+
+
+def _authentication_dependency(owner: Any) -> Any:
+    return getattr(owner, "_optional_authn_dep", None) or getattr(owner, "_authn", None)
+
+
+def _security_dependencies(owner: Any) -> tuple[Any, ...]:
+    auth_dep = _authentication_dependency(owner)
+    if auth_dep is not None:
+        auth_dep = _bind_authentication_dependency(
+            auth_dep, required=not getattr(owner, "_allow_anon", True)
+        )
+
+    authorize_dep = None
+    authorize = getattr(owner, "_authorize", None)
+    if callable(authorize):
+
+        async def _authorize_secdep(request: Any) -> None:
+            ctx = getattr(getattr(request, "state", None), "ctx", None)
+            ctx_map = ctx if isinstance(ctx, dict) else {}
+            target_model = getattr(ctx, "model", None) or ctx_map.get("model")
+            alias = (
+                getattr(ctx, "op", None) or ctx_map.get("op") or ctx_map.get("method")
+            )
+            if alias in (None, "", "unknown"):
+                method = str(getattr(request, "method", "") or "").upper()
+                alias = {
+                    "GET": "list",
+                    "POST": "create",
+                    "PUT": "replace",
+                    "PATCH": "update",
+                    "DELETE": "delete",
+                }.get(method)
+            payload = getattr(ctx, "payload", None) or ctx_map.get("payload")
+            user = (
+                getattr(ctx, "auth_context", None)
+                or ctx_map.get("auth_context")
+                or getattr(getattr(request, "state", None), "user", None)
+            )
+
+            rv = authorize(request, target_model, alias, payload, user)
+            if hasattr(rv, "__await__"):
+                rv = await rv
+            if rv is False:
+                from tigrbl_typing.status.exceptions import HTTPException
+
+                raise HTTPException(status_code=403, detail="Forbidden")
+
+        setattr(_authorize_secdep, "__tigrbl_dep_name__", "security.authorize")
+        setattr(_authorize_secdep, "__tigrbl_authorizer__", authorize)
+        authorize_dep = _authorize_secdep
+
+    return tuple(dep for dep in (auth_dep, authorize_dep) if dep is not None)
 
 
 def _attach_to_router(router: RouterLike, table: type) -> None:
@@ -276,21 +322,11 @@ def include_model(
     else:
         logger.debug("No provider resolved for %s", model.__name__)
 
-    auth_dep = None
-    if getattr(router, "_optional_authn_dep", None):
-        auth_dep = router._optional_authn_dep
-        logger.debug("Using optional auth dependency for %s", model.__name__)
-    elif getattr(router, "_allow_anon", True) is False and getattr(
-        router, "_authn", None
-    ):
-        auth_dep = router._authn
-        logger.debug("Using required auth dependency for %s", model.__name__)
-    elif getattr(router, "_authn", None):
-        auth_dep = router._authn
-        logger.debug("Using default auth dependency for %s", model.__name__)
-    if auth_dep is not None and getattr(router, "_allow_anon", True) is False:
-        auth_dep = _mark_required_auth_dependency(auth_dep)
-
+    runtime_secdeps = _security_dependencies(router)
+    auth_dep = next(
+        (dep for dep in runtime_secdeps if getattr(dep, "__tigrbl_authenticator__", False)),
+        None,
+    )
     if auth_dep is not None:
         setattr(model, TIGRBL_AUTH_DEP_ATTR, auth_dep)
     else:
@@ -304,50 +340,6 @@ def include_model(
             router._allow_anon_ops.add(f"{model.__name__}.{verb}")
     else:
         logger.debug("No anonymous verbs for %s", model.__name__)
-
-    authorize_dep = None
-    authorize = getattr(router, "_authorize", None)
-    if callable(authorize):
-
-        async def _authorize_secdep(request: Any) -> None:
-            ctx = getattr(getattr(request, "state", None), "ctx", None)
-            ctx_map = ctx if isinstance(ctx, dict) else {}
-            target_model = getattr(ctx, "model", None) or ctx_map.get("model")
-            alias = (
-                getattr(ctx, "op", None) or ctx_map.get("op") or ctx_map.get("method")
-            )
-            if alias in (None, "", "unknown"):
-                method = str(getattr(request, "method", "") or "").upper()
-                alias = {
-                    "GET": "list",
-                    "POST": "create",
-                    "PUT": "replace",
-                    "PATCH": "update",
-                    "DELETE": "delete",
-                }.get(method)
-            payload = getattr(ctx, "payload", None) or ctx_map.get("payload")
-            user = (
-                getattr(ctx, "auth_context", None)
-                or ctx_map.get("auth_context")
-                or getattr(getattr(request, "state", None), "user", None)
-            )
-
-            rv = authorize(request, target_model, alias, payload, user)
-            if hasattr(rv, "__await__"):
-                rv = await rv
-            if rv is False:
-                from tigrbl_typing.status.exceptions import HTTPException
-
-                raise HTTPException(status_code=403, detail="Forbidden")
-
-        setattr(_authorize_secdep, "__tigrbl_dep_name__", "security.authorize")
-        authorize_dep = _authorize_secdep
-
-    runtime_secdeps = tuple(dep for dep in (auth_dep, authorize_dep) if dep is not None)
-    if authorize_dep is not None:
-        logger.debug("Authorization secdep attached for %s", model.__name__)
-    else:
-        logger.debug("No authorization secdep for %s", model.__name__)
 
     rest_deps: list[Any] = []
     if getattr(router, "rest_dependencies", None):

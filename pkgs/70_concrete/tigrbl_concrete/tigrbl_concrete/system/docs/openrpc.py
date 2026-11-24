@@ -285,9 +285,11 @@ def build_openrpc_spec(
                 )
                 method["result"] = {"name": "result", "schema": out_json}
 
-            secdeps = tuple(getattr(op, "secdeps", ()) or ())
-            if not secdeps:
-                secdeps = tuple(getattr(op, "security_deps", ()) or ())
+            resolve_security = getattr(router, "_tigrbl_security_dependencies", None)
+            if resolve_security:
+                secdeps = resolve_security(model, op)
+            else:
+                secdeps = tuple(getattr(op, "secdeps", ()) or getattr(op, "security_deps", ()) or ())
             security = _security_from_dependencies(secdeps)
             if security:
                 method["security"] = security

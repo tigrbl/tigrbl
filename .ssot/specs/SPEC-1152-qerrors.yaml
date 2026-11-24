@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1152"
+number: 1152
+slug: "qerrors"
+title: "Subscription rejection and diagnostics"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Reject authenticated user/tenant quota exhaustion before HTTP streaming begins with 429"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Requirements
+
+  Reject authenticated user/tenant quota exhaustion before HTTP streaming begins with 429
+  and a stable subscription_quota_exceeded error. Use subscription_rate_exceeded with a
+  bounded retry delay for rate exhaustion. Active-cap exhaustion has no fabricated precise
+  retry time. Store/aggregate service unavailability is 503 with subscription_admission_unavailable,
+  not a misleading user quota violation. Authorization errors preserve existing auth behavior.
+
+  For existing WebSocket/WebTransport control lanes, return the corresponding correlated
+  application error through existing framing/envelopes; never inject HTTP into a child stream
+  or close a healthy shared carrier solely for one quota refusal. No new custom JSON envelope
+  may replace an established JSON-RPC envelope. Unsubscribe/cleanup remains possible at cap.
+
+  Expose effective quotas, configured provider, actual scope, active counts, renewal/fencing
+  failures, and refusal counters. Redact credentials and identity; no unbounded per-user or
+  per-tenant metric labels. Diagnostics distinguish configured from implemented/enforced.
+
+  ## Acceptance
+
+  Validate HTTP/SSE and persistent-channel outcomes, correlation/envelope preservation,
+  existing-subscription progress, redaction, bounded diagnostics, and outage classification.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1204"
+  - "adr:1205"

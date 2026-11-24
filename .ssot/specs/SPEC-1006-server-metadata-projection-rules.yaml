@@ -15,6 +15,10 @@ status_notes: []
 references: []
 body: |-
   Scope: define which ASGI server metadata may become canonical runtime metadata and which metadata remains trace-only. Canonical admission requires an explicit allowlist rule, a normalized field name, a declared parent identity scope, and a stated lifecycle or delivery implication when relevant. Valid scenarios include normalizing client/server address, selected subprotocol, TLS/ALPN data when governed, and trace-only preservation of unsupported extension metadata. Invalid scenarios include server-specific fields mutating canonical runtime state without a rule, metadata crossing session or engine-session scope, or unsupported metadata being silently dropped when trace/qlog preservation is required.
+
+  ## Draft transport identity and subscription extension
+
+  Allowlist tigr.transport_identity v1 and validate its declared mapping. When the extension and supported legacy sources identify the same scope, require their session identities to agree. Preserve a raw QUIC wire CID as, at most, separate governed diagnostic metadata. If the extension is absent, normalize supported legacy sources and allocate a local request or carrier ID where Tigrbl needs one. Leave server connection identity unset when it is unavailable. An unsupported version follows the declared diagnostic and compatibility path.
 spec_kind: "normative"
 adr_ids:
   - "adr:1020"

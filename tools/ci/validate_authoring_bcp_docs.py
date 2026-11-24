@@ -12,6 +12,9 @@ ROOT_README = ROOT / "README.md"
 FACADE_README = ROOT / "pkgs" / "80_facade" / "tigrbl" / "README.md"
 BCP_TITLE = "Convenient Authoring Path and Best Current Practice (BCP)"
 README_BCP_HEADING = f"## {BCP_TITLE}"
+BCP_BEGIN = "<!-- tigrbl:authoring-bcp:begin -->"
+BCP_END = "<!-- tigrbl:authoring-bcp:end -->"
+BCP_BOLD_TITLE = f"**{BCP_TITLE}**"
 
 REQUIRED_DOCS = [
     BCP_DOC,
@@ -129,6 +132,18 @@ def _read(path: Path) -> str:
 
 
 def _authoring_bcp_section(text: str) -> str:
+    if BCP_BEGIN in text or BCP_END in text:
+        if text.count(BCP_BEGIN) != 1 or text.count(BCP_END) != 1:
+            raise ValueError("BCP block requires exactly one begin and end marker")
+        start = text.index(BCP_BEGIN) + len(BCP_BEGIN)
+        end = text.index(BCP_END)
+        if end <= start:
+            raise ValueError("BCP block markers are out of order")
+        return text[start:end]
+    if BCP_BOLD_TITLE in text:
+        raise ValueError(
+            "Standardized README BCP guidance requires explicit block markers"
+        )
     marker = README_BCP_HEADING
     start = text.find(marker)
     if start == -1:
@@ -150,7 +165,22 @@ def _guidance_groups(text: str) -> list[tuple[str, str]]:
             groups.append((active_heading, "\n".join(current).strip()))
         current = []
 
+    fence = None
     for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("```", "~~~")):
+            token = stripped[:3]
+            fence = None if fence == token else token if fence is None else fence
+            continue
+        if fence is not None:
+            continue
+        if stripped == BCP_BOLD_TITLE:
+            continue
+        bold = re.fullmatch(r"\*\*([^*]+)\*\*", stripped)
+        if bold:
+            flush()
+            active_heading = bold.group(1)
+            continue
         if line.startswith("### "):
             flush()
             active_heading = line[4:].strip()
@@ -202,7 +232,9 @@ def main() -> None:
 
     for doc in REQUIRED_DOCS:
         if not doc.is_file():
-            errors.append(f"missing authoring BCP document or pointer {doc.relative_to(ROOT)}")
+            errors.append(
+                f"missing authoring BCP document or pointer {doc.relative_to(ROOT)}"
+            )
 
     if errors:
         fail(errors)
@@ -210,13 +242,19 @@ def main() -> None:
     bcp_text = _read(BCP_DOC)
     for phrase in REQUIRED_BCP_PHRASES:
         if phrase not in bcp_text:
-            errors.append(f"{BCP_DOC.relative_to(ROOT)} missing required phrase {phrase!r}")
+            errors.append(
+                f"{BCP_DOC.relative_to(ROOT)} missing required phrase {phrase!r}"
+            )
 
     for readme in [ROOT_README, FACADE_README]:
         text = _read(readme)
         for phrase in MAIN_README_REQUIRED_PHRASES:
-            if phrase not in text:
-                errors.append(f"{readme.relative_to(ROOT)} missing required BCP phrase {phrase!r}")
+            if phrase not in text and not (
+                phrase == README_BCP_HEADING and BCP_BOLD_TITLE in text
+            ):
+                errors.append(
+                    f"{readme.relative_to(ROOT)} missing required BCP phrase {phrase!r}"
+                )
 
     grouped_guidance_targets = {
         BCP_DOC: bcp_text,
@@ -230,7 +268,9 @@ def main() -> None:
         path = ROOT / rel
         text = _read(path)
         for phrase in phrases:
-            if phrase not in text:
+            if phrase not in text and not (
+                phrase == README_BCP_HEADING and BCP_BOLD_TITLE in text
+            ):
                 errors.append(f"{rel} missing boundary BCP phrase {phrase!r}")
 
     for readme in _app_facing_readmes():

@@ -21,7 +21,7 @@ class CompilerFixture:
     def _build_egress(self, app: Any) -> dict[str, list[Any]]:
         return {"EGRESS": [lambda *_: app]}
 
-    def _build_op(self, model: type, alias: str) -> dict[str, list[Any]]:
+    def _build_op(self, model: type, alias: str, *, security_dependencies=None) -> dict[str, list[Any]]:
         return {"HANDLER": [lambda *_: (model, alias)]}
 
     def _pack_kernel_plan(self, semantic: KernelPlan, **_: Any) -> object:

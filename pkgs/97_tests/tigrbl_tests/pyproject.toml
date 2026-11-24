@@ -1,9 +1,9 @@
 [project]
 name = "tigrbl_tests"
-version = "0.4.5"
+version = "0.4.6.dev2"
 description = "Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "Apache-2.0"
 keywords = [
     "tigrbl",
     "asgi",
@@ -63,6 +63,7 @@ dependencies = [
     "pytest-benchmark>=4.0.0",
     "jinja2>=3.1.0",
 ]
+license-files = ["LICENSE", "NOTICE"]
 
 
 [project.urls]
@@ -98,6 +99,54 @@ log_cli_format = "%(asctime)s [%(levelname)s] %(message)s"
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 asyncio_default_fixture_loop_scope = "function"
 
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/97_tests/tigrbl_tests"
+layer = "97_tests"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl_tests"
+published = true
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/97_tests/tigrbl_tests/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/97_tests/tigrbl_tests/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -112,4 +161,5 @@ packages = [
 dev = [
     "fastapi==0.136.0",
     "ruff>=0.11.0",
+    "readme-standards==0.1.3; python_version >= \"3.11\"",
 ]

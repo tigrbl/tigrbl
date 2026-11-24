@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1154"
 number: 1154
@@ -15,3 +15,7 @@ status_notes: []
 references: []
 body: |-
   Decision: engine_session_id and transaction ownership are part of session leakage prevention, not only database lifecycle management. An engine session or transaction opened for one attempt, session, stream, datagram, app, router, table, or op must not be committed, rolled back, reused, traced, replayed, or diagnosed as belonging to another partition. Consequence: engine session reuse requires explicit lease/reset semantics and cross-attempt or cross-session transaction mutation fails closed.
+  
+  ## Authorized shared transaction ownership
+  
+  Draft ADR-1208 permits an explicitly owned batch to link multiple participating invocations or attempts to one transaction. Participation links are scoped to the authorized batch. Only the transaction owner retains commit and rollback authority. Lease or reset must clear ended transaction state before engine-session reuse.

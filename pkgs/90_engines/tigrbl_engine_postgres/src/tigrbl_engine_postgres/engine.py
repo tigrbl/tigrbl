@@ -46,9 +46,14 @@ def postgres_engine(
 
     @event.listens_for(eng, "connect")
     def _configure_postgres(dbapi_conn, conn_record):
-        with dbapi_conn.cursor() as cur:
-            cur.execute("SET statement_timeout = 0")
-            cur.execute("SET lock_timeout = 0")
+        autocommit = dbapi_conn.autocommit
+        dbapi_conn.autocommit = True
+        try:
+            with dbapi_conn.cursor() as cur:
+                cur.execute("SET statement_timeout = 0")
+                cur.execute("SET lock_timeout = 0")
+        finally:
+            dbapi_conn.autocommit = autocommit
 
     raw_maker = sessionmaker(
         bind=eng, class_=_PostgresAlchemySession, expire_on_commit=False

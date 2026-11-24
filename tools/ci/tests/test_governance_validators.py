@@ -57,3 +57,16 @@ def test_repo_governance_scripts_pass() -> None:
         if result.returncode != 0:
             failures.append(f"{script}\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}")
     assert not failures, '\n\n'.join(failures)
+
+
+def test_claim_language_distinguishes_negative_certification_status(monkeypatch) -> None:
+    import re
+    import runpy
+
+    monkeypatch.syspath_prepend(str(REPO_ROOT / "tools/ci"))
+    policy = runpy.run_path(str(REPO_ROOT / "tools/ci/lint_claim_language.py"))
+    pattern = next(pattern for pattern, label in policy["BANNED_PATTERNS"].items() if label == "certified")
+    assert not re.search(pattern, "Certification: not certified", re.IGNORECASE)
+    assert not re.search(pattern, "message=not%20certified&amp;color=525252", re.IGNORECASE)
+    for claim in ("certified", "Certification: certified", "not certified; this provider is certified"):
+        assert re.search(pattern, claim, re.IGNORECASE), claim

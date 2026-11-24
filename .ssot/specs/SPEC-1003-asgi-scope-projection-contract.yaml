@@ -15,6 +15,10 @@ status_notes: []
 references: []
 body: |-
   Scope: define how ASGI scope maps to Tigrbl transport metadata without making ASGI scope the semantic authority. Required projection fields include scope type, method, path, query string, headers, client and server tuples, scheme, root path, subprotocols, extension metadata, WebTransport metadata where present, and normalized semantic and concrete ids. Valid scenarios include HTTP scope projecting request metadata, websocket scope projecting session/message metadata, and WebTransport-like scope projecting session metadata with explicit extension handling. Invalid scenarios include server-specific scope extensions becoming canonical state without an allowlist rule or missing identity fields being silently synthesized without trace.
+
+  ## Draft transport identity and subscription extension
+
+  Normalize the versioned transport identity extension defined by tigr-asgi-contract SPEC-1054 before application dispatch. Project server-issued connection_id, request_id, transport_session_id, and optional http_stream_id to their canonical runtime fields. Preserve requester session_id separately. Use the legacy fallback and conflict rules in SPEC-1006.
 spec_kind: "normative"
 adr_ids:
   - "adr:1020"

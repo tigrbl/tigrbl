@@ -5,6 +5,8 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterator, Mapping, Tuple
 
 from tigrbl_atoms.types import PhaseTreeNode
+from tigrbl_core._spec.binding_spec import RestRequestJson
+from tigrbl_core._spec.operation_security import OperationSecurity
 
 try:
     from tigrbl_typing.phases import MAINLINE_PHASES, ERROR_PHASES, phase_info
@@ -80,6 +82,7 @@ class OpMeta:
     model: type
     alias: str
     target: str
+    security: OperationSecurity | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -384,6 +387,8 @@ class KernelPlan:
     error_phases: tuple[str, ...] = ()
     phase_trees: Mapping[int, tuple[PhaseTreeNode, ...]] = field(default_factory=dict)
     packed: PackedKernel | None = None
+    rest_exact_request_json: Mapping[str, RestRequestJson] = field(default_factory=dict)
+    rest_array_programs: frozenset[int] = frozenset()
     _appspec_mapping: Dict[str, Dict[str, list[str]]] = field(
         default_factory=dict, init=False, repr=False, compare=False
     )

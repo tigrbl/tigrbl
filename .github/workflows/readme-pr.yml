@@ -1,0 +1,38 @@
+# Reusable CI policy is pinned to a reviewed immutable revision.
+# The checkout still tests the pull-request merge revision.
+# Update these pins when changing workflow definitions.
+name: Pull request CI
+on:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: pull-request-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  branch-coverage:
+    uses: tigrbl/tigrbl/.github/workflows/branch-coverage.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  cli-smoke:
+    uses: tigrbl/tigrbl/.github/workflows/cli-smoke.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  evidence-lanes:
+    uses: tigrbl/tigrbl/.github/workflows/evidence-lanes.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  gate-b-surface-closure:
+    uses: tigrbl/tigrbl/.github/workflows/gate-b-surface-closure.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  gate-c-conformance-security:
+    uses: tigrbl/tigrbl/.github/workflows/gate-c-conformance-security.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  gate-d-reproducibility:
+    uses: tigrbl/tigrbl/.github/workflows/gate-d-reproducibility.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  gate-e-promotion:
+    uses: tigrbl/tigrbl/.github/workflows/gate-e-promotion.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  gate-runtime-boundary:
+    uses: tigrbl/tigrbl/.github/workflows/gate-runtime-boundary.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  operator-surface:
+    uses: tigrbl/tigrbl/.github/workflows/operator-surface.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  policy-governance:
+    uses: tigrbl/tigrbl/.github/workflows/policy-governance.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  post-promotion-handoff:
+    uses: tigrbl/tigrbl/.github/workflows/post-promotion-handoff.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  release-certification-automation:
+    uses: tigrbl/tigrbl/.github/workflows/release-certification-automation.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a
+  readme-standards:
+    uses: tigrbl/tigrbl/.github/workflows/readme-standards.yml@e47a00ac5a9c27f64a99c387ec7e838f5c86586a

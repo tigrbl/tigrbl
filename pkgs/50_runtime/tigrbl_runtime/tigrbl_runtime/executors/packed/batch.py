@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+
 from ._shared import *
 from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
 
@@ -263,7 +265,9 @@ class _PackedBatchMixin:
             scope["headers"] = headers
         responses: list[dict[str, Any]] = []
 
-        for item in batch_payload:
+        parent_identity = invocation_identity(ctx.temp.get("identity", {}))
+        ctx.temp["identity"] = parent_identity
+        for item_index, item in enumerate(batch_payload):
             if not isinstance(item, Mapping):
                 responses.append(
                     _jsonrpc_error_payload(-32600, 'Invalid Request', None)
@@ -297,7 +301,17 @@ class _PackedBatchMixin:
                 async def _send(message: dict[str, Any]) -> None:
                     sent.append(dict(message))
 
-                await router_or_app(dict(scope), _receive, _send)
+                child_scope = dict(scope)
+                child_state = dict(scope.get("state") or {})
+                child_scope["state"] = child_state
+                item_identity = {
+                    key: value for key, value in parent_identity.items() if key != "attempt_id"
+                }
+                item_identity["rpc_item_index"] = item_index
+                if "id" in item:
+                    item_identity["rpc_id"] = rpc_id
+                child_state["_tigrbl_rpc_batch_item"] = item_identity
+                await router_or_app(child_scope, _receive, _send)
             except Exception as exc:
                 responses.append(
                     _jsonrpc_error_payload(-32603, 'Internal error', rpc_id, data={'detail': str(exc)})

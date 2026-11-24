@@ -14,6 +14,32 @@ class EngineSession(EngineSessionBase):
         super().__init__(spec)
         self._u = underlying
 
+    def _observe_sqlalchemy_transactions(self) -> None:
+        from sqlalchemy import event
+
+        self._observes_provider_begin = True
+
+        def begin(session, transaction, connection):
+            if transaction.parent is None:
+                self._begin_transaction_identity()
+
+        def commit(session):
+            if not session.in_nested_transaction():
+                self._end_transaction_identity("committed")
+
+        def rollback(session):
+            if not session.in_nested_transaction():
+                self._end_transaction_identity("rolled_back")
+
+        def end(session, transaction):
+            if transaction.parent is None:
+                self._end_transaction_identity("unknown")
+
+        event.listen(self._u, "after_begin", begin)
+        event.listen(self._u, "after_commit", commit)
+        event.listen(self._u, "after_rollback", rollback)
+        event.listen(self._u, "after_transaction_end", end)
+
     async def run_sync(self, fn: Callable[[Any], Any]) -> Any:
         rv = fn(self._u)
         if inspect.isawaitable(rv):

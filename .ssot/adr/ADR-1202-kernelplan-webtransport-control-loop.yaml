@@ -19,3 +19,11 @@ status_notes:
 references: []
 body: |-
   A WebTransport control lane is one session-scoped, client-initiated, long-lived bidirectional stream. KernelPlan compiles the record-read, length-prefix decode, JSON-RPC decode, operation dispatch, JSON-RPC encode, length-prefix encode, and nonterminal stream-emit loop. Completing an operation completes one application record, not the carrier stream. Runtime adapters remain raw ASGI scope, receive, and send projection only. Explicit close or session cleanup terminates the control stream and associated subscription and media sinks.
+
+  ## Draft control-record correlation extension
+
+  Under draft ADR-1207, every complete decoded JSON-RPC control record gets a fresh invocation_id before dispatch. The record inherits the WebTransport session correlation_id and the control stream’s stream_correlation_id. Preserve these IDs through dispatch and reply telemetry. Partial reads allocate no invocation, and a read delivering several complete records allocates one invocation per record.
+
+  ## Draft transport identity extension
+
+  Draft ADR-1209 governs the versioned subscription acknowledgement and logical subscription identity. Associate continuing subscriptions and their deliveries with the destination transport session or stream and preserve origin invocation attribution. Carrier cleanup uses attachment ownership and lease generation so a resumed subscription can continue on its new destination.

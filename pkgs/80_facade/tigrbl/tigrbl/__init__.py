@@ -260,11 +260,13 @@ from tigrbl_core._spec import (  # noqa: E402
     HttpJsonRpcBindingSpec,
     HttpJsonRpcProtocolBindingSpec,
     HttpRestBindingSpec,
+    RestRequestJson,
     HttpRestProtocolBindingSpec,
     HttpStreamBindingSpec,
     IOSpec,
     JsonRpcFramingSpec,
     OpSpec,
+    OperationSecurity,
     PathKind,
     PathSpec,
     PersistPolicy,
@@ -417,7 +419,12 @@ def __getattr__(name: str):
     raise AttributeError(name)
 
 
+from tigrbl_kernel.trace import Timeline  # noqa: E402
+from tigrbl_typing.trace import TraceSink  # noqa: E402
+
 __all__ = [
+    "Timeline",
+    "TraceSink",
     "specs",
     "base",
     "concrete",
@@ -478,6 +485,7 @@ __all__ = [
     "OpenIdConnect",
     "MutualTLS",
     "OpSpec",
+    "OperationSecurity",
     "TargetOp",
     "Arity",
     "PersistPolicy",
@@ -492,6 +500,7 @@ __all__ = [
     "HttpJsonRpcBindingSpec",
     "HttpJsonRpcProtocolBindingSpec",
     "HttpRestBindingSpec",
+    "RestRequestJson",
     "HttpRestProtocolBindingSpec",
     "PathKind",
     "PathSpec",

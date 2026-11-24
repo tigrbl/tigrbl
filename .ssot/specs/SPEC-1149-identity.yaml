@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1149"
+number: 1149
+slug: "identity"
+title: "Subscription identity and policy contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Resolve tenant and principal from verified authentication, issuer/security domain, and"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Requirements
+
+  Resolve tenant and principal from verified authentication, issuer/security domain, and
+  authorized membership. Aggregate user quotas across connections and IP changes; aggregate
+  tenant quotas across all members. Define principal key scope explicitly; default is
+  issuer/principal across the application namespace, with tenant counted independently.
+  Untrusted tenant/principal payload fields cannot choose keys. Deny anonymous subscriptions
+  unless a separately configured bounded policy applies; do not fabricate a shared user ID.
+
+  Combine app defaults and operation overrides into simultaneous aggregate and operation
+  budgets. Operation overrides may tighten app limits; loosening requires an explicit
+  administrative policy. A logical subscription is continuing work/sink registration, not
+  every incoming control message or transport frame. Apply to all declared carriers without
+  changing semantic operation identity. Identity resolvers are trusted app registrations;
+  TOML/env/CLI cannot introduce arbitrary executable import expressions.
+
+  ## Acceptance
+
+  Test spoofed tenant IDs, cross-tenant membership, principal/issuer collisions, IP changes,
+  multiple connections and multiplexing, anonymous policy, and independent operation limits.
+
+  Applications configure the trusted resolver and local or Redis policy through the Python app configuration.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1204"

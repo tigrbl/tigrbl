@@ -23,6 +23,7 @@ def setup_router(model_cls, get_db):
 @pytest.mark.asyncio
 async def test_op_ctx_request_response_schemas(sync_db_session):
     _, get_sync_db = sync_db_session
+    calls: list[str] = []
 
     class Widget(TableBase, GUIDPk):
         __tablename__ = "widgets"
@@ -46,7 +47,9 @@ async def test_op_ctx_request_response_schemas(sync_db_session):
         )
         def echo(cls, ctx):
             payload = ctx.get("payload") or {}
-            return {"text": str(payload.get("text"))}
+            text = str(payload.get("text"))
+            calls.append(text)
+            return {"text": text}
 
     app, router = setup_router(Widget, get_sync_db)
 
@@ -56,6 +59,7 @@ async def test_op_ctx_request_response_schemas(sync_db_session):
         res = await client.post("/widget/echo", json={"text": "123"})
     assert res.status_code == 200
     assert res.json() == {"text": "123"}
+    assert calls == ["123"]
 
 
 @pytest.mark.i9n

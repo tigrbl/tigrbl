@@ -4,6 +4,7 @@ from ...types import Atom, Ctx, GuardedCtx
 from ...stages import Planned, Guarded
 
 import inspect
+from collections.abc import Mapping
 from typing import Any, Callable
 
 from ._param_resolver import (
@@ -100,8 +101,10 @@ async def _run(dep: object | None, ctx: Any) -> Any:
     router = getattr(ctx, "router", None) or ctx_map.get("router")
 
     if req is not None and router is not None:
+        authenticator = getattr(fn, "__tigrbl_authenticator__", False)
+        dependency = getattr(fn, "__wrapped__", fn) if authenticator else fn
         try:
-            value = await invoke_dependency(router, fn, req)
+            value = await invoke_dependency(router, dependency, req)
         except HTTPException as exc:
             if (
                 getattr(fn, "__tigrbl_require_auth__", False)
@@ -118,6 +121,14 @@ async def _run(dep: object | None, ctx: Any) -> Any:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Unauthorized",
             )
+        if authenticator and value is not None:
+            ctx["auth_context"] = value
+            req.state.user = value
+            session_id = value.get("session_id") if isinstance(value, Mapping) else getattr(value, "session_id", None)
+            if isinstance(session_id, str) and session_id.strip():
+                identity = ctx.get("temp", {}).get("identity")
+                if isinstance(identity, dict):
+                    identity["session_id"] = session_id
         return value
 
     try:

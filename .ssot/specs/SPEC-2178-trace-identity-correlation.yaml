@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2178"
 number: 2178
@@ -8,18 +8,26 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines identity correlation requirements for trace, qlog, diagnostics, replay, and rollup events. Required ids are event-kind specific but must include trace_id and enough semantic and concrete parentage to locate the owner and instance; examples include attempt_id, op_id, table_id, router_id, app_id, runtime_plan_id, atom_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, replay_id, and original_attempt_id where applicable. Valid scenario: an atom execution trace records trace_id, atom_id, attempt_id, and runtime_plan_id, while replay records preserve replay_id and original_attempt_id. Invalid scenario: diagnostics report only a handler qualname, a trace event lacks parent attempt/session identity, or qlog cannot distinguish original execution from replay. Invariants: trace and qlog records preserve enough identity for drillback, missing required ids fail closed or emit declared contract violations, and correlation ids do not cross session or engine-session scopes without explicit parentage."
+summary: "Trace, qlog, diagnostics, replay, and rollup events preserve trace context and the semantic and concrete identities required for their event kind. For operations, carry correlation_id and invocation_id where assigned. Keep span_id and trace_id distinct from correlation and invocation identity. Trace an atom with atom_id, attempt_id, and runtime_plan_id. Preserve replay_id and original_attempt_id on replay records."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define required identity fields for trace and qlog-related events."
     at: "2026-06-04T12:48:32Z"
+    note: "Created to define required identity fields for trace and qlog-related events."
+    status: "draft"
 references: []
 body: |-
-  Defines identity correlation requirements for trace, qlog, diagnostics, replay, and rollup events. Required ids are event-kind specific but must include trace_id and enough semantic and concrete parentage to locate the owner and instance; examples include attempt_id, op_id, table_id, router_id, app_id, runtime_plan_id, atom_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, replay_id, and original_attempt_id where applicable. Valid scenario: an atom execution trace records trace_id, atom_id, attempt_id, and runtime_plan_id, while replay records preserve replay_id and original_attempt_id. Invalid scenario: diagnostics report only a handler qualname, a trace event lacks parent attempt/session identity, or qlog cannot distinguish original execution from replay. Invariants: trace and qlog records preserve enough identity for drillback, missing required ids fail closed or emit declared contract violations, and correlation ids do not cross session or engine-session scopes without explicit parentage.
+  Trace, qlog, diagnostics, replay, and rollup events preserve trace context and the semantic and concrete identities required for their event kind. For operations, carry correlation_id and invocation_id where assigned. Keep span_id and trace_id distinct from correlation and invocation identity. Trace an atom with atom_id, attempt_id, and runtime_plan_id. Preserve replay_id and original_attempt_id on replay records.
+  
+  HTTP ingress and egress preserve the HTTP request correlation_id, including errors. WebSocket operation records preserve the socket transport_session_id and the logical request correlation_id. Each decoded application message has an invocation_id. Supported JSON-RPC batches preserve one document invocation ID, the call index, and rpc_id where present. Notifications retain invocation identity.
+  
+  WebTransport records include transport_session_id and the accepted session’s correlation_id. Stream records include stream_id and stream_correlation_id. Datagram records preserve applicable datagram_id without stream fields. Keep those grouping fields stable across invocation traces. Transaction lifecycle records carry engine_session_id and transaction_id, and participant links retain attribution to each invocation or attempt. Shared transactions can link to multiple invocation traces.
+  
+  Verify HTTP error propagation, WebSocket per-request isolation, WT aggregation and stream drillback, distinct invocations for complete records, and shared transaction attribution. Missing required identity follows the declared trace contract violation policy.
 spec_kind: "normative"
 adr_ids:
   - "adr:1142"
   - "adr:1143"
+  - "adr:1207"
+  - "adr:1208"

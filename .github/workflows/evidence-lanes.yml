@@ -1,13 +1,14 @@
 name: Evidence Lanes
 
 on:
+  workflow_call:
   push:
-  pull_request:
+    branches: [master, main, "release/**"]
   workflow_dispatch:
 
 jobs:
   evidence-lane:
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     strategy:
       fail-fast: false
       matrix:

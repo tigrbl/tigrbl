@@ -9,6 +9,7 @@ from tigrbl_core._spec.engine_spec import EngineCfg
 from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_core._spec.hook_types import StepFn
 from tigrbl_core._spec.op_spec import Arity, PersistPolicy, TargetOp, TxScope
+from tigrbl_core._spec.operation_security import OperationSecurity
 from tigrbl_core._spec.response_spec import ResponseSpec
 from tigrbl_core._spec.schema_spec import SchemaArg
 
@@ -45,6 +46,7 @@ def makeOp(
     extra: Mapping[str, Any] | None = None,
     deps: Sequence[StepFn | str] = (),
     security_deps: Sequence[StepFn | str] = (),
+    security: OperationSecurity | None = None,
 ) -> Op:
     """Make one explicit, typed concrete operation descriptor."""
 
@@ -87,6 +89,7 @@ def makeOp(
         extra=dict(extra or {}),
         deps=tuple(deps),
         security_deps=tuple(security_deps),
+        security=security,
     )
 
 

@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+import json
+from uuid import uuid4
+
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+
 from collections.abc import Iterable, Mapping
 from typing import Any
 
@@ -7,6 +12,7 @@ from tigrbl_atoms.atoms.framing import websocket_jsonrpc as _jsonrpc_framing
 from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
 from tigrbl_typing.status.converters import http_exc_to_rpc
 from tigrbl_typing.status.exceptions import HTTPException
+from tigrbl_typing.trace import emit_trace
 
 ANCHORS: tuple[str, ...] = (
     "transport.accept",
@@ -324,13 +330,28 @@ def _session_rpc_context(
     payload: Mapping[str, Any],
     request_id: Any,
     session_ctx: Any,
+    message_identity: Mapping[str, Any] | None = None,
+    item_index: int | None = None,
 ) -> dict[str, Any]:
     rpc_ctx: dict[str, Any] = {
         "jsonrpc": dict(payload),
         "jsonrpc_request_id": request_id,
     }
+    if message_identity is not None:
+        identity = dict(message_identity)
+        if "id" in payload:
+            identity["rpc_id"] = request_id
+        if item_index is not None:
+            identity.pop("attempt_id", None)
+            identity = invocation_identity(identity)
+            identity["rpc_item_index"] = item_index
+        rpc_ctx["identity"] = identity
+        rpc_ctx["correlation_id"] = identity["correlation_id"]
     if session_ctx is None:
         return rpc_ctx
+    request = _ctx_get(session_ctx, "request")
+    if request is not None:
+        rpc_ctx["request"] = request
     temp = _ctx_get(session_ctx, "temp", {})
     if isinstance(temp, Mapping):
         realtime = temp.get("realtime")
@@ -360,7 +381,7 @@ async def _cleanup_realtime_session(ctx: Any) -> None:
         return
     broker = realtime.get("broker")
     session_id = realtime.get("session_id")
-    unregister = getattr(broker, "unsubscribe_session", None)
+    unregister = getattr(broker, "disconnect_session", None) or getattr(broker, "unsubscribe_session", None)
     if callable(unregister) and session_id is not None:
         await _maybe_await(unregister(str(session_id)))
 
@@ -396,6 +417,8 @@ async def _dispatch_jsonrpc_payload(
     payload: Any,
     *,
     session_ctx: Any = None,
+    message_identity: Mapping[str, Any] | None = None,
+    item_index: int | None = None,
 ) -> Any:
     if not isinstance(payload, Mapping) or payload.get("jsonrpc") != "2.0":
         return _jsonrpc_error(-32600, "Invalid Request", None)
@@ -416,12 +439,38 @@ async def _dispatch_jsonrpc_payload(
     if not callable(rpc_call):
         return _jsonrpc_error(-32603, "Internal error", request_id)
     kwargs: dict[str, Any] = {
-        "ctx": _session_rpc_context(payload, request_id, session_ctx)
+        "ctx": _session_rpc_context(payload, request_id, session_ctx, message_identity, item_index)
     }
+    for spec in getattr(getattr(model, "ops", None), "all", ()) or ():
+        if getattr(spec, "alias", None) != alias:
+            continue
+        channel = _ctx_get(session_ctx, "channel")
+        for binding in _op_bindings(spec):
+            if _binding_proto(binding) not in {"ws", "wss", "websocket"}:
+                continue
+            if _binding_path(binding) != getattr(channel, "path", None):
+                continue
+            realtime = dict(kwargs["ctx"].get("realtime", {}))
+            realtime["subscription_ack_version"] = getattr(binding, "subscription_ack_version", 1)
+            kwargs["ctx"]["realtime"] = realtime
+            break
     if _op_tx_scope(model, alias) == "none":
         kwargs["db"] = {}
     try:
         result = await rpc_call(model, alias, params, **kwargs)
+        # Packed operation dispatch can return the encoded HTTP-style transport
+        # response. Unwrap that response before serializing the WebSocket reply.
+        if (
+            isinstance(result, Mapping)
+            and isinstance(result.get("body"), bytes)
+            and isinstance(result.get("status_code"), int)
+            and "body_iterator" in result and "path" in result
+            and result["body_iterator"] is None and result["path"] is None
+        ):
+            body = json.loads(result["body"]) if result["body"] else None
+            if result["status_code"] >= 400:
+                raise HTTPException(status_code=result["status_code"], detail=body)
+            result = body
     except AttributeError:
         return _jsonrpc_error(-32601, "Method not found", request_id)
     except HTTPException as exc:
@@ -434,6 +483,12 @@ async def _dispatch_jsonrpc_payload(
             request_id,
             data={"detail": str(exc)},
         )
+    finally:
+        app = _ctx_get(session_ctx, "app")
+        sink = getattr(router, "trace_sink", None) or getattr(app, "trace_sink", None)
+        identity = kwargs["ctx"].get("identity")
+        if sink is not None and identity:
+            emit_trace(sink, "Invocation", "WebSocket", identity)
     if "id" not in payload:
         return None
     return _jsonrpc_result(result, request_id)
@@ -445,18 +500,25 @@ async def _dispatch_jsonrpc_decoded(
     *,
     session_ctx: Any = None,
 ) -> Any:
+    state = _ctx_get(session_ctx, "temp", {})
+    carrier = state.get("identity", {}) if isinstance(state, Mapping) else {}
+    message_identity = invocation_identity(carrier, websocket=True)
     if isinstance(payload, list):
         responses = []
-        for item in payload:
+        for item_index, item in enumerate(payload):
             response = await _dispatch_jsonrpc_payload(
                 router,
                 item,
                 session_ctx=session_ctx,
+                message_identity=message_identity,
+                item_index=item_index,
             )
             if response is not None:
                 responses.append(response)
         return responses or None
-    return await _dispatch_jsonrpc_payload(router, payload, session_ctx=session_ctx)
+    return await _dispatch_jsonrpc_payload(
+        router, payload, session_ctx=session_ctx, message_identity=message_identity
+    )
 
 
 def build_websocket_jsonrpc_session_handler(
@@ -477,7 +539,10 @@ def build_websocket_jsonrpc_session_handler(
         if isinstance(temp, dict):
             ws_state = temp.setdefault("websocket", {})
             realtime_state = temp.setdefault("realtime", {})
-            session_id = ws_state.setdefault("session_id", f"ws:{id(ctx)}")
+            carrier = temp.get("identity", {})
+            session_id = ws_state.setdefault(
+                "session_id", carrier.get("transport_session_id") or uuid4().hex,
+            )
             realtime_state.setdefault("session_id", session_id)
             realtime_state.setdefault("sink", ctx.get("channel"))
             if realtime_broker is not None:

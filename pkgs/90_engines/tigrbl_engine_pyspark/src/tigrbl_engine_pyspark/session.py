@@ -18,6 +18,8 @@ class PySparkSession(EngineSessionBase):
     def __getattr__(self, name: str) -> Any:
         return getattr(self.spark, name)
 
+    _has_transaction_boundary = False
+
     async def _tx_begin_impl(self) -> None:
         return
 

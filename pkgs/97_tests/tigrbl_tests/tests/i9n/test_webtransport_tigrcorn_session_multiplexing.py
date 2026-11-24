@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -32,7 +33,10 @@ def _install_adjacent_tigrcorn_sources() -> None:
     pytest.skip("adjacent tigrcorn checkout is required for this bridge test", allow_module_level=True)
 
 
-_install_adjacent_tigrcorn_sources()
+from importlib.util import find_spec
+
+if find_spec("tigrcorn_contract") is None:
+    _install_adjacent_tigrcorn_sources()
 
 from tigrcorn_contract import (  # noqa: E402
     project_receive_event,
@@ -107,7 +111,7 @@ async def _run_contract_session(
     async def receive() -> dict[str, Any]:
         if pending:
             return pending.pop(0)
-        return {"type": "webtransport.disconnect", "session_id": "session-1", "code": 0}
+        return {"type": "webtransport.disconnect", "session_id": scope.get("session_id", "session-1"), "code": 0}
 
     async def send(message: dict[str, Any]) -> None:
         sent.append(message)
@@ -513,7 +517,6 @@ async def test_webtransport_runtime_state_isolation_sequential_concurrent() -> N
                 stream_direction="bidi",
                 framing="text",
             ),
-            {"type": "webtransport.disconnect", "session_id": session_id, "code": 1000},
         ]
         await _run_contract_session(app, scope, events)
         return scope
@@ -675,3 +678,128 @@ async def test_webtransport_runtime_does_not_reuse_session_registry_between_scop
     assert "bidi-a" in state_a["session"].streams
     assert "bidi-a" not in state_b["session"].streams
     assert state_a["trace"] is not state_b["trace"]
+
+
+@pytest.mark.asyncio
+async def test_webtransport_canonical_scope_correlation_isolates_two_sessions() -> None:
+    app = _app("/transport/multiplex")
+
+    async def run(session_id: str, carrier_stream: str):
+        scope = _scope("/transport/multiplex")
+        scope["session_id"] = session_id
+        scope["extensions"] = {"tigr.transport_identity": {
+            "version": 1, "connection_id": "quic-parent",
+            "transport_session_id": session_id, "http_stream_id": carrier_stream,
+        }}
+        await _run_contract_session(app, scope, [
+            webtransport_connect(session_id),
+            webtransport_stream_receive(
+                session_id, "bidi-1", b"alpha", stream_direction="bidi", framing="text"
+            ),
+            webtransport_datagram_receive(session_id, "datagram", b"data", framing="text"),
+            {"type": "webtransport.disconnect", "session_id": session_id, "code": 1000},
+        ])
+        return _wt_state(scope)["trace"]
+
+    left, right = await asyncio.gather(run("wt-1", "0"), run("wt-2", "4"))
+    for session_id, trace in (("wt-1", left), ("wt-2", right)):
+        inbound = [row for row in trace if row["phase"] == "ctx.channel_message"]
+        assert {row["connection_id"] for row in inbound} == {"quic-parent"}
+        assert {row["transport_session_id"] for row in inbound} == {session_id}
+        assert len({row["correlation_id"] for row in inbound}) == 1
+        streams = [row for row in inbound if row["type"] == "webtransport.stream.receive"]
+        assert len(streams) == 1, inbound
+        stream = streams[0]
+        datagram, = [row for row in inbound if row["type"] == "webtransport.datagram.receive"]
+        assert stream["stream_correlation_id"]
+        assert "stream_correlation_id" not in datagram
+        outbound_streams = [row for row in trace if row["type"] == "webtransport.stream.send"]
+        assert outbound_streams and all(row["stream_correlation_id"] for row in outbound_streams)
+        echo = next(row for row in outbound_streams if row["stream_id"] == stream["stream_id"])
+        assert echo["stream_correlation_id"] == stream["stream_correlation_id"]
+    assert left[0]["correlation_id"] != right[0]["correlation_id"]
+
+
+@pytest.mark.asyncio
+async def test_live_tigrcorn_webtransport_identity_drillback(tmp_path) -> None:
+    fixture_root = os.environ.get("TIGRCORN_SOURCE_ROOT")
+    if not fixture_root:
+        pytest.skip("set TIGRCORN_SOURCE_ROOT to the Tigrcorn checkout to run the QUIC bridge")
+
+    from importlib.util import module_from_spec, spec_from_file_location
+    from tigr_asgi_contract import validate_transport_identity
+    from tigrcorn.config.load import build_config
+    from tigrcorn.server.runner import TigrCornServer
+    from tigrcorn.transports.quic.handshake import generate_self_signed_certificate
+
+    fixture = Path(fixture_root) / "tests/fixtures_third_party/wt_stream_client.py"
+    spec = spec_from_file_location("tigrcorn_shared_wt_probe", fixture)
+    assert spec is not None and spec.loader is not None
+    client = module_from_spec(spec)
+    sys.modules[spec.name] = client
+    spec.loader.exec_module(client)
+
+    app = TigrblApp(title="Live transport identity drillback")
+
+    async def echo(ctx):
+        return "ack"
+
+    app.add_route(
+        "/wt", echo, methods=("POST",),
+        tigrbl_binding=WebTransportBindingSpec(
+            proto="webtransport", path="/wt", profile="bidi_stream",
+            inner_framing=TextFramingSpec(),
+        ),
+        tigrbl_exchange="bidirectional_stream",
+    )
+    completed = asyncio.Event()
+    scopes = {}
+
+    async def capture(scope, receive, send):
+        advertised = scope["extensions"]["tigr.transport_identity"]
+        identity = validate_transport_identity("webtransport", advertised, scope["session_id"])
+        scopes[identity.transport_session_id] = scope
+
+        async def verified_receive():
+            event = await receive()
+            validate_transport_identity("webtransport", advertised, scope["session_id"], event)
+            if event["type"] == "webtransport.datagram.receive":
+                if sum("received_datagram" in item for item in scopes.values()) == 1:
+                    completed.set()
+                scope["received_datagram"] = True
+            return event
+
+        await app(scope, verified_receive, send)
+
+    cert, key = generate_self_signed_certificate("server.example")
+    certfile, keyfile = tmp_path / "cert.pem", tmp_path / "key.pem"
+    certfile.write_bytes(cert)
+    keyfile.write_bytes(key)
+    server = TigrCornServer(capture, build_config(
+        transport="udp", host="127.0.0.1", port=0, lifespan="off",
+        http_versions=["3"], protocols=["webtransport"],
+        ssl_certfile=str(certfile), ssl_keyfile=str(keyfile),
+        webtransport_path="/wt", webtransport_origins=["https://localhost:8088"],
+        webtransport_max_sessions=2,
+    ))
+    await server.start()
+    try:
+        port = server._listeners[0].transport.get_extra_info("sockname")[1]
+        result = await client.probe_wt_stream(
+            "127.0.0.1", port, trusted_certificates=[cert], second_session=True,
+            payload=b"first-stream", datagram_payload=b"first-datagram", close_connection=False,
+            wait_for_datagram_response=False,
+        )
+        await asyncio.wait_for(completed.wait(), 3)
+        assert result.status == 200
+        assert len(scopes) == 2
+        identities = [scope["state"]["_tigrbl_transport_identity"] for scope in scopes.values()]
+        assert len({row["connection_id"] for row in identities}) == 1
+        assert len({row["correlation_id"] for row in identities}) == 2
+        for scope, identity in zip(scopes.values(), identities):
+            rows = [row for row in _wt_state(scope)["trace"] if row["phase"] == "ctx.channel_message"]
+            assert {row["correlation_id"] for row in rows} == {identity["correlation_id"]}
+            assert any(row.get("stream_correlation_id") for row in rows)
+            assert any(row.get("datagram_id") and "stream_correlation_id" not in row for row in rows)
+    finally:
+        await server.close()

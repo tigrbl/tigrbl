@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_atoms.atoms.dispatch.binding_parse import (
+    parse_rest_request_json,
+    rest_request_json_policy,
+)
+
 from ._shared import *
 
 
@@ -136,13 +141,33 @@ class _PackedInputExtractMixin:
             hot.path_params = hot.route_path_params
         request = self._ensure_hot_request(ctx, hot)
         hot.transport_kind_id = self._active_transport_kind(hot, hot.transport_kind_id)
+        plan = getattr(ctx, "kernel_plan", None)
+        policy = None
+        if hot.transport_kind_id == _TRANSPORT_KIND_REST:
+            if packed.rest_exact_route_to_program.get((hot.method, hot.path)) == program_id:
+                policy = getattr(plan, "rest_exact_request_json", {}).get(
+                    hot.dispatch_binding_selector
+                )
+            else:
+                policy = rest_request_json_policy(
+                    plan, hot.dispatch_binding_protocol, hot.dispatch_binding_selector
+                )
+        if policy is not None:
+            body_bytes = await self._ensure_body_bytes(ctx, hot)
+            if ctx.temp.get("hot", {}).get("strict_json_policy") != policy:
+                hot.parsed_json = parse_rest_request_json(
+                    body_bytes, hot.content_type, policy
+                )
+                hot.parsed_json_loaded = True
+            if param_shape_id < 0 and isinstance(hot.parsed_json, dict):
+                hot.route_payload = hot.parsed_json
         if param_shape_id < 0:
             method = str(hot.method or "").upper()
-            if method not in {"GET", "HEAD", "OPTIONS"}:
+            if policy is not None or method not in {"GET", "HEAD", "OPTIONS"}:
                 body_bytes = await self._ensure_body_bytes(ctx, hot)
                 if request is not None and body_bytes is not None and hasattr(request, "body"):
                     request.body = body_bytes
-                if body_bytes and "json" in hot.content_type:
+                if policy is None and body_bytes and "json" in hot.content_type:
                     try:
                         parsed = json.loads(body_bytes)
                     except Exception:

@@ -5,7 +5,11 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
-from tigrbl_core._spec.binding_spec import HttpRestBindingSpec, TransportBindingSpec
+from tigrbl_core._spec.binding_spec import (
+    HttpRestBindingSpec,
+    RestRequestJson,
+    TransportBindingSpec,
+)
 
 from .op import op_ctx
 
@@ -30,12 +34,19 @@ def _merge_bindings(
     return (binding, bindings)
 
 
-def _rest_ctx(path: str, *, method: str, **kwargs: Any):
+def _rest_ctx(
+    path: str,
+    *,
+    method: str,
+    request_json: RestRequestJson | dict[str, Any] | None = None,
+    **kwargs: Any,
+):
     existing_bindings = kwargs.pop("bindings", None)
     binding = HttpRestBindingSpec(
         proto="http.rest",
         path=_normalize_path(path),
         methods=(str(method).upper(),),
+        request_json=request_json,
     )
     return op_ctx(bindings=_merge_bindings(binding, existing_bindings), **kwargs)
 

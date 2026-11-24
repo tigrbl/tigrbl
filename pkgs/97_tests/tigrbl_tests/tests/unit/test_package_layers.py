@@ -96,3 +96,30 @@ def test_workspace_dependencies_follow_layer_direction_or_declared_exception() -
 
     assert not dependencies & exceptions
     assert dependencies | exceptions == set(_internal_dependency_edges(_package_roots()))
+
+
+def test_numba_route_dispatch_is_an_install_extra() -> None:
+    package_roots = _package_roots()
+    runtime = tomllib.loads(
+        (package_roots["tigrbl_runtime"] / "pyproject.toml").read_text(encoding="utf-8")
+    )["project"]
+    facade = tomllib.loads(
+        (package_roots["tigrbl"] / "pyproject.toml").read_text(encoding="utf-8")
+    )["project"]
+
+    for package in (runtime, facade):
+        default_names = {
+            _normalize_distribution_name(
+                re.split(r"[<>=!~;\[]", entry, maxsplit=1)[0].strip()
+            )
+            for entry in package["dependencies"]
+        }
+        assert default_names.isdisjoint({"numba", "llvmlite", "numpy"})
+    assert any(
+        entry.startswith("numba>=")
+        for entry in runtime["optional-dependencies"]["numba"]
+    )
+    assert any(
+        entry.startswith("tigrbl-runtime[numba]>=")
+        for entry in facade["optional-dependencies"]["numba"]
+    )

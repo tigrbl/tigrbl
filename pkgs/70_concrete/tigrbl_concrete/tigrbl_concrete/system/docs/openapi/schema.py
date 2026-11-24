@@ -211,8 +211,11 @@ def openapi(
                 sp_list = specs.get(alias) or ()
                 if sp_list:
                     surface_spec = sp_list[0]
+                    resolve_security = getattr(router, "_tigrbl_security_dependencies", None)
                     security_deps.extend(
-                        list(getattr(sp_list[0], "security_deps", ()) or ())
+                        resolve_security(model, surface_spec)
+                        if resolve_security
+                        else getattr(surface_spec, "security_deps", ()) or ()
                     )
 
             for dep in tuple(getattr(route, "dependencies", ()) or ()):

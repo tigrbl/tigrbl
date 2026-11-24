@@ -4,9 +4,119 @@ from __future__ import annotations
 import datetime as _dt
 import random
 import time
+from collections import deque
 from contextlib import contextmanager
 from dataclasses import dataclass, field
+from threading import Lock
 from typing import Any, Dict, Mapping, MutableMapping, Optional, Sequence, Tuple
+
+from tigrbl_typing.trace import TraceSink, emit_trace, trace_fields, transport_name
+
+from .identity_rollup import rollup_identity_records
+
+
+class Timeline:
+    """Bounded, in-process trace sink suitable for a local diagnostics view."""
+
+    def __init__(self, *, max_events: int = 750) -> None:
+        if max_events <= 0:
+            raise ValueError("max_events must be positive")
+        self._rows: deque[dict[str, Any]] = deque(maxlen=max_events)
+        self.revision = 0
+        self._lock = Lock()
+
+    def add(self, kind: str, transport: str, fields: Mapping[str, Any]) -> None:
+        identity = trace_fields(fields)
+        with self._lock:
+            self.revision += 1
+            self._rows.append(
+                {
+                    "sequence": self.revision,
+                    "at": _iso_now(),
+                    "kind": kind,
+                    "transport": transport,
+                    **identity,
+                }
+            )
+
+    def data(self) -> dict[str, Any]:
+        with self._lock:
+            rows = [dict(row) for row in self._rows]
+            revision = self.revision
+        return {
+            "revision": revision,
+            "events": rows,
+            "rollup": rollup_identity_records(rows),
+        }
+
+
+def transaction_history(session: Any) -> tuple[dict[str, Any], ...] | None:
+    events = getattr(session, "transaction_events", None)
+    if not callable(events):
+        return None
+    try:
+        return tuple(dict(event) for event in events())
+    except Exception:
+        return None
+
+
+def record_execution(
+    sink: TraceSink,
+    scope: Mapping[str, Any],
+    ctx: Any,
+    *,
+    jsonrpc: bool,
+    owned_session: Any = None,
+) -> None:
+    """Project the final context of a compiled invocation into identity events."""
+    temp = _ensure_temp(ctx)
+    scope_type = scope.get("type", "")
+    transport = transport_name(scope_type)
+    if scope_type == "http":
+        transport = "JSON-RPC" if jsonrpc else "REST"
+    identity = temp.get("identity") or {}
+    details = {**identity, "path": scope.get("path")}
+    selection = temp.get("webtransport_selection")
+    if selection is not None:
+        details["outcome"] = selection.disposition
+    if identity.get("invocation_id"):
+        emit_trace(sink, "Invocation", transport, details)
+
+    transactions = temp.get("transaction_events") or ()
+    participants = temp.get("transaction_participation") or ()
+    baseline = temp.get("_trace_transaction_baseline")
+    if not transactions and baseline is not None:
+        # The fast runner can close an owned session before populating the
+        # snapshot. Exclude history that predates that session's acquisition.
+        transactions = tuple(
+            event
+            for event in transaction_history(owned_session) or ()
+            if event not in baseline
+        )
+    if not participants and identity.get("invocation_id"):
+        participants = (
+            {"engine_session_id": engine_id, "transaction_id": transaction_id}
+            for engine_id, transaction_id in dict.fromkeys(
+                (event["engine_session_id"], event["transaction_id"])
+                for event in transactions
+            )
+        )
+    for event in transactions:
+        emit_trace(sink, "Transaction", transport, {**details, **event})
+    for participant in participants:
+        emit_trace(
+            sink, "Transaction participant", transport, {**details, **participant}
+        )
+
+    if scope_type == "webtransport":
+        state = scope.get("state", {}).get("tigrbl_webtransport", {})
+        events = state.get("trace", ())
+        for event in events[state.get("_trace_sink_cursor", 0) :]:
+            emit_trace(
+                sink, event["type"], transport, {**event, "path": scope.get("path")}
+            )
+        state["_trace_sink_cursor"] = len(events)
+
 
 # Public status constants
 OK = "ok"
@@ -137,10 +247,12 @@ def event(ctx: Any, name: str, **kv: Any) -> None:
     st = _get_state(ctx)
     if not _active(st) or len(st.events) >= _MAX_EVENTS:
         return
+    identity = _ensure_temp(ctx).get("identity")
     st.events.append(
         {
             "ts": _iso_now(),
             "name": str(name),
+            **(_safe_kv(identity) if isinstance(identity, dict) else {}),
             **_safe_kv(kv),
         }
     )
@@ -200,6 +312,11 @@ def snapshot(ctx: Any) -> Dict[str, Any]:
         "plan": st.plan_labels,
         "steps": tuple(st.steps),  # immutable copy for consumers
         "events": tuple(st.events),
+        "identity": _safe_kv(_ensure_temp(ctx).get("identity") or {}),
+        "transaction_participation": tuple(
+            _ensure_temp(ctx).get("transaction_participation") or ()
+        ),
+        "transactions": tuple(_ensure_temp(ctx).get("transaction_events") or ()),
     }
 
 

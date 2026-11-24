@@ -55,6 +55,8 @@ class BigQuerySession(EngineSessionBase):
         job = self.client.query(sql, job_config=job_config)
         return job.result()
 
+    _has_transaction_boundary = False
+
     async def _tx_begin_impl(self) -> None:
         return
 

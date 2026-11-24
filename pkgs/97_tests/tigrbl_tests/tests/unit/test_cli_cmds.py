@@ -69,6 +69,20 @@ def test_routes_command_smoke_lists_http_websocket_and_docs_routes() -> None:
     assert "/rpc-ui" in result.stdout
 
 
+def test_routes_command_loads_app_target_from_path_with_spaces(
+    tmp_path: Path,
+) -> None:
+    app_dir = tmp_path / "dir with spaces"
+    app_dir.mkdir()
+    app_file = app_dir / FIXTURE.name
+    app_file.write_text(FIXTURE.read_text(encoding="utf-8"), encoding="utf-8")
+
+    result = _run_cli("routes", f"{app_file}:app")
+
+    assert result.returncode == 0, result.stderr
+    assert "/ping" in result.stdout
+
+
 def test_openapi_command_smoke_outputs_openapi_document() -> None:
     result = _run_cli("openapi", TARGET)
     assert result.returncode == 0, result.stderr

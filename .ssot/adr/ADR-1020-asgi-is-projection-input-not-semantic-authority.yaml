@@ -15,3 +15,7 @@ status_notes: []
 references: []
 body: |-
   Decision: Tigrbl shall treat ASGI scope, receive, and send messages as projection inputs into canonical runtime events, metadata, and identities. ASGI message shapes may inform projection but must not bypass kernel taxonomy, runtime lifecycle rules, operation identity, or transport delivery contracts. Valid scenarios include projecting websocket.receive to message.received, HTTP request body frames to request or stream events by binding kind, and server metadata to allowlisted normalized runtime metadata. Invalid scenarios include unknown ASGI messages becoming semantic runtime events without a rule, server-specific extension fields becoming canonical state by accident, or ASGI carrier details implying delivery guarantees not declared by Tigrbl.
+
+  ## Draft transport identity extension
+
+  Use the versioned transport identity extension governed by tigr-asgi-contract ADR-1048 as an allowlisted projection input. Normalize existing Tigrcorn fields at ingress during migration. When server metadata is absent, Tigrbl can allocate request or local carrier identities for its own lifecycle and leave server connection identity unset. Transport metadata conveys no application authorization, and the KernelPlan still governs operation semantics.

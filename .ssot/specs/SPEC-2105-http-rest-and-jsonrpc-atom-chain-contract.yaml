@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2105"
 number: 2105
@@ -25,8 +25,15 @@ body: |-
   ## Traceability
   
   ADRs: adr:1006, adr:1091, adr:1092, adr:1100.
+  
+  ## Draft correlation and invocation extension
+  
+  Apply SPEC-2208 at HTTP ingress before parsing or routing so an early failure can be attributed to the request. Use a validated X-Correlation-ID from a trusted upstream when available and generate a value otherwise. Return the resolved X-Correlation-ID on success and error, including when the HTTP exchange has no JSON-RPC response document.
+  
+  Assign invocation_id at REST operation dispatch or after decoding a complete HTTP JSON-RPC document. A supported batch shares the request correlation ID and document invocation ID. Index each dispatched batch item by its zero-based document position and preserve the caller’s JSON-RPC id separately as rpc_id when present. A JSON-RPC notification has an invocation ID and retains its no-response behavior.
 spec_kind: "normative"
 adr_ids:
   - "adr:1006"
   - "adr:1091"
   - "adr:1092"
+  - "adr:1207"

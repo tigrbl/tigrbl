@@ -19,3 +19,10 @@ def test_process_response_plain_text_returns_raw_text():
     request = httpx.Request("GET", "http://example.com/text")
     response = httpx.Response(200, text="plain text", request=request)
     assert client._process_response(response) == "plain text"
+
+
+def test_process_response_204_with_status_code_returns_none_and_status():
+    client = DummyClient()
+    request = httpx.Request("DELETE", "http://example.com/items/1")
+    response = httpx.Response(204, request=request)
+    assert client._process_response(response, status_code=True) == (None, 204)

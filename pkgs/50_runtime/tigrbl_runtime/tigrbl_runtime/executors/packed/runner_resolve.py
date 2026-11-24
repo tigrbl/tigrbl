@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+
 from ._shared import *
 
 
@@ -228,12 +230,22 @@ class _PackedRunnerResolveMixin:
                         first_message = None
                     else:
                         first_message = initial
+            carrier_identity = temp.get("identity", {})
+
+            def recognize_message(message: Any) -> Any:
+                if isinstance(message, Mapping) and message.get("type") == "websocket.receive":
+                    temp["identity"] = invocation_identity(carrier_identity, websocket=True)
+                return message
+
+            async def receive_message() -> Any:
+                return recognize_message(await receive())
+
             websocket = _DirectWebSocketUnary(
-                receive=receive,
+                receive=receive_message if callable(receive) else None,
                 send=send,
                 path=hot.path,
                 path_params=hot.route_path_params or hot.path_params,
-                buffered_message=first_message,
+                buffered_message=recognize_message(first_message),
             )
             ctx.phase = "HANDLER"
             await websocket.accept()
