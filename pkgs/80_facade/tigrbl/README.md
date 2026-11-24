@@ -160,6 +160,16 @@ python -m tigrbl --help
 
 ### Configuration
 
+Declare protected actions with `OperationSecurity` and bind their decision with
+`app.set_auth(operation_authorizer=authorize)` or the router equivalent.
+The callback receives the compiled declaration and operation context in
+`SECURITY` and must explicitly return `True` to admit the operation.
+Tigrbl then runs `DEPENDENCIES` and application `PRE_TX_BEGIN` hooks.
+
+When migrating from `set_operation_authorizer()`, update the callback for
+pre-transaction execution. Keep resource checks that require the operation
+transaction with the protected write, or enforce the condition in the write.
+
 Configure `tigrbl` through the APIs in [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/80_facade/tigrbl/tigrbl/__init__.py); its [manifest](https://github.com/tigrbl/tigrbl/blob/master/pkgs/80_facade/tigrbl/pyproject.toml) describes installation requirements, not an implicit service configuration. No additional package-global configuration contract is inferred from dependencies.
 
 ### Error Handling

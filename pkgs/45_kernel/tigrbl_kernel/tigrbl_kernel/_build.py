@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Mapping
 from tigrbl_atoms import StepFn
 from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
 from tigrbl_atoms.phases import phase_info
-from tigrbl_atoms.types import EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
+from tigrbl_atoms.types import PHASE_SEQUENCE, EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
 from tigrbl_core.config.resolver import resolve_cfg
 from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
 
@@ -21,7 +21,7 @@ from . import events as _ev
 from .atoms import (
     _hook_phase_chains,
     _inject_atoms,
-    _inject_pre_tx_dep_atoms,
+    _inject_dependency_atoms,
     _is_persistent,
     _wrap_atom,
 )
@@ -50,22 +50,7 @@ logger = logging.getLogger(__name__)
 
 
 _PHASE_DB_LABEL = "atom:sys:phase_db@SYS_PHASE_DB_BIND"
-_RUNTIME_EXECUTION_ORDER = (
-    "INGRESS_BEGIN",
-    "INGRESS_PARSE",
-    "INGRESS_DISPATCH",
-    "PRE_TX_BEGIN",
-    "START_TX",
-    "PRE_HANDLER",
-    "HANDLER",
-    "POST_HANDLER",
-    "PRE_COMMIT",
-    "TX_COMMIT",
-    "POST_COMMIT",
-    "POST_RESPONSE",
-    "EGRESS_SHAPE",
-    "EGRESS_FINALIZE",
-)
+_RUNTIME_EXECUTION_ORDER = PHASE_SEQUENCE
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
 _HOT_RUNNER_COMPILED_PARAM = 2
@@ -269,7 +254,12 @@ def _batch_policy_for_meta(meta: Any) -> BatchOpPlan:
 
 
 def _build_op(
-    self, model: type, alias: str, *, security_dependencies: tuple[Any, ...] | None = None
+    self,
+    model: type,
+    alias: str,
+    *,
+    security_dependencies: tuple[Any, ...] | None = None,
+    operation_authorizer: Any = None,
 ) -> Dict[str, List[StepFn]]:
     from .core import DEFAULT_PHASE_ORDER
 
@@ -277,7 +267,7 @@ def _build_op(
         cache = self._phase_chains.setdefault(model, {})
     except TypeError:
         cache = self._phase_chains_by_id.setdefault(id(model), {})
-    stamp = (*_phase_stamp(self, model, alias), security_dependencies)
+    stamp = (*_phase_stamp(self, model, alias), security_dependencies, operation_authorizer)
     cached = cache.get(alias)
     if cached is not None and cached[0] == stamp:
         return cached[1]
@@ -318,11 +308,14 @@ def _build_op(
             alias,
         )
 
-    _inject_pre_tx_dep_atoms(chains, sp, security_dependencies)
+    _inject_dependency_atoms(chains, sp, security_dependencies, operation_authorizer)
 
     for phase in DEFAULT_PHASE_ORDER:
         chains.setdefault(phase, [])
-    phase_db_phases = list(DEFAULT_PHASE_ORDER)
+    phase_db_phases = [
+        phase for phase in DEFAULT_PHASE_ORDER
+        if phase not in {"SECURITY", "DEPENDENCIES"} or chains[phase]
+    ]
     _prepend_phase_db_binding(chains, phase_db_phases)
     cache[alias] = (stamp, chains)
     return chains

@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2074"
 number: 2074
@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Updated from legacy package edge test inventory to include direct pre-TX dependency edge-row verification and feature candidates."
     at: "2026-04-21T08:43:27Z"
+    note: "Updated from legacy package edge test inventory to include direct pre-TX dependency edge-row verification and feature candidates."
+    status: "draft"
 references: []
 body: |-
   ## Purpose
@@ -24,8 +24,8 @@ body: |-
   
   ## Contract
   
-  1. Security dependencies must execute before ordinary dependencies.
-  2. Security dependencies and ordinary dependencies must execute in the pre-transaction phase before `START_TX`.
+  1. The operation executes `SECURITY → DEPENDENCIES → PRE_TX_BEGIN → START_TX`.
+  2. Security dependencies execute in `SECURITY` and ordinary dependencies execute in `DEPENDENCIES`. A protected operation requires an explicit allow before ordinary dependencies, hooks, or transaction start.
   3. Dependency failure must fail closed before handler execution, persistence work, transaction start, commit, or post-commit side effects.
   4. REST and JSON-RPC transports that execute the semantic operation must preserve the same dependency ordering and transaction boundary.
   5. Dependency placement must be operation-level behavior, not transport-local behavior.
@@ -42,7 +42,7 @@ body: |-
   - Tests should prove security dependencies run before ordinary dependencies.
   - Tests should prove failures occur before `START_TX`.
   - Tests should verify REST and JSON-RPC behavior separately when both transports execute the semantic operation.
-  - `pkgs/core/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` is the legacy package edge-row verification for the direct kernel/runtime boundary.
+  - `pkgs/97_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` is the legacy package edge-row verification for the direct kernel/runtime boundary.
   
   ## Traceability
   

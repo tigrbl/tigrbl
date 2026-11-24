@@ -69,6 +69,8 @@ def test_repeated_build_does_not_duplicate_phase_db_binding() -> None:
     kernel = Kernel()
     chains = kernel._build_op(FakeModel, "create")
     for phase, steps in chains.items():
+        if phase in {"SECURITY", "DEPENDENCIES"} and not steps:
+            continue
         labels = [getattr(step, "__tigrbl_label", "") for step in steps]
         assert labels.count("atom:sys:phase_db@SYS_PHASE_DB_BIND") == 1, phase
 

@@ -140,6 +140,17 @@ async def _run(dep: object | None, ctx: Any) -> Any:
     return rv
 
 
+async def require_operation_allow(binding: tuple[Any, Any], ctx: Ctx[Guarded]) -> None:
+    security, authorize = binding
+    if not callable(authorize):
+        raise HTTPException(status_code=503, detail="Operation authorization unavailable")
+    decision = authorize(security, ctx)
+    if inspect.isawaitable(decision):
+        decision = await decision
+    if decision is not True:
+        raise HTTPException(status_code=403, detail="Operation forbidden")
+
+
 class AtomImpl(Atom[Planned, Guarded, Exception]):
     name = "dep.security"
     anchor = ANCHOR

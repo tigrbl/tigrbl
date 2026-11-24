@@ -113,6 +113,7 @@ class TigrblApp(_App):
     _allow_anon: bool = True
     _authorize: Any = None
     _optional_authn_dep: Any = None
+    _operation_authorizer: Callable[..., Any] | None = None
     _allow_anon_ops: set[str] = set()
     _event_handlers: Dict[str, list[Callable[..., Any]]]
 
@@ -245,6 +246,7 @@ class TigrblApp(_App):
         self._allow_anon = True
         self._authorize = None
         self._optional_authn_dep = None
+        self._operation_authorizer = None
         self._allow_anon_ops: set[str] = set()
         self._mounted_security_routers: dict[type, list[TigrblRouter]] = {}
         self._middlewares: list[tuple[Any, dict[str, Any]]] = []
@@ -703,6 +705,7 @@ class TigrblApp(_App):
         if not mount_router:
             return router
         if isinstance(router, TigrblRouter) and router is not self._default_router:
+            router._mounted_auth_apps.add(self)
             for model in route_models.values():
                 owners = self._mounted_security_routers.setdefault(model, [])
                 if all(router is not owner for owner in owners):
@@ -1034,7 +1037,10 @@ class TigrblApp(_App):
 
         allow_attr = getattr(model, TIGRBL_ALLOW_ANON_ATTR, ())
         exemptions = (allow_attr() if callable(allow_attr) else allow_attr) or ()
-        if spec.alias in exemptions or spec.target in exemptions:
+        security = getattr(spec, "security", None)
+        if (spec.alias in exemptions or spec.target in exemptions) and (
+            security is None or security.access != "protected"
+        ):
             return declared
 
         owners = (self, *self._mounted_security_routers.get(model, ()))
@@ -1054,11 +1060,18 @@ class TigrblApp(_App):
         return (*((authn,) if authn is not None else ()), *authorize, *declared)
 
     # Optional: let callers set auth knobs used by some middlewares/dispatchers
-    def set_operation_authorizer(self, authorize: Callable[..., Any]) -> None:
-        """Set the decision callback for operations declaring protected access."""
-        if not callable(authorize):
-            raise TypeError("operation authorizer must be callable")
-        self._tigrbl_operation_authorizer = authorize
+    def _tigrbl_resolve_operation_authorizer(self, model: type) -> Callable[..., Any] | None:
+        authorizers = [
+            owner._operation_authorizer
+            for owner in (self, *self._mounted_security_routers.get(model, ()))
+            if owner._operation_authorizer is not None
+        ]
+        if not authorizers:
+            return None
+        first = authorizers[0]
+        if any(authorizer != first for authorizer in authorizers[1:]):
+            raise ValueError("Mounted router operation authorization conflicts with the app")
+        return first
 
     def operation_security_catalog(self) -> tuple[dict[str, Any], ...]:
         """Export classified operations and the selectors in the kernel plan."""
@@ -1089,7 +1102,17 @@ class TigrblApp(_App):
         allow_anon: Optional[bool] = None,
         authorize: Any = None,
         optional_authn_dep: Any = None,
+        operation_authorizer: Callable[..., Any] | None = None,
     ) -> None:
+        """Configure compiled security dependencies for the app.
+
+        For a protected operation, ``operation_authorizer(security, ctx)``
+        runs before ordinary dependencies and admits the operation only on True.
+        """
+        if operation_authorizer is not None and not callable(operation_authorizer):
+            raise TypeError("operation_authorizer must be callable")
+        if operation_authorizer is not None:
+            self._operation_authorizer = operation_authorizer
         if authn is not None:
             self._authn = authn
             if allow_anon is None:

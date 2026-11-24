@@ -5,7 +5,7 @@ import inspect
 import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, String
-from tigrbl import TableBase, TigrblApp
+from tigrbl import OperationSecurity, TableBase, TigrblApp
 from tigrbl.factories.engine import mem
 from tigrbl.decorators.hook import hook_ctx
 from tigrbl._spec import OpSpec
@@ -84,11 +84,11 @@ async def test_opspec_deps_execute_in_pre_tx_for_rest_and_rpc(db_mode: str) -> N
     assert isinstance(rest_payload, dict)
     assert rest_payload["name"] == "rest"
     assert events == [
-        "hook",
         "sec:one",
         "sec:two",
         "dep:one",
         "dep:two",
+        "hook",
         "start",
         "handler",
     ]
@@ -102,12 +102,12 @@ async def test_opspec_deps_execute_in_pre_tx_for_rest_and_rpc(db_mode: str) -> N
     secdep_idx = next(
         i
         for i, step in enumerate(steps)
-        if step.startswith("PRE_TX_BEGIN:hook:dep:security:")
+        if step.startswith("SECURITY:hook:dep:security:")
     )
     dep_idx = next(
         i
         for i, step in enumerate(steps)
-        if step.startswith("PRE_TX_BEGIN:hook:dep:extra:")
+        if step.startswith("DEPENDENCIES:hook:dep:extra:")
     )
     handler_idx = next(i for i, step in enumerate(steps) if step.startswith("HANDLER:"))
     assert secdep_idx < dep_idx < handler_idx
@@ -123,11 +123,11 @@ async def test_opspec_deps_execute_in_pre_tx_for_rest_and_rpc(db_mode: str) -> N
     assert rpc_payload["id"] == "1"
     assert rpc_payload["result"]["name"] == "rpc"
     assert events == [
-        "hook",
         "sec:one",
         "sec:two",
         "dep:one",
         "dep:two",
+        "hook",
         "start",
         "handler",
     ]
@@ -273,3 +273,77 @@ async def test_secdep_auth_failure_and_success_parity_for_rest_and_rpc(
 
     await client.aclose()
 
+
+
+@pytest.mark.i9n
+@pytest.mark.asyncio
+async def test_protected_operations_require_explicit_allow_before_dependencies(
+    db_mode: str,
+) -> None:
+    TableBase.metadata.clear()
+    events: list[str] = []
+    principal = {"id": "alice"}
+    decision = None
+
+    def dependency() -> None:
+        events.append("dependency")
+
+    class Item(TableBase, GUIDPk):
+        __tablename__ = "opspec_protected_phase_item"
+        name = Column(String, nullable=False)
+        __tigrbl_ops__ = (
+            OpSpec(
+                alias="create",
+                target="create",
+                deps=(dependency,),
+                security=OperationSecurity("proof.item.create", "item"),
+            ),
+        )
+
+        @hook_ctx(ops="create", phase="PRE_TX_BEGIN")
+        async def before_transaction(cls, ctx):
+            assert ctx["auth_context"] is principal
+            events.append("pre_tx")
+
+        @hook_ctx(ops="create", phase="START_TX")
+        async def start_transaction(cls, ctx):
+            events.append("start")
+
+        @hook_ctx(ops="create", phase="HANDLER")
+        async def handler(cls, ctx):
+            events.append("handler")
+
+    def authenticate(request):
+        events.append("authn")
+        return principal
+
+    async def authorize(operation, ctx):
+        assert operation.action_id == "proof.item.create"
+        assert ctx["auth_context"] is principal
+        events.append("authorize")
+        return decision
+
+    client, app = await _build_client(Item, db_mode)
+    async with client:
+        async def exercise(expected_status, expected_events):
+            events.clear()
+            rest = await client.post("/item", json={"name": "rest"})
+            assert rest.status_code == expected_status, rest.text
+            assert events == expected_events
+
+            events.clear()
+            rpc = await client.post(
+                "/rpc",
+                json={"id": 1, "method": "Item.create", "params": {"name": "rpc"}},
+            )
+            assert rpc.status_code == 200
+            assert ("result" if expected_status == 201 else "error") in rpc.json()
+            assert events == expected_events
+
+        await exercise(503, [])
+        app.set_auth(authn=authenticate, operation_authorizer=authorize)
+        await exercise(403, ["authn", "authorize"])
+        decision = False
+        await exercise(403, ["authn", "authorize"])
+        decision = True
+        await exercise(201, ["authn", "authorize", "dependency", "pre_tx", "start", "handler"])

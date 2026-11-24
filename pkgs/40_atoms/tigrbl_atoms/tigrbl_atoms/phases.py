@@ -25,6 +25,8 @@ PhaseName = Literal[
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
     "INGRESS_DISPATCH",
+    "SECURITY",
+    "DEPENDENCIES",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -90,7 +92,9 @@ INGRESS_BEGIN = PhaseStep("INGRESS_BEGIN", Boot, Ingress)
 INGRESS_PARSE = PhaseStep("INGRESS_PARSE", Ingress, Ingress)
 INGRESS_DISPATCH = PhaseStep("INGRESS_DISPATCH", Ingress, Planned)
 
-PRE_TX_BEGIN = PhaseStep("PRE_TX_BEGIN", Planned, Guarded)
+SECURITY = PhaseStep("SECURITY", Planned, Guarded)
+DEPENDENCIES = PhaseStep("DEPENDENCIES", Guarded, Guarded)
+PRE_TX_BEGIN = PhaseStep("PRE_TX_BEGIN", Guarded, Guarded)
 
 START_TX = PhaseStep("START_TX", Guarded, Executing, in_tx=True)
 PRE_HANDLER = PhaseStep("PRE_HANDLER", Executing, Resolved, in_tx=True)
@@ -141,6 +145,8 @@ PHASES: Final[Tuple[PhaseName, ...]] = (
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
     "INGRESS_DISPATCH",
+    "SECURITY",
+    "DEPENDENCIES",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -172,6 +178,8 @@ PHASE_INFO: Final[Dict[PhaseName, PhaseStep]] = {
         INGRESS_BEGIN,
         INGRESS_PARSE,
         INGRESS_DISPATCH,
+        SECURITY,
+        DEPENDENCIES,
         PRE_TX_BEGIN,
         START_TX,
         PRE_HANDLER,
