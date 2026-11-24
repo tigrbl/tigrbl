@@ -256,7 +256,7 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
         for sp in _opspecs(model):
             meta_index = len(opmeta)
             target = (getattr(sp, "target", sp.alias) or sp.alias).lower()
-            security = sp.security
+            security = getattr(sp, "security", None)
             if security is not None:
                 if security.action_id in actions:
                     raise ValueError(f"Duplicate operation action: {security.action_id}")
