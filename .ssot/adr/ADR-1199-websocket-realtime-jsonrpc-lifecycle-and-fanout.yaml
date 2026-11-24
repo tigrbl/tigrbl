@@ -120,3 +120,11 @@ body: |-
   - Add transport atom tests for accept, receive, emit, and close phase placement.
   - Add subscribe ack and session cleanup tests.
   - Add publish fanout tests proving post-commit enqueue and egress fanout behavior.
+  
+  ## Request and message identity
+  
+  Draft ADR-1207 assigns correlation_id to a logical application request inside a WebSocket session and invocation_id to the complete decoded message. A JSON-RPC batch document shares its invocation_id among calls and distinguishes them by item index. Preserve the caller’s JSON-RPC id as rpc_id. Carry the applicable IDs through operation dispatch and fan-out attribution.
+
+  ## Draft transport identity extension
+
+  Draft ADR-1209 governs the versioned subscription acknowledgement and the broker-owned subscription identity. Preserve origin invocation and destination attribution on fan-out. Socket cleanup resolves subscriptions attached to that carrier and respects authorized resume to a different destination.

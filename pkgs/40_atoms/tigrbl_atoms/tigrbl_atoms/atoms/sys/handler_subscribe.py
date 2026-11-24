@@ -13,7 +13,20 @@ ANCHOR = _ev.SYS_HANDLER_PERSISTENCE
 
 
 async def _run(obj: object | None, ctx: Any) -> None:
-    setattr(ctx, "result", await _core.subscribe(_ctx.payload(ctx), ctx=ctx))
+    from tigrbl_ops_realtime.quotas import SubscriptionAdmissionError
+    from tigrbl_typing.status.exceptions import HTTPException
+
+    try:
+        setattr(ctx, "result", await _core.subscribe(_ctx.payload(ctx), ctx=ctx))
+    except SubscriptionAdmissionError as exc:
+        headers = (
+            {"Retry-After": str(max(1, __import__("math").ceil(exc.retry_after)))}
+            if exc.retry_after is not None
+            else None
+        )
+        raise HTTPException(
+            status_code=exc.status_code, detail=exc.detail(), headers=headers
+        ) from exc
 
 
 class AtomImpl(Atom[Resolved, Operated, Exception]):

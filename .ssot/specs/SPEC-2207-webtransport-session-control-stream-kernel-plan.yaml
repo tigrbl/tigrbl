@@ -19,6 +19,15 @@ status_notes:
 references: []
 body: |-
   A WebTransport control binding compiles a session-scoped loop that repeatedly reads uint32 big-endian length-prefixed JSON-RPC records, dispatches each operation through the canonical operation index, encodes the correlated response, and emits it with nonterminal continuation. Framing atoms own record boundaries, KernelPlan owns loop and dispatch composition, realtime sink atoms own asynchronous event lanes, and runtime owns only raw ASGI projection. Explicit control close or session disconnect terminates streams and cleans subscriptions and media sinks.
+
+  ## Draft control-record identity extension
+
+  Under SPEC-2208, the compiled control loop inherits the correlation_id allocated at WebTransport session acceptance and the stream_correlation_id assigned at establishment of its bidirectional control stream. Carry these fields and stream_id through record dispatch, error and reply telemetry, and nonterminal emission. Assign one fresh invocation_id only after decoding a complete JSON-RPC record. An incomplete read assigns no invocation ID. A read containing several complete records assigns a separate ID to each record. Keep rpc_id for matching protocol replies.
+
+  ## Draft transport identity and subscription extension
+
+  Use draft SPEC-2209 when the control record opens, resumes, or closes a subscription. Apply the binding-selected acknowledgement version at record completion. Carry logical subscription and destination metadata through continuing delivery. Close cleans up attachments owned by the closing carrier and leaves authorized resumed attachments intact.
 spec_kind: "normative"
 adr_ids:
   - "adr:1202"
+  - "adr:1207"

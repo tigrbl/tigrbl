@@ -25,9 +25,9 @@ status_notes:
     note: "Updated WebTransport boundary to express native WT profiles through WebTransportBindingSpec.profile."
     status: "draft"
   -
-    status: "draft"
-    note: "Clarified by adr:1202: KernelPlan owns the persistent control loop while runtime remains raw ASGI projection."
     at: "2026-08-03T21:48:32Z"
+    note: "Clarified by adr:1202: KernelPlan owns the persistent control loop while runtime remains raw ASGI projection."
+    status: "draft"
 references: []
 body: |-
   ## Decision
@@ -67,3 +67,7 @@ body: |-
   ## Related
   
   ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131, ADR-1132, ADR-1133, ADR-1134, ADR-1135.
+  
+  ## Session and stream correlation
+  
+  Draft ADR-1207 assigns one correlation_id at WebTransport session acceptance and propagates it across every stream and datagram in the session. Each stream receives a distinct stream_correlation_id at establishment alongside its native stream_id. The requester’s session_id and the native transport_session_id serve separate purposes. Copy an available stable quic_connection_id for connection-level grouping.

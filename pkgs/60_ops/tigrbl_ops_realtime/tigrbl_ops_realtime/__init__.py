@@ -11,6 +11,7 @@ from .ops import (
     checkpoint,
     download,
     publish,
+    resume_subscription,
     send_datagram,
     subscribe,
     tail,
@@ -18,6 +19,7 @@ from .ops import (
     unsubscribe_session,
     upload,
 )
+from .quotas import SubscriptionQuotaStore
 from .sinks import (
     RealtimeEnvelope,
     RealtimeSink,
@@ -31,6 +33,7 @@ __all__ = [
     "InMemoryRealtimeBroker",
     "PublicationResult",
     "RealtimeSubscription",
+    "SubscriptionQuotaStore",
     "RealtimeEnvelope",
     "RealtimeSink",
     "WebSocketRealtimeSink",
@@ -38,6 +41,7 @@ __all__ = [
     "realtime_sink_from_context",
     "publish",
     "subscribe",
+    "resume_subscription",
     "telemetry",
     "unsubscribe_session",
     "tail",

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+from tigrbl_kernel.trace import record_execution, transaction_history
+
 from ._shared import *
 from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
 
@@ -49,6 +52,12 @@ class _PackedExecuteMixin:
                 isinstance(hot.parsed_json, Mapping)
                 and hot.parsed_json.get("jsonrpc") == "2.0"
             ):
+                raw_identity = temp.get("identity")
+                if raw_identity:
+                    identity = invocation_identity(raw_identity)
+                    if "id" in hot.parsed_json:
+                        identity["rpc_id"] = hot.parsed_json["id"]
+                    temp["identity"] = identity
                 params = hot.parsed_json.get("params", {})
                 if isinstance(params, Mapping) and set(params) == {"params"}:
                     egress = temp.setdefault("egress", {})
@@ -125,6 +134,10 @@ class _PackedExecuteMixin:
             return
 
         temp["program_id"] = program_id
+        current_identity = temp.get("identity")
+        if current_identity and hot.scope_type in {"http", "webtransport"}:
+            if hot.scope_type == "http" or str((ctx.get("channel_message") or {}).get("type", "")).endswith(".receive"):
+                temp["identity"] = invocation_identity(current_identity)
 
         hot_op_plan = (
             packed.hot_op_plans[program_id]
@@ -177,6 +190,8 @@ class _PackedExecuteMixin:
                     if getattr(ctx, "db", None) is None:
                         ctx.db = db
                     ctx.owns_tx = True
+                    if getattr(self.runtime, "trace_sink", None) is not None:
+                        ctx.temp["_trace_transaction_baseline"] = transaction_history(db)
             except Exception:
                 release_db = None
         if (
@@ -370,5 +385,16 @@ class _PackedExecuteMixin:
             db=ctx.get("db") if isinstance(ctx, Mapping) else None,
             seed=ctx,
         )
-        await self._execute_packed(env, base_ctx, plan, packed_plan)
+        sink = getattr(runtime, "trace_sink", None)
+        scope = getattr(env, "scope", None)
+        try:
+            await self._execute_packed(env, base_ctx, plan, packed_plan)
+        finally:
+            if sink is not None and isinstance(scope, Mapping):
+                hot = base_ctx.temp.get("hot_ctx")
+                record_execution(
+                    sink, scope, base_ctx,
+                    jsonrpc=getattr(hot, "transport_kind_id", None) == _TRANSPORT_KIND_JSONRPC,
+                    owned_session=getattr(base_ctx, "_raw_db", None),
+                )
         return base_ctx.get("result")

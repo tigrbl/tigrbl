@@ -1,0 +1,29 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1209"
+number: 1209
+slug: "logical-subscription-identity-and-acknowledgement-migration"
+title: "Logical subscription identity and acknowledgement migration"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Give every admitted logical subscription an identity that survives an authorized change of transport destination, and migrate subscription acknowledgements to expose that identity."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Give every admitted logical subscription an identity that survives an authorized change of transport destination, and migrate subscription acknowledgements to expose that identity.
+  
+  ## Decision
+  
+  - Allocate a distinct opaque `subscription_id` once admission succeeds. Link it to the verified application requester or tenant context, its channel, its opening invocation, and its current destination transport session or stream. Store the quota `lease_id` and owner generation separately under the quota policy in effect. Identity is observational metadata and conveys no authorization.
+  - Index logical subscriptions by `subscription_id` and maintain lookups for channel fan-out and transport-session cleanup. Preserve the current channel/session replacement policy during migration. A new admission after completion receives a new subscription ID. Authorized resume of the same logical subscription preserves its ID and transfers or replaces its destination and lease under ADR-1181 with reauthorization and single-owner fencing.
+  - Associate each fan-out delivery with `publication_id`, `subscription_id`, originating invocation, receiving transport identity, and outcome. Keep the recipient's carrier correlation on the delivery record and preserve explicit origin attribution when work crosses sessions.
+  - Introduce an explicitly versioned subscription acknowledgement that returns the logical `subscription_id` and exposes `transport_session_id` separately where applicable. Retain the legacy acknowledgement semantics during the compatibility window. Retire the historical session-as-subscription alias after client migration.
+  - Disconnect and shutdown locate attached subscriptions through destination ownership. Remove or fence only the active attachment and generation. A stale cleanup must not terminate a logically resumed subscription on a new carrier.
+  
+  ## Verification
+  
+  Prove distinct subscriptions attached to one carrier, one authorized resume across reconnect with stable subscription identity, stale carrier cleanup isolation, publication and recipient attribution, and compatibility of both acknowledgement versions.

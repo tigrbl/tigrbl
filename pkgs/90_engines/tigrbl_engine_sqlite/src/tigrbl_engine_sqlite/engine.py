@@ -45,11 +45,17 @@ def sqlite_engine(
 
     @event.listens_for(eng, "connect")
     def _configure_sqlite(dbapi_conn, conn_record):
+        # SQLAlchemy owns BEGIN so a read-triggered root transaction reaches SQLite.
+        dbapi_conn.isolation_level = None
         cur = dbapi_conn.cursor()
         try:
             cur.execute("PRAGMA foreign_keys=ON;")
         finally:
             cur.close()
+
+    @event.listens_for(eng, "begin")
+    def _begin_sqlite(connection):
+        connection.exec_driver_sql("BEGIN")
 
     raw_maker = sessionmaker(
         bind=eng, class_=_SqliteAlchemySession, expire_on_commit=False

@@ -116,6 +116,7 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
         metadata["inner_framing"] = framing_kind(inner_framing)
         metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
         metadata["rpc_method"] = getattr(binding, "rpc_method", None)
+        metadata["subscription_ack_version"] = getattr(binding, "subscription_ack_version", 1)
         if inner_framing is not None:
             metadata["inner_framing_kind"] = str(inner_framing)
             metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
@@ -255,7 +256,7 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
         for sp in _opspecs(model):
             meta_index = len(opmeta)
             target = (getattr(sp, "target", sp.alias) or sp.alias).lower()
-            security = sp.security
+            security = getattr(sp, "security", None)
             if security is not None:
                 if security.action_id in actions:
                     raise ValueError(f"Duplicate operation action: {security.action_id}")

@@ -27,6 +27,8 @@ class MariaDBSession(EngineSession):
 
     def __init__(self, underlying: _MariaDBAlchemySession, spec: EngineSessionSpec | None = None) -> None:
         super().__init__(underlying, spec or EngineSessionSpec())
+        if isinstance(underlying, _SASession):
+            self._observe_sqlalchemy_transactions()
 
 
 __all__ = ["MariaDBSession"]

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity, webtransport_lane_identity
+
 from ._shared import *
 from .route_select_websocket import _PackedWebSocketRouteSelectMixin
 
@@ -31,6 +33,16 @@ class _PackedRouteSelectMixin(_PackedWebSocketRouteSelectMixin):
         if not isinstance(temp, dict):
             return -1
         temp["webtransport_selection"] = selection
+        temp.setdefault("realtime", {})["subscription_ack_version"] = selection.subscription_ack_version
+        identity = temp.get("identity")
+        scope = getattr(env, "scope", None)
+        if identity and isinstance(scope, dict):
+            identity = webtransport_lane_identity(scope, message, identity)
+            if str(message.get("type", "")).endswith(".receive"):
+                identity = invocation_identity(identity)
+                if selection.rpc_envelope is not None and "id" in selection.rpc_envelope:
+                    identity["rpc_id"] = selection.rpc_envelope["id"]
+            temp["identity"] = identity
         if selection.path_params is not None:
             path_params = dict(selection.path_params)
             hot.path_params = path_params

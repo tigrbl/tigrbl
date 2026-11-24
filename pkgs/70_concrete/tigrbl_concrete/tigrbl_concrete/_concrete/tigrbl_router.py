@@ -1,6 +1,8 @@
 # tigrbl/_concrete/tigrbl_router.py
 from __future__ import annotations
 
+from tigrbl_typing.trace import TraceSink
+
 import copy
 import asyncio
 import inspect
@@ -94,11 +96,13 @@ class TigrblRouter(_Router):
         | Mapping[str, Mapping[str, Iterable[Callable]]]
         | None = None,
         execution_backend: str | None = None,
+        trace_sink: TraceSink | None = None,
         **router_kwargs: Any,
     ) -> None:
         if prefix is not None:
             self.PREFIX = prefix
         _Router.__init__(self, engine=engine, **router_kwargs)
+        self.trace_sink = trace_sink
         self._authn = None
         self._allow_anon = True
         self._authorize = None

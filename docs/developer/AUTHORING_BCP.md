@@ -96,6 +96,26 @@ are explicitly validating or implementing the lower-level boundary.
   preserving lifecycle ordering across REST, JSON-RPC, streams, SSE, WebSocket,
   and WebTransport-aware runtime plans.
 
+#### Per-row field authorization
+
+Bind a `POST_HANDLER` hook to `read` and `list` when a requester can see a
+record but field visibility varies by row. Read the authenticated identity
+from trusted request state and evaluate the field policy against each original
+row. Replace `ctx["result"]` with fresh dictionaries containing the permitted
+fields. Build the whole result before assigning it so a policy error aborts
+the operation before any projected rows are returned.
+
+Keep restricted fields out of the example's unconditional response schema
+so serialization cannot add a default for an omitted key. The hook adds
+`cost_basis` only for the owner. The example checks the actual REST and
+JSON-RPC responses for a mixed-permission list, an authorized `null`, and a
+policy error that returns no row data. See the
+[runnable field authorization example](../../pkgs/96_examples/tigrbl_examples/tigrbl_examples/21_expert_security/test_07_per_row_field_authorization.py).
+
+Scope row visibility in the query before pagination and counts. Apply field
+permissions to filtering, sorting, and aggregates wherever those operations
+can reveal restricted values.
+
 ### Support persistence and non-persistence operations
 
 - Avoid: Assuming every operation or custom handler must be database-backed.

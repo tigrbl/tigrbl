@@ -1,0 +1,47 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1150"
+number: 1150
+slug: "sublife"
+title: "Subscription admission and lifecycle"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Authenticate and authorize before quota-store work; acquire all active user, tenant, and"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Requirements
+
+  Authenticate and authorize before quota-store work; acquire all active user, tenant, and
+  operation slots atomically before sink registration or producer start. Charge each valid
+  authorized opening attempt once to applicable rate buckets, including capacity refusals;
+  never refund opening tokens on unsubscribe, failure, or disconnect. Roll back partial
+  active reservations. Rate-refused work starts no producer and retains no active slots.
+
+  KernelPlan/atoms own policy execution. Existing lifecycle bridges signal completion,
+  unsubscribe, cancellation, reset/disconnect, failed start, revocation, and shutdown;
+  cleanup releases exactly once. Normal operation-record completion does not terminate a
+  continuing subscription. On shared carriers, rejection targets the subscribe request.
+
+  Resume reauthorizes and atomically transfers a fenced lease or creates a replacement.
+  Bound dormant grace and pending reservations; no dual owner, free reconnect loop, or
+  subscription duplication. Caller request/idempotency keys alone do not confer ownership.
+
+  ## Acceptance
+
+  Test multiplexed subscriptions, cap races, tenant refusal rollback, rate burst/refill,
+  duplicate callbacks, cancellation during acquire/start, long-lived control records,
+  disconnect/reconnect/resume, and principal authorization changes. Counters return to
+  baseline without exceeding caps across workers and carrier changes.
+
+  ## Subscription identity
+
+  A verified resume transfers the existing quota lease to a fresh owner generation while retaining the logical subscription ID defined by SPEC-2209. A configured finite reconnect interval can retain the quota slot after disconnect, bounded by the current lease deadline. Stale cleanup must leave the transferred lease active.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1204"
+  - "adr:1205"

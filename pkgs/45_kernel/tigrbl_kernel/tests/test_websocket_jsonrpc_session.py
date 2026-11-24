@@ -30,3 +30,67 @@ async def test_jsonrpc_session_marks_transport_as_owned_after_accept() -> None:
 
     assert sent == [{"type": "websocket.accept", "subprotocol": "jsonrpc"}]
     assert channel.state["transport_sent"] is True
+
+
+@pytest.mark.asyncio
+async def test_websocket_jsonrpc_dispatch_snapshots_binding_and_message_identity():
+    import asyncio
+    import json
+    from tigrbl_core._spec import JsonRpcFramingSpec, WsBindingSpec
+    from tigrbl_ops_realtime import InMemoryRealtimeBroker, subscribe
+
+    requests = [
+        {"jsonrpc": "2.0", "method": "Topic.subscribe", "params": {"channel": name}, "id": name}
+        for name in ("one", "two", "three")
+    ]
+    messages = iter([
+        {"type": "websocket.connect"},
+        {"type": "websocket.receive", "text": json.dumps(requests[:2])},
+        {"type": "websocket.receive", "text": json.dumps(requests[2])},
+        {"type": "websocket.disconnect", "code": 1000},
+    ])
+    frames, seen = [], []
+
+    class Topic:
+        ops = SimpleNamespace(all=[SimpleNamespace(
+            alias="subscribe", tx_scope="none",
+            bindings=(WsBindingSpec(proto="ws", path="/controls", framing=JsonRpcFramingSpec(),
+                                    subscription_ack_version=2),),
+        )])
+
+    async def receive():
+        return next(messages)
+
+    async def send(message):
+        frames.append(message)
+
+    async def rpc_call(model, alias, params, **kwargs):
+        context = kwargs["ctx"]
+        await asyncio.sleep(0)
+        seen.append(context["identity"])
+        result = await subscribe(params, ctx=context)
+        return {"status_code": 200, "body": json.dumps(result).encode(),
+                "body_iterator": None, "path": None}
+
+    broker = InMemoryRealtimeBroker()
+    from tigrbl_kernel.trace import Timeline
+
+    timeline = Timeline()
+    router = SimpleNamespace(tables={"Topic": Topic}, rpc_call=rpc_call, trace_sink=timeline.add)
+    channel = SimpleNamespace(receive=receive, send=send, state={}, path="/controls")
+    handler = build_websocket_jsonrpc_session_handler(router, realtime_broker=broker)
+    await handler({"channel": channel, "temp": {"identity": {"transport_session_id": "ws-live"}}})
+    batch, single = [json.loads(frame["text"]) for frame in frames if frame["type"] == "websocket.send"]
+    assert [item["id"] for item in batch] == ["one", "two"]
+    assert single["id"] == "three"
+    for response in [*batch, single]:
+        assert response["result"]["transport_session_id"] == "ws-live"
+        assert response["result"]["subscription_id"] != "ws-live"
+    assert seen[0]["invocation_id"] == seen[1]["invocation_id"] != seen[2]["invocation_id"]
+    assert seen[0]["correlation_id"] == seen[1]["correlation_id"] != seen[2]["correlation_id"]
+    assert [ctx.get("rpc_item_index") for ctx in seen] == [0, 1, None]
+    assert len({ctx["span_id"] for ctx in seen}) == 3
+    invocations = timeline.data()["events"]
+    assert [item["kind"] for item in invocations] == ["Invocation"] * 3
+    assert [item["span_id"] for item in invocations] == [item["span_id"] for item in seen]
+    assert broker.metrics()["subscriber_count"] == 0

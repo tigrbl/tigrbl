@@ -14,6 +14,7 @@ from tigrbl_kernel.channel_taxonomy import (
     select_webtransport_hooks,
     webtransport_event_metadata as _webtransport_event_metadata,
 )
+from tigrbl_atoms.atoms.ingress.identity import stream_correlation_id, webtransport_lane_identity
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
 from tigrbl_kernel.webtransport_session_plan import WebTransportSessionPlan
 from tigrbl_atoms.runtime_channel import WebTransportSessionState
@@ -110,6 +111,12 @@ def _trace_webtransport_event(
     payload_size = _webtransport_payload_size(message)
     if payload_size is not None:
         entry["payload_bytes"] = payload_size
+    for key, value in shared_state.get("identity", {}).items():
+        if key not in {"stream_id", "stream_correlation_id", "datagram_id"}:
+            entry.setdefault(key, value)
+    if "stream_id" in entry and "correlation_id" in entry:
+        stream_correlations = shared_state.setdefault("stream_correlations", {})
+        entry["stream_correlation_id"] = stream_correlation_id(stream_correlations, entry["stream_id"])
     trace.append(entry)
 
 
@@ -279,14 +286,33 @@ async def _receive_webtransport_session_messages(
     async def _record_payload_message(message: Mapping[str, Any]) -> None:
         message = _enrich_webtransport_message(env, message)
         state["last_event"] = message
-        shared_state["last_event_type"] = message.get("type")
+        message_type = str(message.get("type") or "")
+        shared_state["last_event_type"] = message_type
+        identity = ctx.get("temp", {}).get("identity")
+        if identity:
+            scope = getattr(env, "scope", {})
+            if (
+                message_type == "webtransport.connect"
+                and message.get("session_id") is not None
+                and _webtransport_scope_session_id(env) is None
+                and "tigr.transport_identity" not in (scope.get("extensions") or {})
+            ):
+                scope["session_id"] = message["session_id"]
+                identity = dict(identity, transport_session_id=str(message["session_id"]))
+                scope["state"]["_tigrbl_transport_identity"] = identity.copy()
+            projected_identity = webtransport_lane_identity(scope, message, identity)
+            shared_state["stream_correlations"] = scope["state"].setdefault("_tigrbl_stream_correlations", {})
+            ctx["temp"]["identity"] = projected_identity
+            shared_state["identity"] = projected_identity
+            state["identity"] = projected_identity
         _trace_webtransport_event(
             shared_state,
             direction="receive",
             phase="ctx.channel_message",
             message=message,
         )
-        message_type = str(message.get("type") or "")
+        if message_type in {"webtransport.stream.reset", "webtransport.stream.close"}:
+            shared_state.get("stream_correlations", {}).pop(str(message.get("stream_id")), None)
         if message_type.startswith("webtransport.message"):
             raise ValueError("WebTransport message is not a native transport lane")
         current_session = _ensure_session(message)

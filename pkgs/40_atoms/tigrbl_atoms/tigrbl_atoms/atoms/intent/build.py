@@ -24,6 +24,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         "sink_family": transport.get("sink_family"),
         "sink_index": transport.get("sink_index", 0),
         "correlation_id": transport.get("correlation_id"),
+        "identity": dict(transport.get("identity") or {}),
         "batch_policy": getattr(ctx, "batch_policy", None) or {},
     }
     slot_payload = capture_slot_payload(ctx)

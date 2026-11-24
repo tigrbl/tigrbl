@@ -1,0 +1,50 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2208"
+number: 2208
+slug: "runtime-correlation-context-propagation-contract"
+title: "Runtime Correlation Context Propagation Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how requester, transport, stream, invocation, trace, and engine transaction identities are assigned and propagated through runtime execution and asynchronous fan-out."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define how requester, transport, stream, invocation, trace, and engine transaction identities are assigned and propagated through runtime execution and asynchronous fan-out.
+  
+  ## Identity ownership
+  
+  1. Identity resolution supplies the requester’s application `session_id` when available. Transport supplies `transport_session_id` for a socket or accepted WebTransport session. Retain `quic_connection_id` when the adapter exposes a stable one. Correlation metadata carries no authorization or partitioning authority.
+  2. HTTP ingress assigns one `correlation_id` per request. A WebSocket request obtains one correlation ID at its application request boundary, and subsequent messages belonging to that request inherit it through the binding’s request context. The WebTransport acceptance path generates one fresh correlation ID for the transport session. All streams and datagrams in the accepted session inherit that value, even when their operations run in different traces. A newly accepted WebTransport session always receives a fresh correlation ID.
+  3. At stream establishment allocate one `stream_correlation_id` alongside the underlying `stream_id`. Keep the value through stream close and emitted work. For WebTransport, a session datagram inherits session correlation and carries no stream identity.
+  4. Dispatch assigns one `invocation_id` after a complete application message is decoded, or when a REST operation reaches dispatch. Each item of a supported JSON-RPC batch uses the same document invocation ID and its own zero-based `rpc_item_index` and per-call span. Preserve a caller-supplied JSON-RPC ID separately as `rpc_id` when present. An invocation can exist for a notification without a wire RPC ID.
+  5. The DB engine session owns `transaction_id` under SPEC-2170. Runtime records reference the ID reported by that engine session and record the participating invocation and attempt. Emit a distinct association for each transaction in which the invocation participates. Preserve observed `trace_id` and applicable `span_id` independently from correlation and invocation IDs.
+  
+  ## Handoffs
+  
+  - Carry assigned transport and request grouping fields into decoded-message context. Hooks, handlers, intent construction, scheduler admission, and operation output consume a snapshot of the originating context. A queued admission must keep its own identity context across asynchronous execution, even if the carrier receives later messages before execution finishes.
+  - Associate fan-out output with the originating invocation. Keep receiving-carrier identity separate from originating correlation when output crosses a transport session. An outbound event on a WebTransport session carries the receiving session’s correlation for that session’s timeline, with an explicit origin link when emitted from another context.
+  - An internal operation retry retains correlation and invocation identity and records its own attempt identity. A retry that begins a new DB transaction links to the new engine-issued transaction ID. Invocations that participate in the same authorized batch transaction link to its single engine-issued transaction ID.
+  - Rejected ingress and incomplete frames can carry identities already assigned at their layer. Create invocation and transaction fields only when the corresponding boundary is reached. ID propagation leaves protocol payloads under their existing binding and framing contracts.
+  
+  ## Conformance
+  
+  Prove isolation under interleaved WebSocket requests and WebTransport streams and datagrams, including asynchronous delivery. Verify that a second WT session on the same QUIC connection has a different correlation ID, that incomplete frames allocate no invocation, and that independent records decoded from one read each receive its own invocation ID. Verify that a shared transaction produces one engine lifecycle record per event and one association per participating invocation and attempt. Verify that a retry preserves request and invocation IDs while an actual new engine begin obtains a different transaction ID.
+
+  ## Draft transport identity and subscription extension
+
+  Reuse a trusted server-issued HTTP request_id where available, and allocate a local one where Tigrbl owns the application request boundary or the server supplied none. In a realtime scope, any opening HTTP request_id identifies the handshake. It does not extend to subsequent messages. For fan-out, apply draft SPEC-2209 to snapshot publication, subscription, and delivery identity alongside origin and destination correlation.
+
+  ## Native trace sinks
+
+  An application, router, runtime, or realtime broker may accept a synchronous trace sink. The packed executor records invocation and transaction identity from its execution context, and the WebSocket dispatcher records each call with its resolved invocation identity and item span. The realtime broker records publication, subscription attachment, and delivery as they occur.
+
+  A sink receives detached scalar metadata for identity and lifecycle drillback. Sink failures do not change operation outcomes. The optional bounded Timeline consumes the same records and groups them for diagnostics.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1207"
+  - "adr:1208"

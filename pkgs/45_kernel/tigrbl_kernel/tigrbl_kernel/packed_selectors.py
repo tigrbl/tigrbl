@@ -246,6 +246,7 @@ class WebTransportProgramSelection:
     lane: str | None = None
     rpc_envelope: Mapping[str, Any] | None = None
     disposition: str = "no_match"
+    subscription_ack_version: int = 1
 
 
 def _webtransport_route_rows(
@@ -371,6 +372,7 @@ def resolve_webtransport_program(
         lane=lane,
         rpc_envelope=rpc_envelope,
         disposition="dispatch",
+        subscription_ack_version=row.get("subscription_ack_version", 1),
     )
 
 

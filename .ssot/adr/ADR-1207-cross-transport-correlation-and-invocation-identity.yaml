@@ -1,0 +1,36 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1207"
+number: 1207
+slug: "cross-transport-correlation-and-invocation-identity"
+title: "Correlation and invocation identity across transports"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A requester can use several transports. A long-lived transport session can carry many messages, and multiple messages can participate in one logical request. Traces and downstream visualizations need stable grouping keys at those different scopes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  A requester can use several transports. A long-lived transport session can carry many messages, and multiple messages can participate in one logical request. Traces and downstream visualizations need stable grouping keys at those different scopes.
+  
+  ## Decision
+  
+  - Identity resolves `session_id` for the requester’s application session. `transport_session_id` identifies a socket or WebTransport session. Where the adapter exposes a stable `quic_connection_id`, it may group several WebTransport sessions on the underlying connection.
+  - REST and HTTP JSON-RPC establish one `correlation_id` per HTTP request, including a JSON-RPC batch. Accept a validated ID from a trusted upstream or generate one, and return it in `X-Correlation-ID` on success and error. WebSocket assigns correlation per logical application request, including requests spanning several messages.
+  - Generate one `correlation_id` at WebTransport session acceptance. Carry that value through session, stream, and datagram events, dispatch, fan-out, and related telemetry. Generate a new value for a newly accepted session even when the requester or QUIC connection is the same.
+  - Assign a fresh `stream_correlation_id` at each stream establishment. Preserve it alongside the native or application `stream_id`, scoped to its owning transport session. A WT datagram carries the WT session correlation without stream fields.
+  - Assign `invocation_id` at the complete decoded message boundary. REST assigns it at operation dispatch. JSON-RPC assigns one per decoded document and adds an item index for each call in a batch where that carrier supports batch documents. Even a notification gets invocation identity. Preserve the wire JSON-RPC `id` separately as `rpc_id`.
+  - Carry these IDs through immutable invocation context, intent, scheduler admission, and response or fan-out attribution. Standard trace context continues to supply `trace_id` and `span_id`. Correlation fields are telemetry metadata and grant no authorization or state-partition authority.
+  
+  ## Verification
+  
+  Prove HTTP success and error correlation, separate correlation across WebSocket requests, stable WT session grouping across interleaved streams and datagrams, distinct stream correlations, and one invocation per complete framed record regardless of read fragmentation.
+
+  ## Transport-supplied request identity
+
+  Normalize the versioned transport identity extension at ingress. Reuse its server-issued request_id for the corresponding HTTP exchange and allocate locally when the server omits it or Tigrbl accepts a separate application request on a realtime carrier. A handshake request ID identifies the opening exchange. Preserve request-level correlation across REST, HTTP JSON-RPC, and WebSocket, and keep WebTransport correlation at the accepted session level with one stream correlation ID per stream.

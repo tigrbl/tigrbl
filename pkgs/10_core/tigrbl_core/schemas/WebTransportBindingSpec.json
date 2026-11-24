@@ -59,6 +59,14 @@
     "spec_type": {
       "const": "urn:tigrbl:spec:WebTransportBindingSpec:0.3.20",
       "description": "Versioned Tigrbl spec type URN."
+    },
+    "subscription_ack_version": {
+      "default": 1,
+      "enum": [
+        1,
+        2
+      ],
+      "type": "integer"
     }
   },
   "required": [

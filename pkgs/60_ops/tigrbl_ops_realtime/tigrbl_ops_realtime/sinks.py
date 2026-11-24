@@ -25,6 +25,9 @@ class RealtimeEnvelope:
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
 
+    origin_invocation_id: str | None = None
+    origin_correlation_id: str | None = None
+
     def jsonrpc(self) -> dict[str, Any]:
         return {
             "jsonrpc": "2.0",
@@ -139,7 +142,9 @@ class WebTransportRealtimeSink:
             self._closed_streams.add(stream_id)
 
 
-def realtime_sink_from_context(ctx: Any, carrier: Any) -> RealtimeSink:
+def realtime_sink_from_context(
+    ctx: Any, carrier: Any, *, realtime: Mapping[str, Any] | None = None,
+) -> RealtimeSink:
     if isinstance(carrier, RealtimeSink):
         return carrier
     state: Mapping[str, Any] = {}
@@ -151,6 +156,7 @@ def realtime_sink_from_context(ctx: Any, carrier: Any) -> RealtimeSink:
         candidate = getattr(ctx, "realtime", None)
         if isinstance(candidate, Mapping):
             state = candidate
+    state = state if realtime is None else realtime
     transport = str(state.get("transport") or getattr(ctx, "transport", "websocket"))
     if transport == "webtransport":
         session_id = state.get("session_id") or getattr(ctx, "session_id", None)

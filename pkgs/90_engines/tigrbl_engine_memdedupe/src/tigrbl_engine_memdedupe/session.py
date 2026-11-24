@@ -18,6 +18,8 @@ class DedupeSession(EngineSessionBase):
         self._engine = engine
         self._closed = False
 
+    _has_transaction_boundary = False
+
     async def _tx_begin_impl(self) -> None:
         return
 

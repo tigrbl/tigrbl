@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+from collections import deque
+from uuid import uuid4
 from dataclasses import fields
 from typing import Any, Callable, List
 
@@ -10,6 +12,8 @@ from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
 class EngineSessionBase(EngineSessionSpec):
     """Base contract and guardrails for engine database sessions."""
+
+    _has_transaction_boundary = True
 
     def __init__(self, spec: EngineSessionSpec | None = None) -> None:
         resolved = spec or EngineSessionSpec()
@@ -23,6 +27,30 @@ class EngineSessionBase(EngineSessionSpec):
         self._open = False
         self._dirty = False
         self._pending: List[asyncio.Task] = []
+        self.engine_session_id = uuid4().hex
+        self.transaction_id: str | None = None
+        self._observes_provider_begin = False
+        self._transaction_events: deque[dict[str, str]] = deque(maxlen=256)
+
+    def transaction_events(self) -> tuple[dict[str, str], ...]:
+        return tuple(dict(event) for event in self._transaction_events)
+
+    def _begin_transaction_identity(self) -> None:
+        if self.transaction_id is None:
+            self.transaction_id = uuid4().hex
+            self._record_transaction_event("begin")
+
+    def _record_transaction_event(self, outcome: str) -> None:
+        if self.transaction_id is not None:
+            self._transaction_events.append({
+                "engine_session_id": self.engine_session_id,
+                "transaction_id": self.transaction_id,
+                "outcome": outcome,
+            })
+
+    def _end_transaction_identity(self, outcome: str) -> None:
+        self._record_transaction_event(outcome)
+        self.transaction_id = None
 
     def apply_spec(self, spec: EngineSessionSpec | None) -> None:
         resolved = spec or EngineSessionSpec()
@@ -39,12 +67,20 @@ class EngineSessionBase(EngineSessionSpec):
     async def begin(self) -> None:
         await self._tx_begin_impl()
         self._open = True
+        if self._has_transaction_boundary and not self._observes_provider_begin:
+            self._begin_transaction_identity()
 
     async def commit(self) -> None:
         if self._spec and self._spec.read_only and self._dirty:
             raise RuntimeError("read-only session: writes detected before commit")
         await self.flush()
-        await self._tx_commit_impl()
+        try:
+            await self._tx_commit_impl()
+        except BaseException:
+            if self.transaction_id is not None and not self.in_transaction():
+                self._end_transaction_identity("unknown")
+            raise
+        self._end_transaction_identity("committed")
         self._open = False
         self._dirty = False
 
@@ -56,6 +92,7 @@ class EngineSessionBase(EngineSessionSpec):
                 pass
         self._pending.clear()
         await self._tx_rollback_impl()
+        self._end_transaction_identity("rolled_back")
         self._open = False
         self._dirty = False
 
@@ -114,6 +151,7 @@ class EngineSessionBase(EngineSessionSpec):
                 pass
         self._pending = []
         await self._close_impl()
+        self._end_transaction_identity("unknown")
 
     async def _tx_begin_impl(self) -> None:
         raise NotImplementedError
