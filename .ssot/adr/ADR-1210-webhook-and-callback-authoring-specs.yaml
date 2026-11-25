@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1210"
+number: 1210
+slug: "webhook-and-callback-authoring-specs"
+title: "Webhook and callback authoring specs"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Introduce public WebhookSpec and CallbackSpec as authoring contracts. Concrete Webhook, DefineWebhook, and webhook_ctx normalize to WebhookSpec. Concrete Callback, DefineCallback, and callback_ctx normalize to CallbackSpec. Direct spec and concrete declarations converge on the same lowering."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  Introduce public WebhookSpec and CallbackSpec as authoring contracts. Concrete Webhook, DefineWebhook, and webhook_ctx normalize to WebhookSpec. Concrete Callback, DefineCallback, and callback_ctx normalize to CallbackSpec. Direct spec and concrete declarations converge on the same lowering.
+
+  WebhookSpec lowers to a path-owned custom operation and HTTP POST binding registered through the existing REST path. CallbackSpec selects an existing source operation and lowers to hook declarations, with explicit runtime completion metadata for after-emission delivery. The source operation keeps its identity and response contract. No new execution phase is introduced.
+
+  Concrete owns authoring and lowering. Kernel owns compilation and phase placement. Atoms own phase and transaction guards. Runtime or a worker executes the delivery. POST_EMIT stays runtime-owned.
+
+  Callback durability is optional and independent of delivery timing. The only built-in persistence table is CallbackAttempt, with one row per try. The framework provides neither a separate Callback table nor CallbackStatusMixin. Applications may supply their own outcome fields or associations.
+
+  ## Relationship to existing decisions
+
+  On acceptance, this decision supersedes only ADR-1183 rule 4's exclusion of public CallbackSpec and the public-spec exclusions in SPEC-1139 and SPEC-1141. The existing inbound/outbound taxonomy, REST lowering, source operation identity, and completion-fence legality remain authoritative.
+
+  ## Governed scope
+
+  - feat:webhook-spec-authoring-and-registration
+  - feat:callback-spec-authoring-and-execution
+  - feat:callback-attempt-persistence-and-recovery
