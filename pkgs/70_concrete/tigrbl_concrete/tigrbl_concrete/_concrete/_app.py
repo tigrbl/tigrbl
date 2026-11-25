@@ -524,11 +524,6 @@ class App(AppBase):
             return
         path = scope.get("path")
         if isinstance(path, str):
-            seen_paths = getattr(self, "_seen_paths", None)
-            if not isinstance(seen_paths, set):
-                seen_paths = set()
-                setattr(self, "_seen_paths", seen_paths)
-            seen_paths.add(path)
             mounted = _serve_mounted_app(self, scope, receive, send)
             if mounted is not None:
                 await mounted
