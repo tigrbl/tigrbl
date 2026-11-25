@@ -4,7 +4,7 @@ from httpx import ASGITransport, AsyncClient
 import pytest
 
 from tigrbl import Request, TigrblApp
-from tigrbl.system import build_healthz_uix, build_lens, build_swagger, mount_healthz_uix
+from tigrbl.system import build_healthz_uix, build_lens, build_swagger, build_zdoc, mount_healthz_uix
 
 
 def _request(path: str = "/docs") -> Request:
@@ -22,16 +22,33 @@ def _request(path: str = "/docs") -> Request:
 def test_build_lens_helper_returns_openrpc_uix_html() -> None:
     app = TigrblApp()
 
-    html = build_lens(app, _request("/lens"), spec_path="/openrpc.json")
+    with pytest.warns(DeprecationWarning, match="Use build_zdoc"):
+        html = build_lens(app, _request("/lens"), spec_path="/openrpc.json")
 
     assert "<!doctype html>" in html.lower()
-    assert "@tigrbljs/tigrbl-lens" in html
-    assert "EmbeddedLens" in html
+    assert "@tigrbljs/tigrbl-zdoc" in html
+    assert "EmbeddedZDoc" in html
     assert "/openrpc.json" in html
     assert '"id":"rest"' in html
     assert '"id":"jsonrpc"' in html
-    assert 'docs: [{' in html
+    assert '"docs":[{' in html
     assert 'id="root"' in html
+
+
+@pytest.mark.unit
+def test_zdoc_payloads_follow_mount_prefix_and_accept_explicit_asyncapi() -> None:
+    app = TigrblApp(title="<Docs>")
+    app._tigrbl_route_prefix = "/api"
+    request = _request("/zdoc")
+    request.script_name = "/proxy"
+    html = build_zdoc(
+        app, request, openapi_path="/rest.json", spec_path="/rpc.json",
+        asyncapi_path="/socket.json",
+    )
+    assert "<title>&lt;Docs&gt;" in html
+    for spec in ("rest.json", "rpc.json", "socket.json"):
+        assert f'"url":"/proxy/api/{spec}"' in html
+    assert '"kind":"asyncapi"' in html
 
 
 @pytest.mark.unit
@@ -62,6 +79,7 @@ async def test_default_uix_routes_are_human_viewable_get_surfaces() -> None:
     ) as client:
         docs = await client.get("/docs")
         lens = await client.get("/lens")
+        zdoc = await client.get("/zdoc")
         healthz_uix = await client.get("/healthz")
         healthz_json = await client.get("/system/healthz")
 
@@ -69,9 +87,10 @@ async def test_default_uix_routes_are_human_viewable_get_surfaces() -> None:
     assert "text/html" in docs.headers.get("content-type", "")
     assert "swagger-ui" in docs.text
 
-    assert lens.status_code == 200
+    assert lens.status_code == zdoc.status_code == 200
+    assert lens.text == zdoc.text
     assert "text/html" in lens.headers.get("content-type", "")
-    assert "@tigrbljs/tigrbl-lens" in lens.text
+    assert "@tigrbljs/tigrbl-zdoc" in lens.text
     assert "/openrpc.json" in lens.text
     assert '"id":"rest"' in lens.text
     assert '"id":"jsonrpc"' in lens.text

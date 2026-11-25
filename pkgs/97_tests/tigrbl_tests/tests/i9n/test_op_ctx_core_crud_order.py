@@ -129,7 +129,10 @@ async def test_op_ctx_alias(
             pass
 
         openapi, _, _ = await fetch_inspection(client)
-        assert path in openapi["paths"]
+        template = f"/widget/{{item_id}}/{alias}" if needs_id else path
+        assert template in openapi["paths"]
+        if needs_id:
+            assert path not in openapi["paths"]
 
     assert "op" in calls
     if verb in {"create", "read", "update", "delete", "list", "clear"}:

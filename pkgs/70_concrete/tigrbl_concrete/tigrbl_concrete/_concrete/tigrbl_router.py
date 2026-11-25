@@ -37,7 +37,9 @@ from ._websocket import WebSocketRoute
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_swagger as _mount_swagger
-from tigrbl_concrete.system import mount_lens as _mount_lens
+from warnings import warn
+
+from tigrbl_concrete.system import mount_zdoc as _mount_zdoc
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from tigrbl_concrete._concrete import engine_resolver as _resolver
@@ -341,6 +343,15 @@ class TigrblRouter(_Router):
         """Mount an OpenRPC JSON endpoint onto this router instance."""
         return _mount_openrpc(self, path=path, name=name, tags=tags)
 
+    def mount_zdoc(
+        self, *, path: str = "/zdoc", name: str = "__zdoc__",
+        spec_path: str | None = None, openapi_path: str | None = None,
+        asyncapi_path: str | None = None, unwrap_rpc_params: bool = True,
+    ) -> Any:
+        return _mount_zdoc(self, path=path, name=name, spec_path=spec_path,
+                           openapi_path=openapi_path, asyncapi_path=asyncapi_path,
+                           unwrap_rpc_params=unwrap_rpc_params)
+
     def mount_lens(
         self,
         *,
@@ -348,7 +359,8 @@ class TigrblRouter(_Router):
         name: str = "__lens__",
         spec_path: str | None = None,
     ) -> Any:
-        return _mount_lens(self, path=path, name=name, spec_path=spec_path)
+        warn("mount_lens is deprecated. Use mount_zdoc instead.", DeprecationWarning, stacklevel=2)
+        return self.mount_zdoc(path=path, name=name, spec_path=spec_path)
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         from tigrbl_concrete.system import mount_json_schema as _mount_json_schema

@@ -38,7 +38,9 @@ from tigrbl_concrete._mapping.router.rpc import rpc_call as _rpc_call
 from tigrbl_concrete._mapping.model import rebind as _rebind, bind as _bind
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system import mount_healthz_uix as _mount_healthz_uix
-from tigrbl_concrete.system import mount_lens as _mount_lens
+from warnings import warn
+
+from tigrbl_concrete.system import mount_zdoc as _mount_zdoc
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_swagger as _mount_swagger
@@ -315,7 +317,8 @@ class TigrblApp(_App):
             self.attach_diagnostics(prefix=self.system_prefix)
             self.mount_healthz_uix(path="/healthz")
             self.mount_openrpc(path="/openrpc.json")
-            self.mount_lens(path="/lens", spec_path="/openrpc.json")
+            self.mount_zdoc()
+            self.mount_zdoc(path="/lens", name="__lens__")
             self.mount_json_schema(path="/schemas.json")
         if routers:
             initial_routers.extend(list(routers))
@@ -943,6 +946,15 @@ class TigrblApp(_App):
         self.openapi_schema = document
         return document
 
+    def mount_zdoc(
+        self, *, path: str = "/zdoc", name: str = "__zdoc__",
+        spec_path: str | None = None, openapi_path: str | None = None,
+        asyncapi_path: str | None = None, unwrap_rpc_params: bool = True,
+    ) -> Any:
+        return _mount_zdoc(self, path=path, name=name, spec_path=spec_path,
+                           openapi_path=openapi_path, asyncapi_path=asyncapi_path,
+                           unwrap_rpc_params=unwrap_rpc_params)
+
     def mount_lens(
         self,
         *,
@@ -950,8 +962,9 @@ class TigrblApp(_App):
         name: str = "__lens__",
         spec_path: str | None = None,
     ) -> Any:
-        """Mount a tigrbl-lens HTML endpoint onto this instance."""
-        return _mount_lens(self, path=path, name=name, spec_path=spec_path)
+        """Mount ZDoc at the legacy Lens path."""
+        warn("mount_lens is deprecated. Use mount_zdoc instead.", DeprecationWarning, stacklevel=2)
+        return self.mount_zdoc(path=path, name=name, spec_path=spec_path)
 
     def mount_healthz_uix(
         self,

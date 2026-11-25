@@ -574,7 +574,7 @@ def _mro_collect_decorated_ops(table: type) -> List["OpSpec"]:
                         or ()
                     ),
                     secdeps=tuple(getattr(op_spec, "secdeps", ()) or ()),
-                    security=op_spec.security,
+                    security=getattr(op_spec, "security", None),
                 )
             )
             seen.add(name)

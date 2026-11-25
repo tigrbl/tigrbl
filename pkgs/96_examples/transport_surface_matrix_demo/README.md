@@ -300,7 +300,7 @@ Available docs surfaces:
 - `http://127.0.0.1:8000/docs`
 - `http://127.0.0.1:8000/openapi.json`
 - `http://127.0.0.1:8000/openrpc.json`
-- `http://127.0.0.1:8000/lens`
+- `http://127.0.0.1:8000/zdoc`
 - `http://127.0.0.1:8000/asyncapi.json`
 - `http://127.0.0.1:8000/matrix`
 
