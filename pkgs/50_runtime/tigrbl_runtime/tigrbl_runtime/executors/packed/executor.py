@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.types import PHASE_SEQUENCE
+
 from ._shared import *
 from .batch import _PackedBatchMixin
 from .hot_access import _PackedHotAccessMixin
@@ -32,22 +34,7 @@ class PackedPlanExecutor(
 
     name: ClassVar[str] = "packed"
     _resident_batch_scheduler: ClassVar[Any | None] = None
-    _PHASE_EXECUTION_ORDER: ClassVar[tuple[str, ...]] = (
-        "INGRESS_BEGIN",
-        "INGRESS_PARSE",
-        "INGRESS_DISPATCH",
-        "PRE_TX_BEGIN",
-        "START_TX",
-        "PRE_HANDLER",
-        "HANDLER",
-        "POST_HANDLER",
-        "PRE_COMMIT",
-        "TX_COMMIT",
-        "POST_COMMIT",
-        "POST_RESPONSE",
-        "EGRESS_SHAPE",
-        "EGRESS_FINALIZE",
-    )
+    _PHASE_EXECUTION_ORDER: ClassVar[tuple[str, ...]] = PHASE_SEQUENCE
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)

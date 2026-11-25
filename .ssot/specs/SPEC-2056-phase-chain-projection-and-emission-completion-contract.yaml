@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2056"
 number: 2056
@@ -20,7 +20,7 @@ body: |-
   
   ## Canonical Phase Chain
   
-  - `INGRESS_BEGIN -> INGRESS_PARSE -> INGRESS_ROUTE -> PRE_TX_BEGIN -> START_TX? -> PRE_HANDLER -> HANDLER -> POST_HANDLER -> PRE_COMMIT -> TX_COMMIT? -> POST_COMMIT -> POST_RESPONSE -> EGRESS_SHAPE -> EGRESS_FINALIZE -> POST_EMIT?`
+  - `INGRESS_BEGIN -> INGRESS_PARSE -> INGRESS_ROUTE -> SECURITY -> DEPENDENCIES -> PRE_TX_BEGIN -> START_TX? -> PRE_HANDLER -> HANDLER -> POST_HANDLER -> PRE_COMMIT -> TX_COMMIT? -> POST_COMMIT -> POST_RESPONSE -> EGRESS_SHAPE -> EGRESS_FINALIZE -> POST_EMIT?`
   - `START_TX` and `TX_COMMIT` are omitted when the selected execution path does not own or enter a transaction.
   - `POST_EMIT` is present only when the selected transport exposes an explicit completion fence.
   
@@ -29,7 +29,7 @@ body: |-
   - `INGRESS_ROUTE` is canonical.
   - `INGRESS_DISPATCH` is not an allowed compatibility projection, alias, parity label, or diagnostics label.
   - Compatibility projections may omit phases when they are not entered, but they may not rename canonical phases.
-  - Public hook phases remain `PRE_TX_BEGIN` through `POST_RESPONSE` plus the governed `ON_*` and `TX_ROLLBACK` phases.
+  - `SECURITY` and `DEPENDENCIES` are framework-owned. Public hook phases remain `PRE_TX_BEGIN` through `POST_RESPONSE` plus the governed `ON_*` and `TX_ROLLBACK` phases.
   
   ## Completion Contract
   

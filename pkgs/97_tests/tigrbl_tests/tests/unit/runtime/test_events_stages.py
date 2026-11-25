@@ -8,7 +8,14 @@ from tigrbl_atoms.types import error_phase_for
 def test_stages_constant_lists_all_lifecycle_anchors_in_order() -> None:
     """Ensure runtime PHASES exports the complete ingress-to-egress ordered sequence."""
     assert _ev.PHASES == _kernel_events.PHASES
-    assert "INGRESS_DISPATCH" in _ev.PHASES
+    start = _ev.PHASES.index("INGRESS_DISPATCH")
+    assert _ev.PHASES[start:start + 5] == (
+        "INGRESS_DISPATCH", "SECURITY", "DEPENDENCIES", "PRE_TX_BEGIN", "START_TX"
+    )
+    assert "SECURITY" not in HOOK_PHASES
+    assert "DEPENDENCIES" not in HOOK_PHASES
+    assert error_phase_for("SECURITY") == "ON_PRE_TX_BEGIN_ERROR"
+    assert error_phase_for("DEPENDENCIES") == "ON_PRE_TX_BEGIN_ERROR"
     assert "INGRESS_ROUTE" not in _ev.PHASES
 
 

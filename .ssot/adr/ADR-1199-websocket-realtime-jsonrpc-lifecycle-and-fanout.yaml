@@ -124,7 +124,11 @@ body: |-
   ## Request and message identity
   
   Draft ADR-1207 assigns correlation_id to a logical application request inside a WebSocket session and invocation_id to the complete decoded message. A JSON-RPC batch document shares its invocation_id among calls and distinguishes them by item index. Preserve the caller’s JSON-RPC id as rpc_id. Carry the applicable IDs through operation dispatch and fan-out attribution.
-
+  
   ## Draft transport identity extension
-
+  
   Draft ADR-1209 governs the versioned subscription acknowledgement and the broker-owned subscription identity. Preserve origin invocation and destination attribution on fan-out. Socket cleanup resolves subscriptions attached to that carrier and respects authorized resume to a different destination.
+  
+  ## Related invocation and reply contracts
+  
+  SPEC-2169 defines the authoritative invocation outcome and eligibility for fallback. SPEC-1147 governs WebSocket reply projection through the kernel plan and framing atoms. SPEC-1144 applies the transport-neutral outcome to the concrete router boundary.

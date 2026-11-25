@@ -88,7 +88,7 @@ def _check_managed_badges(package_root: Path, readme: str, manifest: dict) -> st
             if image.get("alt") == f"Monthly PyPI downloads: {name}"
         ]
         assert len(downloads) == 1, package_root
-        assert downloads[0]["src"] == f"https://img.shields.io/pypi/dm/{name}", (
+        assert downloads[0]["src"].split("?", 1)[0] == f"https://img.shields.io/pypi/dm/{name}", (
             package_root
         )
     else:

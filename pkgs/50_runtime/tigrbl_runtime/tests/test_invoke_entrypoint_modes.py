@@ -1,6 +1,48 @@
 import pytest
 
 from tigrbl_runtime.executors.phase_runner import _invoke
+from tigrbl_runtime.executors import kernel_executor
+from tigrbl_typing.status.exceptions import HTTPException
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("fail_phase", [None, "SECURITY", "HANDLER", "TX_COMMIT"])
+async def test_invocation_outcome_preserves_empty_success_or_authoritative_failure(
+    monkeypatch, fail_phase
+):
+    events = []
+
+    def step(phase):
+        def run(ctx):
+            events.append(phase)
+            if phase == fail_phase:
+                raise HTTPException(403 if phase == "SECURITY" else 409, phase)
+        return run
+
+    ordered = ["SECURITY", "HANDLER", "TX_COMMIT"]
+    monkeypatch.setattr(
+        kernel_executor, "resolve_phase_chains",
+        lambda model, alias: {phase: [step(phase)] for phase in ordered},
+    )
+    model = type("Record", (), {})
+    context = {"specs": {}, "opview": object()}
+    if fail_phase is None:
+        assert await kernel_executor.invoke_op(model=model, alias="delete", ctx=context) is None
+        assert events == ordered
+    else:
+        with pytest.raises(HTTPException) as error:
+            await kernel_executor.invoke_op(model=model, alias="delete", ctx=context)
+        assert events == ordered[:ordered.index(fail_phase) + 1]
+        assert error.value.status_code == (403 if fail_phase == "SECURITY" else 409)
+
+
+@pytest.mark.asyncio
+async def test_missing_invocation_plan_fails_closed(monkeypatch):
+    monkeypatch.setattr(kernel_executor, "resolve_phase_chains", lambda model, alias: {})
+    with pytest.raises(LookupError, match="No compiled operation"):
+        await kernel_executor.invoke_op(
+            model=type("Record", (), {}), alias="delete", ctx={"specs": {}, "opview": object()}
+        )
 
 
 @pytest.mark.asyncio

@@ -39,9 +39,7 @@ class _PackedRouteSelectMixin(_PackedWebSocketRouteSelectMixin):
         if identity and isinstance(scope, dict):
             identity = webtransport_lane_identity(scope, message, identity)
             if str(message.get("type", "")).endswith(".receive"):
-                identity = invocation_identity(identity)
-                if selection.rpc_envelope is not None and "id" in selection.rpc_envelope:
-                    identity["rpc_id"] = selection.rpc_envelope["id"]
+                identity = invocation_identity(identity, rpc_envelope=selection.rpc_envelope)
             temp["identity"] = identity
         if selection.path_params is not None:
             path_params = dict(selection.path_params)
@@ -181,14 +179,6 @@ class _PackedRouteSelectMixin(_PackedWebSocketRouteSelectMixin):
     ) -> int:
         return self._prime_exact_channel_program(ctx, env, plan, packed)
 
-    def _resolve_hot_exact_route_slices(
-        self, packed: PackedKernel
-    ) -> Mapping[int, tuple[int, int]]:
-        return _kernel_resolve_hot_exact_route_slices(
-            packed,
-            self._hot_exact_route_cache,
-        )
-
     def _resolve_program_id_from_exact_route(
         self, packed: PackedKernel, method: str, path: str
     ) -> int:
@@ -197,14 +187,6 @@ class _PackedRouteSelectMixin(_PackedWebSocketRouteSelectMixin):
             method,
             path,
             self._hot_exact_route_cache,
-            self._hot_exact_route_verify_cache,
-        )
-
-    def _resolve_hot_exact_route_verify(
-        self, packed: PackedKernel
-    ) -> Mapping[int, Mapping[int, tuple[tuple[str, int], ...]]]:
-        return _kernel_resolve_hot_exact_route_verify(
-            packed,
             self._hot_exact_route_verify_cache,
         )
 

@@ -160,6 +160,13 @@ python -m tigrbl --help
 
 ### Configuration
 
+Declare protected actions with `OperationSecurity` and register the decision
+with `app.set_auth(authorize=authorize)` or the router equivalent.
+The callback receives `request, model, alias, payload, user`. For a protected
+operation it can also declare a keyword-only `ctx` and read the compiled
+declaration from `ctx["operation_security"]`. It must return `True` in
+`SECURITY` before Tigrbl runs `DEPENDENCIES` and application `PRE_TX_BEGIN` hooks.
+
 Configure `tigrbl` through the APIs in [package source](https://github.com/tigrbl/tigrbl/blob/master/pkgs/80_facade/tigrbl/tigrbl/__init__.py); its [manifest](https://github.com/tigrbl/tigrbl/blob/master/pkgs/80_facade/tigrbl/pyproject.toml) describes installation requirements, not an implicit service configuration. No additional package-global configuration contract is inferred from dependencies.
 
 ### Error Handling

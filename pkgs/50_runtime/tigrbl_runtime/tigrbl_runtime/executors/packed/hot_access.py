@@ -4,6 +4,16 @@ from ._shared import *
 
 
 class _PackedHotAccessMixin:
+    def _resolve_hot_exact_route_slices(
+        self, packed: PackedKernel
+    ) -> Mapping[int, tuple[int, int]]:
+        return _kernel_resolve_hot_exact_route_slices(packed, self._hot_exact_route_cache)
+
+    def _resolve_hot_exact_route_verify(
+        self, packed: PackedKernel
+    ) -> Mapping[int, Mapping[int, tuple[tuple[str, int], ...]]]:
+        return _kernel_resolve_hot_exact_route_verify(packed, self._hot_exact_route_verify_cache)
+
     @staticmethod
     def _hot_block_view(packed: PackedKernel) -> Mapping[str, Any]:
         return _kernel_hot_block_view(packed)

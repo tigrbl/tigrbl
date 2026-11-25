@@ -44,19 +44,11 @@ def _webtransport_scope_session_id(env: Any) -> Any:
         return None
     if scope.get("session_id") is not None:
         return scope.get("session_id")
-    ext = scope.get("ext")
-    if isinstance(ext, Mapping):
-        wt = ext.get("webtransport")
-        if isinstance(wt, Mapping) and wt.get("session_id") is not None:
-            return wt.get("session_id")
-        unit = ext.get("tigrcorn.unit")
-        if isinstance(unit, Mapping) and unit.get("session_id") is not None:
-            return unit.get("session_id")
-    extensions = scope.get("extensions")
-    if isinstance(extensions, Mapping):
-        unit = extensions.get("tigrcorn.unit")
-        if isinstance(unit, Mapping) and unit.get("session_id") is not None:
-            return unit.get("session_id")
+    for group, key in (("ext", "webtransport"), ("ext", "tigrcorn.unit"), ("extensions", "tigrcorn.unit")):
+        values = scope.get(group)
+        item = values.get(key) if isinstance(values, Mapping) else None
+        if isinstance(item, Mapping) and item.get("session_id") is not None:
+            return item["session_id"]
     return None
 
 

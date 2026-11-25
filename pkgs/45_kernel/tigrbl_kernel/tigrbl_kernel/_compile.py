@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from inspect import isawaitable
 from types import SimpleNamespace
 from typing import Any, Mapping
 
@@ -20,8 +19,6 @@ from tigrbl_core._spec.binding_spec import (
 )
 from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
 from tigrbl_core._spec.op_spec import OpSpec
-from tigrbl_core._spec.operation_security import OperationSecurity
-from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_core._spec.well_known_spec import well_known_op_alias
 
 from . import events as _ev
@@ -40,22 +37,6 @@ from .utils import (
 
 
 DEFAULT_PHASE_ORDER = tuple(getattr(_ev, "PHASES", ())) or _DEFAULT_PHASE_ORDER
-
-
-def _operation_guard(app: Any, declarations: Mapping[tuple[type, str], OperationSecurity]) -> StepFn:
-    async def guard(ctx: Any) -> None:
-        authorize = getattr(app, "_tigrbl_operation_authorizer", None)
-        security = declarations.get((ctx.get("model"), ctx.get("op")))
-        if security is None or not callable(authorize):
-            raise HTTPException(status_code=503, detail="Operation authorization unavailable")
-        decision = authorize(security, ctx)
-        if isawaitable(decision):
-            decision = await decision
-        if decision is not True:
-            raise HTTPException(status_code=403, detail="Operation forbidden")
-
-    guard.__tigrbl_label__ = "security:authorize_operation"
-    return guard
 
 
 def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
@@ -250,8 +231,6 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
 
     resolve_security = getattr(app, "_tigrbl_security_dependencies", None)
     actions: set[str] = set()
-    declarations: dict[tuple[type, str], OperationSecurity] = {}
-    authorize_operation = _operation_guard(app, declarations)
     for model in _compile_models(app):
         for sp in _opspecs(model):
             meta_index = len(opmeta)
@@ -261,7 +240,6 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                 if security.action_id in actions:
                     raise ValueError(f"Duplicate operation action: {security.action_id}")
                 actions.add(security.action_id)
-                declarations[model, sp.alias] = security
             opmeta.append(OpMeta(model=model, alias=sp.alias, target=target, security=security))
             try:
                 opviews.append(
@@ -278,10 +256,6 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                 ),
                 egress_chain,
             )
-            if security is not None and security.access == "protected":
-                # The first step binds the active transaction for the phase.
-                # Run the gate before model hooks, input transformations or handlers.
-                phase_chains[meta_index]["PRE_HANDLER"].insert(1, authorize_operation)
 
             for binding in getattr(sp, "bindings", ()) or ():
                 if isinstance(
