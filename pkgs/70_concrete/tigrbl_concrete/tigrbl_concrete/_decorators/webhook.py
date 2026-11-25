@@ -43,4 +43,6 @@ def webhook(
     return _decorate
 
 
-__all__ = ["webhook"]
+webhook_ctx = webhook
+
+__all__ = ["webhook", "webhook_ctx"]

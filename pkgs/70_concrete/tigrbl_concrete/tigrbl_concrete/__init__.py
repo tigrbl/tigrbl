@@ -20,6 +20,13 @@ _COLUMN_EXPORTS = {
     'makeColumn': 'tigrbl_concrete.factories.column',
     'makeVirtualColumn': 'tigrbl_concrete.factories.column',
     'vcol': 'tigrbl_concrete.factories.column',
+    "Webhook": "tigrbl_concrete.webhooks",
+    "DefineWebhook": "tigrbl_concrete.webhooks",
+    "webhook_ctx": "tigrbl_concrete.webhooks",
+    "Callback": "tigrbl_concrete.callbacks",
+    "CallbackAttempt": "tigrbl_concrete.callbacks",
+    "DefineCallback": "tigrbl_concrete.callbacks",
+    "callback_ctx": "tigrbl_concrete.callbacks",
 }
 
 __all__ = [

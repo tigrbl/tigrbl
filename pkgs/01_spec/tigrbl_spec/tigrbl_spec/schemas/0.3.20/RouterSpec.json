@@ -85,6 +85,31 @@
     },
     "tags": {
       "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "webhooks": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "./WebhookSpec.json#/$defs/WebhookSpecEnvelope"
+          },
+          "type": "array"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "__tuple__": {
+              "items": {
+                "$ref": "./WebhookSpec.json#/$defs/WebhookSpecEnvelope"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "__tuple__"
+          ],
+          "type": "object"
+        }
+      ]
     }
   },
   "required": [

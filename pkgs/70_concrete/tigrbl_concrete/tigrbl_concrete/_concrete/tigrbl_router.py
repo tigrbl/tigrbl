@@ -209,6 +209,12 @@ class TigrblRouter(_Router):
             self.include_router(router, prefix=prefix)
         return included_table, router
 
+    def include_webhook(self, webhook: Any) -> None:
+        """Mount an inbound webhook declaration on this router."""
+        from .._mapping.appspec.path_lowering import mount_webhook
+
+        mount_webhook(self, webhook)
+
     def include_tables(
         self,
         tables: Sequence[type],

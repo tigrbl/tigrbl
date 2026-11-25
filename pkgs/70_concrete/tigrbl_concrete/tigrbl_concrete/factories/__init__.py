@@ -1,5 +1,6 @@
 from .activation import activateTableSpec, activateTableSpecs
 from .app import defineAppSpec, deriveApp
+from .callback import DefineCallback
 from .column import acol, makeColumn, makeVirtualColumn, vcol
 from .op import makeOp, op
 from .router import defineRouterSpec, deriveRouter
@@ -8,6 +9,7 @@ from .webhook import DefineWebhook, defineWebhook
 
 __all__ = [
     "DefineWebhook",
+    "DefineCallback",
     "acol",
     "activateTableSpec",
     "activateTableSpecs",

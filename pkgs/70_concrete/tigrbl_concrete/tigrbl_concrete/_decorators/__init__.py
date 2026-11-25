@@ -36,6 +36,8 @@ _EXPORTS = {
     "delete": "tigrbl_concrete._decorators.rest",
     # webhook
     "webhook": "tigrbl_concrete._decorators.webhook",
+    "webhook_ctx": "tigrbl_concrete._decorators.webhook",
+    "callback_ctx": "tigrbl_concrete._decorators.callback",
     # authn
     "allow_anon": "tigrbl_concrete._decorators.allow_anon",
     # response

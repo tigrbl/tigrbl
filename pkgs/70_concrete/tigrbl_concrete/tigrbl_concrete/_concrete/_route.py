@@ -500,6 +500,8 @@ async def _invoke_route_handler(route: Route, ctx: Any) -> None:
                     request = _route_request(route, ctx, coerce_concrete=False)
                 kwargs[name] = request
 
+        if route.status_code is not None:
+            ctx.status_code = route.status_code
         response = route.handler(**kwargs) if kwargs else route.handler()
         if inspect.isawaitable(response):
             response = await response

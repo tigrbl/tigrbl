@@ -89,8 +89,8 @@ def test_webhook_public_surface_avoids_inbound_symbol_names() -> None:
     assert "inbound webhook" in (DefineWebhook.__doc__ or "")
 
 
-def test_no_callbackspec_or_webhookspec_public_surface_is_introduced() -> None:
+def test_webhook_and_callback_authoring_specs_are_public() -> None:
     import tigrbl_core._spec as spec
 
-    assert not hasattr(spec, "CallbackSpec")
-    assert not hasattr(spec, "WebhookSpec")
+    assert spec.CallbackSpec.__name__ == "CallbackSpec"
+    assert spec.WebhookSpec.__name__ == "WebhookSpec"

@@ -722,6 +722,12 @@ class TigrblApp(_App):
 
         return mount_well_known(self, resources, **kwargs)
 
+    def include_webhook(self, webhook: Any) -> None:
+        """Mount an inbound webhook declaration on this app."""
+        from .._mapping.appspec.path_lowering import mount_webhook
+
+        mount_webhook(self, webhook)
+
     def include_routers(self, routers: Sequence[Any]) -> None:
         """Mount multiple Routers, supporting optional per-item prefixes."""
         for entry in routers:

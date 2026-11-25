@@ -21,6 +21,7 @@ def defineRouterSpec(
     middlewares: Sequence[Any] = (),
     response: Any = None,
     paths: Sequence[Any] = (),
+    webhooks: Sequence[Any] = (),
     tables: Sequence[Any] = (),
 ) -> Type[RouterSpec]:
     """Define a declarative router specification without runtime state."""
@@ -38,6 +39,7 @@ def defineRouterSpec(
         MIDDLEWARES=tuple(middlewares or ()),
         RESPONSE=response,
         PATHS=tuple(paths or ()),
+        WEBHOOKS=tuple(webhooks or ()),
         TABLES=tuple(tables or ()),
     )
     return type("RouterSpec", (RouterSpec,), attrs)

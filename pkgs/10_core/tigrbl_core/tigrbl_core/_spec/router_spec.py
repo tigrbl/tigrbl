@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from typing import Any, Callable, Optional, Sequence
 
 from .._spec.app_spec import merge_seq_attr
@@ -12,6 +12,7 @@ from .._spec.schema_spec import SchemaSpec
 from .._spec.table_spec import TableSpec
 from .._spec.well_known_spec import WellKnownResourceSpec
 from .serde import SerdeMixin
+from .webhook_spec import WebhookSpec
 
 
 @dataclass
@@ -33,11 +34,19 @@ class RouterSpec(SerdeMixin):
     well_known: Sequence[WellKnownResourceSpec] = field(default_factory=tuple)
     paths: Sequence[PathSpec] = field(default_factory=tuple)
     tables: Sequence[Any] = field(default_factory=tuple)
+    webhooks: Sequence[WebhookSpec] = field(default_factory=tuple)
 
     def __post_init__(self) -> None:
         self.well_known = tuple(self.well_known or ())
         self._validate_nested_specs("well_known", self.well_known, (WellKnownResourceSpec,))
         self._validate_nested_specs("paths", self.paths, (PathSpec,))
+        self._validate_nested_specs("webhooks", self.webhooks, (WebhookSpec,))
+        self.webhooks = tuple(
+            item if type(item) is WebhookSpec else WebhookSpec(**{
+                field.name: getattr(item, field.name) for field in fields(WebhookSpec)
+            })
+            for item in self.webhooks
+        )
         self._validate_nested_specs("tables", self.tables, (TableSpec,))
         self._validate_nested_specs("ops", self.ops, (OpSpec,))
         self._validate_nested_specs("schemas", self.schemas, (SchemaSpec,))
@@ -110,6 +119,7 @@ class RouterSpec(SerdeMixin):
             ops=merge_seq_attr(router, "OPS", include_inherited=True),
             well_known=merge_seq_attr(router, "WELL_KNOWN", include_inherited=True),
             paths=merge_seq_attr(router, "PATHS", include_inherited=True),
+            webhooks=merge_seq_attr(router, "WEBHOOKS", include_inherited=True),
             tables=merge_seq_attr(router, "TABLES", include_inherited=True),
             schemas=merge_seq_attr(router, "SCHEMAS", include_inherited=True),
             hooks=merge_seq_attr(router, "HOOKS", include_inherited=True),

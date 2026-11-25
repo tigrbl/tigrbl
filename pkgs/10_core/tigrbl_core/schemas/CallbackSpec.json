@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "CallbackSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.callback_spec:CallbackSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "CallbackSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "CallbackSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "delivery": {
+      "enum": [
+        "post_commit",
+        "worker",
+        "after_emit",
+        "pre_commit"
+      ]
+    },
+    "destination": {
+      "pattern": "^https?://",
+      "type": "string"
+    },
+    "durability": {
+      "enum": [
+        "none",
+        "results",
+        "attempts",
+        "attempts_and_results"
+      ]
+    },
+    "emit_wait_seconds": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "event": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "max_attempts": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "ops": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "$ref": "./shared.json#/$defs/StringTuple"
+        }
+      ]
+    },
+    "payload": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "record_intent": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "record_outcome": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "resolve_secret": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "retry_delay_seconds": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "send": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "session_factory": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "signing_secret_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "spec_kind": {
+      "const": "CallbackSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:CallbackSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
+    "timeout_seconds": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "total_timeout_seconds": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
+    "ops",
+    "event",
+    "destination",
+    "payload"
+  ],
+  "title": "CallbackSpec",
+  "type": "object"
+}

@@ -4,7 +4,7 @@ from collections.abc import Callable
 import re
 from typing import Any
 
-from tigrbl_core._spec import HttpRestBindingSpec, OpSpec, PathSpec
+from tigrbl_core._spec import HttpRestBindingSpec, OpSpec, PathSpec, WebhookSpec
 from tigrbl_concrete._concrete._webhook import Webhook
 
 
@@ -36,10 +36,10 @@ def defineWebhook(
         security_deps=tuple(security_deps or ()),
         extra=dict(extra or {}),
     )
-    return _buildWebhookPathSpec(webhook)
+    return lower_webhook(webhook)
 
 
-def _buildWebhookPathSpec(webhook: Webhook) -> PathSpec:
+def lower_webhook(webhook: WebhookSpec) -> PathSpec:
     selected_alias = webhook.alias or _webhookAlias(
         provider=webhook.provider,
         event_type=webhook.event_type,
@@ -56,6 +56,7 @@ def _buildWebhookPathSpec(webhook: Webhook) -> PathSpec:
         **dict(webhook.extra or {}),
     }
     op = OpSpec(
+        persist="skip",
         alias=selected_alias,
         target="custom",
         expose_rpc=False,

@@ -21,4 +21,17 @@ def compile_callback_metadata(callbacks: Iterable[Mapping[str, Any]]) -> list[di
     return compiled
 
 
-__all__ = ["compile_callback_metadata"]
+def callback_hook_phases(timing: str, *, durable_intent: bool) -> tuple[str, ...]:
+    """Select legal source-operation phases for callback preparation and delivery."""
+    if timing == "pre_commit":
+        return ("PRE_COMMIT",)
+    if timing == "worker":
+        if not durable_intent:
+            raise ValueError("Worker callbacks require durable intent")
+        return ("PRE_COMMIT",)
+    if timing not in {"post_commit", "after_emit"}:
+        raise ValueError(f"Unsupported callback timing: {timing}")
+    return ("PRE_COMMIT", "POST_COMMIT") if durable_intent else ("POST_COMMIT",)
+
+
+__all__ = ["callback_hook_phases", "compile_callback_metadata"]

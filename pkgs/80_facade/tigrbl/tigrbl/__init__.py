@@ -74,6 +74,20 @@ for alias, target in {
         setattr(parent_module, attr_name, target_module)
 
 
+from tigrbl_concrete.callbacks import (  # noqa: E402
+    Callback,
+    CallbackSpec,
+    DefineCallback,
+    callback_ctx,
+    run_callback_attempts,
+)
+from tigrbl_concrete.webhooks import (  # noqa: E402
+    DefineWebhook,
+    Webhook,
+    WebhookSpec,
+    webhook_ctx,
+)
+
 _spec = import_module("tigrbl_core._spec")
 _base = import_module("tigrbl_base._base")
 _concrete = import_module("tigrbl_concrete._concrete")
@@ -423,6 +437,15 @@ from tigrbl_kernel.trace import Timeline  # noqa: E402
 from tigrbl_typing.trace import TraceSink  # noqa: E402
 
 __all__ = [
+    "DefineWebhook",
+    "Webhook",
+    "WebhookSpec",
+    "webhook_ctx",
+    "Callback",
+    "CallbackSpec",
+    "DefineCallback",
+    "callback_ctx",
+    "run_callback_attempts",
     "Timeline",
     "TraceSink",
     "specs",
