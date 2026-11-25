@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2169"
 number: 2169
@@ -13,12 +13,18 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define operation attempt state and parentage semantics."
     at: "2026-06-04T12:32:32Z"
+    note: "Created to define operation attempt state and parentage semantics."
+    status: "draft"
 references: []
 body: |-
   Scope: Define one operation attempt from receipt to terminal outcome. Attempt states include received, resolved, planned, executing, committed, emitted, completed, failed, and aborted. Each attempt must carry attempt_id, trace_id, op_id, and applicable app_id, router_id, table_id, atom_id, session_id, stream_id, datagram_id, and engine_session_id. Valid scenario: retry with a declared idempotency key correlates to the original attempt without duplicating side effects. Invalid scenario: side effect is emitted without an attempt_id or is attributed to a different op_id. Invariants: deterministic parentage, idempotency key correlation where declared, no cross-session leakage, and no hidden lifecycle transition.
+  
+  ## Invocation outcome and CRUD fallback
+  
+  The invocation boundary MUST expose a transport-neutral outcome to its caller. An authoritative success, failure, or rejection MUST prevent a secondary CRUD invocation, regardless of whether the reply is empty, encoded, or awaiting emission. A fallback requires an explicit outcome authorizing fallback and establishing that the operation was not executed. A rejection, an unknown outcome, and an ambiguous execution failure MUST NOT authorize fallback. A compatibility fallback that is explicitly eligible remains subject to the same security and transaction contract as the resolved operation.
+  
+  Fallback eligibility MUST come from invocation state. Result fields, HTTP status, carrier metadata, and wire encoding do not establish execution state. This outcome describes the operation invocation before transport emission. Transport completion and delivery claims remain governed by SPEC-2171.
 spec_kind: "normative"
 adr_ids:
   - "adr:1138"

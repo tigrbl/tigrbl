@@ -328,7 +328,13 @@ def _inject_atoms(
     target: str | None = None,
     batch_policy: Mapping[str, Any] | None = None,
 ) -> None:
+    atoms = tuple(atoms)
     order = {name: i for i, name in enumerate(_ev.all_events_ordered())}
+    dedicated_persistence = any(
+        anchor == _ev.SYS_HANDLER_PERSISTENCE
+        and _infer_domain_subject(run) == ("sys", f"handler_{target}")
+        for anchor, run in atoms
+    )
     bound_custom_handler = any(
         getattr(step, "__tigrbl_bound_custom_handler__", False)
         for step in chains.get("HANDLER", ())
@@ -383,6 +389,8 @@ def _inject_atoms(
             and _subject.startswith("handler_")
         ):
             handler_target = _subject.removeprefix("handler_")
+            if handler_target == "persistence" and dedicated_persistence:
+                continue
             if handler_target == "custom" and bound_custom_handler:
                 continue  # The model already wired this operation into HANDLER.
             if handler_target != "persistence" and target and handler_target != target:

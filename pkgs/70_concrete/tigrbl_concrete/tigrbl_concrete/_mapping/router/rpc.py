@@ -9,90 +9,12 @@ from typing import Any, Dict, Mapping, Optional, Union
 from .common import RouterLike, _ensure_router_ns
 from ..._concrete import engine_resolver as _resolver
 from tigrbl_ops_oltp.crud.helpers.model import _single_pk_name
-from tigrbl_ops_oltp.crud import ops as _crud_ops
-from tigrbl_ops_oltp.crud import bulk as _crud_bulk
 from ..._mapping.op_resolver import resolve as resolve_ops
 from tigrbl_concrete._mapping.invoke import invoke_op
 from tigrbl_base._base._rpc_map import _serialize_output
 
 logger = logging.getLogger("uvicorn")
 logger.debug("Loaded module v3/mapping/router/rpc")
-
-
-def _should_fallback_to_crud(
-    *, target: str, pk_name: str | None, final: Any, payload: Any
-) -> bool:
-    if target not in {"read", "update", "replace"}:
-        return False
-    if pk_name is None:
-        return False
-    if type(final).__name__.endswith("Ctx"):
-        return True
-    if final is None:
-        return True
-    if isinstance(final, Mapping):
-        if pk_name not in final:
-            return True
-        if target == "read":
-            # ``read`` must return a materialized record, not an echo object.
-            data_keys = [k for k in final.keys() if k != pk_name]
-            if data_keys and all(final.get(k) is None for k in data_keys):
-                return True
-    if target in {"update", "replace"} and isinstance(payload, Mapping):
-        return any(
-            k in payload
-            and isinstance(final, Mapping)
-            and final.get(k) != payload.get(k)
-            for k in payload
-            if k != pk_name
-        )
-    return False
-
-
-def _is_empty_transport_response(value: Any) -> bool:
-    if isinstance(value, Mapping):
-        if "status_code" in value:
-            return value.get("body") is None and value.get("path") is None
-        egress = value.get("egress")
-        if isinstance(egress, Mapping):
-            return _is_empty_transport_response(egress.get("transport_response"))
-        return False
-
-    transport = getattr(value, "transport_response", None)
-    if transport is not None and _is_empty_transport_response(transport):
-        return True
-
-    temp = getattr(value, "temp", None)
-    if isinstance(temp, Mapping):
-        egress = temp.get("egress")
-        if isinstance(egress, Mapping):
-            return _is_empty_transport_response(egress.get("transport_response"))
-
-    return False
-
-
-def _is_unmaterialized_create_result(value: Any) -> bool:
-    if not _is_empty_transport_response(value):
-        return False
-    if getattr(value, "response_payload", None) is not None:
-        return False
-    temp = getattr(value, "temp", None)
-    if isinstance(temp, Mapping):
-        if temp.get("response_payload") is not None:
-            return False
-        storage_log = temp.get("storage_log")
-        if storage_log:
-            return False
-    return True
-
-
-async def _maybe_commit(db: Any) -> None:
-    commit = getattr(db, "commit", None)
-    if not callable(commit):
-        return
-    result = commit()
-    if inspect.isawaitable(result):
-        await result
 
 
 def _unwrap_runtime_result(value: Any) -> Any:
@@ -142,11 +64,6 @@ def _unwrap_runtime_result(value: Any) -> Any:
         in_values = getattr(current, "in_values", None)
         if isinstance(in_values, Mapping) and in_values:
             return dict(in_values)
-
-        transport = getattr(current, "transport_response", None)
-        if transport is not None:
-            current = transport
-            continue
 
         break
 
@@ -288,7 +205,7 @@ async def rpc_call(
         }.issubset(result.keys()):
             invoke_ctx: Dict[str, Any] = dict(result["ctx"])
             invoke_ctx["response_serializer"] = result["serialize"]
-            final = await invoke_op(
+            result = await invoke_op(
                 request=result["request"],
                 db=result["db"],
                 model=result["model"],
@@ -306,134 +223,16 @@ async def rpc_call(
             serializer = getattr(result, "response_serializer", None)
             if callable(serializer):
                 invoke_ctx["response_serializer"] = serializer
-            final = await invoke_op(
+            result = await invoke_op(
                 request=request,
                 db=db,
                 model=mdl,
                 alias=method,
                 ctx=invoke_ctx,
             )
-        else:
-            final = result
-
-        if isinstance(ctx_dict.get("websocket"), Mapping):
-            runtime_result = _unwrap_runtime_result(final)
-            if (
-                isinstance(runtime_result, Mapping)
-                and isinstance(runtime_result.get("body"), bytes)
-                and isinstance(runtime_result.get("status_code"), int)
-                and "body_iterator" in runtime_result and "path" in runtime_result
-                and runtime_result["body_iterator"] is None and runtime_result["path"] is None
-            ):
-                # The WebSocket binding consumes the completed response.
-                return runtime_result
-
-        if _should_fallback_to_crud(
-            target=getattr(resolution, "target", method),
-            pk_name=pk_name,
-            final=final,
-            payload=payload,
-        ):
-            path_params = ctx_dict.get("path_params", {})
-            ident = None
-            if isinstance(path_params, Mapping):
-                ident = path_params.get(pk_name)
-            if ident is None and isinstance(payload, Mapping):
-                ident = payload.get(pk_name)
-            if ident is not None:
-                if resolution.target == "read":
-                    fallback = _crud_ops.read(mdl, ident, db)
-                elif resolution.target == "update":
-                    fallback = _crud_ops.update(mdl, ident, dict(payload or {}), db)
-                else:
-                    fallback = _crud_ops.replace(mdl, ident, dict(payload or {}), db)
-                final = await fallback if inspect.isawaitable(fallback) else fallback
-
-        target = getattr(resolution, "target", method)
-        if (
-            target == "create"
-            and isinstance(payload, Mapping)
-            and _is_unmaterialized_create_result(final)
-        ):
-            created = _crud_ops.create(mdl, dict(payload), db)
-            final = await created if inspect.isawaitable(created) else created
-            await _maybe_commit(db)
-
-        final = _unwrap_runtime_result(final)
-
-        if pk_name:
-            path_params = ctx_dict.get("path_params", {})
-            ident = None
-            if isinstance(path_params, Mapping):
-                ident = path_params.get(pk_name)
-            if ident is None and isinstance(payload, Mapping):
-                ident = payload.get(pk_name)
-            if target == "read":
-                needs_read = final is None
-                if isinstance(final, Mapping):
-                    if pk_name not in final:
-                        needs_read = True
-                    else:
-                        data_keys = [k for k in final.keys() if k != pk_name]
-                        if data_keys and all(final.get(k) is None for k in data_keys):
-                            needs_read = True
-                if needs_read and ident is not None:
-                    fetched = _crud_ops.read(mdl, ident, db)
-                    final = await fetched if inspect.isawaitable(fetched) else fetched
-
-            if target in {"update", "replace", "merge"} and ident is not None:
-                if final is None and isinstance(payload, Mapping):
-                    if target == "update":
-                        next_result = _crud_ops.update(mdl, ident, dict(payload), db)
-                    elif target == "replace":
-                        next_result = _crud_ops.replace(mdl, ident, dict(payload), db)
-                    else:
-                        next_result = _crud_ops.merge(mdl, ident, dict(payload), db)
-                    final = (
-                        await next_result
-                        if inspect.isawaitable(next_result)
-                        else next_result
-                    )
-                if isinstance(final, Mapping) and pk_name not in final:
-                    final = {pk_name: ident, **dict(final)}
-
-        if target == "delete" and not (
-            isinstance(final, Mapping) and isinstance(final.get("deleted"), int)
-        ):
-            if pk_name:
-                ident = None
-                if isinstance(ctx_dict.get("path_params"), Mapping):
-                    ident = ctx_dict["path_params"].get(pk_name)
-                if ident is None and isinstance(payload, Mapping):
-                    ident = payload.get(pk_name)
-                if ident is not None:
-                    deleted = _crud_ops.delete(mdl, ident, db)
-                    final = await deleted if inspect.isawaitable(deleted) else deleted
-
-        if target.startswith("bulk_") and isinstance(payload, list):
-            if final is None:
-                op = getattr(_crud_bulk, target, None)
-                if callable(op):
-                    recalculated = op(mdl, payload, db)
-                    final = (
-                        await recalculated
-                        if inspect.isawaitable(recalculated)
-                        else recalculated
-                    )
-            if isinstance(final, list):
-                enriched: list[Any] = []
-                for idx, row in enumerate(final):
-                    if not isinstance(row, Mapping):
-                        enriched.append(row)
-                        continue
-                    if pk_name and pk_name not in row and idx < len(payload):
-                        source = payload[idx]
-                        if isinstance(source, Mapping) and pk_name in source:
-                            enriched.append({pk_name: source[pk_name], **dict(row)})
-                            continue
-                    enriched.append(dict(row))
-                final = enriched
-
+        # The invocation result or raised error is authoritative. Only the
+        # compiled handler chain can select a persistence implementation.
+        final = _unwrap_runtime_result(result)
         target = getattr(resolution, "target", method)
         final = _serialize_output(mdl, method, target, final)
         if target == "list" and isinstance(final, Mapping):

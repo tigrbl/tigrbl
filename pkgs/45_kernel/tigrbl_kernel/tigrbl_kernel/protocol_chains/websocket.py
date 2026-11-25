@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from uuid import uuid4
 
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
@@ -9,6 +8,7 @@ from collections.abc import Iterable, Mapping
 from typing import Any
 
 from tigrbl_atoms.atoms.framing import websocket_jsonrpc as _jsonrpc_framing
+from tigrbl_atoms.atoms.framing.codec import decode_frame
 from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
 from tigrbl_typing.status.converters import http_exc_to_rpc
 from tigrbl_typing.status.exceptions import HTTPException
@@ -469,17 +469,18 @@ async def _dispatch_jsonrpc_payload(
             and "body_iterator" in result and "path" in result
             and result["body_iterator"] is None and result["path"] is None
         ):
-            body = json.loads(result["body"]) if result["body"] else None
+            body = decode_frame("json", result["body"]) if result["body"] else None
             if result["status_code"] >= 400:
                 raise HTTPException(status_code=result["status_code"], detail=body)
             result = body
+        reply = _jsonrpc_result(result, request_id)
     except AttributeError:
-        return _jsonrpc_error(-32601, "Method not found", request_id)
+        reply = _jsonrpc_error(-32601, "Method not found", request_id)
     except HTTPException as exc:
         code, message, data = http_exc_to_rpc(exc)
-        return _jsonrpc_error(code, message, request_id, data=data)
+        reply = _jsonrpc_error(code, message, request_id, data=data)
     except Exception as exc:
-        return _jsonrpc_error(
+        reply = _jsonrpc_error(
             -32603,
             "Internal error",
             request_id,
@@ -493,7 +494,7 @@ async def _dispatch_jsonrpc_payload(
             emit_trace(sink, "Invocation", "WebSocket", identity)
     if "id" not in payload:
         return None
-    return _jsonrpc_result(result, request_id)
+    return reply
 
 
 async def _dispatch_jsonrpc_decoded(

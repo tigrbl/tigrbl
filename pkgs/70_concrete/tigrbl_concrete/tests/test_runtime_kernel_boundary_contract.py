@@ -4,6 +4,9 @@ import ast
 import importlib.metadata
 import re
 from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = PACKAGE_ROOT / "tigrbl_concrete"
@@ -90,3 +93,52 @@ def test_concrete_lowering_services_reuse_declared_runtime_bridge() -> None:
     from tigrbl_runtime.lowering_services import compile_opview_from_specs as runtime_compile
 
     assert compile_opview_from_specs is runtime_compile
+
+
+def test_concrete_rpc_fallback_does_not_inspect_transport_responses() -> None:
+    path = SOURCE_ROOT / "_mapping" / "router" / "rpc.py"
+    tree = ast.parse(path.read_text(encoding="utf-8-sig"))
+    fields = {node.value for node in ast.walk(tree)
+              if isinstance(node, ast.Constant) and isinstance(node.value, str)}
+    assert fields.isdisjoint({"websocket", "body", "body_iterator", "status_code", "transport_response"})
+    assert not any(
+        isinstance(node, ast.ImportFrom)
+        and (node.module or "").startswith("tigrbl_ops_oltp")
+        and any(alias.name in {"ops", "bulk", "delete"} for alias in node.names)
+        for node in ast.walk(tree)
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("case", ["empty", "application-payload", "denied", "unknown"])
+async def test_router_consumes_one_authoritative_invocation_outcome(monkeypatch, case):
+    from tigrbl_concrete._mapping.router import rpc
+
+    class Record:
+        pass
+
+    async def bind(payload, *, db, request, ctx):
+        return {"model": Record, "alias": "delete", "ctx": ctx, "serialize": None,
+                "request": request, "db": db}
+
+    result = {"body": "application data", "status_code": 200, "deleted": 0} if case == "application-payload" else None
+    failure = PermissionError("denied") if case == "denied" else LookupError("unknown") if case == "unknown" else None
+    calls = []
+
+    async def invoke(**kwargs):
+        calls.append(kwargs["alias"])
+        if failure is not None:
+            raise failure
+        return result
+
+    Record.rpc = SimpleNamespace(delete=bind)
+    monkeypatch.setattr(rpc, "_ensure_router_ns", lambda router: None)
+    monkeypatch.setattr(rpc, "_fallback_resolution", lambda *args: SimpleNamespace(model=Record, target="delete"))
+    monkeypatch.setattr(rpc, "_single_pk_name", lambda model: "id")
+    monkeypatch.setattr(rpc, "invoke_op", invoke)
+    if failure is not None:
+        with pytest.raises(type(failure), match=case):
+            await rpc.rpc_call(SimpleNamespace(), Record, "delete", {"id": 1}, db=object())
+    else:
+        assert await rpc.rpc_call(SimpleNamespace(), Record, "delete", {"id": 1}, db=object()) == result
+    assert calls == ["delete"]
