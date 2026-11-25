@@ -12,13 +12,13 @@ from uuid import uuid4
 
 from tigrbl_atoms.atoms.transport.completion_fence import defer_http_completion
 from tigrbl_core._spec import CallbackSpec
-from tigrbl_kernel.callbacks import callback_hook_phases
 from tigrbl_runtime.callbacks import attempt_callback, build_callback_payload
 from tigrbl_typing.trace import emit_trace, trace_fields
 
 from ._concrete._callback import Callback
 from ._decorators.callback import callback_ctx
 from .factories.callback import DefineCallback
+from ._runtime_services import callback_hook_phases
 
 if TYPE_CHECKING:
     from .callback_attempt import CallbackAttempt

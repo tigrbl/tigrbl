@@ -92,7 +92,11 @@ def test_concrete_lowering_services_reuse_declared_runtime_bridge() -> None:
     from tigrbl_concrete._runtime_services import compile_opview_from_specs
     from tigrbl_runtime.lowering_services import compile_opview_from_specs as runtime_compile
 
+    from tigrbl_concrete._runtime_services import callback_hook_phases
+    from tigrbl_kernel.callbacks import callback_hook_phases as kernel_callback_phases
+
     assert compile_opview_from_specs is runtime_compile
+    assert callback_hook_phases is kernel_callback_phases
 
 
 def test_concrete_rpc_fallback_does_not_inspect_transport_responses() -> None:
