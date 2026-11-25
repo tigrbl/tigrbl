@@ -228,7 +228,7 @@ def test_generated_specs_and_snapshot_artifacts_cover_required_contracts() -> No
     assert "spec snapshot api" in swagger_html.lower()
     assert "spec snapshot api" in snapshot_swagger.lower()
 
-    assert "lens" in lens_html.lower()
+    assert "zdoc" in lens_html.lower()
     assert "openrpc" in lens_html.lower()
     assert "lens" in snapshot_lens.lower()
     assert "openrpc" in snapshot_lens.lower()

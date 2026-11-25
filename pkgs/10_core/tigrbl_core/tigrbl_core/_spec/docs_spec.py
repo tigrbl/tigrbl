@@ -8,7 +8,7 @@ from .path_spec import PathSpec
 from .serde import SerdeMixin
 
 DocsPayloadKind = Literal["openapi", "openrpc", "jsonschema"]
-DocsUixKind = Literal["swagger", "redoc", "scalar", "lens", "custom"]
+DocsUixKind = Literal["swagger", "redoc", "scalar", "zdoc", "lens", "custom"]
 
 
 @dataclass(frozen=True)
@@ -151,6 +151,11 @@ class DocsUixSpec(SerdeMixin):
     projection: DocsProjectionSpec | None = None
 
     def __post_init__(self) -> None:
+        if self.kind == "lens":
+            from warnings import warn
+
+            warn("DocsUixSpec(kind=\"lens\") is deprecated. Use kind=\"zdoc\".",
+                 DeprecationWarning, stacklevel=3)
         if self.payload_path is not None and not self.payload_path.startswith("/"):
             raise ValueError("DocsUixSpec.payload_path must be an absolute path when provided.")
         if self.projection is not None and not isinstance(self.projection, DocsProjectionSpec):
