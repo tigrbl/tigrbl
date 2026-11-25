@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
+from tigrbl_atoms.atoms.transport.completion_fence import observe_http_completion
 from tigrbl_kernel import Kernel, _kernel
 from tigrbl_typing.trace import TraceSink
 
@@ -111,16 +112,21 @@ class Runtime(RuntimeBase):
                 packed_plan=packed_plan,
             )
         )
-        if not skip_channel_prelude:
-            await prepare_channel_context(env, ctx)
-        result = await impl.invoke(
-            runtime=self,
-            env=env,
-            ctx=ctx,
-            plan=plan,
-            packed_plan=packed_plan,
-        )
-        if not skip_channel_prelude:
+        with observe_http_completion(env) as http_completion:
+            try:
+                if not skip_channel_prelude:
+                    await prepare_channel_context(env, ctx)
+                result = await impl.invoke(
+                    runtime=self,
+                    env=env,
+                    ctx=ctx,
+                    plan=plan,
+                    packed_plan=packed_plan,
+                )
+            finally:
+                if http_completion is not None:
+                    await complete_channel(env, ctx, http_completion=http_completion)
+        if http_completion is None and not skip_channel_prelude:
             await complete_channel(env, ctx)
         return result
 

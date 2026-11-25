@@ -115,6 +115,45 @@ async def test_callback_and_original_response_order(timing):
 
 
 @pytest.mark.asyncio
+async def test_emitted_error_response_does_not_release_success_only_callback():
+    from types import SimpleNamespace
+
+    from tigrbl import CallbackSpec
+    from tigrbl_atoms.atoms.transport.completion_fence import (
+        finish_http_completion,
+        observe_http_completion,
+    )
+    from tigrbl_concrete.callbacks import lower_callback
+
+    events = []
+
+    async def send(*args):
+        events.append("callback")
+        return {"status_code": 202}
+
+    async def response_send(message):
+        events.append(message["type"])
+
+    spec = CallbackSpec(
+        ops="pay",
+        event="paid",
+        destination="https://test/hooks",
+        payload=lambda ctx: {},
+        delivery="after_emit",
+        send=send,
+    )
+    env = SimpleNamespace(scope={"type": "http"}, send=response_send)
+    ctx = {"env": env, "temp": {}}
+    with observe_http_completion(env) as completion:
+        await lower_callback(spec, object, "POST_COMMIT")(ctx)
+        await env.send({"type": "http.response.start", "status": 500})
+        await env.send({"type": "http.response.body", "body": b"error"})
+        await finish_http_completion(env.scope, ctx, completion)
+    assert ctx["current_phase"] == "POST_EMIT"
+    assert events == ["http.response.start", "http.response.body"]
+
+
+@pytest.mark.asyncio
 async def test_worker_callback_is_created_by_the_mounted_source_operation(tmp_path):
     from sqlalchemy import Column, String, create_engine, select
     from sqlalchemy.orm import sessionmaker

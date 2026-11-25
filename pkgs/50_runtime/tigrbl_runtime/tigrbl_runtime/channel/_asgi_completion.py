@@ -5,6 +5,10 @@ from typing import Any
 from tigrbl_atoms.atoms.transport.asgi_channel import (
     complete_channel_state as _complete_channel_state,
 )
+from tigrbl_atoms.atoms.transport.completion_fence import (
+    HttpCompletion,
+    finish_http_completion,
+)
 from tigrbl_typing.channel import OpChannel
 
 from ._asgi_scope import build_asgi_channel
@@ -18,8 +22,17 @@ def channel_senders():
     return _send_json, send_transport_via_channel
 
 
-async def complete_channel(env: Any, ctx: Any) -> None:
+async def complete_channel(
+    env: Any, ctx: Any, *, http_completion: HttpCompletion | None = None
+) -> None:
+    scope = getattr(env, "scope", {}) or {}
     channel = ctx.get("channel")
+    if scope.get("type") == "http":
+        if http_completion is None:
+            return
+        await finish_http_completion(scope, ctx, http_completion)
+        return
+
     if channel is None:
         channel = build_asgi_channel(env)
         ctx["channel"] = channel
