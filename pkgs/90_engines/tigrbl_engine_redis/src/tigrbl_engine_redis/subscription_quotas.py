@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 import json
-import os
 import time
 from uuid import uuid4
-from .quotas import SubscriptionAdmissionError, SubscriptionLease, quota_keys
+from tigrbl_ops_realtime.quotas import (
+    SubscriptionAdmissionError,
+    SubscriptionLease,
+    quota_keys,
+)
 
 
 _TRANSACTION = r"""
@@ -83,17 +86,32 @@ return cjson.encode(result)
 class RedisSubscriptionQuotaStore:
     scope = "deployment"
 
-    def __init__(self, policy, *, client=None, clock=time.monotonic):
+    def __init__(
+        self,
+        policy,
+        *,
+        client=None,
+        url: str | None = None,
+        namespace: str = "tigrbl:subscriptions",
+        clock=time.monotonic,
+    ):
+        if (client is None) == (url is None) or url == "":
+            raise ValueError("supply exactly one Redis client or URL")
+        if not isinstance(namespace, str) or not namespace or len(namespace) > 128:
+            raise ValueError("subscription namespace must be a bounded nonempty string")
+
         self.policy, self.clock = policy, clock
-        self.key = "{" + policy.namespace + "}:quota-state"
+        self.key = "{" + namespace + "}:quota-state"
+        self._owns_client = client is None
         if client is None:
             from redis.asyncio import Redis
 
-            url = os.environ.get(policy.store_url_env or "")
-            if not url:
-                raise ValueError("subscription Redis URL secret is missing")
             client = Redis.from_url(url, socket_connect_timeout=1, socket_timeout=1)
         self.client = client
+
+    async def aclose(self) -> None:
+        if self._owns_client:
+            await self.client.aclose()
 
     async def _call(self, op, arg):
         try:

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transport Trace Lab</title>
+<style>
+:root{color-scheme:light;--ink:#172822;--muted:#52655e;--line:#d8e2dc;--paper:#fff;--bg:#f3f6f3;--teal:#066854;--pale:#e2f3e9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+main{max-width:1440px;margin:auto;padding:36px clamp(16px,4vw,64px) 56px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:24px}
+h1{margin:0;font-size:clamp(32px,5vw,54px);line-height:1.08;letter-spacing:-.062em}
+header p{color:var(--muted);margin:9px 0 0}.control{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled{cursor:wait;opacity:.66}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #1e8d75;outline-offset:2px}
+.primary{border:0;border-radius:9px;background:var(--teal);color:white;padding:11px 16px;font-weight:700;white-space:nowrap}
+#status{display:flex;gap:7px;align-items:center;color:var(--muted);white-space:nowrap}#status::before{content:"";width:8px;height:8px;border-radius:50%;background:#8b9b93}
+#status[data-live=true]::before{background:#198651}
+#result{min-height:22px;color:var(--muted);margin:0 0 13px}#result[data-error=true]{color:#972d20}
+#dimensions{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.dimension{text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:11px 13px;color:var(--muted);font-size:13px}
+.dimension strong{display:block;color:var(--ink);font-size:25px;line-height:1.2;margin-top:3px}.dimension[aria-pressed=true]{background:var(--pale);border-color:#73ad93;color:#085341}
+.layout{display:grid;grid-template-columns:minmax(210px,1fr) minmax(0,2.6fr);gap:14px}
+.panel{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.panel-head{padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+h2{font-size:16px;margin:0}input,select,.secondary{border:1px solid var(--line);background:white;border-radius:7px;padding:6px 8px}
+#search{width:100%;margin-top:4px}.table-wrap,#entities{max-height:480px;overflow:auto}
+#entities{list-style:none;margin:0;padding:6px}.entity{width:100%;text-align:left;border:0;border-radius:6px;background:white;padding:9px;display:grid;gap:3px}
+.entity:hover,.entity[aria-pressed=true]{background:var(--pale)}.entity small,.muted{color:var(--muted)}
+.mono,code{font:13px ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}th{position:sticky;top:0;background:#eef3ef;color:var(--muted);white-space:nowrap}
+th,td{padding:9px;border-bottom:1px solid #e8edea}td{vertical-align:top}td:first-child{white-space:nowrap}
+.event{border:0;background:transparent;text-align:left;color:var(--teal);padding:0;font-weight:700}
+tr:has(.event[aria-pressed=true]){background:var(--pale)}.tag{border-radius:5px;background:#edf2ee;padding:2px 5px;font-size:12px;white-space:nowrap}
+#related{padding:0 14px 12px;display:flex;gap:6px;flex-wrap:wrap}.link{font:12px ui-monospace,monospace;border:1px solid #adcfbf;background:var(--pale);color:#064e3b;border-radius:6px;padding:4px 7px;text-align:left;overflow-wrap:anywhere}
+#detail{border-top:1px solid var(--line);padding:14px}#detail h3{margin:0 0 6px;font-size:14px}#fields{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 14px;margin:0}dt{color:var(--muted)}dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.empty{padding:15px;color:var(--muted)}#selection{padding:12px 14px 5px;margin:0;overflow-wrap:anywhere}
+@media(max-width:830px){#dimensions{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){header{display:block}.control{margin-top:14px}.layout{display:block}.panel+.panel{margin-top:12px}#entities{max-height:180px}.panel-head{align-items:flex-start}th,td{padding:6px}td:nth-child(4),th:nth-child(4){display:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div><h1>Transport Trace Lab</h1><p>Follow one workload across REST, JSON-RPC, WebSocket, and WebTransport.</p></div>
+  <div class="control"><span id="status" role="status">Connecting</span><button id="run" class="primary">Run all transports</button></div>
+</header>
+<p id="result" aria-live="polite"></p>
+<nav id="dimensions" aria-label="Trace dimensions"></nav>
+<div class="layout">
+<section class="panel" aria-labelledby="entity-title">
+  <div class="panel-head"><h2 id="entity-title">Connections</h2><input id="search" type="search" aria-label="Find an ID" placeholder="Find an ID"></div>
+  <ul id="entities"></ul>
+</section>
+<section class="panel" aria-labelledby="events-title">
+  <div class="panel-head">
+    <h2 id="events-title">Timeline</h2>
+    <div class="control">
+      <label><span class="muted">Transport</span> <select id="transport"><option value="">All</option><option>HTTP</option><option>REST</option><option>JSON-RPC</option><option>WebSocket</option><option>WebTransport</option><option>Realtime</option></select></label>
+      <button id="clear" class="secondary" hidden>Clear selection</button>
+    </div>
+  </div>
+  <p id="selection" class="mono" hidden></p>
+  <div id="related" aria-label="Related IDs"></div>
+  <div class="table-wrap">
+    <table><thead><tr><th scope="col">Time</th><th scope="col">Event</th><th scope="col">Transport</th><th scope="col">Outcome</th></tr></thead><tbody id="events"></tbody></table>
+    <p id="empty" class="empty">Run the scenario to populate the timeline.</p>
+  </div>
+  <section id="detail" hidden><h3 id="detail-title">Event details</h3><dl id="fields"></dl></section>
+</section>
+</div>
+</main>
+<script>
+"use strict";
+const dimensions = [
+  ["Connections", "connection_id"], ["Sessions", "transport_session_id", "session_id"],
+  ["Streams", "stream_correlation_id"], ["Subscriptions", "subscription_id"],
+  ["Invocations", "invocation_id", "origin_invocation_id"], ["DB transactions", "transaction_id"]
+];
+const get = id => document.getElementById(id);
+const el = (tag, text, css) => {
+  const node = document.createElement(tag);
+  if (text !== undefined) node.textContent = text;
+  if (css) node.className = css;
+  return node;
+};
+let rows = [], revision = -1, active = 0, selected = null, detail = null;
+
+function index(keys) {
+  const items = new Map();
+  for (const row of rows) for (const key of keys) {
+    if (row[key] == null) continue;
+    const id = String(row[key]);
+    if (!items.has(id)) items.set(id, new Set());
+    items.get(id).add(row);
+  }
+  return items;
+}
+function focusID(dimension, id) {
+  active = dimension;
+  selected = {dimension, id};
+  detail = null;
+  get("search").value = "";
+  get("transport").value = "";
+  render();
+}
+function idLink(dim, id, prefix) {
+  const button = el("button", prefix ? prefix + " · " + id : id, "link");
+  button.type = "button";
+  button.addEventListener("click", () => focusID(dim, id));
+  return button;
+}
+function renderDetails() {
+  const row = rows.find(item => item.sequence === detail);
+  get("detail").hidden = !row;
+  if (!row) return;
+  get("detail-title").textContent = row.kind + " · Event " + row.sequence;
+  const fields = Object.entries(row).flatMap(([key, value]) => {
+    const field = el("dd");
+    const dim = dimensions.findIndex(([, ...keys]) => keys.includes(key));
+    field.append(dim < 0 ? el("code", String(value)) : idLink(dim, String(value)));
+    return [el("dt", key), field];
+  });
+  get("fields").replaceChildren(...fields);
+}
+function render() {
+  const focus = document.activeElement?.dataset.focusKey;
+  const indices = dimensions.map(([, ...keys]) => index(keys));
+  get("dimensions").replaceChildren(...dimensions.map(([name], i) => {
+    const button = el("button", name, "dimension");
+    button.dataset.focusKey = "dimension-" + i;
+    button.setAttribute("aria-pressed", String(active === i));
+    button.append(el("strong", indices[i].size));
+    button.addEventListener("click", () => {
+      active = i;
+      selected = detail = null;
+      get("search").value = "";
+      render();
+    });
+    return button;
+  }));
+  get("entity-title").textContent = dimensions[active][0];
+  const query = get("search").value.trim().toLowerCase();
+  const items = [...indices[active]].reverse().filter(([id]) => id.toLowerCase().includes(query));
+  get("entities").replaceChildren(...(items.length ? items.map(([id, events]) => {
+    const item = el("li");
+    const button = el("button", undefined, "entity");
+    button.dataset.focusKey = "entity-" + id;
+    button.setAttribute("aria-pressed", String(selected?.id === id && selected.dimension === active));
+    button.append(el("code", id), el("small", events.size + (events.size === 1 ? " event" : " events")));
+    button.addEventListener("click", () => focusID(active, id));
+    item.append(button);
+    return item;
+  }) : [el("li", "No matching IDs", "empty")]));
+  const matched = selected ? [...(indices[selected.dimension].get(selected.id) || [])] : rows;
+  get("selection").hidden = !selected;
+  get("clear").hidden = !selected;
+  if (selected) get("selection").textContent = selected.id;
+  const links = new Map();
+  if (selected) {
+    for (const row of matched) dimensions.forEach(([name, ...keys], i) => {
+      for (const key of keys) if (row[key] != null && String(row[key]) !== selected.id) {
+        links.set(i + "/" + row[key], [i, String(row[key]), name]);
+      }
+    });
+  }
+  get("related").replaceChildren(...[...links.values()].map(link => idLink(...link)));
+  const visible = matched.filter(row => !get("transport").value || row.transport === get("transport").value);
+  get("empty").hidden = Boolean(visible.length);
+  get("empty").textContent = rows.length ? "No events match this selection." : "Run the scenario to populate the timeline.";
+  get("events").replaceChildren(...[...visible].reverse().map(row => {
+    const tr = el("tr");
+    const action = el("button", row.kind, "event");
+    action.dataset.focusKey = "event-" + row.sequence;
+    action.setAttribute("aria-pressed", String(detail === row.sequence));
+    action.addEventListener("click", () => {
+      detail = row.sequence;
+      render();
+    });
+    const kind = el("td"), carrier = el("td");
+    kind.append(action);
+    carrier.append(el("span", row.transport, "tag"));
+    tr.append(el("td", new Date(row.at).toLocaleTimeString()), kind, carrier, el("td", row.outcome ?? row.status ?? ""));
+    return tr;
+  }));
+  renderDetails();
+  if (focus) [...document.querySelectorAll("[data-focus-key]")]
+    .find(node => node.dataset.focusKey === focus)?.focus({preventScroll:true});
+}
+async function refresh() {
+  const response = await fetch("/demo/trace", {cache: "no-store"});
+  if (!response.ok) throw new Error(response.statusText);
+  const data = await response.json();
+  if (data.revision !== revision) {
+    revision = data.revision;
+    rows = data.events;
+    render();
+  }
+  get("status").textContent = "Live";
+  get("status").dataset.live = "true";
+}
+async function poll() {
+  try { await refresh(); }
+  catch { get("status").textContent = "Reconnecting"; get("status").dataset.live = "false"; }
+  setTimeout(poll, 800);
+}
+get("search").addEventListener("input", render);
+get("transport").addEventListener("change", render);
+get("clear").addEventListener("click", () => { selected = detail = null; render(); });
+get("run").addEventListener("click", async () => {
+  const result = get("result");
+  get("run").disabled = true;
+  result.textContent = "Running all four transports…";
+  result.dataset.error = "false";
+  try {
+    const response = await fetch("/demo/run", {method: "POST"});
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.error);
+    result.textContent = Object.entries(body).map(([name, value]) => name + " " + value).join("  •  ");
+    await refresh();
+  } catch (error) {
+    result.textContent = error.message;
+    result.dataset.error = "true";
+  } finally { get("run").disabled = false; }
+});
+render();
+poll();
+</script>
+</body>
+</html>

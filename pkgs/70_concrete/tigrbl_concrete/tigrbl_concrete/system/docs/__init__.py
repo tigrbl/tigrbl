@@ -15,10 +15,8 @@ def build_swagger(*args: Any, **kwargs: Any) -> Any:
     return _build_swagger_html(*args, **kwargs)
 
 
-def build_lens(*args: Any, **kwargs: Any) -> Any:
-    from .lens import build_lens_html as _build_lens_html
-
-    return _build_lens_html(*args, **kwargs)
+from .zdoc import build_zdoc_html as build_zdoc, mount_zdoc
+from .lens import build_lens_html as build_lens, mount_lens
 
 
 def mount_openapi(*args: Any, **kwargs: Any) -> Any:
@@ -31,12 +29,6 @@ def mount_swagger(*args: Any, **kwargs: Any) -> Any:
     from .swagger import mount_swagger as _mount_swagger
 
     return _mount_swagger(*args, **kwargs)
-
-
-def mount_lens(*args: Any, **kwargs: Any) -> Any:
-    from .lens import mount_lens as _mount_lens
-
-    return _mount_lens(*args, **kwargs)
 
 
 def mount_openrpc(*args: Any, **kwargs: Any) -> Any:
@@ -69,6 +61,8 @@ __all__ = [
     'build_openrpc_spec',
     'build_swagger',
     'build_json_schema_bundle',
+    "mount_zdoc",
+    "build_zdoc",
     'mount_lens',
     'mount_openapi',
     'mount_openrpc',

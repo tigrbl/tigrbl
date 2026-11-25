@@ -39,12 +39,6 @@ def mount_swagger(*args: Any, **kwargs: Any) -> Any:
     return _mount_swagger(*args, **kwargs)
 
 
-def mount_lens(*args: Any, **kwargs: Any) -> Any:
-    from .docs import mount_lens as _mount_lens
-
-    return _mount_lens(*args, **kwargs)
-
-
 def mount_openrpc(*args: Any, **kwargs: Any) -> Any:
     from .docs import mount_openrpc as _mount_openrpc
 
@@ -102,10 +96,8 @@ def build_swagger(*args: Any, **kwargs: Any) -> Any:
     return _build_swagger(*args, **kwargs)
 
 
-def build_lens(*args: Any, **kwargs: Any) -> Any:
-    from .docs import build_lens as _build_lens
-
-    return _build_lens(*args, **kwargs)
+from .docs.zdoc import build_zdoc_html as build_zdoc, mount_zdoc
+from .docs.lens import build_lens_html as build_lens, mount_lens
 
 
 def build_favicon(*args: Any, **kwargs: Any) -> Any:
@@ -138,6 +130,8 @@ __all__ = [
     'mount_diagnostics',
     'mount_healthz_uix',
     'mount_favicon',
+    "mount_zdoc",
+    "build_zdoc",
     'mount_lens',
     'mount_openapi',
     'mount_openrpc',

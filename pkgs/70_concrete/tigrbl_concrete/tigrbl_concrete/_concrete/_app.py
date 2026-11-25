@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_typing.trace import TraceSink, emit_trace, transport_name
+
 from dataclasses import replace
 from pathlib import Path
 from typing import Any, Sequence
@@ -57,8 +59,17 @@ class App(AppBase):
     JSONRPC_PREFIX = "/rpc"
     SYSTEM_PREFIX = "/system"
 
-    def __init__(self, *, engine: EngineCfg | None = None, **asgi_kwargs: Any) -> None:
+    def __init__(
+        self, *, engine: EngineCfg | None = None, trace_sink: TraceSink | None = None,
+        realtime_broker: Any = None, **asgi_kwargs: Any,
+    ) -> None:
+        self.trace_sink = trace_sink
+        if realtime_broker is not None:
+            self.__realtime_broker__ = realtime_broker
         subscription_policy = asgi_kwargs.pop("subscription_policy", None)
+        subscription_store = asgi_kwargs.pop("subscription_store", None)
+        if subscription_store is not None and subscription_policy is None:
+            raise ValueError("subscription_store requires a subscription_policy")
         subscription_identity = asgi_kwargs.pop("subscription_identity", None)
         subscription_operation_limits = asgi_kwargs.pop(
             "subscription_operation_limits", None
@@ -167,9 +178,9 @@ class App(AppBase):
         self.subscription_operation_limits = subscription_operation_limits or {}
         self.subscription_policy = None
         if subscription_policy is not None:
-            self.configure_subscriptions(subscription_policy)
+            self.configure_subscriptions(subscription_policy, store=subscription_store)
 
-    def configure_subscriptions(self, policy) -> None:
+    def configure_subscriptions(self, policy, *, store=None) -> None:
         """Bind scalar policy to the application's trusted identity resolver."""
         from tigrbl_ops_realtime import InMemoryRealtimeBroker
         from tigrbl_ops_realtime.quotas import SubscriptionAdmission, SubscriptionPolicy
@@ -180,16 +191,17 @@ class App(AppBase):
             SubscriptionAdmission(
                 policy,
                 self.subscription_identity,
+                store=store,
                 operation_limits=self.subscription_operation_limits,
             )
-            if policy.enabled or self.subscription_operation_limits
+            if policy.enabled or self.subscription_operation_limits or store is not None or policy.effective_scope == "deployment"
             else None
         )
         broker = getattr(self, "__realtime_broker__", None) or getattr(
             self, "_websocket_realtime_broker", None
         )
         if broker is None:
-            broker = InMemoryRealtimeBroker(admission=admission, resume_ttl_seconds=self.subscription_resume_ttl)
+            broker = InMemoryRealtimeBroker(admission=admission, resume_ttl_seconds=self.subscription_resume_ttl, trace_sink=self.trace_sink)
         elif broker.metrics()["subscriber_count"]:
             raise RuntimeError(
                 "cannot replace quota policy while subscriptions are active"
@@ -330,6 +342,11 @@ class App(AppBase):
 
         return _mount_openrpc(self, path=path, name=name)
 
+    def mount_zdoc(self, **kwargs: Any) -> Any:
+        from tigrbl_concrete.system import mount_zdoc
+
+        return mount_zdoc(self, **kwargs)
+
     def mount_lens(
         self,
         *,
@@ -337,9 +354,10 @@ class App(AppBase):
         openrpc_url: str | None = None,
         title: str | None = None,
     ) -> Any:
-        from tigrbl_concrete.system.docs.lens import mount_lens as _mount_lens
+        from warnings import warn
 
-        return _mount_lens(self, path=path, openrpc_url=openrpc_url, title=title)
+        warn("mount_lens is deprecated. Use mount_zdoc instead.", DeprecationWarning, stacklevel=2)
+        return self.mount_zdoc(path=path, spec_path=openrpc_url, title=title)
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         from tigrbl_concrete.system.docs.json_schema import _mount_json_schema
@@ -404,12 +422,16 @@ class App(AppBase):
         return _decorator
 
     @property
+    def realtime_broker(self):
+        return getattr(self, "__realtime_broker__", None)
+
+    @property
     def runtime(self):
         runtime = getattr(self, "_runtime_instance", None)
         if runtime is None:
             from tigrbl_runtime.runtime import Runtime
 
-            runtime = Runtime(default_executor=self._runtime_default_executor)
+            runtime = Runtime(default_executor=self._runtime_default_executor, trace_sink=self.trace_sink)
             self._runtime_instance = runtime
         return runtime
 
@@ -462,10 +484,18 @@ class App(AppBase):
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
         scope["app"] = self
         scope_type = scope.get("type")
-        if scope_type == "http":
+        sink = self.trace_sink
+        if scope_type == "http" or (
+            sink is not None and scope_type in {"websocket", "webtransport"}
+        ):
             from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
 
-            correlation_id = prepare_transport_identity(scope)["correlation_id"].encode("ascii")
+            identity = prepare_transport_identity(scope)
+            if sink is not None:
+                details = {**identity, "path": scope.get("path")}
+                emit_trace(sink, "Scope opened", transport_name(scope_type), details)
+        if scope_type == "http":
+            correlation_id = identity["correlation_id"].encode("ascii")
             send_response = send
 
             async def send(message):
@@ -476,6 +506,8 @@ class App(AppBase):
                         if key.lower() != b"x-correlation-id"
                     ]
                     message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
+                    if sink is not None:
+                        emit_trace(sink, "Response", "HTTP", {**details, "status": message["status"]})
                 await send_response(message)
         if scope_type == "lifespan":
             await self._handle_lifespan(scope, receive, send)
@@ -492,11 +524,6 @@ class App(AppBase):
             return
         path = scope.get("path")
         if isinstance(path, str):
-            seen_paths = getattr(self, "_seen_paths", None)
-            if not isinstance(seen_paths, set):
-                seen_paths = set()
-                setattr(self, "_seen_paths", seen_paths)
-            seen_paths.add(path)
             mounted = _serve_mounted_app(self, scope, receive, send)
             if mounted is not None:
                 await mounted

@@ -6,7 +6,7 @@ from pathlib import Path
 from .quotas import SubscriptionPolicy
 
 POLICY_FIELDS = tuple(f.name for f in fields(SubscriptionPolicy))
-STRING_FIELDS = {"store", "store_url_env", "namespace", "scope"}
+STRING_FIELDS = {"scope"}
 
 
 def read_toml(path):

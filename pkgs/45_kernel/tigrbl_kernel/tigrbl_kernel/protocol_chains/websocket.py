@@ -8,9 +8,11 @@ from collections.abc import Iterable, Mapping
 from typing import Any
 
 from tigrbl_atoms.atoms.framing import websocket_jsonrpc as _jsonrpc_framing
+from tigrbl_atoms.atoms.framing.codec import decode_frame
 from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
 from tigrbl_typing.status.converters import http_exc_to_rpc
 from tigrbl_typing.status.exceptions import HTTPException
+from tigrbl_typing.trace import emit_trace
 
 ANCHORS: tuple[str, ...] = (
     "transport.accept",
@@ -28,6 +30,8 @@ SESSION_LIFECYCLE_PHASES: tuple[str, ...] = (
     "MESSAGE_RECEIVE",
     "INGRESS_PARSE",
     "INGRESS_DISPATCH",
+    "SECURITY",
+    "DEPENDENCIES",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -456,21 +460,41 @@ async def _dispatch_jsonrpc_payload(
         kwargs["db"] = {}
     try:
         result = await rpc_call(model, alias, params, **kwargs)
+        # Packed operation dispatch can return the encoded HTTP-style transport
+        # response. Unwrap that response before serializing the WebSocket reply.
+        if (
+            isinstance(result, Mapping)
+            and isinstance(result.get("body"), bytes)
+            and isinstance(result.get("status_code"), int)
+            and "body_iterator" in result and "path" in result
+            and result["body_iterator"] is None and result["path"] is None
+        ):
+            body = decode_frame("json", result["body"]) if result["body"] else None
+            if result["status_code"] >= 400:
+                raise HTTPException(status_code=result["status_code"], detail=body)
+            result = body
+        reply = _jsonrpc_result(result, request_id)
     except AttributeError:
-        return _jsonrpc_error(-32601, "Method not found", request_id)
+        reply = _jsonrpc_error(-32601, "Method not found", request_id)
     except HTTPException as exc:
         code, message, data = http_exc_to_rpc(exc)
-        return _jsonrpc_error(code, message, request_id, data=data)
+        reply = _jsonrpc_error(code, message, request_id, data=data)
     except Exception as exc:
-        return _jsonrpc_error(
+        reply = _jsonrpc_error(
             -32603,
             "Internal error",
             request_id,
             data={"detail": str(exc)},
         )
+    finally:
+        app = _ctx_get(session_ctx, "app")
+        sink = getattr(router, "trace_sink", None) or getattr(app, "trace_sink", None)
+        identity = kwargs["ctx"].get("identity")
+        if sink is not None and identity:
+            emit_trace(sink, "Invocation", "WebSocket", identity)
     if "id" not in payload:
         return None
-    return _jsonrpc_result(result, request_id)
+    return reply
 
 
 async def _dispatch_jsonrpc_decoded(

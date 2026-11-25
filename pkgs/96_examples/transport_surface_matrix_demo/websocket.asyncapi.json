@@ -1,0 +1,53 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Transport Matrix WebSocket API",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "demo": {
+      "host": "127.0.0.1:8000",
+      "protocol": "ws"
+    }
+  },
+  "channels": {
+    "echo": {
+      "address": "/ws/echo",
+      "title": "Text echo",
+      "messages": {
+        "text": {
+          "$ref": "#/components/messages/text"
+        }
+      }
+    }
+  },
+  "operations": {
+    "receiveEcho": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/echo"
+      }
+    },
+    "sendEcho": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/echo"
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "text": {
+        "title": "Text frame",
+        "payload": {
+          "type": "string"
+        },
+        "examples": [
+          {
+            "payload": "Hello from ZDoc"
+          }
+        ]
+      }
+    }
+  }
+}

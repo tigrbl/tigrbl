@@ -50,6 +50,23 @@ WRITE_VERBS = (
 )
 
 
+@pytest.fixture
+def delete_calls(monkeypatch):
+    import tigrbl_ops_oltp
+    from tigrbl_ops_oltp.crud import ops
+
+    delete = ops.delete
+    calls = []
+
+    async def count_delete(model, ident, db):
+        calls.append(ident)
+        return await delete(model, ident, db)
+
+    monkeypatch.setattr(tigrbl_ops_oltp, "delete", count_delete)
+    monkeypatch.setattr(ops, "delete", count_delete)
+    return calls
+
+
 @asynccontextmanager
 async def ulid_client(profile, name):
     attrs = {}
@@ -130,7 +147,7 @@ async def rest(client, method, path, body=None):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("via_rpc", [False, True], ids=["rest", "jsonrpc"])
-async def test_ulidpk_builtin_crud(via_rpc):
+async def test_ulidpk_builtin_crud(via_rpc, delete_calls):
     model = "UlidRpcWidget" if via_rpc else "UlidRestWidget"
     path = f"/{model.lower()}"
 
@@ -165,6 +182,7 @@ async def test_ulidpk_builtin_crud(via_rpc):
         assert listed[second["id"]] == "second"
 
         await call("delete", "DELETE", ident=ident)
+        assert delete_calls == [ident]
         missing = await client.get(f"{path}/{ident}")
         assert missing.status_code == 404, missing.text
         keeper = await call("create", "POST", body={"name": "keep"})
@@ -285,7 +303,7 @@ async def test_ulidpk_bulk_crud(via_rpc):
         assert remaining == [{"id": ids["second"], "name": "second"}]
 
 
-async def websocket_rpc(model_name, monkeypatch):
+async def websocket_rpc(model_name, monkeypatch, *, async_=False):
     model = type(
         model_name,
         (TableBase, ULIDPk),
@@ -328,10 +346,11 @@ async def websocket_rpc(model_name, monkeypatch):
             )
         ),
     )
+    engine_name = "ulid_socket_async" if async_ else "ulid_socket_sync"
     app = TigrblApp.from_spec(
         AppSpec(
-            engines=(EngineSpec(name="primary", kind="sqlite", memory=True),),
-            engine_name="primary",
+            engines=(EngineSpec(name=engine_name, kind="sqlite", memory=True, async_=async_),),
+            engine_name=engine_name,
             routers=(
                 RouterSpec(
                     name="ulid_socket",
@@ -389,8 +408,10 @@ async def websocket_rpc(model_name, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_ulidpk_websocket_jsonrpc(monkeypatch):
-    call = await websocket_rpc("UlidSocketWidget", monkeypatch)
+@pytest.mark.parametrize("async_", [False, True], ids=["sync-sqlite", "async-sqlite"])
+async def test_ulidpk_websocket_jsonrpc(monkeypatch, delete_calls, async_):
+    name = "UlidAsyncSocketWidget" if async_ else "UlidSocketWidget"
+    call = await websocket_rpc(name, monkeypatch, async_=async_)
     created = await call("create", {"name": "socket"})
     assert "result" in created, created
     ident = created["result"]["id"]
@@ -414,7 +435,9 @@ async def test_ulidpk_websocket_jsonrpc(monkeypatch):
     assert (await call("exists", {"id": ident}))["result"] == {"exists": True}
     assert (await call("count", {}))["result"] == {"count": 1}
     assert [row["id"] for row in (await call("list", {}))["result"]] == [ident]
-    assert (await call("delete", {"id": ident}))["result"] == {"deleted": 1}
+    deleted = await call("delete", {"id": ident})
+    assert deleted.get("result") == {"deleted": 1}, deleted
+    assert delete_calls == [ident]
     missing = await call("read", {"id": ident})
     assert missing["error"]["code"] == -32003
     invalid = await call("read", {"id": "not-a-ulid"})

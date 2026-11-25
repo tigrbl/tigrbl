@@ -84,9 +84,12 @@ async def invoke_op(
             # a compiled opview.
             pass
 
+    phases = resolve_phase_chains(model, alias)
+    if not phases:
+        raise LookupError(f"No compiled operation for {model.__name__}.{alias}")
     return await _invoke(
         request=request,
         db=db,
-        phases=resolve_phase_chains(model, alias),
+        phases=phases,
         ctx=seed_ctx,
     )

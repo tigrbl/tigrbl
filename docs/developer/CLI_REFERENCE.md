@@ -120,7 +120,8 @@ The unified CLI exposes these governed flags:
 - `--docs-path`: `/docs`
 - `--openapi-path`: `/openapi.json`
 - `--openrpc-path`: `/openrpc.json`
-- `--lens-path`: `/lens`
+- `--zdoc-path` defaults to `/zdoc`.
+- `--lens-path` remains a deprecated compatibility flag.
 - `--trace-sample-rate`: `1.0`
 - `--drain-timeout`: `30.0`
 - `--shutdown-timeout`: `30.0`

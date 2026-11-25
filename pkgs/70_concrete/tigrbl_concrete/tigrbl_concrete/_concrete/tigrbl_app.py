@@ -1,6 +1,8 @@
 # tigrbl/_concrete/tigrbl_app.py
 from __future__ import annotations
 
+from tigrbl_typing.trace import TraceSink
+
 import asyncio
 import copy
 import inspect
@@ -36,7 +38,9 @@ from tigrbl_concrete._mapping.router.rpc import rpc_call as _rpc_call
 from tigrbl_concrete._mapping.model import rebind as _rebind, bind as _bind
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system import mount_healthz_uix as _mount_healthz_uix
-from tigrbl_concrete.system import mount_lens as _mount_lens
+from warnings import warn
+
+from tigrbl_concrete.system import mount_zdoc as _mount_zdoc
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_swagger as _mount_swagger
@@ -146,12 +150,20 @@ class TigrblApp(_App):
         return tuple(collected)
 
     @classmethod
-    def from_spec(cls, spec: AppSpec) -> "TigrblApp":
+    def from_spec(
+        cls, spec: AppSpec, *, trace_sink: TraceSink | None = None, realtime_broker: Any = None
+    ) -> "TigrblApp":
         """Materialize an app instance from an :class:`~tigrbl.AppSpec`."""
         spec = lower_concrete_engine_inputs(spec)
         spec = normalize_app_spec(spec)
         spec_tables = tuple(spec.tables or ())
+        diagnostics = {}
+        if trace_sink is not None:
+            diagnostics["trace_sink"] = trace_sink
+        if realtime_broker is not None:
+            diagnostics["realtime_broker"] = realtime_broker
         app = cls(
+            **diagnostics,
             engine=spec.engine,
             jsonrpc_prefix=spec.jsonrpc_prefix,
             system_prefix=spec.system_prefix,
@@ -305,7 +317,8 @@ class TigrblApp(_App):
             self.attach_diagnostics(prefix=self.system_prefix)
             self.mount_healthz_uix(path="/healthz")
             self.mount_openrpc(path="/openrpc.json")
-            self.mount_lens(path="/lens", spec_path="/openrpc.json")
+            self.mount_zdoc()
+            self.mount_zdoc(path="/lens", name="__lens__")
             self.mount_json_schema(path="/schemas.json")
         if routers:
             initial_routers.extend(list(routers))
@@ -693,6 +706,7 @@ class TigrblApp(_App):
         if not mount_router:
             return router
         if isinstance(router, TigrblRouter) and router is not self._default_router:
+            router._mounted_auth_apps.add(self)
             for model in route_models.values():
                 owners = self._mounted_security_routers.setdefault(model, [])
                 if all(router is not owner for owner in owners):
@@ -932,6 +946,15 @@ class TigrblApp(_App):
         self.openapi_schema = document
         return document
 
+    def mount_zdoc(
+        self, *, path: str = "/zdoc", name: str = "__zdoc__",
+        spec_path: str | None = None, openapi_path: str | None = None,
+        asyncapi_path: str | None = None, unwrap_rpc_params: bool = True,
+    ) -> Any:
+        return _mount_zdoc(self, path=path, name=name, spec_path=spec_path,
+                           openapi_path=openapi_path, asyncapi_path=asyncapi_path,
+                           unwrap_rpc_params=unwrap_rpc_params)
+
     def mount_lens(
         self,
         *,
@@ -939,8 +962,9 @@ class TigrblApp(_App):
         name: str = "__lens__",
         spec_path: str | None = None,
     ) -> Any:
-        """Mount a tigrbl-lens HTML endpoint onto this instance."""
-        return _mount_lens(self, path=path, name=name, spec_path=spec_path)
+        """Mount ZDoc at the legacy Lens path."""
+        warn("mount_lens is deprecated. Use mount_zdoc instead.", DeprecationWarning, stacklevel=2)
+        return self.mount_zdoc(path=path, name=name, spec_path=spec_path)
 
     def mount_healthz_uix(
         self,
@@ -1024,7 +1048,10 @@ class TigrblApp(_App):
 
         allow_attr = getattr(model, TIGRBL_ALLOW_ANON_ATTR, ())
         exemptions = (allow_attr() if callable(allow_attr) else allow_attr) or ()
-        if spec.alias in exemptions or spec.target in exemptions:
+        security = getattr(spec, "security", None)
+        if (spec.alias in exemptions or spec.target in exemptions) and (
+            security is None or security.access != "protected"
+        ):
             return declared
 
         owners = (self, *self._mounted_security_routers.get(model, ()))
@@ -1042,13 +1069,6 @@ class TigrblApp(_App):
                 elif all(dep.__tigrbl_authorizer__ != item.__tigrbl_authorizer__ for item in authorize):
                     authorize.append(dep)
         return (*((authn,) if authn is not None else ()), *authorize, *declared)
-
-    # Optional: let callers set auth knobs used by some middlewares/dispatchers
-    def set_operation_authorizer(self, authorize: Callable[..., Any]) -> None:
-        """Set the decision callback for operations declaring protected access."""
-        if not callable(authorize):
-            raise TypeError("operation authorizer must be callable")
-        self._tigrbl_operation_authorizer = authorize
 
     def operation_security_catalog(self) -> tuple[dict[str, Any], ...]:
         """Export classified operations and the selectors in the kernel plan."""
@@ -1080,6 +1100,11 @@ class TigrblApp(_App):
         authorize: Any = None,
         optional_authn_dep: Any = None,
     ) -> None:
+        """Configure compiled security dependencies for the app.
+
+        For a protected operation, ``authorize`` must explicitly return True.
+        The callback may declare a keyword-only ``ctx`` for operation context.
+        """
         if authn is not None:
             self._authn = authn
             if allow_anon is None:

@@ -39,7 +39,7 @@ semantics, functional equivalents, and the ordinary-method applicability rule.
 | `DataTypeSpec` | generated | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `DocsPayloadSpec` | none | yes | n/a | n/a | `mount_openapi`, `mount_openrpc`, `mount_json_schema` | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `DocsProjectionSpec` | none | yes | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
-| `DocsUixSpec` | none | yes | n/a | n/a | `mount_swagger`, `mount_lens`, `mount_healthz_uix` | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
+| `DocsUixSpec` | none | yes | n/a | n/a | `mount_swagger`, `mount_zdoc`, `mount_lens`, `mount_healthz_uix` | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `EngineProviderSpec` | generated | yes | `EngineProviderBase` | `Provider` | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `EngineRegistry` | none | no | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 | `EngineSpec` | generated | yes | `EngineBase` | `Engine` | n/a | n/a | n/a | n/a | `tigrbl.shortcuts.engine`, `engine_spec`, `engine`, `prov`, `provider_sqlite_memory`, `provider_sqlite_file`, `provider_postgres`, `sqlite_cfg`, `pg_cfg`, `mem`, `sqlitef`, `pg`, `pga`, `pgs` | `engine_ctx` | n/a | n/a | n/a |

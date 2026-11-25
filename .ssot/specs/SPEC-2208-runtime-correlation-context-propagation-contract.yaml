@@ -38,6 +38,12 @@ body: |-
   ## Draft transport identity and subscription extension
 
   Reuse a trusted server-issued HTTP request_id where available, and allocate a local one where Tigrbl owns the application request boundary or the server supplied none. In a realtime scope, any opening HTTP request_id identifies the handshake. It does not extend to subsequent messages. For fan-out, apply draft SPEC-2209 to snapshot publication, subscription, and delivery identity alongside origin and destination correlation.
+
+  ## Native trace sinks
+
+  An application, router, runtime, or realtime broker may accept a synchronous trace sink. The packed executor records invocation and transaction identity from its execution context, and the WebSocket dispatcher records each call with its resolved invocation identity and item span. The realtime broker records publication, subscription attachment, and delivery as they occur.
+
+  A sink receives detached scalar metadata for identity and lifecycle drillback. Sink failures do not change operation outcomes. The optional bounded Timeline consumes the same records and groups them for diagnostics.
 spec_kind: "normative"
 adr_ids:
   - "adr:1207"

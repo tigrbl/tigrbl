@@ -262,6 +262,19 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
     app.mount_jsonrpc(prefix="/rpc")
     app.mount_openapi(path="/openapi.json")
     app.mount_openrpc(path="/openrpc.json")
+    app.mount_zdoc(asyncapi_path="/asyncapi.json")
+
+    document_path = Path(__file__).with_name("websocket.asyncapi.json")
+
+    @app.get("/asyncapi.json", include_in_schema=False)
+    def websocket_document(request: Request) -> dict[str, Any]:
+        spec = json.loads(document_path.read_text(encoding="utf-8"))
+        server = spec["servers"]["demo"]
+        server["host"] = request.headers.get("host", server["host"])
+        server["protocol"] = "wss" if request.scope.get("scheme") == "https" else "ws"
+        if request.script_name:
+            server["pathname"] = request.script_name
+        return spec
 
     @app.get("/matrix")
     def demo_matrix() -> dict[str, Any]:

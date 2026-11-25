@@ -13,7 +13,8 @@ def test_dependency_invoke_is_runtime_event_anchor():
     executors_init = (RUNTIME_PKG / "executors" / "__init__.py").read_text()
     assert not (RUNTIME_PKG / "executors" / "invoke.py").exists()
     assert "DEP_EXTRA" in system
-    assert '"PRE_TX_BEGIN"' in system
+    assert '"SECURITY"' in system
+    assert '"DEPENDENCIES"' in system
     assert '"PRE_TX_BEGIN"' in phase_runner
     assert "invoke_op" not in executors_init
     assert "tigrbl_ops_oltp" not in phase_runner

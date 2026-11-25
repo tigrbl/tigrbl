@@ -1,10 +1,13 @@
 # tigrbl/_concrete/tigrbl_router.py
 from __future__ import annotations
 
+from tigrbl_typing.trace import TraceSink
+
 import copy
 import asyncio
 import inspect
 from types import SimpleNamespace
+from weakref import WeakSet
 from typing import (
     Any,
     Callable,
@@ -34,7 +37,9 @@ from ._websocket import WebSocketRoute
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_swagger as _mount_swagger
-from tigrbl_concrete.system import mount_lens as _mount_lens
+from warnings import warn
+
+from tigrbl_concrete.system import mount_zdoc as _mount_zdoc
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from tigrbl_concrete._concrete import engine_resolver as _resolver
@@ -94,15 +99,18 @@ class TigrblRouter(_Router):
         | Mapping[str, Mapping[str, Iterable[Callable]]]
         | None = None,
         execution_backend: str | None = None,
+        trace_sink: TraceSink | None = None,
         **router_kwargs: Any,
     ) -> None:
         if prefix is not None:
             self.PREFIX = prefix
         _Router.__init__(self, engine=engine, **router_kwargs)
+        self.trace_sink = trace_sink
         self._authn = None
         self._allow_anon = True
         self._authorize = None
         self._optional_authn_dep = None
+        self._mounted_auth_apps: WeakSet[Any] = WeakSet()
         self._allow_anon_ops: set[str] = set()
         self.jsonrpc_prefix = (
             jsonrpc_prefix
@@ -335,6 +343,15 @@ class TigrblRouter(_Router):
         """Mount an OpenRPC JSON endpoint onto this router instance."""
         return _mount_openrpc(self, path=path, name=name, tags=tags)
 
+    def mount_zdoc(
+        self, *, path: str = "/zdoc", name: str = "__zdoc__",
+        spec_path: str | None = None, openapi_path: str | None = None,
+        asyncapi_path: str | None = None, unwrap_rpc_params: bool = True,
+    ) -> Any:
+        return _mount_zdoc(self, path=path, name=name, spec_path=spec_path,
+                           openapi_path=openapi_path, asyncapi_path=asyncapi_path,
+                           unwrap_rpc_params=unwrap_rpc_params)
+
     def mount_lens(
         self,
         *,
@@ -342,7 +359,8 @@ class TigrblRouter(_Router):
         name: str = "__lens__",
         spec_path: str | None = None,
     ) -> Any:
-        return _mount_lens(self, path=path, name=name, spec_path=spec_path)
+        warn("mount_lens is deprecated. Use mount_zdoc instead.", DeprecationWarning, stacklevel=2)
+        return self.mount_zdoc(path=path, name=name, spec_path=spec_path)
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         from tigrbl_concrete.system import mount_json_schema as _mount_json_schema
@@ -463,6 +481,7 @@ class TigrblRouter(_Router):
         authorize: Any = None,
         optional_authn_dep: Any = None,
     ) -> None:
+        """Configure compiled security dependencies for operations on this router."""
         if authn is not None:
             self._authn = authn
             if allow_anon is None:
@@ -477,6 +496,9 @@ class TigrblRouter(_Router):
         # Refresh already-included models so routers pick up new auth settings
         if self.tables:
             self._refresh_security()
+        self._bump_runtime_plan_revision()
+        for app in tuple(self._mounted_auth_apps):
+            app._bump_runtime_plan_revision()
 
     def _resolve_registered_model(self, name: str, value: Any) -> Any:
         if isinstance(value, type):

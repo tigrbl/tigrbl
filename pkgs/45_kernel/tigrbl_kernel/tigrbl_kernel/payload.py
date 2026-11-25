@@ -33,11 +33,14 @@ def build_kernelz_payload(kernel: "Kernel", app: Any):
             labels: list[str] = []
             for dep in getattr(sp, "secdeps", ()) or ():
                 labels.append(
-                    f"PRE_TX_BEGIN:hook:dep:security:{_callable_label(getattr(dep, 'dependency', dep))}"
+                    f"SECURITY:hook:dep:security:{_callable_label(getattr(dep, 'dependency', dep))}"
                 )
+            security = getattr(sp, "security", None)
+            if security is not None and security.access == "protected":
+                labels.append("SECURITY:security:authorize_operation")
             for dep in getattr(sp, "deps", ()) or ():
                 labels.append(
-                    f"PRE_TX_BEGIN:hook:dep:extra:{_callable_label(getattr(dep, 'dependency', dep))}"
+                    f"DEPENDENCIES:hook:dep:extra:{_callable_label(getattr(dep, 'dependency', dep))}"
                 )
 
             persist = getattr(sp, "persist", "default") != "skip"
@@ -46,7 +49,7 @@ def build_kernelz_payload(kernel: "Kernel", app: Any):
 
             chains = kernel._build(model, sp.alias)
             for phase in _ev.PHASES:
-                if phase in {"START_TX", "TX_COMMIT", "PRE_TX_BEGIN", "POST_RESPONSE"}:
+                if phase in {"START_TX", "TX_COMMIT", "SECURITY", "DEPENDENCIES", "PRE_TX_BEGIN", "POST_RESPONSE"}:
                     continue
                 for step in chains.get(phase, ()) or ():
                     labels.append(f"{phase}:{label_hook(step, phase)}")

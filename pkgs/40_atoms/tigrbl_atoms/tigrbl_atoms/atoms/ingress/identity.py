@@ -137,8 +137,10 @@ def webtransport_lane_identity(scope, message, carrier):
     return identity
 
 
-def invocation_identity(carrier, *, websocket=False):
+def invocation_identity(carrier, *, websocket=False, rpc_envelope=None):
     identity = dict(carrier)
+    if rpc_envelope is not None and "id" in rpc_envelope:
+        identity["rpc_id"] = rpc_envelope["id"]
     identity.setdefault("invocation_id", uuid4().hex)
     if websocket:
         identity["request_id"] = uuid4().hex

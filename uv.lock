@@ -92,7 +92,7 @@ dev = [
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
@@ -3360,7 +3360,7 @@ wheels = [
 
 [[package]]
 name = "readme-standards"
-version = "0.1.1"
+version = "0.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsonschema" },
@@ -3368,9 +3368,9 @@ dependencies = [
     { name = "packaging" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0d/dc/b4b129d69751cdce37216ead0b19d4096f3bf1520d179b5bf3f80194bcdd/readme_standards-0.1.1.tar.gz", hash = "sha256:999aa59f1a05b1907482330dd4dfb3fccc1b9d6043ce66464e0cdb65e09f8e51", size = 107164, upload-time = "2026-11-20T02:35:18.393Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0d/19/ab44248e15be5adf30a9da601cafb81c9ffc65bcaef6536bf96ae83eea01/readme_standards-0.1.3.tar.gz", hash = "sha256:e2e86a82c023f048abf8a046d0cdd1969dad06c88e9bbd537752de0507ac62d4", size = 109265, upload-time = "2026-11-23T09:43:31.328Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/41/a3/a8670b94531f6ffd246c370928b9018bed59822e308a8cb95786f56bd416/readme_standards-0.1.1-py3-none-any.whl", hash = "sha256:c7ecb960a5a7587bbbd0a81840bcb86ffff11f6930da1cdf2c0876a9f294327d", size = 31500, upload-time = "2026-11-20T02:35:17.433Z" },
+    { url = "https://files.pythonhosted.org/packages/4b/7c/fe1ff4c74994176bd1666768f68162d5722d132031ab5780f119c3f28c5d/readme_standards-0.1.3-py3-none-any.whl", hash = "sha256:e555b80b21f5878ad9136a8275c0fac0d0670f8e62c8967e0a76fb256e6fb6cc", size = 32259, upload-time = "2026-11-23T09:43:30.561Z" },
 ]
 
 [[package]]
@@ -4121,7 +4121,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
     { name = "tigrbl-client", editable = "pkgs/95_client/tigrbl_client" },
@@ -4171,7 +4171,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "tigrbl-kernel", editable = "pkgs/45_kernel/tigrbl_kernel" },
 ]
@@ -4209,7 +4209,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -4290,7 +4290,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4344,7 +4344,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -4382,7 +4382,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
@@ -4427,7 +4427,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4472,7 +4472,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4508,7 +4508,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
@@ -4554,7 +4554,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4601,7 +4601,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4625,7 +4625,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -4648,7 +4648,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -4681,7 +4681,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8" },
     { name = "pytest-asyncio", specifier = ">=0.24" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11" },
 ]
 
@@ -4704,7 +4704,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -4725,7 +4725,7 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-engine-memkv"
@@ -4744,7 +4744,7 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-engine-memlru"
@@ -4763,7 +4763,7 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-engine-mempubsub"
@@ -4782,7 +4782,7 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-engine-memqueue"
@@ -4801,7 +4801,7 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-engine-memrate"
@@ -4820,7 +4820,7 @@ dev = [
 requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-engine-numpy"
@@ -4851,7 +4851,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
@@ -4897,7 +4897,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4942,7 +4942,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -4976,7 +4976,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -5005,7 +5005,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -5016,10 +5016,12 @@ source = { editable = "pkgs/90_engines/tigrbl_engine_redis" }
 dependencies = [
     { name = "redis" },
     { name = "tigrbl" },
+    { name = "tigrbl-ops-realtime" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "fakeredis", extra = ["lua"] },
     { name = "flake8" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -5037,10 +5039,12 @@ dev = [
 requires-dist = [
     { name = "redis", specifier = ">=5.0.0" },
     { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
+    { name = "tigrbl-ops-realtime", editable = "pkgs/60_ops/tigrbl_ops_realtime" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "fakeredis", extras = ["lua"], specifier = ">=2.40" },
     { name = "flake8", specifier = ">=7.0" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
@@ -5049,7 +5053,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -5094,7 +5098,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -5123,7 +5127,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
@@ -5155,7 +5159,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -5186,7 +5190,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -5232,7 +5236,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.3.1" },
     { name = "pytest-xdist", specifier = ">=3.6.1" },
     { name = "python-dotenv" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
@@ -5264,7 +5268,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -5296,7 +5300,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]
@@ -5334,7 +5338,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5369,7 +5373,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24" },
     { name = "pytest-timeout", specifier = ">=2.3" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5403,7 +5407,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
 ]
 
 [[package]]
@@ -5436,7 +5440,7 @@ requires-dist = [
 provides-extras = ["test"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" }]
+dev = [{ name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" }]
 
 [[package]]
 name = "tigrbl-model"
@@ -5469,7 +5473,7 @@ requires-dist = [
 dev = [
     { name = "pydantic", specifier = ">=2.10,<3" },
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
@@ -5490,7 +5494,7 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5521,7 +5525,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5530,17 +5534,12 @@ name = "tigrbl-ops-realtime"
 version = "0.4.6.dev2"
 source = { editable = "pkgs/60_ops/tigrbl_ops_realtime" }
 dependencies = [
+    { name = "tigrbl-typing" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
-]
-
-[package.optional-dependencies]
-redis = [
-    { name = "redis" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "fakeredis", extra = ["lua"] },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'" },
@@ -5549,17 +5548,15 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "redis", marker = "extra == 'redis'", specifier = ">=5" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
 ]
-provides-extras = ["redis"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "fakeredis", extras = ["lua"], specifier = ">=2.40" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5580,7 +5577,7 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5605,7 +5602,7 @@ requires-dist = [{ name = "sqlalchemy", specifier = ">=2.0" }]
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
 ]
 
@@ -5650,7 +5647,7 @@ provides-extras = ["numba"]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.23" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
 ]
@@ -5680,7 +5677,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 
@@ -5737,7 +5734,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "fastapi", specifier = "==0.136.0" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 
@@ -5767,7 +5764,7 @@ dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-timeout", specifier = ">=2.3.1" },
-    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.1" },
+    { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.9" },
     { name = "sqlalchemy", specifier = ">=2.0" },
 ]

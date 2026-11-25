@@ -19,6 +19,7 @@ from .ops import (
     unsubscribe_session,
     upload,
 )
+from .quotas import SubscriptionQuotaStore
 from .sinks import (
     RealtimeEnvelope,
     RealtimeSink,
@@ -32,6 +33,7 @@ __all__ = [
     "InMemoryRealtimeBroker",
     "PublicationResult",
     "RealtimeSubscription",
+    "SubscriptionQuotaStore",
     "RealtimeEnvelope",
     "RealtimeSink",
     "WebSocketRealtimeSink",
