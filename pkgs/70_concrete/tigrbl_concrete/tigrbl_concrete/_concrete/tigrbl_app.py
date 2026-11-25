@@ -706,6 +706,7 @@ class TigrblApp(_App):
         if not mount_router:
             return router
         if isinstance(router, TigrblRouter) and router is not self._default_router:
+            router._mounted_auth_apps.add(self)
             for model in route_models.values():
                 owners = self._mounted_security_routers.setdefault(model, [])
                 if all(router is not owner for owner in owners):
@@ -1047,7 +1048,10 @@ class TigrblApp(_App):
 
         allow_attr = getattr(model, TIGRBL_ALLOW_ANON_ATTR, ())
         exemptions = (allow_attr() if callable(allow_attr) else allow_attr) or ()
-        if spec.alias in exemptions or spec.target in exemptions:
+        security = getattr(spec, "security", None)
+        if (spec.alias in exemptions or spec.target in exemptions) and (
+            security is None or security.access != "protected"
+        ):
             return declared
 
         owners = (self, *self._mounted_security_routers.get(model, ()))
@@ -1065,13 +1069,6 @@ class TigrblApp(_App):
                 elif all(dep.__tigrbl_authorizer__ != item.__tigrbl_authorizer__ for item in authorize):
                     authorize.append(dep)
         return (*((authn,) if authn is not None else ()), *authorize, *declared)
-
-    # Optional: let callers set auth knobs used by some middlewares/dispatchers
-    def set_operation_authorizer(self, authorize: Callable[..., Any]) -> None:
-        """Set the decision callback for operations declaring protected access."""
-        if not callable(authorize):
-            raise TypeError("operation authorizer must be callable")
-        self._tigrbl_operation_authorizer = authorize
 
     def operation_security_catalog(self) -> tuple[dict[str, Any], ...]:
         """Export classified operations and the selectors in the kernel plan."""
@@ -1103,6 +1100,11 @@ class TigrblApp(_App):
         authorize: Any = None,
         optional_authn_dep: Any = None,
     ) -> None:
+        """Configure compiled security dependencies for the app.
+
+        For a protected operation, ``authorize`` must explicitly return True.
+        The callback may declare a keyword-only ``ctx`` for operation context.
+        """
         if authn is not None:
             self._authn = authn
             if allow_anon is None:

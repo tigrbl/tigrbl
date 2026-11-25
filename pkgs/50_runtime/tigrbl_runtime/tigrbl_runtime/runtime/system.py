@@ -127,8 +127,8 @@ _REGISTRY = {
     ("txn", "begin"): (START_TX, _sys_tx_begin),
     ("handler", "crud"): (HANDLER, _sys_handler_crud),
     ("txn", "commit"): (TX_COMMIT, _sys_tx_commit),
-    ("dep", "security"): ("PRE_TX_BEGIN", DEP_SECURITY),
-    ("dep", "extra"): ("PRE_TX_BEGIN", DEP_EXTRA),
+    ("dep", "security"): ("SECURITY", DEP_SECURITY),
+    ("dep", "extra"): ("DEPENDENCIES", DEP_EXTRA),
 }
 
 

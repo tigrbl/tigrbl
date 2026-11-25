@@ -121,7 +121,8 @@ async def _invoke(
         await _run_phase(
             "INGRESS_ROUTE", allow_flush=False, allow_commit=False, in_tx=False
         )
-    await _run_phase("PRE_TX_BEGIN", allow_flush=False, allow_commit=False, in_tx=False)
+    for phase in ("SECURITY", "DEPENDENCIES", "PRE_TX_BEGIN"):
+        await _run_phase(phase, allow_flush=False, allow_commit=False, in_tx=False)
 
     if not skip_persist:
         await _run_phase(

@@ -211,6 +211,8 @@ def error_phase_for(phase: str | None) -> str:
     phase_name = str(canonicalize_phase_input(phase))
     if phase_name in _ERROR_PHASES:
         return phase_name
+    if phase_name in {"SECURITY", "DEPENDENCIES"}:
+        return "ON_PRE_TX_BEGIN_ERROR"
     candidate = f"ON_{phase_name}_ERROR"
     return candidate if candidate in _ERROR_PHASES else "ON_ERROR"
 
@@ -242,6 +244,8 @@ PHASE_SEQUENCE: Final[tuple[str, ...]] = (
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
     "INGRESS_DISPATCH",
+    "SECURITY",
+    "DEPENDENCIES",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -255,8 +259,8 @@ PHASE_SEQUENCE: Final[tuple[str, ...]] = (
     "EGRESS_FINALIZE",
 )
 
-INGRESS_PHASES: Final[tuple[str, ...]] = PHASE_SEQUENCE[:4]
-HANDLER_PHASES: Final[tuple[str, ...]] = PHASE_SEQUENCE[5:8]
+INGRESS_PHASES: Final[tuple[str, ...]] = (*PHASE_SEQUENCE[:3], "PRE_TX_BEGIN")
+HANDLER_PHASES: Final[tuple[str, ...]] = ("PRE_HANDLER", "HANDLER", "POST_HANDLER")
 EGRESS_PHASES: Final[tuple[str, ...]] = PHASE_SEQUENCE[-3:]
 
 

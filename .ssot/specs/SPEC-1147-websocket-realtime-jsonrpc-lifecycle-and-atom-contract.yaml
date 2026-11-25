@@ -133,10 +133,16 @@ body: |-
   Under SPEC-2208, WebSocket session establishment resolves requester session_id and identifies the socket with transport_session_id. At the logical request boundary establish correlation_id. A binding with multiple messages per logical request carries that correlation across its messages. After decoding each complete message assign invocation_id. A supported JSON-RPC batch shares one document invocation ID, with rpc_item_index for each item and rpc_id when supplied by the caller.
   
   Capture these fields in the originating dispatch or scheduler admission context. Asynchronous execution, acknowledgement, and fan-out preserve origin attribution even after later socket messages arrive. Receiving transport session identity remains separately attributable. Verify interleaved messages and fan-out to multiple recipients.
-
+  
   ## Draft transport identity and subscription extension
-
+  
   Use draft SPEC-2209 for subscription acknowledgements and fan-out attribution. Compile the binding's selected acknowledgement version, retain JSON-RPC reply matching semantics, and preserve opening invocation and receiving transport identity through asynchronous delivery. Socket close cleans up only attachments currently owned by that carrier.
+  
+  ### Reply ownership and operation fallback
+  
+  The kernel WebSocket JSON-RPC binding MUST consume the authoritative invocation outcome defined in SPEC-2169 and own its projection into a JSON-RPC result or error. Framing atoms and their codecs own wire encoding and decoding. Runtime executes the compiled plan and mediates the invocation.
+  
+  Handling or framing a reply MUST NOT invoke CRUD a second time. This applies to an ordinary result, a result already encoded by the runtime, and an authoritative failure or rejection. The request ID and existing error mapping MUST carry through. Verification MUST exercise the mounted WebSocket call and assert both the reply and one delete invocation, plus a kernel check that completed success and failure outcomes produce the corresponding replies without redispatch.
 spec_kind: "normative"
 adr_ids:
   - "adr:1199"

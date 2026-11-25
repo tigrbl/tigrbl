@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 
 import pytest
@@ -7,6 +8,51 @@ import pytest
 from tigrbl_kernel.protocol_chains.websocket import (
     build_websocket_jsonrpc_session_handler,
 )
+
+
+@pytest.mark.asyncio
+async def test_websocket_replies_use_each_authoritative_outcome_once() -> None:
+    def rpc(case, **fields):
+        return {"jsonrpc": "2.0", "method": "Record.delete", "params": {"case": case}, **fields}
+
+    inbound = iter([
+        {"type": "websocket.connect"},
+        {"type": "websocket.receive", "text": json.dumps([
+            rpc("ok", id=1), rpc("denied", id=2), rpc("denied-notification"),
+        ])},
+        {"type": "websocket.receive", "text": json.dumps(rpc("empty", id=3))},
+        {"type": "websocket.disconnect", "code": 1000},
+    ])
+    calls = []
+    sent = []
+
+    async def receive():
+        return next(inbound)
+
+    async def send(message):
+        sent.append(message)
+
+    async def rpc_call(model, alias, params, **kwargs):
+        case = params["case"]
+        calls.append(case)
+        denied = case.startswith("denied")
+        body = {"detail": "Forbidden"} if denied else {"deleted": 1}
+        return {
+            "status_code": 403 if denied else 200,
+            "body": b"" if case == "empty" else json.dumps(body).encode(),
+            "body_iterator": None,
+            "path": None,
+        }
+
+    router = SimpleNamespace(rpc_call=rpc_call)
+    channel = SimpleNamespace(receive=receive, send=send, state={})
+    await build_websocket_jsonrpc_session_handler(router)({"channel": channel, "temp": {}})
+    batch, single = [json.loads(frame["text"]) for frame in sent if frame["type"] == "websocket.send"]
+    assert calls == ["ok", "denied", "denied-notification", "empty"]
+    assert [reply["id"] for reply in batch] == [1, 2]
+    assert batch[0]["result"] == {"deleted": 1}
+    assert batch[1]["error"]["code"] == -32002
+    assert single == {"jsonrpc": "2.0", "id": 3, "result": None}
 
 
 @pytest.mark.asyncio
@@ -35,7 +81,6 @@ async def test_jsonrpc_session_marks_transport_as_owned_after_accept() -> None:
 @pytest.mark.asyncio
 async def test_websocket_jsonrpc_dispatch_snapshots_binding_and_message_identity():
     import asyncio
-    import json
     from tigrbl_core._spec import JsonRpcFramingSpec, WsBindingSpec
     from tigrbl_ops_realtime import InMemoryRealtimeBroker, subscribe
 

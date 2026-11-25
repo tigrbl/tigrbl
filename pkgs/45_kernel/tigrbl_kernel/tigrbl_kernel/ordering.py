@@ -158,9 +158,6 @@ def flatten(
 
     out: List[Label] = []
 
-    out.extend(secdeps)
-    out.extend(deps)
-
     _append_anchor_block(
         out,
         by_anchor,
@@ -185,6 +182,16 @@ def flatten(
         anchor_policies=anchor_policies,
         persist=persist,
     )
+    for phase, dependency_labels in (("SECURITY", secdeps), ("DEPENDENCIES", deps)):
+        out.extend(dependency_labels)
+        _append_anchor_block(
+            out,
+            by_anchor,
+            anchors,
+            target_phase=phase,
+            anchor_policies=anchor_policies,
+            persist=persist,
+        )
     _append_anchor_block(
         out,
         by_anchor,

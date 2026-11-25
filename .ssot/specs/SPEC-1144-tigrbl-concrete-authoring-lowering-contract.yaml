@@ -32,6 +32,12 @@ body: |-
   - Lowering tests prove concrete authoring lowers to `tigrbl_core` specs rather than runtime construction paths.
   ## Non-Conformance
   A canonical spec, base abstraction, kernel compiler, or runtime executor inside `tigrbl_concrete` is non-conforming unless a later accepted ADR supersedes this contract.
+  
+  ## RPC invocation boundary
+  
+  The concrete router MUST consume the transport-neutral invocation outcome defined in SPEC-2169 through the runtime boundary. Concrete RPC fallback MUST depend on explicit fallback eligibility and MUST NOT derive eligibility from WebSocket state, encoded bodies, or protocol envelope fields. Kernel bindings and framing atoms own protocol interpretation as specified in SPEC-1146 and SPEC-1147. The import and package dependency direction remains governed by SPEC-1001.
+  
+  The concrete boundary test MUST detect protocol-specific reply interpretation in router fallback logic, including cases that introduce no direct kernel dependency.
 spec_kind: "normative"
 adr_ids:
   - "adr:1194"

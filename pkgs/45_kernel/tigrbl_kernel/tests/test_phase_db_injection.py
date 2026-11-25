@@ -69,6 +69,8 @@ def test_repeated_build_does_not_duplicate_phase_db_binding() -> None:
     kernel = Kernel()
     chains = kernel._build_op(FakeModel, "create")
     for phase, steps in chains.items():
+        if phase in {"SECURITY", "DEPENDENCIES"} and not steps:
+            continue
         labels = [getattr(step, "__tigrbl_label", "") for step in steps]
         assert labels.count("atom:sys:phase_db@SYS_PHASE_DB_BIND") == 1, phase
 
@@ -93,3 +95,17 @@ def test_webtransport_control_op_selects_control_plane_handler_atom() -> None:
 
     assert "atom:sys:handler_open_bidi_stream@sys.handler.persistence" in labels
     assert "atom:sys:handler_create@sys.handler.persistence" not in labels
+
+
+def test_selects_persistence_implementation_when_compiling_handler() -> None:
+    from tigrbl_atoms.atoms.sys import handler_create, handler_persistence
+    from tigrbl_kernel.atoms import _inject_atoms
+
+    generic = (handler_persistence.ANCHOR, handler_persistence._run)
+    dedicated = (handler_create.ANCHOR, handler_create._run)
+    for atoms, expected in (((generic, dedicated), "create"), ((generic,), "persistence")):
+        chains = {}
+        _inject_atoms(chains, atoms, persistent=True, target="create")
+        assert [getattr(step, "__tigrbl_label") for step in chains["HANDLER"]] == [
+            f"atom:sys:handler_{expected}@sys.handler.persistence"
+        ]

@@ -266,26 +266,32 @@ def _make_dep_atom_step(run_fn: _AtomRun, dep: Any, *, label: str) -> StepFn:
     return _step
 
 
-def _inject_pre_tx_dep_atoms(
-    chains: Dict[str, List[StepFn]], sp: Any | None, security_dependencies: tuple[Any, ...] | None = None
+def _inject_dependency_atoms(
+    chains: Dict[str, List[StepFn]],
+    sp: Any | None,
+    security_dependencies: tuple[Any, ...] | None,
 ) -> None:
     if sp is None:
         return
-    try:
-        from tigrbl_atoms.atoms.dep.security import INSTANCE as sec_run  # type: ignore
-        from tigrbl_atoms.atoms.dep.extra import INSTANCE as dep_run  # type: ignore
-    except Exception:
-        try:
-            from tigrbl_atoms.atoms.dep.security import run as sec_run  # type: ignore
-            from tigrbl_atoms.atoms.dep.extra import run as dep_run  # type: ignore
-        except Exception:
-            return
+    from tigrbl_atoms.atoms.dep.extra import INSTANCE as dep_run
+    from tigrbl_atoms.atoms.dep.security import (
+        INSTANCE as sec_run,
+        bind_operation_authorization,
+        require_operation_allow,
+    )
 
-    pre_tx = chains.setdefault("PRE_TX_BEGIN", [])
+    security_chain = chains.setdefault("SECURITY", [])
     if security_dependencies is None:
         security_dependencies = tuple(getattr(sp, "secdeps", ()) or ())
+    security = getattr(sp, "security", None)
+    protected = security is not None and security.access == "protected"
+    authorizers = []
     for idx, dep in enumerate(security_dependencies):
-        pre_tx.append(
+        authorize = getattr(dep, "__tigrbl_authorizer__", None)
+        if protected and authorize is not None:
+            authorizers.append(authorize)
+            continue
+        security_chain.append(
             _make_dep_atom_step(
                 sec_run,
                 dep,
@@ -294,8 +300,18 @@ def _inject_pre_tx_dep_atoms(
                 ),
             )
         )
+    if protected:
+        security_chain.append(
+            _make_dep_atom_step(
+                require_operation_allow,
+                bind_operation_authorization(security, authorizers),
+                label="security:authorize_operation",
+            )
+        )
+
+    dependency_chain = chains.setdefault("DEPENDENCIES", [])
     for idx, dep in enumerate(getattr(sp, "deps", ()) or ()):
-        pre_tx.append(
+        dependency_chain.append(
             _make_dep_atom_step(
                 dep_run,
                 dep,
@@ -312,7 +328,13 @@ def _inject_atoms(
     target: str | None = None,
     batch_policy: Mapping[str, Any] | None = None,
 ) -> None:
+    atoms = tuple(atoms)
     order = {name: i for i, name in enumerate(_ev.all_events_ordered())}
+    dedicated_persistence = any(
+        anchor == _ev.SYS_HANDLER_PERSISTENCE
+        and _infer_domain_subject(run) == ("sys", f"handler_{target}")
+        for anchor, run in atoms
+    )
     bound_custom_handler = any(
         getattr(step, "__tigrbl_bound_custom_handler__", False)
         for step in chains.get("HANDLER", ())
@@ -367,6 +389,8 @@ def _inject_atoms(
             and _subject.startswith("handler_")
         ):
             handler_target = _subject.removeprefix("handler_")
+            if handler_target == "persistence" and dedicated_persistence:
+                continue
             if handler_target == "custom" and bound_custom_handler:
                 continue  # The model already wired this operation into HANDLER.
             if handler_target != "persistence" and target and handler_target != target:

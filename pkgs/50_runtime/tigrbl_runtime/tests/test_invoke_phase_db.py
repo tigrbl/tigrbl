@@ -113,6 +113,29 @@ async def test_invoke_without_db_allows_phase_db_binding_no_crash() -> None:
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("caller_owns_transaction", [False, True])
+async def test_handler_failure_preserves_transaction_ownership(caller_owns_transaction):
+    db = FakeDb()
+    if caller_owns_transaction:
+        await db.begin()
+
+    async def start_tx(ctx):
+        if not db.in_transaction():
+            await db.begin()
+
+    async def handler(ctx):
+        raise ValueError("write failed after handler entry")
+
+    phases = {"START_TX": [start_tx], "HANDLER": [handler]}
+    with pytest.raises(Exception, match="write failed after handler entry"):
+        await _invoke(request=None, db=db, phases=phases, ctx={})
+
+    assert db.commit_calls == 0
+    assert db.rollback_calls == (0 if caller_owns_transaction else 1)
+    assert db.in_transaction() is caller_owns_transaction
+
+
+@pytest.mark.asyncio
 async def test_response_result_sync_remains_after_phase_db_refactor() -> None:
     async def handler(ctx):
         ctx.response = {"result": "initial"}

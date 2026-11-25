@@ -13,10 +13,7 @@ ANCHOR = _ev.SYS_HANDLER_PERSISTENCE
 
 
 async def _run(obj: object | None, ctx: Any) -> None:
-    # Some compiled plans include both verb-specific persistence atoms
-    # (e.g. ``handler_create``) and this generic fallback atom anchored at the
-    # same stage. If a prior atom already produced a result, do not execute
-    # persistence again.
+    # Honor a result supplied by a bound operation in a compatibility chain.
     if getattr(ctx, "result", None) is not None:
         return
     temp = getattr(ctx, "temp", None)
