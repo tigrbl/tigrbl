@@ -2,7 +2,7 @@
 
 import httpx
 import pytest
-from tigrbl import TigrblApp
+from tigrbl_concrete._concrete import TigrblApp
 
 
 def test_openapi_ignores_legacy_request_observations():

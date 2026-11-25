@@ -4339,6 +4339,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "httpx" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'" },
@@ -4364,6 +4365,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "httpx" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
