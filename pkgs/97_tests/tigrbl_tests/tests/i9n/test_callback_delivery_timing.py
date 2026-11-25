@@ -17,11 +17,8 @@ from tigrbl import (
 )
 
 
-@pytest.mark.asyncio
-@pytest.mark.parametrize("timing", ["post_commit", "after_emit"])
-async def test_callback_and_original_response_order(timing):
-    events = []
-    receiver = TigrblApp()
+async def _build_receiver(events):
+    app = TigrblApp()
 
     def verify(request: Request):
         digest = hmac.new(b"demo", request.body, hashlib.sha256).hexdigest()
@@ -36,10 +33,18 @@ async def test_callback_and_original_response_order(timing):
         events.append(("callback", ctx["payload"]["data"]))
         return {"accepted": True}
 
-    receiver.include_webhook(received)
-    init = receiver.initialize()
+    app.include_webhook(received)
+    init = app.initialize()
     if inspect.isawaitable(init):
         await init
+    return app
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("timing", ["post_commit", "after_emit"])
+async def test_callback_and_original_response_order(timing):
+    events = []
+    receiver = await _build_receiver(events)
 
     async def send(endpoint, body, headers, timeout):
         async with httpx.AsyncClient(
@@ -65,9 +70,9 @@ async def test_callback_and_original_response_order(timing):
         def notify(cls, ctx):
             return ctx["result"]
 
-    sender = TigrblApp()
-    sender.include_table(Invoice)
-    init = sender.initialize()
+    app = TigrblApp()
+    app.include_table(Invoice)
+    init = app.initialize()
     if inspect.isawaitable(init):
         await init
 
@@ -77,7 +82,7 @@ async def test_callback_and_original_response_order(timing):
             if message["type"] == "http.response.body" and not message.get("more_body"):
                 events.append(("response", None))
 
-        await sender(scope, receive, capture)
+        await app(scope, receive, capture)
 
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=observe), base_url="https://test"
@@ -98,7 +103,7 @@ async def test_callback_and_original_response_order(timing):
                 if message["type"] == "http.response.body":
                     raise OSError("requester disconnected")
 
-            await sender(scope, receive, broken_send)
+            await app(scope, receive, broken_send)
 
         events.clear()
         async with httpx.AsyncClient(
