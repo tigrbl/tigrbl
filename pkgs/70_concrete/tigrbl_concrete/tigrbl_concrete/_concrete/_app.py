@@ -497,15 +497,9 @@ class App(AppBase):
         if scope_type == "http":
             correlation_id = identity["correlation_id"].encode("ascii")
             send_response = send
-            scope.setdefault("state", {})
-            response_status = 0
-            response_emitted = False
-            response_failed = False
 
             async def send(message):
-                nonlocal response_emitted, response_status, response_failed
                 if message.get("type") == "http.response.start":
-                    response_status = message["status"]
                     headers = [
                         (key, value)
                         for key, value in message.get("headers", ())
@@ -514,13 +508,7 @@ class App(AppBase):
                     message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
                     if sink is not None:
                         emit_trace(sink, "Response", "HTTP", {**details, "status": message["status"]})
-                try:
-                    await send_response(message)
-                except BaseException:
-                    response_failed = True
-                    raise
-                if message.get("type") == "http.response.body" and not message.get("more_body", False):
-                    response_emitted = True
+                await send_response(message)
         if scope_type == "lifespan":
             await self._handle_lifespan(scope, receive, send)
             return
@@ -584,15 +572,7 @@ class App(AppBase):
                     )
                     return
         env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
-        if scope_type != "http":
-            await self.invoke(env)
-            return
-        from tigrbl_atoms.atoms.transport.completion_fence import finish_http_completion
-
-        try:
-            await self.invoke(env)
-        finally:
-            await finish_http_completion(scope, emitted=response_emitted and not response_failed and 200 <= response_status < 300)
+        await self.invoke(env)
 
     async def _handle_websocket(
         self, scope: dict[str, Any], receive: Any, send: Any

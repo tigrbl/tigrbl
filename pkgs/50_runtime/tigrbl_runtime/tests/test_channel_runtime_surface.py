@@ -4,6 +4,7 @@ import asyncio
 
 import pytest
 
+from tigrbl_atoms.atoms.transport.completion_fence import observe_http_completion
 from tigrbl_runtime.channel import (
     RuntimeWebSocket,
     RuntimeWebSocketRoute,
@@ -53,8 +54,19 @@ def test_prepare_and_complete_channel_context_marks_post_emit() -> None:
     )
     ctx = {"temp": {}}
 
-    channel = asyncio.run(prepare_channel_context(env, ctx))
-    asyncio.run(complete_channel(env, ctx))
+
+    async def run():
+        with observe_http_completion(env) as completion:
+            channel = await prepare_channel_context(env, ctx)
+            await complete_channel(env, ctx, http_completion=completion)
+            assert ctx["transport_completed"] is False
+            assert ctx.get("current_phase") != "POST_EMIT"
+            await env.send({"type": "http.response.start", "status": 200})
+            await env.send({"type": "http.response.body", "body": b""})
+            await complete_channel(env, ctx, http_completion=completion)
+            return channel
+
+    channel = asyncio.run(run())
 
     assert channel.path == "/widgets"
     assert ctx["transport_completed"] is True

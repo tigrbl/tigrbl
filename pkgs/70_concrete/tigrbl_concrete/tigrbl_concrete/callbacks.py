@@ -12,7 +12,7 @@ from uuid import uuid4
 
 from tigrbl_atoms.atoms.transport.completion_fence import defer_http_completion
 from tigrbl_core._spec import CallbackSpec
-from tigrbl_runtime.callbacks import attempt_callback, build_callback_payload
+from tigrbl_atoms.atoms.transport.callback import attempt_callback, build_callback_payload
 from tigrbl_typing.trace import emit_trace, trace_fields
 
 from ._concrete._callback import Callback
@@ -381,23 +381,27 @@ def lower_callback(spec, model, phase):
             if not isinstance(scope, dict):
                 raise ValueError("Callback after_emit requires an HTTP response")
 
-            async def finish(emitted):
-                emitted = emitted and time() < row["emit_expires_at"]
+            async def finish(completion):
+                emitted = completion.emitted
+                successful = completion.status is not None and 200 <= completion.status < 300
+                eligible = emitted and successful and time() < row["emit_expires_at"]
                 if _durable_intent(spec):
                     from .callback_attempt import release_attempt
 
                     if not await release_attempt(
-                        spec.session_factory, row["id"], emitted
+                        spec.session_factory, row["id"], eligible
                     ):
                         return
-                if emitted:
+                if eligible:
                     await _run_inline(spec, row, sink)
                 else:
                     _trace(
                         sink,
                         "callback.delivery.cancelled",
                         row,
-                        failure_class="response_not_emitted",
+                        failure_class=(
+                            "response_not_emitted" if not emitted else "response_ineligible"
+                        ),
                     )
 
             defer_http_completion(scope, finish)

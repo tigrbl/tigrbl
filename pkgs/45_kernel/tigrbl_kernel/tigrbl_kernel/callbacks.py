@@ -4,7 +4,9 @@ from collections.abc import Iterable, Mapping
 from typing import Any
 
 
-def compile_callback_metadata(callbacks: Iterable[Mapping[str, Any]]) -> list[dict[str, object]]:
+def compile_callback_metadata(
+    callbacks: Iterable[Mapping[str, Any]],
+) -> list[dict[str, object]]:
     compiled: list[dict[str, object]] = []
     for callback in callbacks:
         name = str(callback["name"])
@@ -34,4 +36,24 @@ def callback_hook_phases(timing: str, *, durable_intent: bool) -> tuple[str, ...
     return ("PRE_COMMIT", "POST_COMMIT") if durable_intent else ("POST_COMMIT",)
 
 
-__all__ = ["callback_hook_phases", "compile_callback_metadata"]
+def compile_callback_delivery_plan(
+    *,
+    event: str,
+    endpoint: str,
+    signing_secret_ref: str | None = None,
+    retry: Mapping[str, Any] | None = None,
+) -> dict[str, object]:
+    return {
+        "event": event,
+        "endpoint": endpoint,
+        "signing": {"algorithm": "hmac-sha256", "secret_ref": signing_secret_ref},
+        "retry": dict(retry or {"max_attempts": 1}),
+        "completion_subevent": "callback.delivery.emit_complete",
+    }
+
+
+__all__ = [
+    "callback_hook_phases",
+    "compile_callback_delivery_plan",
+    "compile_callback_metadata",
+]
