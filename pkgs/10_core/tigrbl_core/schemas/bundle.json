@@ -248,6 +248,132 @@
       "title": "BindingSpecEnvelope",
       "type": "object"
     },
+    "CallbackSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "delivery": {
+          "enum": [
+            "post_commit",
+            "worker",
+            "after_emit",
+            "pre_commit"
+          ]
+        },
+        "destination": {
+          "pattern": "^https?://",
+          "type": "string"
+        },
+        "durability": {
+          "enum": [
+            "none",
+            "results",
+            "attempts",
+            "attempts_and_results"
+          ]
+        },
+        "emit_wait_seconds": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "event": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "max_attempts": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "ops": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/StringTuple"
+            }
+          ]
+        },
+        "payload": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "record_intent": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "record_outcome": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "resolve_secret": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "retry_delay_seconds": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "send": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "session_factory": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "signing_secret_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "spec_kind": {
+          "const": "CallbackSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:CallbackSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
+        "timeout_seconds": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "total_timeout_seconds": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
+        "ops",
+        "event",
+        "destination",
+        "payload"
+      ],
+      "title": "CallbackSpec",
+      "type": "object"
+    },
+    "CallbackSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.callback_spec:CallbackSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "CallbackSpecEnvelope",
+      "type": "object"
+    },
     "ColumnSpec": {
       "additionalProperties": false,
       "properties": {
@@ -1977,6 +2103,31 @@
         },
         "tags": {
           "$ref": "#/$defs/StringTuple"
+        },
+        "webhooks": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/WebhookSpecEnvelope"
+              },
+              "type": "array"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "__tuple__": {
+                  "items": {
+                    "$ref": "#/$defs/WebhookSpecEnvelope"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "__tuple__"
+              ],
+              "type": "object"
+            }
+          ]
         }
       },
       "required": [
@@ -3551,6 +3702,96 @@
       "title": "WebTransportBindingSpecEnvelope",
       "type": "object"
     },
+    "WebhookSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event_type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "extra": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "handler": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "path": {
+          "pattern": "^/",
+          "type": "string"
+        },
+        "proto": {
+          "enum": [
+            "http.rest",
+            "https.rest"
+          ]
+        },
+        "provider": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "request_model": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "response_model": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "security_deps": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "spec_kind": {
+          "const": "WebhookSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:WebhookSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
+        "status_code": {
+          "maximum": 299,
+          "minimum": 200,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
+        "path",
+        "provider",
+        "event_type"
+      ],
+      "title": "WebhookSpec",
+      "type": "object"
+    },
+    "WebhookSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.webhook_spec:WebhookSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "WebhookSpecEnvelope",
+      "type": "object"
+    },
     "WsBindingSpec": {
       "additionalProperties": false,
       "properties": {
@@ -3629,6 +3870,7 @@
     "AppSpec": "#/$defs/AppSpec",
     "BindingRegistrySpec": "#/$defs/BindingRegistrySpec",
     "BindingSpec": "#/$defs/BindingSpec",
+    "CallbackSpec": "#/$defs/CallbackSpec",
     "ColumnSpec": "#/$defs/ColumnSpec",
     "DataTypeSpec": "#/$defs/DataTypeSpec",
     "EngineProviderSpec": "#/$defs/EngineProviderSpec",
@@ -3657,6 +3899,7 @@
     "TableSpec": "#/$defs/TableSpec",
     "TemplateSpec": "#/$defs/TemplateSpec",
     "WebTransportBindingSpec": "#/$defs/WebTransportBindingSpec",
+    "WebhookSpec": "#/$defs/WebhookSpec",
     "WsBindingSpec": "#/$defs/WsBindingSpec"
   },
   "title": "Tigrbl Core Spec Schema Bundle"

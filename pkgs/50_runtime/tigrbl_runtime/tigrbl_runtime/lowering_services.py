@@ -7,7 +7,11 @@ from __future__ import annotations
 
 from typing import Any
 
-__all__ = ["compile_opview_from_specs", "build_websocket_jsonrpc_session_handler"]
+__all__ = [
+    "compile_opview_from_specs",
+    "build_websocket_jsonrpc_session_handler",
+    "callback_hook_phases",
+]
 
 
 def __getattr__(name: str) -> Any:
@@ -19,4 +23,8 @@ def __getattr__(name: str) -> Any:
         from tigrbl_kernel.protocol_chains.websocket import build_websocket_jsonrpc_session_handler
 
         return build_websocket_jsonrpc_session_handler
+    if name == "callback_hook_phases":
+        from tigrbl_kernel.callbacks import callback_hook_phases
+
+        return callback_hook_phases
     raise AttributeError(name)

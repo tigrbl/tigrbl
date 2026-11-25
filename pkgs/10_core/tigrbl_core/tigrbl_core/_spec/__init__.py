@@ -74,6 +74,8 @@ _EXPORTS = {
     "HeadersSpec": "headers_spec",
     "BaseTypeAdapter": "datatypes",
     "HookSpec": "hook_spec",
+    "WebhookSpec": "webhook_spec",
+    "CallbackSpec": "callback_spec",
     "IOSpec": "io_spec",
     "IO": "io_spec",
     "ReflectedDatatype": "datatypes",

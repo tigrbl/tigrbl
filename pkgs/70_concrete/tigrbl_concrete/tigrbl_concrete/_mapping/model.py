@@ -835,6 +835,10 @@ def _bind_model_hooks(model: type, specs: Tuple[OpSpec, ...]) -> None:
         alias_map,
         spec_by_alias,
     )
+    from tigrbl_concrete.callbacks import collect_callbacks
+
+    for alias, phase, callback in collect_callbacks(model, visible_aliases):
+        collected.setdefault(alias, {}).setdefault(phase, []).append(callback)
     _merge_hooks_map(
         collected, getattr(model, "__tigrbl_hooks__", {}) or {}, visible_aliases
     )

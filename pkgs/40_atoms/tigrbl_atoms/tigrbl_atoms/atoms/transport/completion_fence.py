@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
+import logging
 from typing import Any
 
 
@@ -38,4 +39,22 @@ async def emit_with_fence(
     return result
 
 
-__all__ = ["ACK_VALUES", "emit_with_fence"]
+_HTTP_ACTIONS = "_tigrbl_after_http_emit"
+_LOG = logging.getLogger(__name__)
+
+
+def defer_http_completion(scope: dict[str, Any], action: Callable[[bool], Awaitable[Any]]) -> None:
+    if scope.get("type") != "http":
+        raise ValueError("Callback after_emit requires an HTTP response")
+    scope.setdefault("state", {}).setdefault(_HTTP_ACTIONS, []).append(action)
+
+
+async def finish_http_completion(scope: dict[str, Any], *, emitted: bool) -> None:
+    for action in scope.get("state", {}).pop(_HTTP_ACTIONS, ()):
+        try:
+            await action(emitted)
+        except Exception as exc:
+            _LOG.error("HTTP completion action failed: %s", type(exc).__name__)
+
+
+__all__ = ["ACK_VALUES", "defer_http_completion", "emit_with_fence", "finish_http_completion"]

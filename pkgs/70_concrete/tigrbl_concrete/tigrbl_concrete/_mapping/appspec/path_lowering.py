@@ -6,7 +6,9 @@ from dataclasses import replace
 from typing import Any
 
 from tigrbl_core._spec.docs_spec import DocsPayloadSpec, DocsUixSpec
-from tigrbl_core._spec import JsonRpcFramingSpec
+from tigrbl_core._spec import HttpRestBindingSpec, JsonRpcFramingSpec, WebhookSpec
+from tigrbl_concrete._concrete._route import upsert_route_opspec
+from tigrbl_concrete.factories.webhook import lower_webhook
 from tigrbl_core._spec.path_spec import PathSpec
 from tigrbl_core._spec.well_known_spec import well_known_path
 from tigrbl_concrete._concrete import engine_resolver as _resolver
@@ -51,8 +53,37 @@ def lower_appspec_routers(app: Any, spec: Any) -> None:
         setattr(router, "_tigrbl_docs_uix", _collect_docs_uix(router._tigrbl_path_specs))
 
         install_scope_engine_names(router=router)
+        for webhook in router_spec.webhooks:
+            mount_webhook(router, webhook)
         _lower_router_paths(router, router_spec)
         app.include_router(router, prefix=getattr(router_spec, "prefix", None))
+
+
+def mount_webhook(owner: Any, webhook: Any) -> None:
+    """Install a declared webhook through canonical REST registration."""
+    if isinstance(webhook, WebhookSpec):
+        webhook = lower_webhook(webhook)
+    webhook = getattr(webhook, "__tigrbl_webhook_path_spec__", webhook)
+    if not isinstance(webhook, PathSpec) or len(webhook.ops) != 1:
+        raise TypeError("Expected a webhook declaration")
+    op = webhook.ops[0]
+    if not op.extra.get("webhook") or not callable(op.handler):
+        raise ValueError("Webhook registration requires a handler")
+    binding = op.bindings[0] if len(op.bindings) == 1 else None
+    if not isinstance(binding, HttpRestBindingSpec) or binding.methods != ("POST",):
+        raise ValueError("Webhook registration requires an HTTP POST binding")
+    for route in owner.routes:
+        if getattr(route, "tigrbl_alias", None) == op.alias or (
+            route.path == webhook.path and "POST" in route.methods
+        ):
+            raise ValueError(f"Webhook route or alias already registered: {webhook.path}")
+    upsert_route_opspec(owner, op)
+    owner.add_route(
+        webhook.path, op.handler, methods=["POST"], tigrbl_alias=op.alias,
+        tigrbl_binding=binding, status_code=op.status_code,
+        request_model=op.request_model, response_model=op.response_model,
+        security_dependencies=list(op.security_deps),
+    )
 
 
 def _lower_router_paths(router: Any, router_spec: Any) -> None:
@@ -65,6 +96,8 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
 
     for path_spec in tuple(getattr(router_spec, "paths", ()) or ()):
         if path_spec.kind == "resource":
+            if any(op.extra.get("webhook") for op in path_spec.ops):
+                mount_webhook(router, path_spec)
             for table_spec in tuple(path_spec.tables or ()):
                 model = _resolve_table_model(table_spec)
                 _apply_table_spec_to_model(model, table_spec)

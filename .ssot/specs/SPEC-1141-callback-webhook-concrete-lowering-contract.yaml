@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "A new `CallbackSpec`, a new `WebhookSpec`, or callback/webhook authoring and lowering implemented in `tigrbl_runtime` is non-conforming unless explicitly superseded by a later accepted ADR and linked spec."
+summary: "Callback and webhook concrete lowering contract"
 supersedes: []
 superseded_by: []
 status_notes:
@@ -25,41 +25,29 @@ status_notes:
     note: "Normalize webhook concrete naming to Webhook and remove Inbound public symbol guidance."
     status: "draft"
   -
-    status: "draft"
-    note: "Clarify Webhook excludes built-in signature idempotency and acknowledgement helpers."
     at: "2026-06-17T17:06:33Z"
+    note: "Clarify Webhook excludes built-in signature idempotency and acknowledgement helpers."
+    status: "draft"
 references: []
 body: |-
   ## Contract
-  1. Tigrbl does not introduce `CallbackSpec`.
-  2. Tigrbl does not introduce `WebhookSpec`.
-  3. A first-class webhook is inbound HTTP event ingress.
-  4. Webhook authoring belongs in `tigrbl_concrete` as an inbound concrete form such as `Webhook`.
-  5. `Webhook` lowers to existing canonical specs:
-     - `PathSpec` owns the path and path kind;
-     - `OpSpec` owns the custom semantic operation;
-     - `HttpRestBindingSpec` owns the HTTP selector, including `POST`.
-  6. Provider metadata is ingress metadata for the concrete webhook surface. Signature verification, idempotency, acknowledgement, and provider-specific validation are runtime/security behavior supplied through existing security dependencies, hooks, handlers, or later governed surfaces; they are not built into the concrete Webhook object.
-  7. Outbound remote delivery is callback delivery, even when external ecosystems call that pattern a webhook.
-  8. Callback authoring belongs in `tigrbl_concrete` as a concrete alias/helper such as `PostEmitCallback`, `CallbackDelivery`, or another governed CamelCase concrete form.
-  9. Callback authoring lowers to existing hook or kernel callback-fence metadata; it does not create `CallbackSpec`.
-  10. Runtime may execute compiled callback delivery, retry, dead-letter, and completion-fence behavior only after callback/webhook authoring has been lowered and compiled upstream.
-  11. Historical runtime webhook/callback helper names are compatibility shims only and must delegate to the owning concrete or execution primitive with deprecation warnings.
-  ## Required Verification
-  - Concrete lowering tests prove webhook authoring produces `PathSpec`, `OpSpec`, and `HttpRestBindingSpec` without a `WebhookSpec`, while docstrings document inbound semantics without `Inbound*`, signature, idempotency, or acknowledgement public helper names.
-  - Concrete lowering tests prove callback authoring aliases to hook or kernel callback-fence metadata without a `CallbackSpec`.
-  - Runtime boundary tests prove callback/webhook authoring helpers are absent from runtime except approved deprecated shims.
-  - Public API tests prove `CallbackSpec` and `WebhookSpec` are not exported from the spec package.
-  - Surface matrix rows distinguish inbound webhook ingress from outbound callback delivery.
-  ## Non-Conformance
-  A new `CallbackSpec`, a new `WebhookSpec`, or callback/webhook authoring and lowering implemented in `tigrbl_runtime` is non-conforming unless explicitly superseded by a later accepted ADR and linked spec.
-  spec_kind: normative
-  adr_ids:
-  - adr:1002
-  - adr:1183
-  - adr:1184
+
+  1. WebhookSpec and CallbackSpec are public authoring inputs under ADR-1210 once accepted. Concrete Webhook, DefineWebhook, and webhook_ctx normalize to WebhookSpec. Concrete Callback, DefineCallback, and callback_ctx normalize to CallbackSpec. Preserve the existing webhook decorator as a compatible authoring form.
+  2. Concrete lowering converts WebhookSpec to PathSpec and a custom OpSpec with an HTTP POST binding. Register the result through the same REST operation path used by other mounted operations. Security dependencies, handler, response contract, and acknowledgement use that operation's normal lifecycle.
+  3. Concrete lowering converts CallbackSpec to hooks scoped to an existing operation. Kernel compiles the declared timing and any runtime-owned completion gating. Atoms enforce phase and transaction legality. Runtime executes the plan and concrete remains the authoring owner.
+  4. For strict after-emission delivery, use kernel completion metadata and the runtime completion fence together with the lowered hooks. POST_EMIT remains runtime-owned. Callback delivery must not introduce a second operation identity for the source request or a new public phase.
+  5. The single built-in durable table, retry transitions and tracing are governed by SPEC-2210 and SPEC-2211.
+
+  ## Required verification
+
+  - Public specs round-trip through the supported schema and serialization surfaces.
+  - Direct spec, concrete factory and context decorator converge on equivalent mounted REST operations or equivalent source-op hook plans.
+  - A mounted webhook acknowledges an actual signed POST; a mounted sender reaches a receiver and records the configured attempt outcome.
+  - Runtime boundary coverage proves authoring remains in concrete and POST_EMIT remains runtime-owned.
+  - Surface matrix rows distinguish inbound webhook authoring from outbound callback authoring.
 spec_kind: "normative"
 adr_ids:
   - "adr:1002"
   - "adr:1183"
   - "adr:1184"
+  - "adr:1210"
