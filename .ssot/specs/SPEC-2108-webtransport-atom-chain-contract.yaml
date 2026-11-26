@@ -44,6 +44,14 @@ body: |-
   
   System atom handlers for `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session` project semantic WebTransport control commands into wire-effect planning. They must preserve the distinction between command emission and delegated runtime stream or session allocation.
   
+  ## Outer session loop
+
+  For one inbound ASGI WebTransport session, runtime MUST enter one kernel-selected session plan through SPEC-1148. The kernel plan owns session admission, event selection, dispatch, continuation, and terminal transitions. Transport atoms receive and project carrier events, encode and emit results, perform close effects, and run the cleanup effects chosen by the plan. Concrete supplies bindings, handlers, hooks, and configured services.
+
+  The plan MUST preserve session and lane identities across interleaved events. Operation completion emits its result and leaves lane lifetime to the plan. A terminal stream event releases state attached to that stream. Other streams and datagrams remain eligible until the session transitions to terminal. Session termination follows SPEC-1153. The inner control-stream record loop follows SPEC-2207.
+
+  Verify one kernel session-plan entry per inbound ASGI scope and independent dispatch across interleaved stream and datagram events. Verify that closing one stream leaves other lanes usable and that a terminal session prevents further admission. Use SPEC-2159 for the Tigrcorn mixed-lane proof.
+
   ## Multiplexing Proof Boundary
   
   Native WebTransport multiplexing is proven only when one WebTransport session preserves independent lane identity across mixed traffic. Required evidence includes:
@@ -71,3 +79,4 @@ adr_ids:
   - "adr:1132"
   - "adr:1198"
   - "adr:1202"
+  - "adr:1139"

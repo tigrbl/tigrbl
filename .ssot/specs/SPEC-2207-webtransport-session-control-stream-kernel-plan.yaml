@@ -8,17 +8,21 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "A WebTransport control binding compiles a session-scoped loop that repeatedly reads uint32 big-endian length-prefixed JSON-RPC records, dispatches each operation through the canonical operation index, encodes the correlated response, and emits it with nonterminal continuation. Framing atoms own record boundaries, KernelPlan owns loop and dispatch composition, realtime sink atoms own asynchronous event lanes, and runtime owns only raw ASGI projection. Explicit control close or session disconnect terminates streams and cleans subscriptions and media sinks."
+summary: "A WebTransport control binding compiles an inner loop for uint32 big-endian length-prefixed JSON-RPC records. The kernel plan dispatches each complete record through the canonical operation index. Framing and transport atoms encode and emit the correlated response with nonterminal continuation. SPEC-2108 governs the outer session, and SPEC-1153 governs terminal cleanup."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Implemented by framing atoms, session plan, realtime sinks, and lowering path."
     at: "2026-08-03T22:24:55Z"
+    note: "Implemented by framing atoms, session plan, realtime sinks, and lowering path."
+    status: "accepted"
 references: []
 body: |-
-  A WebTransport control binding compiles a session-scoped loop that repeatedly reads uint32 big-endian length-prefixed JSON-RPC records, dispatches each operation through the canonical operation index, encodes the correlated response, and emits it with nonterminal continuation. Framing atoms own record boundaries, KernelPlan owns loop and dispatch composition, realtime sink atoms own asynchronous event lanes, and runtime owns only raw ASGI projection. Explicit control close or session disconnect terminates streams and cleans subscriptions and media sinks.
+  A WebTransport control binding compiles an inner loop for uint32 big-endian length-prefixed JSON-RPC records. The kernel plan dispatches each complete record through the canonical operation index. Framing and transport atoms encode and emit the correlated response with nonterminal continuation. SPEC-2108 governs the outer session, and SPEC-1153 governs terminal cleanup.
+
+  A partial carrier read MUST dispatch no operation. When a read yields multiple complete records, the plan MUST dispatch each record once and preserve its reply and invocation identity. Completing an operation leaves the control stream open. A terminal control-stream event releases that stream's decoder state and attachments. A session-terminal event releases the remaining resources owned by the session.
+
+  Verify split prefixes and payloads, multiple complete records in one read, and nonterminal replies on an open stream. Verify that control-stream termination leaves other lanes available unless the kernel plan also takes a session-terminal transition.
 
   ## Draft control-record identity extension
 
@@ -31,3 +35,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1202"
   - "adr:1207"
+  - "adr:1096"

@@ -113,7 +113,11 @@ body: |-
   
   ### Runtime Boundary
   
-  Runtime MUST execute the compiled kernel plan. Runtime MUST NOT own WebSocket lifecycle semantics, JSON-RPC method dispatch, publish fanout policy, or domain cleanup policy.
+  For a framework-managed realtime binding, runtime MUST enter the kernel-selected WebSocket session plan directly through the ASGI handoff in SPEC-1148. The plan owns accept and close ordering, the receive and dispatch loop, reply routing, and cleanup policy. Transport and framing atoms perform those effects. Concrete provides registered bindings, handlers, hooks, and configured services. Session termination and attachment cleanup follow SPEC-1153.
+
+  An explicit `@app.websocket` binding MUST invoke its authored handler through the selected plan. The handler retains access to accept, receive, send, and close through the socket API. An authored handler controls its application-level conversation. Framework-managed JSON-RPC dispatch belongs to the framework-managed binding.
+
+  Verification MUST enter through public ASGI ingress and cover both binding modes. Verify that a managed session accepts once, dispatches each complete message through the canonical operation index, and preserves reply identity and disconnect behavior. Verify that an authored handler can accept, receive, send, and close through the existing socket API.
   
   ## Traceability
   
@@ -147,3 +151,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1199"
   - "adr:1207"
+  - "adr:1139"
