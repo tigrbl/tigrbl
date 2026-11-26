@@ -119,6 +119,7 @@ EGRESS_HEADERS_APPLY = "egress.headers.apply"
 EGRESS_HTTP_FINALIZE = "egress.http.finalize"
 EGRESS_TO_TRANSPORT_RESPONSE = "egress.to_transport_response"
 EGRESS_ASGI_SEND = "egress.asgi.send"
+CALLBACK_DELIVERY_EMIT = "callback.delivery.emit"
 
 ERR_CTX_BUILD = "err.ctx.build"
 ERR_CLASSIFY = "err.classify"
@@ -182,6 +183,7 @@ _EVENT_ORDER: Tuple[str, ...] = (
     BATCH_ABORT_GROUP,
     ERR_TRANSPORT_SHAPE,
     BATCH_ERROR_PROJECT,
+    CALLBACK_DELIVERY_EMIT,
 )
 
 
@@ -195,6 +197,7 @@ class AnchorInfo:
     stage_out: Stage
     in_tx: bool
     is_error: bool
+    explicit_only: bool = False
 
 
 _ANCHOR_PHASE: Dict[str, Phase] = {
@@ -244,6 +247,7 @@ _ANCHOR_PHASE: Dict[str, Phase] = {
     EGRESS_HTTP_FINALIZE: EGRESS_FINALIZE,
     EGRESS_TO_TRANSPORT_RESPONSE: EGRESS_FINALIZE,
     EGRESS_ASGI_SEND: EGRESS_FINALIZE,
+    CALLBACK_DELIVERY_EMIT: EGRESS_FINALIZE,
     BATCH_EGRESS_SHAPE: EGRESS_SHAPE,
     BATCH_FANOUT_EMIT: EGRESS_FINALIZE,
     BATCH_CLEANUP: POST_RESPONSE,
@@ -317,6 +321,7 @@ _ANCHOR_STAGE: Dict[str, Tuple[Stage, Stage]] = {
     EGRESS_HTTP_FINALIZE: (Emitting, Emitting),
     EGRESS_TO_TRANSPORT_RESPONSE: (Emitting, Egressed),
     EGRESS_ASGI_SEND: (Egressed, Egressed),
+    CALLBACK_DELIVERY_EMIT: (Emitting, Egressed),
     BATCH_EGRESS_SHAPE: (Encoded, Encoded),
     BATCH_FANOUT_EMIT: (Egressed, Egressed),
     BATCH_CLEANUP: (Egressed, Egressed),
@@ -378,6 +383,7 @@ _ANCHORS: Dict[str, AnchorInfo] = {
         stage_out=_ANCHOR_STAGE[anchor][1],
         in_tx=phase_info(_ANCHOR_PHASE[anchor]).in_tx,
         is_error=phase_info(_ANCHOR_PHASE[anchor]).is_error,
+        explicit_only=anchor == CALLBACK_DELIVERY_EMIT,
     )
     for idx, anchor in enumerate(_EVENT_ORDER)
 }
@@ -531,6 +537,7 @@ __all__ = [
     "EGRESS_HTTP_FINALIZE",
     "EGRESS_TO_TRANSPORT_RESPONSE",
     "EGRESS_ASGI_SEND",
+    "CALLBACK_DELIVERY_EMIT",
     "ERR_CTX_BUILD",
     "ERR_CLASSIFY",
     "ERR_ROLLBACK",

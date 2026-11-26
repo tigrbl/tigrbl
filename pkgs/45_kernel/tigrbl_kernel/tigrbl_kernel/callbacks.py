@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
+from functools import lru_cache
 from typing import Any
+
+from tigrbl_atoms import StepFn
 
 
 def compile_callback_metadata(
@@ -36,6 +39,16 @@ def callback_hook_phases(timing: str, *, durable_intent: bool) -> tuple[str, ...
     return ("PRE_COMMIT", "POST_COMMIT") if durable_intent else ("POST_COMMIT",)
 
 
+@lru_cache(maxsize=1)
+def compile_callback_attempt() -> StepFn:
+    """Lower the callback delivery effect without inserting it in request egress."""
+    from tigrbl_atoms.atoms.transport.callback import ANCHOR, INSTANCE
+
+    from .atoms import _wrap_atom
+
+    return _wrap_atom(INSTANCE, anchor=ANCHOR)
+
+
 def compile_callback_delivery_plan(
     *,
     event: str,
@@ -54,6 +67,7 @@ def compile_callback_delivery_plan(
 
 __all__ = [
     "callback_hook_phases",
+    "compile_callback_attempt",
     "compile_callback_delivery_plan",
     "compile_callback_metadata",
 ]

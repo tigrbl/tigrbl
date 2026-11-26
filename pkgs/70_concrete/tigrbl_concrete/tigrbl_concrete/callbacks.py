@@ -10,15 +10,18 @@ from time import monotonic, time
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
+from tigrbl_atoms.atoms.transport.callback import (
+    CallbackAttemptCtx,
+    build_callback_payload,
+)
 from tigrbl_atoms.atoms.transport.completion_fence import defer_http_completion
 from tigrbl_core._spec import CallbackSpec
-from tigrbl_atoms.atoms.transport.callback import attempt_callback, build_callback_payload
 from tigrbl_typing.trace import emit_trace, trace_fields
 
 from ._concrete._callback import Callback
 from ._decorators.callback import callback_ctx
 from .factories.callback import DefineCallback
-from ._runtime_services import callback_hook_phases
+from ._runtime_services import callback_hook_phases, compile_callback_attempt
 
 if TYPE_CHECKING:
     from .callback_attempt import CallbackAttempt
@@ -124,13 +127,15 @@ async def _attempt(
             secret = await secret
         if reference and not isinstance(secret, str):
             raise ValueError("Signing secret is unavailable")
-        outcome = await attempt_callback(
-            request["destination"],
-            request["payload"],
+        delivery = CallbackAttemptCtx(
+            endpoint=request["destination"],
+            payload=request["payload"],
             timeout=request["timeout_seconds"] if timeout is None else timeout,
             secret=secret,
             send=send,
         )
+        attempted = await compile_callback_attempt()(delivery)
+        outcome = attempted.outcome
     except Exception as exc:
         outcome = {"status": "failed", "error": type(exc).__name__, "retryable": False}
     event = (
