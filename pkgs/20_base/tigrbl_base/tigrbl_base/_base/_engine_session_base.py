@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import inspect
 from collections import deque
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from time import perf_counter_ns
 from uuid import uuid4
 from dataclasses import fields
@@ -45,7 +45,7 @@ class EngineSessionBase(EngineSessionSpec):
     def _begin_transaction_identity(self) -> None:
         if self.transaction_id is None:
             self.transaction_id = uuid4().hex
-            self._transaction_start = (perf_counter_ns(), datetime.now(UTC).isoformat())
+            self._transaction_start = (perf_counter_ns(), datetime.now(timezone.utc).isoformat())
             self._record_transaction_event("begin")
 
     def _record_transaction_event(self, outcome: str) -> None:
@@ -63,7 +63,7 @@ class EngineSessionBase(EngineSessionSpec):
                     event.update(
                         measured_duration_ms=(perf_counter_ns() - started_ns) / 1_000_000,
                         source_started_at=started_at,
-                        source_ended_at=datetime.now(UTC).isoformat(),
+                        source_ended_at=datetime.now(timezone.utc).isoformat(),
                         timing_boundary=(
                             "db_tx_begin_to_commit" if outcome == "committed"
                             else "db_tx_begin_to_rollback"
@@ -144,7 +144,7 @@ class EngineSessionBase(EngineSessionSpec):
         await self._delete_impl(obj)
 
     async def flush(self) -> None:
-        started_ns, started_at = perf_counter_ns(), datetime.now(UTC).isoformat()
+        started_ns, started_at = perf_counter_ns(), datetime.now(timezone.utc).isoformat()
         transaction_id = self.transaction_id
         outcome = "failed"
         try:
@@ -163,7 +163,7 @@ class EngineSessionBase(EngineSessionSpec):
                 "engine_session_id": self.engine_session_id,
                 "outcome": outcome,
                 "source_started_at": started_at,
-                "source_ended_at": datetime.now(UTC).isoformat(),
+                "source_ended_at": datetime.now(timezone.utc).isoformat(),
                 "measured_duration_ms": (perf_counter_ns() - started_ns) / 1_000_000,
                 "timing_boundary": "db_flush_monotonic",
                 "clock_domain": "engine_monotonic",

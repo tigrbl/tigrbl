@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from time import perf_counter_ns
 from typing import Any
 
@@ -19,7 +19,7 @@ def bind_asgi_ingress(
     """Bind transport identity and HTTP response correlation to the carrier."""
     scope_type = projection.kind.value
     request_start = (
-        (perf_counter_ns(), datetime.now(UTC).isoformat())
+        (perf_counter_ns(), datetime.now(timezone.utc).isoformat())
         if sink is not None and scope_type == "http"
         else None
     )
@@ -47,7 +47,7 @@ def bind_asgi_ingress(
             if request_start is not None:
                 started_ns, started_at = request_start
                 duration_ms = (perf_counter_ns() - started_ns) / 1_000_000
-                ended_at = datetime.now(UTC).isoformat()
+                ended_at = datetime.now(timezone.utc).isoformat()
                 await send(message)
                 emit_trace(
                     sink,

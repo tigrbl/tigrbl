@@ -45,7 +45,7 @@ def _timing(
 
 @dataclass
 class AtomTrace:
-    anchor: _dt.datetime = field(default_factory=lambda: _dt.datetime.now(_dt.UTC))
+    anchor: _dt.datetime = field(default_factory=lambda: _dt.datetime.now(_dt.timezone.utc))
     start_ns: int = field(default_factory=time.perf_counter_ns)
     records: list[AtomTiming] = field(default_factory=list)
     dropped: int = 0
