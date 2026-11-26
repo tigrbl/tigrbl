@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from ...types import Atom, Ctx, EgressedCtx
 from ...stages import Emitting, Egressed
 
@@ -488,7 +490,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     raw = getattr(ctx, "raw", None)
     send = getattr(raw, "send", None) if raw is not None else None
     scope = getattr(raw, "scope", None) if raw is not None else None
-    if not callable(send) or not isinstance(scope, dict) or scope.get("type") != "http":
+    if not callable(send) or not isinstance(scope, dict) or projected_scope_type(scope) != "http":
         return
 
     temp = getattr(ctx, "temp", None)

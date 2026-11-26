@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from collections.abc import Awaitable, Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -80,7 +82,7 @@ class HttpCompletion:
 def observe_http_completion(env: Any) -> Iterator[HttpCompletion | None]:
     """Observe accepted ASGI sends for one HTTP invocation."""
     scope = getattr(env, "scope", None)
-    if not isinstance(scope, dict) or scope.get("type") != "http":
+    if not isinstance(scope, dict) or projected_scope_type(scope) != "http":
         yield None
         return
 
@@ -112,7 +114,7 @@ def observe_http_completion(env: Any) -> Iterator[HttpCompletion | None]:
 def defer_http_completion(
     scope: dict[str, Any], action: Callable[[HttpCompletion], Awaitable[Any]]
 ) -> None:
-    if scope.get("type") != "http":
+    if projected_scope_type(scope) != "http":
         raise ValueError("Callback after_emit requires an HTTP response")
     scope.setdefault("state", {}).setdefault(_HTTP_ACTIONS, []).append(action)
 

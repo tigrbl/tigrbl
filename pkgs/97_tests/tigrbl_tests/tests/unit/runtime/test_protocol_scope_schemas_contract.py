@@ -4,6 +4,8 @@ import importlib
 
 import pytest
 
+from tigrbl_atoms.protocol_scope import AsgiScope, AsgiScopeKind, project_asgi_scope
+
 
 def _require(module_name: str, attr_name: str):
     try:
@@ -151,3 +153,18 @@ def test_invalid_protocol_scope_extensions_fail_closed(bad_scope: dict[str, obje
 
     with pytest.raises(ValueError, match="scope|protocol|extension|required|peer"):
         validate_scope(bad_scope)
+
+
+@pytest.mark.parametrize("kind", list(AsgiScopeKind))
+def test_asgi_projection_returns_typed_kind_and_reuses_projection(kind):
+    scope = {"type": kind.value}
+    projection = project_asgi_scope(scope)
+    assert isinstance(projection, AsgiScope)
+    assert projection.kind is kind
+    assert project_asgi_scope(dict(scope)) is projection
+
+
+@pytest.mark.parametrize("scope", [{}, {"type": 3}, {"type": "unsupported"}, {"type": "message"}])
+def test_asgi_projector_rejects_invalid_discriminators(scope):
+    with pytest.raises(ValueError, match="ASGI scope type"):
+        project_asgi_scope(scope)

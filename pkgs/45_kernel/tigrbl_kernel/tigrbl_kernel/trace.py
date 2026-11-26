@@ -1,6 +1,8 @@
 # tigrbl/runtime/trace.py
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 import datetime as _dt
 import random
 import time
@@ -70,7 +72,7 @@ def record_execution(
 ) -> None:
     """Project the final context of a compiled invocation into identity events."""
     temp = _ensure_temp(ctx)
-    scope_type = scope.get("type", "")
+    scope_type = projected_scope_type(scope)
     transport = transport_name(scope_type)
     if scope_type == "http":
         transport = "JSON-RPC" if jsonrpc else "REST"

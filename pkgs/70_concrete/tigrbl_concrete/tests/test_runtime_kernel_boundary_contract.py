@@ -21,6 +21,15 @@ def _imports(path: Path) -> set[str]:
             modules.update(alias.name.split(".", maxsplit=1)[0] for alias in node.names)
         elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
             modules.add(node.module.split(".", maxsplit=1)[0])
+        elif isinstance(node, ast.Call) and node.args:
+            name = ast.unparse(node.func)
+            module = node.args[0]
+            if (
+                name in {"__import__", "import_module", "importlib.import_module"}
+                and isinstance(module, ast.Constant)
+                and isinstance(module.value, str)
+            ):
+                modules.add(module.value.split(".", maxsplit=1)[0])
     return modules
 
 

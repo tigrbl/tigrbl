@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrbl_typing.trace import TraceSink, emit_trace, transport_name
+from tigrbl_typing.trace import TraceSink
 
 from dataclasses import replace
 from pathlib import Path
@@ -482,46 +482,9 @@ class App(AppBase):
         )
 
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
-        scope["app"] = self
-        scope_type = scope.get("type")
-        sink = self.trace_sink
-        if scope_type == "http" or (
-            sink is not None and scope_type in {"websocket", "webtransport"}
-        ):
-            from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
+        await self.runtime.dispatch_asgi(self, scope, receive, send)
 
-            identity = prepare_transport_identity(scope)
-            if sink is not None:
-                details = {**identity, "path": scope.get("path")}
-                emit_trace(sink, "Scope opened", transport_name(scope_type), details)
-        if scope_type == "http":
-            correlation_id = identity["correlation_id"].encode("ascii")
-            send_response = send
-
-            async def send(message):
-                if message.get("type") == "http.response.start":
-                    headers = [
-                        (key, value)
-                        for key, value in message.get("headers", ())
-                        if key.lower() != b"x-correlation-id"
-                    ]
-                    message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
-                    if sink is not None:
-                        emit_trace(sink, "Response", "HTTP", {**details, "status": message["status"]})
-                await send_response(message)
-        if scope_type == "lifespan":
-            await self._handle_lifespan(scope, receive, send)
-            return
-        if scope_type == "webtransport":
-            await self._handle_webtransport(scope, receive, send)
-            return
-        if scope_type == "websocket":
-            if not scope.get("scheme"):
-                scope = dict(scope)
-                scope["scheme"] = "ws"
-            env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
-            await self.invoke(env)
-            return
+    async def _handle_http(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
         path = scope.get("path")
         if isinstance(path, str):
             mounted = _serve_mounted_app(self, scope, receive, send)
@@ -583,9 +546,6 @@ class App(AppBase):
     async def _handle_webtransport(
         self, scope: dict[str, Any], receive: Any, send: Any
     ) -> None:
-        if not scope.get("scheme"):
-            scope = dict(scope)
-            scope["scheme"] = "webtransport"
         scope_state = scope.setdefault("state", {})
         if not isinstance(scope_state, dict):
             scope_state = {}
@@ -648,14 +608,13 @@ class App(AppBase):
             self, "lifespan_context", None
         )
 
+        ctx_manager = None
         try:
             # Enter the lifespan context manager (if provided) so that any
             # resources it creates stay alive until shutdown.
             if lifespan_cm is not None:
                 ctx_manager = lifespan_cm(self)
                 await ctx_manager.__aenter__()
-            else:
-                ctx_manager = None
 
             run_handlers = getattr(self, "run_event_handlers", None)
             if callable(run_handlers):

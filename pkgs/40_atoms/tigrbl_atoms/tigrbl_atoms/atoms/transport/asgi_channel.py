@@ -4,7 +4,44 @@ import json
 from collections.abc import Mapping
 from typing import Any
 
+from tigrbl_typing.trace import TraceSink, emit_trace, transport_name
+
+from ...protocol_scope import AsgiScope
 from ..framing.webtransport_records import encode_jsonrpc_record
+from ..ingress.identity import prepare_transport_identity
+
+
+def bind_asgi_ingress(
+    scope: dict[str, Any], projection: AsgiScope, send: Any, sink: TraceSink | None
+) -> Any:
+    """Bind transport identity and HTTP response correlation to the carrier."""
+    scope_type = projection.kind.value
+    if scope_type != "http" and (
+        sink is None or scope_type not in {"websocket", "webtransport"}
+    ):
+        return send
+
+    identity = prepare_transport_identity(scope)
+    details = {**identity, "path": scope.get("path")}
+    emit_trace(sink, "Scope opened", transport_name(scope_type), details)
+    if scope_type != "http":
+        return send
+
+    correlation_id = identity["correlation_id"].encode("ascii")
+
+    async def send_with_correlation(message):
+        if message.get("type") == "http.response.start":
+            headers = [
+                (key, value)
+                for key, value in message.get("headers", ())
+                if key.lower() != b"x-correlation-id"
+            ]
+            message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
+            if sink is not None:
+                emit_trace(sink, "Response", "HTTP", {**details, "status": message["status"]})
+        await send(message)
+
+    return send_with_correlation
 
 
 def message_payload(message: Mapping[str, Any]) -> Any:

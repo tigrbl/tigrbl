@@ -9,7 +9,7 @@ from tigrbl_typing.status.exceptions import HTTPException
 
 from ... import events as _ev
 from ...stages import Bound
-from ...types import Atom, BoundCtx, Ctx
+from ...types import Atom, Ctx
 
 ANCHOR = _ev.DISPATCH_BINDING_PARSE
 
@@ -262,7 +262,7 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
             scope["headers"] = headers
         responses: list[dict[str, Any]] = []
 
-        for item in batch_payload:
+        for item_index, item in enumerate(batch_payload):
             if not isinstance(item, Mapping):
                 responses.append(
                     {
@@ -312,7 +312,13 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
                 async def _send(message: dict[str, Any]) -> None:
                     sent.append(dict(message))
 
-                await router_or_app(dict(scope), _receive, _send)
+                child_scope = dict(scope)
+                child_state = dict(scope.get("state") or {})
+                child_state["_tigrbl_rpc_batch_item"] = {"rpc_item_index": item_index}
+                if "id" in item:
+                    child_state["_tigrbl_rpc_batch_item"]["rpc_id"] = rpc_id
+                child_scope["state"] = child_state
+                await router_or_app(child_scope, _receive, _send)
             except Exception as exc:
                 responses.append(
                     {

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+from tigrbl_kernel.asgi_dispatch import select_asgi_operation_miss
 from tigrbl_kernel.trace import record_execution, transaction_history
 
 from ._shared import *
@@ -100,7 +101,6 @@ class _PackedExecuteMixin:
                     "body": {"detail": exc.detail},
                 }
         if program_id < 0:
-            scope = getattr(env, "scope", {}) or {}
             wt_selection = temp.get("webtransport_selection")
             disposition = getattr(wt_selection, "disposition", None)
             rpc_envelope = getattr(wt_selection, "rpc_envelope", None)
@@ -114,22 +114,15 @@ class _PackedExecuteMixin:
                 await _send_transport_response(env, ctx)
                 return
 
-            if hot.route_method_not_allowed:
-                await _send_json(env, 405, {"detail": "Method Not Allowed"})
-                return
-            if str(scope.get("type") or "") == "websocket":
-                send = getattr(env, "send", None)
-                if callable(send):
-                    await send({"type": "websocket.close", "code": 4404})
-                return
-            if str(scope.get("type") or "") == "webtransport":
-                send = getattr(env, "send", None)
-                if callable(send):
-                    await send({"type": "webtransport.close", "code": 4404})
-                return
-            await _send_json(
-                env, 404, {"detail": "No runtime operation matched request."}
+            miss = select_asgi_operation_miss(
+                hot.scope_type, method_not_allowed=hot.route_method_not_allowed
             )
+            if miss.close_event is not None:
+                send = getattr(env, "send", None)
+                if callable(send):
+                    await send({"type": miss.close_event, "code": miss.status_code})
+            else:
+                await _send_json(env, miss.status_code, {"detail": miss.detail})
             return
 
         temp["program_id"] = program_id

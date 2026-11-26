@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 from urllib.parse import urlencode
 
+from tigrbl_atoms.protocol_scope import scope_type
 from tigrbl_core._spec.middleware_spec import (
     ASGIApp,
     ASGIReceive,
@@ -66,7 +67,7 @@ class MiddlewareBase(MiddlewareSpec):
     async def asgi(
         self, scope: dict[str, Any], receive: ASGIReceive, send: ASGISend
     ) -> None:
-        if scope.get("type") != "http":
+        if scope_type(scope) != "http":
             await self.app(scope, receive, send)
             return
 

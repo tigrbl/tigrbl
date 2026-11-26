@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from ._shared import *
 
 
@@ -228,7 +230,7 @@ class _PackedHotContextMixin:
         method = str(scope_dict.get("method") or "").upper()
         path = str(scope_dict.get("path") or "")
         scheme = str(scope_dict.get("scheme") or "").lower()
-        scope_type = str(scope_dict.get("type") or "")
+        scope_type = projected_scope_type(scope_dict)
         protocol = ""
         selector = ""
         if scope_type == "http" and method and path:

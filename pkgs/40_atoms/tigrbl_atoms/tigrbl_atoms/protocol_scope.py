@@ -1,6 +1,61 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
+from dataclasses import dataclass
+from enum import Enum
 from typing import Any
+
+
+class AsgiScopeKind(str, Enum):
+    HTTP = "http"
+    WEBSOCKET = "websocket"
+    WEBTRANSPORT = "webtransport"
+    LIFESPAN = "lifespan"
+
+
+@dataclass(frozen=True, slots=True)
+class AsgiScope:
+    kind: AsgiScopeKind
+
+
+_SCOPE_PROJECTION = "_tigrbl_asgi_scope"
+
+
+def _read_scope_type(scope: Mapping[str, Any]) -> Any:
+    return scope.get("type")
+
+
+def _cached_scope(scope: Mapping[str, Any]) -> AsgiScope | None:
+    projection = scope.get(_SCOPE_PROJECTION)
+    return projection if isinstance(projection, AsgiScope) else None
+
+
+def project_asgi_scope(scope: Mapping[str, Any]) -> AsgiScope:
+    projection = _cached_scope(scope)
+    if projection is not None:
+        return projection
+    raw_type = _read_scope_type(scope)
+    if not isinstance(raw_type, str):
+        raise ValueError("ASGI scope type is required")
+    try:
+        kind = AsgiScopeKind(raw_type)
+    except ValueError:
+        raise ValueError(f"unsupported ASGI scope type: {raw_type}") from None
+    projection = AsgiScope(kind)
+    if isinstance(scope, dict):
+        scope[_SCOPE_PROJECTION] = projection
+    return projection
+
+
+def scope_type(scope: Mapping[str, Any], default: str = "") -> str:
+    projection = _cached_scope(scope)
+    if projection is not None:
+        return projection.kind.value
+    # Some operation executors also accept internal contexts with no ASGI scope.
+    try:
+        return project_asgi_scope(scope).kind.value
+    except ValueError:
+        return default
 
 
 def _headers(scope: dict[str, Any]) -> tuple[tuple[bytes, bytes], ...]:
@@ -12,7 +67,8 @@ def _secure(scope: dict[str, Any]) -> bool:
 
 
 def validate_scope(scope: dict[str, Any]) -> dict[str, Any]:
-    scope_type = scope.get("type")
+    projection = _cached_scope(scope)
+    scope_type = projection.kind.value if projection is not None else _read_scope_type(scope)
     if not isinstance(scope_type, str):
         raise ValueError("protocol scope type is required")
     extensions = scope.get("extensions", {})
@@ -60,4 +116,4 @@ def validate_scope(scope: dict[str, Any]) -> dict[str, Any]:
     raise ValueError(f"unsupported protocol scope type: {scope_type}")
 
 
-__all__ = ["validate_scope"]
+__all__ = ["AsgiScope", "AsgiScopeKind", "project_asgi_scope", "scope_type", "validate_scope"]

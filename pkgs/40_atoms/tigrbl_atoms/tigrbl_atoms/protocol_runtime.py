@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 import inspect
 import json
 from collections.abc import AsyncIterator, Callable, Iterable, Mapping
@@ -325,7 +327,7 @@ def run_static_file_chain(
 
 
 def validate_webtransport_scope(scope: Mapping[str, Any]) -> Mapping[str, Any]:
-    if str(scope.get("type")) != "webtransport":
+    if projected_scope_type(scope) != "webtransport":
         raise ValueError("webtransport scope metadata requires type='webtransport'")
     if not scope.get("path"):
         raise ValueError("webtransport scope metadata requires a path")

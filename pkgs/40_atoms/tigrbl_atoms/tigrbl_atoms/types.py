@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from abc import ABC, abstractmethod
 from dataclasses import MISSING, dataclass, field, fields, is_dataclass
 from enum import Enum
@@ -723,7 +725,7 @@ def build_error_ctx(
     transport_started, transport_complete = _transport_state(ctx)
     raw = _ctx_get(ctx, "raw")
     scope = getattr(raw, "scope", None)
-    scope_type = scope.get("type") if isinstance(scope, Mapping) else None
+    scope_type = (projected_scope_type(scope) or None) if isinstance(scope, Mapping) else None
     channel = _ctx_get(ctx, "channel")
 
     error_ctx = ctx.promote(

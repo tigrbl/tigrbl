@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 import json
 from typing import Any, Mapping
 
@@ -50,7 +52,7 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
             dispatch.setdefault("endpoint", endpoint)
 
     scope = getattr(env, "scope", {}) or {}
-    scope_type = str(scope.get("type") or "http")
+    scope_type = projected_scope_type(scope, "http")
     if scope_type == "webtransport":
         await _receive_webtransport_session_messages(env, channel, ctx)
         wt_state = _webtransport_scope_state(env)

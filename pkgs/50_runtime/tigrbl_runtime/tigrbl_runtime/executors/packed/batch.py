@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
 
 from ._shared import *
@@ -26,7 +28,7 @@ class _PackedBatchMixin:
         if not isinstance(plan, KernelPlan) or not isinstance(packed_plan, PackedKernel):
             return False
         scope = getattr(env, "scope", {}) or {}
-        if str(scope.get("type") or "") != "websocket":
+        if projected_scope_type(scope) != "websocket":
             return False
         protocol = str(scope.get("scheme") or "ws").lower()
         path = str(scope.get("path") or "")

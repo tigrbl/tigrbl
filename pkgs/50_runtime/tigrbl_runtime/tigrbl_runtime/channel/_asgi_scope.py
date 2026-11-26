@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from typing import Any, Mapping
 from urllib.parse import parse_qs
 
@@ -50,7 +52,7 @@ def build_asgi_channel(
 ) -> OpChannel:
     exchange = normalize_exchange(exchange)
     scope = getattr(env, "scope", {}) or {}
-    scope_type = str(scope.get("type") or "http")
+    scope_type = projected_scope_type(scope, "http")
     path = str(scope.get("path") or "/")
     method = scope.get("method")
     protocol_name = protocol or _scheme(scope) or scope_type

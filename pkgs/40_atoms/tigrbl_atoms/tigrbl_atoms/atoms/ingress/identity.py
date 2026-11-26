@@ -1,3 +1,5 @@
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 """Request, transport, stream, and invocation identity at ingress."""
 
 from collections.abc import Mapping
@@ -55,7 +57,7 @@ def _trace_identity(scope):
 
 def prepare_transport_identity(scope):
     """Resolve carrier metadata once, retaining WT identity across dispatches."""
-    scope_type = scope.get("type")
+    scope_type = projected_scope_type(scope)
     if scope_type not in {"http", "websocket", "webtransport"}:
         return {}
     state = scope.setdefault("state", {})

@@ -4,7 +4,10 @@ from typing import Any
 
 from tigrbl_atoms.atoms.ingress.identity import prepare_transport_identity
 from tigrbl_atoms.atoms.transport.completion_fence import observe_http_completion
-from tigrbl_kernel import Kernel, _kernel
+from tigrbl_atoms.atoms.transport.asgi_channel import bind_asgi_ingress
+from tigrbl_atoms import protocol_scope
+from tigrbl_kernel import Kernel, _kernel, asgi_dispatch
+from tigrbl_kernel.asgi_dispatch import AsgiLifecycle
 from tigrbl_typing.trace import TraceSink
 
 from tigrbl_runtime.channel import complete_channel, prepare_channel_context
@@ -79,6 +82,28 @@ class Runtime(RuntimeBase):
         packed_plan = getattr(plan, "packed", None)
         app._runtime_compile_cache = (cache_key, plan, packed_plan)
         return plan, packed_plan
+
+    async def dispatch_asgi(
+        self, app: Any, scope: dict[str, Any], receive: Any, send: Any
+    ) -> None:
+        projection = protocol_scope.project_asgi_scope(scope)
+        state = scope.get("state")
+        batch_item = state.get("_tigrbl_rpc_batch_item") if isinstance(state, dict) else None
+        plan = scope.get("_tigrbl_asgi_ingress_plan") if isinstance(batch_item, dict) else None
+        if not isinstance(plan, asgi_dispatch.AsgiIngressPlan):
+            plan = asgi_dispatch.select_asgi_ingress(projection)
+            scope["_tigrbl_asgi_ingress_plan"] = plan
+        scope["app"] = app
+        if plan.default_scheme and not scope.get("scheme"):
+            scope = {**scope, "scheme": plan.default_scheme}
+        send = bind_asgi_ingress(scope, projection, send, app.trace_sink)
+        entrypoints = {
+            AsgiLifecycle.REQUEST: app._handle_http,
+            AsgiLifecycle.WEBSOCKET_SESSION: app._handle_websocket,
+            AsgiLifecycle.WEBTRANSPORT_SESSION: app._handle_webtransport,
+            AsgiLifecycle.APPLICATION: app._handle_lifespan,
+        }
+        await entrypoints[plan.lifecycle](scope, receive, send)
 
     async def invoke(
         self,

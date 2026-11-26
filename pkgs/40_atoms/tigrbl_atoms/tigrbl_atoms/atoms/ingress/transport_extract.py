@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from typing import Any
 
 from tigrbl_typing.gw.raw import GwRouteEnvelope
@@ -7,7 +9,7 @@ from tigrbl_typing.gw.raw import GwRouteEnvelope
 from ... import events as _ev
 from ..._request import Request
 from ...stages import Ingress
-from ...types import Atom, Ctx, IngressCtx
+from ...types import Atom, Ctx
 from .._temp import _ensure_temp
 
 ANCHOR = _ev.INGRESS_TRANSPORT_EXTRACT
@@ -37,7 +39,7 @@ async def _read_http_body(ctx: Any) -> object | None:
     receive = getattr(raw, "receive", None) if raw is not None else None
     scope = getattr(raw, "scope", None) if raw is not None else None
     if not (
-        callable(receive) and isinstance(scope, dict) and scope.get("type") == "http"
+        callable(receive) and isinstance(scope, dict) and projected_scope_type(scope) == "http"
     ):
         return None
 
@@ -112,7 +114,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
         if hasattr(request, "_form_cache"):
             setattr(request, "_form_cache", None)
 
-    transport = "ws" if scope.get("type") == "websocket" else "http"
+    transport = "ws" if projected_scope_type(scope) == "websocket" else "http"
     scheme = str(scope.get("scheme", "http")).lower()
 
     gw_raw = GwRouteEnvelope(

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from collections import deque
 from typing import Any, Mapping
 
@@ -266,7 +268,7 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
 
 async def send_transport_via_channel(env: Any, ctx: Any) -> None:
     scope = getattr(env, "scope", {}) or {}
-    scope_type = str(scope.get("type") or "http")
+    scope_type = projected_scope_type(scope, "http")
     if scope_type in {"websocket", "webtransport"}:
         channel = ctx.get("channel")
         state = getattr(channel, "state", None) if channel is not None else None

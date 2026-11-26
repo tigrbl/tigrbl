@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from typing import Any
 
 from tigrbl_atoms.atoms.transport.asgi_channel import (
@@ -27,7 +29,7 @@ async def complete_channel(
 ) -> None:
     scope = getattr(env, "scope", {}) or {}
     channel = ctx.get("channel")
-    if scope.get("type") == "http":
+    if projected_scope_type(scope) == "http":
         if http_completion is None:
             return
         await finish_http_completion(scope, ctx, http_completion)

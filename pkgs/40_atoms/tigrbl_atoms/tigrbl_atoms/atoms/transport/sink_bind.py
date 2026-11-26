@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
 from typing import Any
 
 from ... import events as _ev
@@ -26,7 +28,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     send = getattr(raw, "send", None) if raw is not None else None
     if not isinstance(scope, dict) or not callable(send):
         return
-    scope_type = str(scope.get("type") or "")
+    scope_type = projected_scope_type(scope)
     if scope_type not in {"websocket", "webtransport"}:
         return
     session_id = None
