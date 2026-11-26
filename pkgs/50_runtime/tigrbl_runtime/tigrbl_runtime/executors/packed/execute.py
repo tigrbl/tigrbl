@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
 from tigrbl_kernel.asgi_dispatch import select_asgi_operation_miss
-from tigrbl_kernel.trace import record_execution, transaction_history
+from tigrbl_kernel.trace import (
+    AtomTrace,
+    OperationTrace,
+    operation_trace_scope,
+    record_execution,
+    transaction_history,
+)
 
 from ._shared import *
 from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
@@ -10,7 +16,12 @@ from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
 
 class _PackedExecuteMixin:
     async def _execute_packed(
-        self, env: Any, ctx: _Ctx, plan: KernelPlan, packed: PackedKernel
+        self,
+        env: Any,
+        ctx: _Ctx,
+        plan: KernelPlan,
+        packed: PackedKernel,
+        execution: OperationTrace | None = None,
     ) -> None:
         _send_json, _send_transport_response = self._resolve_transport_senders()
         StatusDetailError, create_standardized_error = self._resolve_error_helpers()
@@ -156,6 +167,8 @@ class _PackedExecuteMixin:
             ctx.model = getattr(meta, "model", None)
             ctx.op = getattr(meta, "alias", None)
             ctx.target = getattr(meta, "target", None)
+        if execution is not None:
+            execution.start(ctx.model, ctx.op)
         env_ref = ctx.get("env")
         if env_ref is None:
             ctx["env"] = SimpleNamespace(method=ctx.op)
@@ -184,6 +197,9 @@ class _PackedExecuteMixin:
                     ctx.owns_tx = True
                     if getattr(self.runtime, "trace_sink", None) is not None:
                         ctx.temp["_trace_transaction_baseline"] = transaction_history(db)
+                        ctx.temp["_trace_flush_baseline"] = transaction_history(
+                            db, event_source="flush_events"
+                        )
             except Exception:
                 release_db = None
         if (
@@ -248,6 +264,8 @@ class _PackedExecuteMixin:
                     error_phase,
                     fallback_phase,
                 )
+                if execution is not None:
+                    execution.finish("failed")
                 status_code = int(getattr(exc, "status_code", 500) or 500)
                 payload = self._jsonrpc_error_payload(ctx, status_code, detail)
                 await _send_json(
@@ -278,6 +296,8 @@ class _PackedExecuteMixin:
                     error_phase,
                     fallback_phase,
                 )
+                if execution is not None:
+                    execution.finish("failed")
                 status_code = int(getattr(std, "status_code", 500) or 500)
                 persistence_error = self._is_persistence_exception(exc)
                 if persistence_error:
@@ -304,6 +324,8 @@ class _PackedExecuteMixin:
                 )
                 return
 
+            if execution is not None:
+                execution.finish("ok")
             if program_hot_runner_id == _HOT_RUNNER_WS_UNARY_TEXT:
                 return
             if isinstance(temp, dict) and temp.get("_tigrbl_hot_direct_create") is True:
@@ -324,39 +346,6 @@ class _PackedExecuteMixin:
                         await cleanup
                 except Exception:
                     pass
-
-    def _build_python_packed_executor(self, packed: PackedKernel):
-        async def _executor(kernel: Any, env: Any, ctx: _Ctx, plan: KernelPlan) -> None:
-            del kernel
-            await self._execute_packed(env, ctx, plan, packed)
-
-        return _executor
-
-    def _build_numba_packed_executor(self, packed: PackedKernel):
-        if not packed.route_to_program:
-            return None
-        try:
-            from numba import njit
-        except Exception:
-            return None
-
-        route_to_program = packed.route_to_program
-
-        @njit(cache=True)
-        def _dispatch(proto_id: int, selector_id: int) -> int:
-            if proto_id < 0 or selector_id < 0:
-                return -1
-            if proto_id >= len(route_to_program):
-                return -1
-            row = route_to_program[proto_id]
-            if selector_id >= len(row):
-                return -1
-            return row[selector_id]
-
-        def _executor(proto_id: int, selector_id: int) -> int:
-            return int(_dispatch(int(proto_id), int(selector_id)))
-
-        return _executor
 
     async def invoke(
         self,
@@ -379,14 +368,22 @@ class _PackedExecuteMixin:
         )
         sink = getattr(runtime, "trace_sink", None)
         scope = getattr(env, "scope", None)
+        execution = (
+            OperationTrace() if sink is not None and isinstance(scope, Mapping) else None
+        )
+        if execution is not None and getattr(runtime, "trace_atoms", False):
+            execution.atoms = AtomTrace()
         try:
-            await self._execute_packed(env, base_ctx, plan, packed_plan)
+            with operation_trace_scope(execution):
+                await self._execute_packed(env, base_ctx, plan, packed_plan, execution)
         finally:
-            if sink is not None and isinstance(scope, Mapping):
+            if execution is not None:
+                execution.finish("failed")
                 hot = base_ctx.temp.get("hot_ctx")
                 record_execution(
                     sink, scope, base_ctx,
                     jsonrpc=getattr(hot, "transport_kind_id", None) == _TRANSPORT_KIND_JSONRPC,
                     owned_session=getattr(base_ctx, "_raw_db", None),
+                    execution=execution,
                 )
         return base_ctx.get("result")

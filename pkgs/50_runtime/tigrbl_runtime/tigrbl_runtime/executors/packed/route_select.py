@@ -342,7 +342,7 @@ class _PackedRouteSelectMixin(_PackedWebSocketRouteSelectMixin):
         return program_id
 
     @classmethod
-    def _prepare_compiled_dispatch_prelude(
+    def _prepare_compiled_context(
         cls,
         ctx: _Ctx,
         packed: PackedKernel,
