@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tigrbl_kernel.trace import instrument_atom
+
 from ._shared import *
 
 
@@ -130,8 +132,9 @@ class _PackedSegmentsMixin:
         )
 
         step_table = packed.step_table
+        trace_atoms = getattr(self.runtime, "trace_atoms", False)
 
-        def _compile_step(step_id: int) -> tuple[int, Any, Any, bool]:
+        def _compile_step(step_id: int, *, strict_sync: bool = False) -> tuple[int, Any, Any, bool]:
             step = step_table[step_id]
             direct_run = getattr(step, "__tigrbl_direct_run", None)
             if callable(direct_run):
@@ -152,10 +155,11 @@ class _PackedSegmentsMixin:
                         else _DIRECT_INVOKE_RUN
                     )
                 )
-                return (invoke_kind, direct_run, direct_dep, direct_is_async)
+                call = instrument_atom(step, direct_run, strict_sync=strict_sync) if trace_atoms else direct_run
+                return (invoke_kind, call, direct_dep, direct_is_async)
             return (
                 _DIRECT_INVOKE_STEP,
-                step,
+                instrument_atom(step, step, strict_sync=strict_sync) if trace_atoms else step,
                 None,
                 bool(async_flags[step_id]) if step_id < len(async_flags) else False,
             )
@@ -168,7 +172,7 @@ class _PackedSegmentsMixin:
             return call(ctx)
 
         def _make_fused_sync_runner(step_ids: tuple[int, ...]):
-            steps = tuple(_compile_step(step_id) for step_id in step_ids)
+            steps = tuple(_compile_step(step_id, strict_sync=True) for step_id in step_ids)
 
             async def _runner(ctx: _Ctx) -> None:
                 for invoke_kind, call, dep, is_async in steps:
@@ -268,6 +272,7 @@ class _PackedSegmentsMixin:
         )
         compiled_steps: list[tuple[str, int, Any, Any, bool]] = []
         step_table = packed.step_table
+        trace_atoms = getattr(self.runtime, "trace_atoms", False)
         for seg_id in (*ordered, *remaining):
             phase_name = str(normalize_phase(phase_names[seg_id]))
             for step_id in step_ids_by_segment[seg_id]:
@@ -295,19 +300,20 @@ class _PackedSegmentsMixin:
                         (
                             phase_name,
                             invoke_kind,
-                            direct_run,
+                            instrument_atom(step, direct_run, strict_sync=not direct_is_async) if trace_atoms else direct_run,
                             direct_dep,
                             direct_is_async,
                         )
                     )
                     continue
+                is_async = bool(async_flags[step_id]) if step_id < len(async_flags) else False
                 compiled_steps.append(
                     (
                         phase_name,
                         _DIRECT_INVOKE_STEP,
-                        step,
+                        instrument_atom(step, step, strict_sync=not is_async) if trace_atoms else step,
                         None,
-                        bool(async_flags[step_id]) if step_id < len(async_flags) else False,
+                        is_async,
                     )
                 )
 

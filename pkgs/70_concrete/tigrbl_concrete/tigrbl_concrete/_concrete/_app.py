@@ -61,9 +61,11 @@ class App(AppBase):
 
     def __init__(
         self, *, engine: EngineCfg | None = None, trace_sink: TraceSink | None = None,
+        trace_atoms: bool = False,
         realtime_broker: Any = None, **asgi_kwargs: Any,
     ) -> None:
         self.trace_sink = trace_sink
+        self.trace_atoms = trace_atoms
         if realtime_broker is not None:
             self.__realtime_broker__ = realtime_broker
         subscription_policy = asgi_kwargs.pop("subscription_policy", None)
@@ -431,7 +433,11 @@ class App(AppBase):
         if runtime is None:
             from tigrbl_runtime.runtime import Runtime
 
-            runtime = Runtime(default_executor=self._runtime_default_executor, trace_sink=self.trace_sink)
+            runtime = Runtime(
+                default_executor=self._runtime_default_executor,
+                trace_sink=self.trace_sink,
+                trace_atoms=self.trace_atoms,
+            )
             self._runtime_instance = runtime
         return runtime
 

@@ -12,7 +12,7 @@ from tigrbl_atoms.atoms.framing.codec import decode_frame
 from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
 from tigrbl_typing.status.converters import http_exc_to_rpc
 from tigrbl_typing.status.exceptions import HTTPException
-from tigrbl_typing.trace import emit_trace
+from ..trace import OperationTrace, emit_operation_trace, operation_trace_scope
 
 ANCHORS: tuple[str, ...] = (
     "transport.accept",
@@ -458,8 +458,15 @@ async def _dispatch_jsonrpc_payload(
             break
     if _op_tx_scope(model, alias) == "none":
         kwargs["db"] = {}
+    app = _ctx_get(session_ctx, "app")
+    sink = getattr(router, "trace_sink", None) or getattr(app, "trace_sink", None)
+    execution = OperationTrace() if sink is not None else None
+    if execution is not None:
+        execution.start(model, alias)
+    outcome = "failed"
     try:
-        result = await rpc_call(model, alias, params, **kwargs)
+        with operation_trace_scope(execution):
+            result = await rpc_call(model, alias, params, **kwargs)
         # Packed operation dispatch can return the encoded HTTP-style transport
         # response. Unwrap that response before serializing the WebSocket reply.
         if (
@@ -474,6 +481,7 @@ async def _dispatch_jsonrpc_payload(
                 raise HTTPException(status_code=result["status_code"], detail=body)
             result = body
         reply = _jsonrpc_result(result, request_id)
+        outcome = "ok"
     except AttributeError:
         reply = _jsonrpc_error(-32601, "Method not found", request_id)
     except HTTPException as exc:
@@ -487,11 +495,10 @@ async def _dispatch_jsonrpc_payload(
             data={"detail": str(exc)},
         )
     finally:
-        app = _ctx_get(session_ctx, "app")
-        sink = getattr(router, "trace_sink", None) or getattr(app, "trace_sink", None)
         identity = kwargs["ctx"].get("identity")
-        if sink is not None and identity:
-            emit_trace(sink, "Invocation", "WebSocket", identity)
+        if execution is not None and identity:
+            execution.finish(outcome)
+            emit_operation_trace(sink, "WebSocket", identity, execution)
     if "id" not in payload:
         return None
     return reply

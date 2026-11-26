@@ -40,11 +40,13 @@ class Runtime(RuntimeBase):
         atoms_backend: str = "auto",
         executor_backend: str = "python",
         trace_sink: TraceSink | None = None,
+        trace_atoms: bool = False,
     ) -> None:
         resolved_kernel = kernel if kernel is not None else _kernel()
         super().__init__(kernel=resolved_kernel)
         self.default_executor = default_executor
         self.trace_sink = trace_sink
+        self.trace_atoms = trace_atoms and trace_sink is not None
         self.kernel_backend = _normalize_execution_backend(kernel_backend)
         self.atoms_backend = _normalize_execution_backend(atoms_backend)
         self.executor_backend = _normalize_execution_backend(executor_backend)

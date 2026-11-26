@@ -4,17 +4,254 @@ from __future__ import annotations
 from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
 
 import datetime as _dt
+import inspect
+import logging
 import random
 import time
 from collections import deque
 from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import dataclass, field
 from threading import Lock
 from typing import Any, Dict, Mapping, MutableMapping, Optional, Sequence, Tuple
 
-from tigrbl_typing.trace import TraceSink, emit_trace, trace_fields, transport_name
+from tigrbl_atoms.types import FailedCtx
+from tigrbl_typing.trace import (
+    AtomTiming,
+    TraceSink,
+    atom_timing_fields,
+    emit_trace,
+    trace_fields,
+    transport_name,
+)
 
 from .identity_rollup import rollup_identity_records
+
+_LOG = logging.getLogger(__name__)
+
+
+def _timing(
+    started_at: str, started_ns: int, boundary: str, outcome: str
+) -> dict[str, Any]:
+    return {
+        "source_started_at": started_at,
+        "source_ended_at": _iso_now(),
+        "measured_duration_ms": (time.perf_counter_ns() - started_ns) / 1_000_000,
+        "clock_domain": "server_monotonic",
+        "timing_boundary": boundary,
+        "outcome": outcome,
+    }
+
+
+@dataclass
+class AtomTrace:
+    anchor: _dt.datetime = field(default_factory=lambda: _dt.datetime.now(_dt.UTC))
+    start_ns: int = field(default_factory=time.perf_counter_ns)
+    records: list[AtomTiming] = field(default_factory=list)
+    dropped: int = 0
+
+    def add(
+        self,
+        label: str,
+        phase: str,
+        started: int,
+        outcome: str,
+        db: Any,
+        transaction_id: str | None,
+    ) -> None:
+        duration = time.perf_counter_ns() - started
+        if len(self.records) < 2048:
+            transaction_id = transaction_id or getattr(db, "transaction_id", None)
+            self.records.append(
+                (
+                    label,
+                    phase,
+                    started - self.start_ns,
+                    duration,
+                    outcome,
+                    getattr(db, "engine_session_id", None) if transaction_id else None,
+                    transaction_id,
+                )
+            )
+        else:
+            self.dropped += 1
+
+
+@dataclass
+class OperationTrace:
+    model: type | None = None
+    alias: str | None = None
+    started_at: str | None = None
+    started_ns: int = 0
+    timing: dict[str, Any] = field(default_factory=dict)
+    hooks: list[dict[str, Any]] = field(default_factory=list)
+    atoms: AtomTrace | None = None
+
+    def start(self, model: type | None, alias: str | None) -> None:
+        if isinstance(model, type) and isinstance(alias, str):
+            self.model, self.alias = model, alias
+            self.started_at, self.started_ns = _iso_now(), time.perf_counter_ns()
+
+    def finish(self, outcome: str) -> None:
+        if self.started_at is not None and not self.timing:
+            self.timing = _timing(
+                self.started_at, self.started_ns, "invocation_monotonic", outcome
+            )
+
+
+_ACTIVE_OPERATION: ContextVar[OperationTrace | None] = ContextVar(
+    "tigrbl_operation_trace", default=None
+)
+
+
+@contextmanager
+def operation_trace_scope(trace: OperationTrace | None):
+    if trace is None:
+        yield
+        return
+    token = _ACTIVE_OPERATION.set(trace)
+    try:
+        yield
+    finally:
+        _ACTIVE_OPERATION.reset(token)
+
+
+def atom_trace_active() -> bool:
+    trace = _ACTIVE_OPERATION.get()
+    return trace is not None and trace.atoms is not None
+
+
+def instrument_atom(
+    step: Any,
+    call: Any,
+    *,
+    label: str | None = None,
+    context_index: int = -1,
+    fixed_phase: str | None = None,
+    strict_sync: bool = False,
+) -> Any:
+    # The packed runner may call the original atom directly, bypassing its wrapper.
+    atom_name = getattr(step, "__tigrbl_atom_name__", None)
+    label = label or getattr(step, "__tigrbl_label", None) or atom_name
+    if not label or not (
+        atom_name or label.startswith(("atom:", "hook:dep:")) or step is None
+    ):
+        return call
+
+    async def await_result(rv, atoms, phase, started, db, transaction_id):
+        try:
+            result = await rv
+        except BaseException:
+            atoms.add(label, phase, started, "failed", db, transaction_id)
+            raise
+        atoms.add(
+            label,
+            phase,
+            started,
+            "failed" if isinstance(result, FailedCtx) else "ok",
+            db,
+            transaction_id,
+        )
+        return result
+
+    def timed(*args):
+        trace = _ACTIVE_OPERATION.get()
+        if trace is None or trace.atoms is None:
+            return call(*args)
+        ctx = args[context_index]
+        phase = fixed_phase or str(getattr(ctx, "phase", "UNKNOWN"))
+        db = getattr(ctx, "_raw_db", None)
+        transaction_id = getattr(db, "transaction_id", None)
+        started = time.perf_counter_ns()
+        try:
+            result = call(*args)
+        except BaseException:
+            trace.atoms.add(label, phase, started, "failed", db, transaction_id)
+            raise
+        if inspect.isawaitable(result):
+            if strict_sync:
+                trace.atoms.add(label, phase, started, "failed", db, transaction_id)
+                return result
+            return await_result(result, trace.atoms, phase, started, db, transaction_id)
+        trace.atoms.add(
+            label,
+            phase,
+            started,
+            "failed" if isinstance(result, FailedCtx) else "ok",
+            db,
+            transaction_id,
+        )
+        return result
+
+    return timed
+
+
+@contextmanager
+def trace_bound_hook(ctx: Any, name: str, phase: str):
+    trace = _ACTIVE_OPERATION.get()
+    if (
+        trace is None
+        or len(trace.hooks) >= 500
+        or ctx.get("model") is not trace.model
+        or ctx.get("op") != trace.alias
+    ):
+        yield
+        return
+    started_at, started_ns = _iso_now(), time.perf_counter_ns()
+    db = ctx.get("db")
+    transaction_id = getattr(db, "transaction_id", None)
+    engine_session_id = getattr(db, "engine_session_id", None)
+    outcome = "failed"
+    try:
+        yield
+        outcome = "ok"
+    finally:
+        trace.hooks.append(
+            {
+                "hook_name": name,
+                "hook_phase": phase,
+                "transaction_id": transaction_id,
+                "engine_session_id": engine_session_id if transaction_id else None,
+                **_timing(started_at, started_ns, "hook_monotonic", outcome),
+            }
+        )
+
+
+def emit_operation_trace(
+    sink: TraceSink,
+    transport: str,
+    identity: Mapping[str, Any],
+    trace: OperationTrace | None,
+) -> None:
+    details = dict(identity)
+    if trace is not None and trace.model is not None:
+        details.update(op_model=trace.model.__name__, op_alias=trace.alias)
+    if trace is not None and trace.atoms is not None and trace.atoms.dropped:
+        details["atom_trace_dropped"] = trace.atoms.dropped
+    emit_trace(
+        sink, "Invocation", transport, {**details, **(trace.timing if trace else {})}
+    )
+    if trace is not None:
+        for hook in trace.hooks:
+            emit_trace(sink, "Hook", transport, {**details, **hook})
+        if trace.atoms is not None and trace.atoms.records:
+            owner = getattr(sink, "__self__", sink)
+            batch = getattr(owner, "capture_atoms", None)
+            if callable(batch):
+                try:
+                    batch(
+                        transport,
+                        trace_fields(details),
+                        trace.atoms.anchor,
+                        trace.atoms.records,
+                        atom_timing_fields,
+                    )
+                except Exception:
+                    _LOG.warning("Trace sink rejected atom timings")
+            else:
+                for ordinal, sample in enumerate(trace.atoms.records, start=1):
+                    fields = atom_timing_fields(trace.atoms.anchor, ordinal, sample)
+                    emit_trace(sink, "Atom", transport, {**details, **fields})
 
 
 class Timeline:
@@ -52,8 +289,10 @@ class Timeline:
         }
 
 
-def transaction_history(session: Any) -> tuple[dict[str, Any], ...] | None:
-    events = getattr(session, "transaction_events", None)
+def transaction_history(
+    session: Any, *, event_source: str = "transaction_events"
+) -> tuple[dict[str, Any], ...] | None:
+    events = getattr(session, event_source, None)
     if not callable(events):
         return None
     try:
@@ -69,6 +308,7 @@ def record_execution(
     *,
     jsonrpc: bool,
     owned_session: Any = None,
+    execution: OperationTrace | None = None,
 ) -> None:
     """Project the final context of a compiled invocation into identity events."""
     temp = _ensure_temp(ctx)
@@ -82,7 +322,7 @@ def record_execution(
     if selection is not None:
         details["outcome"] = selection.disposition
     if identity.get("invocation_id"):
-        emit_trace(sink, "Invocation", transport, details)
+        emit_operation_trace(sink, transport, details, execution)
 
     transactions = temp.get("transaction_events") or ()
     participants = temp.get("transaction_participation") or ()
@@ -105,6 +345,17 @@ def record_execution(
         )
     for event in transactions:
         emit_trace(sink, "Transaction", transport, {**details, **event})
+    flushes = temp.get("flush_events") or ()
+    flush_baseline = temp.get("_trace_flush_baseline")
+    if flush_baseline is not None:
+        flushes = tuple(
+            event
+            for event in transaction_history(owned_session, event_source="flush_events")
+            or ()
+            if event not in flush_baseline
+        )
+    for event in flushes:
+        emit_trace(sink, "Flush", transport, {**details, **event})
     for participant in participants:
         emit_trace(
             sink, "Transaction participant", transport, {**details, **participant}

@@ -5,9 +5,11 @@ from __future__ import annotations
 from collections.abc import Callable, Mapping
 import logging
 import math
+from datetime import datetime, timedelta
 from typing import Any
 
 TraceSink = Callable[[str, str, Mapping[str, Any]], None]
+AtomTiming = tuple[str, str, int, int, str, str | None, str | None]
 
 _FIELDS = (
     "connection_id",
@@ -32,6 +34,7 @@ _FIELDS = (
     "parent_span_id",
     "engine_session_id",
     "transaction_id",
+    "flush_id",
     "publication_id",
     "delivery_id",
     "attempt_number",
@@ -45,8 +48,44 @@ _FIELDS = (
     "outcome",
     "status",
     "path",
+    "op_model",
+    "op_alias",
+    "hook_name",
+    "hook_phase",
+    "atom_label",
+    "atom_phase",
+    "atom_ordinal",
+    "atom_trace_dropped",
+    "source_started_at",
+    "source_ended_at",
+    "measured_duration_ms",
+    "timing_boundary",
+    "clock_domain",
 )
 _LOG = logging.getLogger(__name__)
+
+
+def atom_timing_fields(
+    anchor: datetime, ordinal: int, sample: AtomTiming
+) -> dict[str, Any]:
+    label, phase, offset_ns, duration_ns, outcome, engine_session_id, transaction_id = (
+        sample
+    )
+    start = anchor + timedelta(microseconds=offset_ns / 1000)
+    end = anchor + timedelta(microseconds=(offset_ns + duration_ns) / 1000)
+    return {
+        "atom_label": label,
+        "atom_phase": phase,
+        "atom_ordinal": ordinal,
+        "source_started_at": start.isoformat(),
+        "source_ended_at": end.isoformat(),
+        "measured_duration_ms": duration_ns / 1_000_000,
+        "timing_boundary": "atom_monotonic",
+        "clock_domain": "server_monotonic",
+        "outcome": outcome,
+        "engine_session_id": engine_session_id,
+        "transaction_id": transaction_id,
+    }
 
 
 def trace_fields(fields: Mapping[str, Any]) -> dict[str, Any]:

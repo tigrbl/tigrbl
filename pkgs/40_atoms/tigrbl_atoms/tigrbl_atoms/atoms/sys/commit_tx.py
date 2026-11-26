@@ -37,6 +37,11 @@ def record_transaction_events(temp, db) -> None:
         temp["transaction_events"] = tuple(
             event for event in events() if event["transaction_id"] in relevant
         )
+        flushes = getattr(db, "flush_events", None)
+        if callable(flushes):
+            temp["flush_events"] = tuple(
+                event for event in flushes() if event.get("transaction_id") in relevant
+            )
 
 
 async def _run(obj: object | None, ctx: Any) -> None:

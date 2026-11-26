@@ -88,6 +88,7 @@ async def _run_chain(ctx: Any, chain: Optional[Iterable[Any]], *, phase: str) ->
 
     isawaitable = inspect.isawaitable
     trace_active = _trace_ready(ctx)
+    trace_atoms = _trace is not None and _trace.atom_trace_active()
 
     for idx, step in enumerate(chain):
         label = getattr(step, "__tigrbl_label", None)
@@ -104,7 +105,8 @@ async def _run_chain(ctx: Any, chain: Optional[Iterable[Any]], *, phase: str) ->
             before_post_response = _normalize_payload(before_value)
 
         try:
-            rv = step(ctx)
+            call = _trace.instrument_atom(step, step, fixed_phase=phase) if trace_atoms else step
+            rv = call(ctx)
             if isawaitable(rv):
                 rv = await rv  # type: ignore[func-returns-value]
             if isinstance(rv, FailedCtx):

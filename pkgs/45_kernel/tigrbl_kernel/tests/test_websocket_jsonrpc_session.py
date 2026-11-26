@@ -138,4 +138,8 @@ async def test_websocket_jsonrpc_dispatch_snapshots_binding_and_message_identity
     invocations = timeline.data()["events"]
     assert [item["kind"] for item in invocations] == ["Invocation"] * 3
     assert [item["span_id"] for item in invocations] == [item["span_id"] for item in seen]
+    for item in invocations:
+        assert (item["op_model"], item["op_alias"]) == ("Topic", "subscribe")
+        assert item["timing_boundary"] == "invocation_monotonic"
+        assert item["measured_duration_ms"] > 0
     assert broker.metrics()["subscriber_count"] == 0

@@ -69,5 +69,38 @@ class PackedPlanExecutor(
             tuple[int, int, int], _CompiledParamPlan
         ] = {}
         self._model_row_serializer_cache: dict[type[Any], tuple[str, ...]] = {}
+    def _build_python_packed_executor(self, packed: PackedKernel):
+        async def _executor(kernel: Any, env: Any, ctx: _Ctx, plan: KernelPlan) -> None:
+            del kernel
+            await self._execute_packed(env, ctx, plan, packed)
+
+        return _executor
+
+    def _build_numba_packed_executor(self, packed: PackedKernel):
+        if not packed.route_to_program:
+            return None
+        try:
+            from numba import njit
+        except Exception:
+            return None
+
+        route_to_program = packed.route_to_program
+
+        @njit(cache=True)
+        def _dispatch(proto_id: int, selector_id: int) -> int:
+            if proto_id < 0 or selector_id < 0:
+                return -1
+            if proto_id >= len(route_to_program):
+                return -1
+            row = route_to_program[proto_id]
+            if selector_id >= len(row):
+                return -1
+            return row[selector_id]
+
+        def _executor(proto_id: int, selector_id: int) -> int:
+            return int(_dispatch(int(proto_id), int(selector_id)))
+
+        return _executor
+
 
 __all__ = ["PackedPlanExecutor"]

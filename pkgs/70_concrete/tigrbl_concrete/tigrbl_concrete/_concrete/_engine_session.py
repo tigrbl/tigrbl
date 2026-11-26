@@ -54,6 +54,14 @@ class EngineSession(EngineSessionBase):
         if inspect.isawaitable(rv):
             await rv
 
+    async def begin_for_operation(self) -> None:
+        await self.begin()
+        if self._observes_provider_begin:
+            # A managed operation opens the provider transaction in START_TX.
+            connection = self._u.connection()
+            if inspect.isawaitable(connection):
+                await connection
+
     async def _tx_commit_impl(self) -> None:
         fn = getattr(self._u, "commit", None)
         if not callable(fn):

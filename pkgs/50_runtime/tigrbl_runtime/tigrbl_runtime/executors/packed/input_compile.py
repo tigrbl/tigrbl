@@ -1,9 +1,72 @@
 from __future__ import annotations
 
+from tigrbl_kernel.core import DEFAULT_PHASE_ORDER
+from tigrbl_kernel.trace import instrument_atom
+
 from ._shared import *
 
 
 class _PackedInputCompileMixin:
+    def _schedule_compiled_input(
+        self,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+        compiled_steps: list[tuple[str, int, Any, Any, bool]],
+        validation_index: int | None,
+        trace_atoms: bool,
+    ) -> None:
+        prepare_input = self._prepare_compiled_input
+        validate_input = self._compiled_validate_and_assemble
+        if trace_atoms:
+            prepare_input = instrument_atom(
+                None, prepare_input, label="fused:compiled_input_prepare",
+                context_index=0, fixed_phase="INGRESS_PARSE",
+            )
+            validate_input = instrument_atom(
+                None, validate_input, label="fused:compiled_validate_and_assemble",
+                context_index=0, fixed_phase="PRE_HANDLER",
+            )
+
+        async def parse_input(ctx: _Ctx) -> None:
+            hot = ctx.temp["hot_ctx"]
+            await prepare_input(ctx, hot, packed, program_id, hot_op_plan)
+            self._publish_route_payload(ctx, hot)
+
+        def validate_and_publish(ctx: _Ctx) -> None:
+            hot = ctx.temp["hot_ctx"]
+            if hot.compiled_input_ready:
+                plan = self._resolve_compiled_param_plan(
+                    ctx,
+                    packed,
+                    program_id,
+                    hot.param_shape_id,
+                )
+                validate_input(ctx, hot, plan)
+                self._publish_compiled_payload(ctx, hot)
+
+        phase_rank = {
+            str(normalize_phase(phase)): index
+            for index, phase in enumerate(DEFAULT_PHASE_ORDER)
+        }
+
+        def phase_entry(phase: str) -> int:
+            rank = phase_rank[phase]
+            return next(
+                (index for index, step in enumerate(compiled_steps)
+                 if phase_rank.get(step[0], len(phase_rank)) >= rank),
+                len(compiled_steps),
+            )
+
+        compiled_steps.insert(
+            validation_index if validation_index is not None else phase_entry("PRE_HANDLER"),
+            ("PRE_HANDLER", _DIRECT_INVOKE_STEP, validate_and_publish, None, False),
+        )
+        compiled_steps.insert(
+            phase_entry("INGRESS_PARSE"),
+            ("INGRESS_PARSE", _DIRECT_INVOKE_STEP, parse_input, None, True),
+        )
+
     @staticmethod
     def _compiled_schema_in(
         ctx: _Ctx,

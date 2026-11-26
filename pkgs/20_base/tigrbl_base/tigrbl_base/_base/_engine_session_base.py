@@ -3,6 +3,8 @@ from __future__ import annotations
 import asyncio
 import inspect
 from collections import deque
+from datetime import UTC, datetime
+from time import perf_counter_ns
 from uuid import uuid4
 from dataclasses import fields
 from typing import Any, Callable, List
@@ -30,27 +32,50 @@ class EngineSessionBase(EngineSessionSpec):
         self.engine_session_id = uuid4().hex
         self.transaction_id: str | None = None
         self._observes_provider_begin = False
-        self._transaction_events: deque[dict[str, str]] = deque(maxlen=256)
+        self._transaction_start: tuple[int, str] | None = None
+        self._transaction_events: deque[dict[str, str | float]] = deque(maxlen=256)
+        self._flush_events: deque[dict[str, str | float]] = deque(maxlen=256)
 
-    def transaction_events(self) -> tuple[dict[str, str], ...]:
+    def transaction_events(self) -> tuple[dict[str, str | float], ...]:
         return tuple(dict(event) for event in self._transaction_events)
+
+    def flush_events(self) -> tuple[dict[str, str | float], ...]:
+        return tuple(dict(event) for event in self._flush_events)
 
     def _begin_transaction_identity(self) -> None:
         if self.transaction_id is None:
             self.transaction_id = uuid4().hex
+            self._transaction_start = (perf_counter_ns(), datetime.now(UTC).isoformat())
             self._record_transaction_event("begin")
 
     def _record_transaction_event(self, outcome: str) -> None:
         if self.transaction_id is not None:
-            self._transaction_events.append({
+            event: dict[str, str | float] = {
                 "engine_session_id": self.engine_session_id,
                 "transaction_id": self.transaction_id,
                 "outcome": outcome,
-            })
+            }
+            if self._transaction_start is not None:
+                started_ns, started_at = self._transaction_start
+                if outcome == "begin":
+                    event["source_started_at"] = started_at
+                elif outcome in {"committed", "rolled_back"}:
+                    event.update(
+                        measured_duration_ms=(perf_counter_ns() - started_ns) / 1_000_000,
+                        source_started_at=started_at,
+                        source_ended_at=datetime.now(UTC).isoformat(),
+                        timing_boundary=(
+                            "db_tx_begin_to_commit" if outcome == "committed"
+                            else "db_tx_begin_to_rollback"
+                        ),
+                        clock_domain="engine_monotonic",
+                    )
+            self._transaction_events.append(event)
 
     def _end_transaction_identity(self, outcome: str) -> None:
         self._record_transaction_event(outcome)
         self.transaction_id = None
+        self._transaction_start = None
 
     def apply_spec(self, spec: EngineSessionSpec | None) -> None:
         resolved = spec or EngineSessionSpec()
@@ -119,14 +144,34 @@ class EngineSessionBase(EngineSessionSpec):
         await self._delete_impl(obj)
 
     async def flush(self) -> None:
-        if self._pending:
-            done, _ = await asyncio.wait(
-                self._pending, return_when=asyncio.ALL_COMPLETED
-            )
-            self._pending = []
-            for t in done:
-                _ = t.result()
-        await self._flush_impl()
+        started_ns, started_at = perf_counter_ns(), datetime.now(UTC).isoformat()
+        transaction_id = self.transaction_id
+        outcome = "failed"
+        try:
+            if self._pending:
+                done, _ = await asyncio.wait(
+                    self._pending, return_when=asyncio.ALL_COMPLETED
+                )
+                self._pending = []
+                for t in done:
+                    _ = t.result()
+            await self._flush_impl()
+            outcome = "ok"
+        finally:
+            event: dict[str, str | float] = {
+                "flush_id": uuid4().hex,
+                "engine_session_id": self.engine_session_id,
+                "outcome": outcome,
+                "source_started_at": started_at,
+                "source_ended_at": datetime.now(UTC).isoformat(),
+                "measured_duration_ms": (perf_counter_ns() - started_ns) / 1_000_000,
+                "timing_boundary": "db_flush_monotonic",
+                "clock_domain": "engine_monotonic",
+            }
+            transaction_id = transaction_id or self.transaction_id
+            if transaction_id is not None:
+                event["transaction_id"] = transaction_id
+            self._flush_events.append(event)
 
     async def refresh(self, obj: Any) -> None:
         await self._refresh_impl(obj)

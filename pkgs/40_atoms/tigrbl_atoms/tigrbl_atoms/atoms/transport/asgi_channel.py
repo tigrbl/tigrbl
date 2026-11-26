@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
+from datetime import UTC, datetime
+from time import perf_counter_ns
 from typing import Any
 
 from tigrbl_typing.trace import TraceSink, emit_trace, transport_name
@@ -16,6 +18,11 @@ def bind_asgi_ingress(
 ) -> Any:
     """Bind transport identity and HTTP response correlation to the carrier."""
     scope_type = projection.kind.value
+    request_start = (
+        (perf_counter_ns(), datetime.now(UTC).isoformat())
+        if sink is not None and scope_type == "http"
+        else None
+    )
     if scope_type != "http" and (
         sink is None or scope_type not in {"websocket", "webtransport"}
     ):
@@ -37,8 +44,26 @@ def bind_asgi_ingress(
                 if key.lower() != b"x-correlation-id"
             ]
             message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
-            if sink is not None:
-                emit_trace(sink, "Response", "HTTP", {**details, "status": message["status"]})
+            if request_start is not None:
+                started_ns, started_at = request_start
+                duration_ms = (perf_counter_ns() - started_ns) / 1_000_000
+                ended_at = datetime.now(UTC).isoformat()
+                await send(message)
+                emit_trace(
+                    sink,
+                    "Response",
+                    "HTTP",
+                    {
+                        **details,
+                        "status": message["status"],
+                        "source_started_at": started_at,
+                        "source_ended_at": ended_at,
+                        "measured_duration_ms": duration_ms,
+                        "timing_boundary": "ingress_to_egress_monotonic",
+                        "clock_domain": "server_monotonic",
+                    },
+                )
+                return
         await send(message)
 
     return send_with_correlation

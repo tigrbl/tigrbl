@@ -151,7 +151,8 @@ class TigrblApp(_App):
 
     @classmethod
     def from_spec(
-        cls, spec: AppSpec, *, trace_sink: TraceSink | None = None, realtime_broker: Any = None
+        cls, spec: AppSpec, *, trace_sink: TraceSink | None = None, realtime_broker: Any = None,
+        trace_atoms: bool = False,
     ) -> "TigrblApp":
         """Materialize an app instance from an :class:`~tigrbl.AppSpec`."""
         spec = lower_concrete_engine_inputs(spec)
@@ -160,6 +161,8 @@ class TigrblApp(_App):
         diagnostics = {}
         if trace_sink is not None:
             diagnostics["trace_sink"] = trace_sink
+        if trace_atoms:
+            diagnostics["trace_atoms"] = True
         if realtime_broker is not None:
             diagnostics["realtime_broker"] = realtime_broker
         app = cls(
