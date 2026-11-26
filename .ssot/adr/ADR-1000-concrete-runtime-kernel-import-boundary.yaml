@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "`tigrbl_concrete` provides concrete authoring, route, docs, dependency, and response surfaces. The kernel is a lower execution authority and must remain behind `tigrbl_runtime` so concrete surfaces cannot bypass runtime compilation or own kernel lifecycle details."
+summary: "tigrbl_concrete supplies authoring surfaces, route registrations, and lifecycle handlers. TigrblApp delegates ASGI ingress through tigrbl_runtime, which owns kernel integration and plan invalidation."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -30,6 +30,16 @@ body: |-
   
   `tigrbl_concrete` provides concrete authoring, route, docs, dependency, and response surfaces. The kernel is a lower execution authority and must remain behind `tigrbl_runtime` so concrete surfaces cannot bypass runtime compilation or own kernel lifecycle details.
   
+  ## ASGI entry point
+
+  `TigrblApp.__call__` supplies the app context and forwards the inbound ASGI scope and its receive and send callables through the runtime ingress entry point. Concrete continues to supply route registrations and app lifecycle handlers. It does not classify the raw ASGI scope, choose the transport execution plan, or invoke the kernel directly.
+
+  Runtime invokes the atoms scope projector under ADR-1020 and passes the typed result into kernel dispatch. The kernel selects the execution path under ADR-1047 and defines lifecycle semantics under ADR-1139. Runtime executes the selection and invokes the associated transport atoms and app handlers.
+
+  ## Verification
+
+  Keep the source import, package dependency, and isolated package import checks. Add a behavioral check through the public app entry point that verifies runtime delegation, atoms projection, and kernel selection for HTTP, WebSocket, WebTransport, and lifespan. The check observes the resulting response, session events, or lifecycle notifications.
+
   ## Consequences
   
   - Concrete package code remains an authoring/projection layer, not a kernel integration layer.

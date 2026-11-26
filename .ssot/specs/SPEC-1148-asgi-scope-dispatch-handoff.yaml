@@ -1,0 +1,39 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1148"
+number: 1148
+slug: "asgi-scope-dispatch-handoff"
+title: "ASGI Scope Dispatch Handoff"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract governs ingress and plan selection. The transport-specific specs govern lifecycle loops, routing semantics, and carrier events."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Contract
+
+  1. Concrete forwards the ASGI scope and its receive and send callables, supplies app context, and exposes the registered routes and lifecycle handlers to runtime.
+  2. Runtime invokes the designated atoms projector once per inbound ASGI scope. The projector owns raw discriminator access and returns the typed context defined by SPEC-1003. An ingress validation failure stops before kernel selection.
+  3. The kernel uses the typed scope and compiled bindings to select the HTTP, WebSocket, WebTransport, or lifespan execution path and owns the plan's dispatch and lifecycle rules. If no plan matches, the kernel exposes the applicable miss outcome for the carrier and the runtime executes that outcome.
+  4. Runtime executes the kernel selection and invokes the applicable transport atoms and registered handlers. Packed and fallback paths follow the same selection contract. Runtime does not recalculate the scope kind or own a parallel dispatch policy.
+  5. Tracing, completion, and internal re-entry reuse the typed discriminator. Internal sub-invocations may select their own operation within the selected carrier path, using the original scope projection.
+
+  This contract governs ingress and plan selection. The transport-specific specs govern lifecycle loops, routing semantics, and carrier events.
+
+  ## Verification
+
+  - A source architecture test detects raw inbound scope discriminator access outside the atoms projector, with an allowance for ASGI message discriminators.
+  - Scope projection tests cover supported ASGI kinds and invalid inputs.
+  - Kernel tests verify plan selection and miss outcomes from typed scope and compiled inputs.
+  - Runtime tests verify execution of the selected plan on packed and fallback paths and reuse during tracing, completion, and JSON-RPC batch re-entry.
+  - A public app integration test verifies the real delegation chain and carrier behavior for all four ASGI scope kinds.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"
+  - "adr:1020"
+  - "adr:1047"
+  - "adr:1139"

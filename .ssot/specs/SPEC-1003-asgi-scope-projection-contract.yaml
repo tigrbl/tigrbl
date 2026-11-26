@@ -19,6 +19,12 @@ body: |-
   ## Draft transport identity and subscription extension
 
   Normalize the versioned transport identity extension defined by tigr-asgi-contract SPEC-1054 before application dispatch. Project server-issued connection_id, request_id, transport_session_id, and optional http_stream_id to their canonical runtime fields. Preserve requester session_id separately. Use the legacy fallback and conflict rules in SPEC-1006.
+
+  ## Scope discriminator ownership
+
+  The designated `tigrbl_atoms` ingress projector reads the raw ASGI `scope["type"]` discriminator exactly once per inbound scope and returns a typed scope context. The projector accepts the ASGI scope kinds defined in SPEC-2100. Missing, non-string, and unsupported discriminators produce an ingress validation failure before kernel selection. An invalid discriminator must never default to HTTP. Validation of broader non-ASGI runtime envelopes follows their own contract.
+
+  The same scope projection is passed to all dispatch consumers and reused for internal re-entry, including JSON-RPC batch items. Carrier-facing code may preserve the original ASGI scope for interoperability. Dispatch consumers must use the projected discriminator for classification. ASGI receive and send message discrimination remains governed by SPEC-1004 and SPEC-1005.
 spec_kind: "normative"
 adr_ids:
   - "adr:1020"
