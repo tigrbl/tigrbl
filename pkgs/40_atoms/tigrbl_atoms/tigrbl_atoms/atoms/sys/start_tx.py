@@ -33,7 +33,9 @@ async def _run(obj: object | None, ctx: Any) -> None:
     if not _is_async_db(db):
         return
 
-    begin = getattr(db, "begin", None)
+    begin = getattr(db, "begin_for_operation", None)
+    if not callable(begin):
+        begin = getattr(db, "begin", None)
     if callable(begin):
         rv = begin()
         if hasattr(rv, "__await__"):

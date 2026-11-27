@@ -33,7 +33,7 @@ from tigrbl_core.schema.utils import (
     namely_model,
 )
 from tigrbl_base._base._schema_base import SchemaBase
-from tigrbl_concrete._runtime_services import compile_opview_from_specs
+from tigrbl_concrete._runtime_services import compile_opview_from_specs, trace_bound_hook
 from tigrbl_typing.phases import HOOK_PHASES
 
 from tigrbl_concrete._mapping.op_resolver import resolve as resolve_ops
@@ -1017,6 +1017,7 @@ def _hook_matches_spec(decl: Any, spec: OpSpec) -> bool:
 
 def _wrap_ctx_hook(model: type, fn: Any, phase: str):
     is_async_bound = inspect.iscoroutinefunction(fn)
+    name = getattr(fn, "__name__", type(fn).__name__)
 
     @wraps(fn)
     async def _step(ctx: Any) -> Any:
@@ -1040,9 +1041,10 @@ def _wrap_ctx_hook(model: type, fn: Any, phase: str):
             if response is not None and getattr(response, "result", None) is None:
                 response.result = ctx.get("result")
         bound = fn.__get__(model, model)
-        if is_async_bound:
-            return await bound(ctx)
-        return await _maybe_await(bound(ctx))
+        with trace_bound_hook(ctx, name, phase):
+            if is_async_bound:
+                return await bound(ctx)
+            return await _maybe_await(bound(ctx))
 
     return _step
 
@@ -1079,6 +1081,7 @@ def _phase_name(phase: Any) -> str:
 
 def _adapt_hook_callable(fn: Any, phase: str):
     sig = inspect.signature(fn)
+    name = getattr(fn, "__name__", type(fn).__name__)
     positional = [
         p
         for p in sig.parameters.values()
@@ -1097,17 +1100,18 @@ def _adapt_hook_callable(fn: Any, phase: str):
 
     @wraps(fn)
     async def _step(ctx: Any) -> Any:
-        if takes_ctx_only:
-            return await _maybe_await(fn(ctx))
+        with trace_bound_hook(ctx, name, phase):
+            if takes_ctx_only:
+                return await _maybe_await(fn(ctx))
 
-        return await _maybe_await(
-            fn(
-                ctx.get(io_key),
-                db=ctx.get("db"),
-                request=ctx.get("request"),
-                ctx=ctx,
+            return await _maybe_await(
+                fn(
+                    ctx.get(io_key),
+                    db=ctx.get("db"),
+                    request=ctx.get("request"),
+                    ctx=ctx,
+                )
             )
-        )
 
     return _step
 

@@ -14,12 +14,14 @@ if TYPE_CHECKING:
     from tigrbl_kernel.protocol_chains.websocket import (
         build_websocket_jsonrpc_session_handler,
     )
+    from tigrbl_kernel.trace import trace_bound_hook
 
 __all__ = [
     "compile_opview_from_specs",
     "build_websocket_jsonrpc_session_handler",
     "callback_hook_phases",
     "compile_callback_attempt",
+    "trace_bound_hook",
 ]
 
 
@@ -42,4 +44,8 @@ def __getattr__(name: str) -> Any:
         from tigrbl_kernel.callbacks import compile_callback_attempt
 
         return compile_callback_attempt
+    if name == "trace_bound_hook":
+        from tigrbl_kernel.trace import trace_bound_hook
+
+        return trace_bound_hook
     raise AttributeError(name)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+from tigrbl_kernel.trace import instrument_atom
 
 from ._shared import *
 
@@ -68,8 +69,18 @@ class _PackedRunnerResolveMixin:
                     skip_step_ids.add(step_id)
 
         compiled_steps: list[tuple[str, int, Any, Any, bool]] = []
-        phase_requires_db: dict[str, bool] = {}
+        validation_index: int | None = None
         step_table = packed.step_table
+        trace_atoms = getattr(self.runtime, "trace_atoms", False)
+
+        def _skip_compiled_step(phase: str, atom_name: str | None) -> bool:
+            nonlocal validation_index
+            if phase == "PRE_HANDLER" and validation_index is None and atom_name in {
+                "wire.build_in", "wire.validate_in", "resolve.assemble"
+            }:
+                validation_index = len(compiled_steps)
+            return atom_name in skip_names
+
         def _append_compiled_step(
             phase_name: str,
             step: Any,
@@ -78,8 +89,6 @@ class _PackedRunnerResolveMixin:
         ) -> None:
             if bool(getattr(step, "__tigrbl_skip_in_compiled_param", False)):
                 return
-            if bool(getattr(step, "__tigrbl_requires_phase_db", False)):
-                phase_requires_db[phase_name] = True
             direct_run = getattr(step, "__tigrbl_direct_run", None)
             if callable(direct_run):
                 direct_dep = getattr(step, "__tigrbl_direct_dep", None)
@@ -103,7 +112,7 @@ class _PackedRunnerResolveMixin:
                     (
                         phase_name,
                         invoke_kind,
-                        direct_run,
+                        instrument_atom(step, direct_run, strict_sync=not direct_is_async) if trace_atoms else direct_run,
                         direct_dep,
                         direct_is_async,
                     )
@@ -113,7 +122,7 @@ class _PackedRunnerResolveMixin:
                 (
                     phase_name,
                     _DIRECT_INVOKE_STEP,
-                    step,
+                    instrument_atom(step, step, strict_sync=not is_async) if trace_atoms else step,
                     None,
                     is_async,
                 )
@@ -124,7 +133,7 @@ class _PackedRunnerResolveMixin:
                 normalized_phase = str(normalize_phase(phase_name))
                 for step in phase_steps:
                     atom_name = getattr(step, "__tigrbl_atom_name__", None)
-                    if atom_name in skip_names:
+                    if _skip_compiled_step(normalized_phase, atom_name):
                         continue
                     step_is_async = bool(getattr(step, "_tigrbl_is_async", False))
                     if not step_is_async:
@@ -141,6 +150,9 @@ class _PackedRunnerResolveMixin:
                 for step_id in step_ids_by_segment[seg_id]:
                     step = step_table[step_id]
                     if step_id in skip_step_ids:
+                        _skip_compiled_step(
+                            phase_name, str(opcode_keys[opcode_ids[step_id]])
+                        )
                         continue
                     _append_compiled_step(
                         phase_name,
@@ -148,23 +160,20 @@ class _PackedRunnerResolveMixin:
                         is_async=bool(async_flags[step_id]) if step_id < len(async_flags) else False,
                     )
 
-        async def _runner(ctx: _Ctx) -> None:
-            hot = self._prepare_compiled_dispatch_prelude(
-                ctx, packed, program_id, hot_op_plan
+        prepare_context = self._prepare_compiled_context
+        if trace_atoms:
+            prepare_context = instrument_atom(
+                None, prepare_context, label="fused:compiled_context_setup",
+                context_index=0, fixed_phase="INGRESS_BEGIN",
             )
-            if hot is None:
+        self._schedule_compiled_input(
+            packed, program_id, hot_op_plan, compiled_steps, validation_index, trace_atoms
+        )
+
+        async def _runner(ctx: _Ctx) -> None:
+            ctx.phase = "INGRESS_BEGIN"
+            if prepare_context(ctx, packed, program_id, hot_op_plan) is None:
                 return
-            await self._prepare_compiled_input(ctx, hot, packed, program_id, hot_op_plan)
-            self._publish_route_payload(ctx, hot)
-            if hot.compiled_input_ready:
-                plan = self._resolve_compiled_param_plan(
-                    ctx,
-                    packed,
-                    program_id,
-                    hot.param_shape_id,
-                )
-                self._compiled_validate_and_assemble(ctx, hot, plan)
-                self._publish_compiled_payload(ctx, hot)
             current_phase = ""
             for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
                 if phase_name != current_phase:
