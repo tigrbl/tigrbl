@@ -77,22 +77,15 @@ def verify_browser(url, credentials, correlation, expected_image_version=None):
             frontend_version = json.loads(manifest.read_text(encoding="utf-8"))[
                 "version"
             ]
-            expected = {
-                "backend": version("tigrbl-transport-trace-lab"),
-                "frontend": frontend_version,
-                "image": expected_image_version,
+            versions = {
+                "b": version("tigrbl-transport-trace-lab"),
+                "f": frontend_version,
+                "i": expected_image_version,
             }
-            for component, expected_version in expected.items():
-                displayed = page.get_by_test_id(f"{component}-version").inner_text()
-                assert displayed == f"v{expected_version}", (
-                    component,
-                    displayed,
-                    expected_version,
-                )
-            print(
-                "Footer versions verified:",
-                ", ".join(f"{k} v{v}" for k, v in expected.items()),
-            )
+            expected = " ".join(prefix + versions[prefix] for prefix in sorted(versions))
+            displayed = page.get_by_test_id("deployed-versions").inner_text()
+            assert displayed == expected, (displayed, expected)
+            print("Footer versions verified:", displayed)
         return direct
 
 
