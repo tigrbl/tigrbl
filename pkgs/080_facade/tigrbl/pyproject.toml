@@ -94,7 +94,8 @@ templates = [
 ]
 servers = [
     "uvicorn",
-    "tigrcorn",
+    "tigrcorn==0.1.0; python_version < '3.11'",
+    "tigrcorn; python_version >= '3.11'",
     "hypercorn>=0.16.0",
     "gunicorn>=21.2.0",
 ]
@@ -102,7 +103,8 @@ uvicorn = [
     "uvicorn",
 ]
 tigrcorn = [
-    "tigrcorn",
+    "tigrcorn==0.1.0; python_version < '3.11'",
+    "tigrcorn; python_version >= '3.11'",
 ]
 hypercorn = [
     "hypercorn>=0.16.0",

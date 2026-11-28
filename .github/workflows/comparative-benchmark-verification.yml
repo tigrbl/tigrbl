@@ -59,12 +59,12 @@ jobs:
 
       - name: Run 250-op ASGITransport sequential benchmark
         run: >-
-          uv run --no-sync python -m pytest -q
+          uv run --no-sync python -m pytest -q -m perf
           pkgs/210_tests/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_asgitransport_sequential_10_rounds_randomized_comparison_250_ops
 
       - name: Run 250-op HTTPX real-transport sequential benchmark
         run: >-
-          uv run --no-sync python -m pytest -q
+          uv run --no-sync python -m pytest -q -m perf
           pkgs/210_tests/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_httpxtransport_sequential_10_rounds_randomized_comparison_250_ops
 
       - name: Run authoritative comparative benchmark verification

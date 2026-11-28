@@ -6,10 +6,10 @@ resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version < '3.11'",
 ]
@@ -2230,10 +2230,10 @@ resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/d7/9f/b8cef5bffa569759033adda9481211426f12f53299629b410340795c2514/numpy-2.4.4.tar.gz", hash = "sha256:2d390634c5182175533585cc89f3608a4682ccb173cc9bb940b2881c8d6f8fa0", size = 20731587, upload-time = "2026-03-29T13:22:01.298Z" }
@@ -2486,10 +2486,10 @@ resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 dependencies = [
@@ -3598,10 +3598,10 @@ resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
     "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version == '3.13.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
     "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/2e/43/25a8dcd3feedd735039a8f0b5b7e3b118232b5eae288c4fd9ab200d41094/rpds_py-2026.5.1.tar.gz", hash = "sha256:07b24fea40541e28570e5b795a4a38fbdcd12550c06bd0748005ecc8116ca256", size = 64459, upload-time = "2026-05-28T12:02:13.232Z" }
@@ -4116,7 +4116,8 @@ postgres = [
 servers = [
     { name = "gunicorn" },
     { name = "hypercorn" },
-    { name = "tigrcorn" },
+    { name = "tigrcorn", version = "0.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "tigrcorn", version = "0.3.19", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "uvicorn" },
 ]
 templates = [
@@ -4126,7 +4127,8 @@ tests = [
     { name = "tigrbl-tests" },
 ]
 tigrcorn = [
-    { name = "tigrcorn" },
+    { name = "tigrcorn", version = "0.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "tigrcorn", version = "0.3.19", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
 uvicorn = [
     { name = "uvicorn" },
@@ -4174,8 +4176,10 @@ requires-dist = [
     { name = "tigrbl-runtime", editable = "pkgs/050_runtime/tigrbl_runtime" },
     { name = "tigrbl-runtime", extras = ["numba"], marker = "extra == 'numba'", editable = "pkgs/050_runtime/tigrbl_runtime" },
     { name = "tigrbl-tests", marker = "extra == 'tests'", editable = "pkgs/210_tests/tigrbl_tests" },
-    { name = "tigrcorn", marker = "extra == 'servers'" },
-    { name = "tigrcorn", marker = "extra == 'tigrcorn'" },
+    { name = "tigrcorn", marker = "python_full_version >= '3.11' and extra == 'servers'" },
+    { name = "tigrcorn", marker = "python_full_version >= '3.11' and extra == 'tigrcorn'" },
+    { name = "tigrcorn", marker = "python_full_version < '3.11' and extra == 'servers'", specifier = "==0.1.0" },
+    { name = "tigrcorn", marker = "python_full_version < '3.11' and extra == 'tigrcorn'", specifier = "==0.1.0" },
     { name = "uvicorn", marker = "extra == 'servers'" },
     { name = "uvicorn", marker = "extra == 'uvicorn'" },
 ]
@@ -5842,7 +5846,7 @@ dependencies = [
     { name = "tigrbl-trace" },
     { name = "tigrbl-trace-transport" },
     { name = "tigrbl-transport-trace-lab" },
-    { name = "tigrcorn", extra = ["certification"] },
+    { name = "tigrcorn", version = "0.3.19", source = { registry = "https://pypi.org/simple" }, extra = ["certification"], marker = "python_full_version >= '3.11'" },
     { name = "websockets" },
 ]
 
@@ -5860,7 +5864,7 @@ requires-dist = [
     { name = "tigrbl-trace", editable = "pkgs/010_core/tigrbl_trace" },
     { name = "tigrbl-trace-transport", editable = "pkgs/150_client/tigrbl_trace_transport" },
     { name = "tigrbl-transport-trace-lab", editable = "pkgs/110_backend/trace-lab-server" },
-    { name = "tigrcorn", extras = ["certification"], specifier = "==0.3.19" },
+    { name = "tigrcorn", extras = ["certification"], marker = "python_full_version >= '3.11'", specifier = "==0.3.19" },
     { name = "websockets", specifier = ">=15,<16" },
 ]
 
@@ -5891,7 +5895,7 @@ dependencies = [
     { name = "tigrbl-core" },
     { name = "tigrbl-engine-postgres" },
     { name = "tigrbl-trace" },
-    { name = "tigrcorn", extra = ["certification"] },
+    { name = "tigrcorn", version = "0.3.19", source = { registry = "https://pypi.org/simple" }, extra = ["certification"], marker = "python_full_version >= '3.11'" },
 ]
 
 [package.metadata]
@@ -5903,7 +5907,7 @@ requires-dist = [
     { name = "tigrbl-core", editable = "pkgs/010_core/tigrbl_core" },
     { name = "tigrbl-engine-postgres", editable = "pkgs/090_engines/tigrbl_engine_postgres" },
     { name = "tigrbl-trace", editable = "pkgs/010_core/tigrbl_trace" },
-    { name = "tigrcorn", extras = ["certification"], specifier = "==0.3.19" },
+    { name = "tigrcorn", extras = ["certification"], marker = "python_full_version >= '3.11'", specifier = "==0.3.19" },
 ]
 
 [[package]]
@@ -5939,8 +5943,31 @@ dev = [
 
 [[package]]
 name = "tigrcorn"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.11'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/46/e2/976fc98bc231bc2ae865541ca81e76ade45ad88f05c55d6ef2a75277bc52/tigrcorn-0.1.0.tar.gz", hash = "sha256:4b21c80950279bd030415dea62c32f30df344186d4176382634200891c09c2fa", size = 5411, upload-time = "2026-03-24T06:01:51.666Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b0/d6/4af8b98c264f27b7b9318f312fae9bdf7ada17be4b9c148130494324bd99/tigrcorn-0.1.0-py3-none-any.whl", hash = "sha256:71016798aeacb55506dc6d29d92158227381ee78a5c5eb32480194b6d7e595ad", size = 5964, upload-time = "2026-03-24T06:01:41.295Z" },
+]
+
+[[package]]
+name = "tigrcorn"
 version = "0.3.19"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.14' and sys_platform == 'win32'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.13.*' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
+    "python_full_version == '3.13.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'win32'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.11' and python_full_version < '3.13' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+]
 dependencies = [
     { name = "tigr-asgi-contract" },
     { name = "tigrcorn-asgi" },
@@ -5997,7 +6024,6 @@ dependencies = [
     { name = "tigrcorn-compat" },
     { name = "tigrcorn-runtime" },
     { name = "tigrcorn-static" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "websockets" },
     { name = "wsproto" },
 ]

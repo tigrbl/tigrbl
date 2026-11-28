@@ -10,7 +10,7 @@ dependencies = [
     "tigrbl-core",
     "tigrbl-trace==0.1.0",
     "tigrbl-engine-postgres",
-    "tigrcorn[certification]==0.3.19",
+    "tigrcorn[certification]==0.3.19; python_version >= '3.11'",
     "tigr-asgi-contract",
     "pydantic>=2,<3",
     "sqlalchemy>=2,<3",
