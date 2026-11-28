@@ -37,7 +37,9 @@ from tests.perf.helper_tigrbl_create_app import (
     tigrbl_create_path,
 )
 
-ROOT = Path(__file__).resolve().parents[4]
+SOURCE_ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(os.environ.get("TIGRBL_BENCHMARK_ROOT", SOURCE_ROOT)).resolve()
+TEST_ROOT = next(ROOT.glob("pkgs/*_tests/tigrbl_tests"))
 PERF_DIR = Path(__file__).resolve().parents[1] / "tests" / "perf"
 TMP_ROOT = ROOT / ".tmp" / "comparative-benchmark"
 DEFAULT_JSON_OUTPUT = PERF_DIR / "comparative_benchmark_verification.json"
@@ -237,7 +239,9 @@ async def benchmark_once(
     tmpdir = Path(tempfile.mkdtemp(dir=TMP_ROOT))
     db_path = tmpdir / f"{config.name}.sqlite3"
     expected_names = [f"{config.name}-{round_index}-{idx}" for idx in range(ops)]
-    warmup_names = [f"warmup-{config.name}-{round_index}-{idx}" for idx in range(warmup_ops)]
+    warmup_names = [
+        f"warmup-{config.name}-{round_index}-{idx}" for idx in range(warmup_ops)
+    ]
 
     app = config.create_app(db_path)
     start = time.perf_counter()
@@ -247,7 +251,9 @@ async def benchmark_once(
     startup_seconds = time.perf_counter() - start
 
     sampler = ProcSampler(os.getpid())
-    sampler_task = asyncio.create_task(sampler.run(), name=f"{config.name}-proc-sampler")
+    sampler_task = asyncio.create_task(
+        sampler.run(), name=f"{config.name}-proc-sampler"
+    )
     latencies: list[float] = []
     try:
         async with httpx.AsyncClient(base_url=base_url, timeout=10.0) as client:
@@ -255,17 +261,23 @@ async def benchmark_once(
                 await asyncio.sleep(pre_measurement_wait_seconds)
 
             for idx, item_name in enumerate(warmup_names):
-                response = await client.post(config.endpoint_path, json={"name": item_name})
+                response = await client.post(
+                    config.endpoint_path, json={"name": item_name}
+                )
                 assert response.status_code in {200, 201}, response.text
                 assert response.json()["name"] == item_name
 
             start_exec = time.perf_counter()
             for item_name in expected_names:
                 op_start = time.perf_counter()
-                response = await client.post(config.endpoint_path, json={"name": item_name})
+                response = await client.post(
+                    config.endpoint_path, json={"name": item_name}
+                )
                 if response.status_code == 400:
                     await asyncio.sleep(0.05)
-                    response = await client.post(config.endpoint_path, json={"name": item_name})
+                    response = await client.post(
+                        config.endpoint_path, json={"name": item_name}
+                    )
                 latencies.append(time.perf_counter() - op_start)
                 assert response.status_code in {200, 201}, response.text
                 assert response.json()["name"] == item_name
@@ -273,7 +285,9 @@ async def benchmark_once(
 
         persisted = config.fetch_names(db_path)
         if persisted[-ops:] != expected_names:
-            raise AssertionError(f"{config.name} persisted rows did not match measured requests")
+            raise AssertionError(
+                f"{config.name} persisted rows did not match measured requests"
+            )
     finally:
         sampler.stop()
         await sampler_task
@@ -320,7 +334,9 @@ async def run_workload(
                     pre_measurement_wait_seconds=pre_measurement_wait_seconds,
                 )
             )
-        round_payloads.append({"round": round_index, "order": order, "results": results})
+        round_payloads.append(
+            {"round": round_index, "order": order, "results": results}
+        )
     return {"rounds": round_payloads}
 
 
@@ -385,7 +401,10 @@ def package_roots(module: Any) -> list[Path]:
 def count_python_loc_under(root: Path) -> int:
     total = 0
     for path in sorted(root.rglob("*.py") if root.is_dir() else [root]):
-        if any(part in {"tests", "__pycache__", ".tmp"} for part in path.parts):
+        if any(
+            part in {"tests", "__pycache__", ".tmp"}
+            for part in path.relative_to(root).parts
+        ):
             continue
         try:
             text = path.read_text(encoding="utf-8", errors="ignore")
@@ -424,11 +443,12 @@ def build_oci_size(
         "RUN python -m venv /opt/venv",
     ]
     if scenario == "tigrbl":
+        facade = next(ROOT.glob("pkgs/*_facade/tigrbl")).relative_to(ROOT).as_posix()
         dockerfile_lines.extend(
             [
                 "RUN apt-get update && apt-get install -y --no-install-recommends build-essential && rm -rf /var/lib/apt/lists/*",
-                "COPY pkgs/080_facade/tigrbl /opt/tigrbl/pkgs/080_facade/tigrbl",
-                "RUN /opt/venv/bin/pip install --no-cache-dir /opt/tigrbl/pkgs/080_facade/tigrbl",
+                f"COPY {facade} /opt/tigrbl/facade",
+                "RUN /opt/venv/bin/pip install --no-cache-dir /opt/tigrbl/facade",
             ]
         )
     else:
@@ -458,7 +478,9 @@ def build_oci_size(
     archive = output_dir / f"{scenario}.image.tar.gz"
     with archive.open("wb") as raw_file:
         with gzip.GzipFile(fileobj=raw_file, mode="wb") as gz_file:
-            save = subprocess.run([docker, "save", tag], check=True, stdout=subprocess.PIPE)
+            save = subprocess.run(
+                [docker, "save", tag], check=True, stdout=subprocess.PIPE
+            )
             gz_file.write(save.stdout)
     size_bytes = archive.stat().st_size
     return {
@@ -474,12 +496,15 @@ def build_oci_size(
 
 def compliance_security_posture() -> dict[str, Any]:
     tigrbl_evidence = [
-        "pkgs/210_tests/tigrbl_tests/tests/security/test_schemes.py",
-        "pkgs/210_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
-        "pkgs/210_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py",
-        "pkgs/210_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
-        ".ssot/projections/certification/claims/current.yaml",
+        (TEST_ROOT / suffix).relative_to(ROOT).as_posix()
+        for suffix in (
+            "tests/security/test_schemes.py",
+            "tests/unit/test_openapi_documentation_security_behavior.py",
+            "tests/unit/test_docs_security_parity.py",
+            "tests/unit/test_jsonrpc_openrpc.py",
+        )
     ]
+    tigrbl_evidence.append(".ssot/projections/certification/claims/current.yaml")
     fastapi_evidence = []
     for module_name in ("fastapi.security", "fastapi.openapi", "fastapi.exceptions"):
         module = importlib.import_module(module_name)
@@ -503,7 +528,9 @@ def compliance_security_posture() -> dict[str, Any]:
             "rating": "Moderate",
             "score": 1,
             "evidence": fastapi_evidence,
-            "missing_evidence": [path for path in fastapi_evidence if not Path(path).exists()],
+            "missing_evidence": [
+                path for path in fastapi_evidence if not Path(path).exists()
+            ],
             "methodology": (
                 "Requires installed framework evidence for security helpers, "
                 "OpenAPI generation, and exception handling modules."
@@ -526,7 +553,9 @@ def machine_info(command: list[str]) -> dict[str, Any]:
 
 def _run_text(command: list[str]) -> str:
     try:
-        result = subprocess.run(command, check=True, capture_output=True, text=True)
+        result = subprocess.run(
+            command, cwd=ROOT, check=True, capture_output=True, text=True
+        )
     except (OSError, subprocess.CalledProcessError):
         return "unknown"
     return result.stdout.strip()
@@ -623,6 +652,74 @@ def build_summary(
     }
 
 
+# Timing and process metrics vary on hosted runners. Source counts and image size
+# have tighter budgets because the same scanners run against both revisions.
+PR_REGRESSION_BUDGETS = {
+    "requests_per_second": (0.20, 0),
+    "p95_latency_ms": (0.20, 0),
+    "cpu_usage_percent": (0.20, 2),
+    "memory_usage_mb": (0.10, 0),
+    "lines_of_code": (0.01, 0),
+    "startup_time_seconds": (0.20, 0.005),
+    "deployment_artifact_size_mb": (0.02, 0),
+}
+
+
+def compare_revisions(
+    baseline: dict[str, Any], candidate: dict[str, Any], expected_base_sha: str
+) -> dict[str, Any]:
+    if baseline["environment"]["git_sha"] != expected_base_sha:
+        raise ValueError("Benchmark baseline does not match the pull request base SHA")
+    if candidate["environment"]["git_sha"] == expected_base_sha:
+        raise ValueError("Benchmark candidate and baseline must be different revisions")
+    for key in ("python", "platform", "machine", "cpu_count"):
+        if baseline["environment"][key] != candidate["environment"][key]:
+            raise ValueError(f"Benchmark environments differ on {key}")
+    if baseline["methodology"] != candidate["methodology"]:
+        raise ValueError("Benchmark revisions used different workloads")
+    for report in (baseline, candidate):
+        if any(
+            item["missing_evidence"] for item in report["compliance_security"].values()
+        ):
+            raise ValueError("Benchmark security evidence is incomplete")
+
+    baseline_rows = {row["line_item"]: row for row in baseline["summary"]["line_items"]}
+    candidate_rows = {
+        row["line_item"]: row for row in candidate["summary"]["line_items"]
+    }
+    rows = []
+    for metric, (relative, absolute) in PR_REGRESSION_BUDGETS.items():
+        before, after = (
+            baseline_rows[metric]["tigrbl"],
+            candidate_rows[metric]["tigrbl"],
+        )
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            or value < 0
+            for value in (before, after)
+        ):
+            raise ValueError(f"Benchmark metric {metric} is missing or invalid")
+        budget = max(before * relative, absolute)
+        higher = metric == "requests_per_second"
+        limit = before - budget if higher else before + budget
+        rows.append(
+            {
+                "line_item": metric,
+                "baseline": before,
+                "candidate": after,
+                "limit": limit,
+                "passed": after >= limit if higher else after <= limit,
+            }
+        )
+    return {
+        "base_sha": expected_base_sha,
+        "passed": all(row["passed"] for row in rows),
+        "line_items": rows,
+    }
+
+
 def render_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Comparative Benchmark Verification",
@@ -665,6 +762,22 @@ def render_markdown(payload: dict[str, Any]) -> str:
             "",
         ]
     )
+    if regression := payload.get("regression"):
+        lines.extend(
+            [
+                f"## Pull Request Regression Check ({regression['base_sha']})",
+                "",
+                "| Metric | Base | Candidate | Limit | Result |",
+                "| --- | ---: | ---: | ---: | --- |",
+            ]
+        )
+        for row in regression["line_items"]:
+            result = "PASS" if row["passed"] else "FAIL"
+            lines.append(
+                f"| {row['line_item']} | {_format_value(row['baseline'])} | "
+                f"{_format_value(row['candidate'])} | {_format_value(row['limit'])} | {result} |"
+            )
+        lines.append("")
     return "\n".join(lines)
 
 
@@ -676,7 +789,9 @@ def _format_value(value: float | int | str | None) -> str:
     return str(value)
 
 
-async def run_verification(args: argparse.Namespace, command: list[str]) -> dict[str, Any]:
+async def run_verification(
+    args: argparse.Namespace, command: list[str]
+) -> dict[str, Any]:
     workload = await run_workload(
         rounds=args.rounds,
         ops=args.ops,
@@ -685,10 +800,7 @@ async def run_verification(args: argparse.Namespace, command: list[str]) -> dict
     )
     workload_summary = collapse_workload(workload)
     configs = scenario_configs()
-    loc = {
-        name: count_python_loc(configs[name].loc_packages)
-        for name in SCENARIOS
-    }
+    loc = {name: count_python_loc(configs[name].loc_packages) for name in SCENARIOS}
     oci_output = Path(args.oci_output_dir)
     oci_output.mkdir(parents=True, exist_ok=True)
     if args.skip_oci:
@@ -758,26 +870,35 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--oci-base-image", default="python:3.12-slim")
     parser.add_argument("--skip-oci", action="store_true")
     parser.add_argument("--no-fail", action="store_true")
-    return parser.parse_args(argv)
+    parser.add_argument("--baseline-json", type=Path)
+    parser.add_argument("--expected-base-sha")
+    args = parser.parse_args(argv)
+    if bool(args.baseline_json) != bool(args.expected_base_sha):
+        parser.error("--baseline-json and --expected-base-sha must be used together")
+    if args.baseline_json and args.no_fail:
+        parser.error("--no-fail cannot be used for the PR regression gate")
+    return args
 
 
 def main(argv: list[str] | None = None) -> int:
     command = [sys.executable, *sys.argv]
     args = parse_args(list(argv or sys.argv[1:]))
     payload = asyncio.run(run_verification(args, command))
+    if args.baseline_json:
+        baseline = json.loads(args.baseline_json.read_text(encoding="utf-8"))
+        payload["regression"] = compare_revisions(
+            baseline, payload, args.expected_base_sha
+        )
     args.json_output.parent.mkdir(parents=True, exist_ok=True)
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
     args.json_output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     args.markdown_output.write_text(render_markdown(payload), encoding="utf-8")
     print(f"Wrote {args.json_output}")
     print(f"Wrote {args.markdown_output}")
-    if not payload["summary"]["passed"] and not args.no_fail:
-        failed = [
-            row["line_item"]
-            for row in payload["summary"]["line_items"]
-            if not row["passed"]
-        ]
-        raise SystemExit(f"Comparative benchmark verification failed: {', '.join(failed)}")
+    gate = payload.get("regression", payload["summary"])
+    if not gate["passed"] and not args.no_fail:
+        failed = [row["line_item"] for row in gate["line_items"] if not row["passed"]]
+        raise SystemExit(f"Benchmark verification failed: {', '.join(failed)}")
     return 0
 
 

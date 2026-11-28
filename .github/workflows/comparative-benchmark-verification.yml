@@ -11,6 +11,13 @@ on:
       - "pkgs/210_tests/tigrbl_tests/tests/perf/helper_fastapi_create_app.py"
       - "pkgs/210_tests/tigrbl_tests/tests/perf/helper_tigrbl_create_app.py"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: comparative-benchmark-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify-comparative-benchmarks:
     runs-on: ubuntu-latest
@@ -20,6 +27,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -67,18 +76,50 @@ jobs:
           uv run --no-sync python -m pytest -q -m perf
           pkgs/210_tests/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_httpxtransport_sequential_10_rounds_randomized_comparison_250_ops
 
-      - name: Run authoritative comparative benchmark verification
-        run: >-
-          uv run --no-sync python
-          pkgs/210_tests/tigrbl_tests/benchmarks/comparative_benchmark_verification.py
-          --rounds 10
-          --ops 250
-          --warmup-ops 0
-          --pre-measurement-wait-seconds 0.5
-          --json-output pkgs/210_tests/tigrbl_tests/tests/perf/comparative_benchmark_verification.json
-          --markdown-output pkgs/210_tests/tigrbl_tests/tests/perf/comparative_benchmark_verification.md
-          --oci-output-dir .tmp/comparative-benchmark/oci
-          --oci-base-image python:3.12-slim
+      - name: Measure the pull request base
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          baseline="$RUNNER_TEMP/tigrbl-comparative-base"
+          output="$GITHUB_WORKSPACE/.tmp/comparative-benchmark"
+          harness="$GITHUB_WORKSPACE/pkgs/210_tests/tigrbl_tests/benchmarks/comparative_benchmark_verification.py"
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          git worktree add --detach "$baseline" "$BASE_SHA"
+          cd "$baseline"
+          uv sync --all-groups --no-install-workspace --locked
+          uv pip install --no-deps --editable pkgs/*_typing/tigrbl_typing
+          baseline_paths=("$baseline"/pkgs/*_tests/tigrbl_tests "$baseline")
+          for package in "$baseline"/pkgs/*/*; do
+            [[ -d "$package" ]] || continue
+            baseline_paths+=("$package")
+            if [[ -d "$package/src" ]]; then
+              baseline_paths+=("$package/src")
+            fi
+          done
+          export PYTHONPATH="$(IFS=:; echo "${baseline_paths[*]}")"
+          export TIGRBL_BENCHMARK_ROOT="$baseline"
+          .venv/bin/python "$harness" --no-fail \
+            --json-output "$output/baseline.json" \
+            --markdown-output "$output/baseline.md" \
+            --oci-output-dir "$output/baseline-oci" \
+            --oci-base-image python:3.12-slim
+
+      - name: Measure the candidate and enforce the benchmark gate
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          gate=()
+          if [[ -n "$BASE_SHA" ]]; then
+            gate=(--baseline-json .tmp/comparative-benchmark/baseline.json --expected-base-sha "$BASE_SHA")
+          fi
+          uv run --no-sync python \
+            pkgs/210_tests/tigrbl_tests/benchmarks/comparative_benchmark_verification.py \
+            "${gate[@]}" \
+            --json-output pkgs/210_tests/tigrbl_tests/tests/perf/comparative_benchmark_verification.json \
+            --markdown-output pkgs/210_tests/tigrbl_tests/tests/perf/comparative_benchmark_verification.md \
+            --oci-output-dir .tmp/comparative-benchmark/oci \
+            --oci-base-image python:3.12-slim
 
       - name: Upload comparative benchmark evidence
         if: always()
@@ -90,5 +131,7 @@ jobs:
             pkgs/210_tests/tigrbl_tests/tests/perf/comparative_benchmark_verification.md
             pkgs/210_tests/tigrbl_tests/tests/perf/benchmark_results_create_asgitransport_sequential_10_rounds_250_ops.json
             pkgs/210_tests/tigrbl_tests/tests/perf/benchmark_results_create_httpxtransport_sequential_10_rounds_250_ops.json
+            .tmp/comparative-benchmark/baseline.json
+            .tmp/comparative-benchmark/baseline.md
             .tmp/comparative-benchmark/oci/*.tar.gz
             .tmp/comparative-benchmark/oci/**/Dockerfile

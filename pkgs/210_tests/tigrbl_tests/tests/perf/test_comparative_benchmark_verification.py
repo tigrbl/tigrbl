@@ -9,7 +9,9 @@ BENCHMARKS_ROOT = Path(__file__).resolve().parents[2] / "benchmarks"
 sys.path.insert(0, str(BENCHMARKS_ROOT))
 
 from comparative_benchmark_verification import (  # noqa: E402
+    PR_REGRESSION_BUDGETS,
     build_summary,
+    compare_revisions,
     count_python_loc_under,
     parse_args,
     quantile,
@@ -82,7 +84,9 @@ def test_comparative_benchmark_loc_counter_skips_blank_comments_and_tests(
         "\n# comment\nVALUE = 1\n\n\ndef run():\n    return VALUE\n",
         encoding="utf-8",
     )
-    (tests / "test_ignored.py").write_text("SHOULD_NOT_COUNT = True\n", encoding="utf-8")
+    (tests / "test_ignored.py").write_text(
+        "SHOULD_NOT_COUNT = True\n", encoding="utf-8"
+    )
 
     assert count_python_loc_under(package) == 3
 
@@ -161,3 +165,67 @@ def test_comparative_benchmark_markdown_contains_all_line_items() -> None:
     assert "Comparative Benchmark Verification" in markdown
     assert "requests_per_second" in markdown
     assert "PASS" in markdown
+
+
+def _revision_report(sha, **measurements):
+    return {
+        "environment": {
+            "git_sha": sha,
+            "python": "3.12",
+            "platform": "Linux",
+            "machine": "x86_64",
+            "cpu_count": 4,
+        },
+        "methodology": {"rounds": 10, "ops": 250},
+        "compliance_security": {"tigrbl": {"missing_evidence": []}},
+        "summary": {
+            "passed": False,
+            "line_items": [
+                {"line_item": metric, "tigrbl": measurements.get(metric, 100)}
+                for metric in PR_REGRESSION_BUDGETS
+            ],
+        },
+    }
+
+
+def test_pr_gate_accepts_an_unchanged_base_without_rewriting_absolute_claims():
+    baseline = _revision_report("base")
+    candidate = _revision_report("candidate")
+    comparison = compare_revisions(baseline, candidate, "base")
+
+    assert comparison["passed"]
+    assert not candidate["summary"]["passed"]
+
+
+def test_pr_gate_rejects_measured_latency_throughput_and_size_regressions():
+    baseline = _revision_report("base")
+    candidate = _revision_report(
+        "candidate",
+        p95_latency_ms=121,
+        requests_per_second=79,
+        deployment_artifact_size_mb=103,
+    )
+
+    rows = compare_revisions(baseline, candidate, "base")["line_items"]
+    assert {row["line_item"] for row in rows if not row["passed"]} == {
+        "p95_latency_ms",
+        "requests_per_second",
+        "deployment_artifact_size_mb",
+    }
+
+
+@pytest.mark.parametrize(
+    ("baseline", "candidate", "message"),
+    [
+        (_revision_report("wrong"), _revision_report("candidate"), "base SHA"),
+        (_revision_report("base"), _revision_report("base"), "different revisions"),
+        (
+            _revision_report("base"),
+            _revision_report("candidate", memory_usage_mb=None),
+            "invalid",
+        ),
+    ],
+)
+def test_pr_gate_fails_closed_on_invalid_comparison(baseline, candidate, message):
+    with pytest.raises(ValueError, match=message):
+        compare_revisions(baseline, candidate, "base")
