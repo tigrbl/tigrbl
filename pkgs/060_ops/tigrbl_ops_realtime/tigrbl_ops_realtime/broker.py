@@ -272,6 +272,23 @@ class InMemoryRealtimeBroker:
     async def disconnect_session(self, session_id: str) -> int:
         return await self._remove_session(session_id, retain_attachment=bool(self.resume_ttl_seconds))
 
+    async def disconnect_stream(self, session_id: str, stream_id: str) -> int:
+        """Detach delivery sinks owned by one WebTransport stream."""
+        async with self._attachment_lock:
+            subscriptions = (
+                self._by_id[key] for key in self._by_session.get(session_id, ())
+            )
+            matching = [
+                item
+                for item in subscriptions
+                if isinstance(item.sink, WebTransportRealtimeSink)
+                and item.sink.session_id == session_id
+                and item.sink.stream_id == stream_id
+            ]
+            detached = [item for item in matching if self._detach(item)]
+        await self._retire(detached, retain_attachment=bool(self.resume_ttl_seconds))
+        return len(detached)
+
     async def _remove_session(self, session_id: str, *, retain_attachment: bool) -> int:
         async with self._attachment_lock:
             self._closed_sessions[session_id] = None
@@ -279,6 +296,12 @@ class InMemoryRealtimeBroker:
                 self._closed_sessions.pop(next(iter(self._closed_sessions)))
             subscriptions = [self._by_id[key] for key in self._by_session.get(session_id, ())]
             detached = [item for item in subscriptions if self._detach(item)]
+        await self._retire(detached, retain_attachment=retain_attachment)
+        return len(detached)
+
+    async def _retire(
+        self, detached: list[RealtimeSubscription], *, retain_attachment: bool
+    ) -> None:
         for subscription in detached:
             lease = subscription.quota_lease
             can_resume = retain_attachment and (
@@ -301,7 +324,6 @@ class InMemoryRealtimeBroker:
                         continue
                 if lease is not None:
                     await lease.release()
-        return len(detached)
 
     def _schedule_expiration(self, subscription_id: str) -> None:
         asyncio.create_task(self._expire_suspended(subscription_id))

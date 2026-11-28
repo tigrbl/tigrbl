@@ -8,6 +8,8 @@ from tigrbl_atoms.atoms.transport.asgi_channel import bind_asgi_ingress
 from tigrbl_atoms import protocol_scope
 from tigrbl_kernel import Kernel, _kernel, asgi_dispatch
 from tigrbl_kernel.asgi_dispatch import AsgiLifecycle
+from tigrbl_kernel.webtransport_session_plan import WebTransportSessionPlan
+from tigrbl_typing.gw.raw import GwRawEnvelope
 from tigrbl_typing.trace import TraceSink
 
 from tigrbl_runtime.channel import complete_channel, prepare_channel_context
@@ -99,13 +101,44 @@ class Runtime(RuntimeBase):
         if plan.default_scheme and not scope.get("scheme"):
             scope = {**scope, "scheme": plan.default_scheme}
         send = bind_asgi_ingress(scope, projection, send, app.trace_sink)
-        entrypoints = {
-            AsgiLifecycle.REQUEST: app._handle_http,
-            AsgiLifecycle.WEBSOCKET_SESSION: app._handle_websocket,
-            AsgiLifecycle.WEBTRANSPORT_SESSION: app._handle_webtransport,
-            AsgiLifecycle.APPLICATION: app._handle_lifespan,
+        if plan.lifecycle is AsgiLifecycle.REQUEST:
+            await app._handle_http(scope, receive, send)
+        elif plan.lifecycle is AsgiLifecycle.APPLICATION:
+            await app._handle_lifespan(scope, receive, send)
+        else:
+            env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+            if plan.lifecycle is AsgiLifecycle.WEBSOCKET_SESSION:
+                await self.invoke_app(app, env)
+            elif plan.lifecycle is AsgiLifecycle.WEBTRANSPORT_SESSION:
+                await WebTransportSessionPlan().run(
+                    scope,
+                    lambda: self.invoke_app(app, env),
+                    lambda state: self._snapshot_webtransport_trace(app, state),
+                )
+
+    @staticmethod
+    def _snapshot_webtransport_trace(app: Any, state: dict[str, Any]) -> None:
+        trace = state.get("trace")
+        if isinstance(trace, list):
+            app._webtransport_trace_latest = list(trace)
+            snapshots = getattr(app, "_webtransport_trace_snapshots", None)
+            if not isinstance(snapshots, list):
+                snapshots = app._webtransport_trace_snapshots = []
+            snapshots.append(list(trace))
+
+    async def invoke_app(self, app: Any, env: GwRawEnvelope) -> None:
+        plan, packed_plan = self.compile(app)
+        ctx = {
+            "app": app,
+            "router": app,
+            "raw": env,
+            "env": env,
+            "kernel_plan": plan,
+            "plan": plan,
+            "packed_plan": packed_plan,
+            "temp": {},
         }
-        await entrypoints[plan.lifecycle](scope, receive, send)
+        await self.invoke(env=env, ctx=ctx, plan=plan, packed_plan=packed_plan)
 
     async def invoke(
         self,

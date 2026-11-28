@@ -27,28 +27,13 @@ def test_app_call_signature_matches_asgi3() -> None:
     assert arg_names == ["self", "scope", "receive", "send"]
 
 
-def test_app_call_wraps_envelope_with_asgi3_kind() -> None:
+def test_app_call_delegates_asgi3_to_runtime() -> None:
     call_method = _get_call_method_node()
 
-    env_assignments = [
-        node
-        for node in call_method.body
-        if isinstance(node, ast.Assign)
-        and any(
-            isinstance(target, ast.Name) and target.id == "env"
-            for target in node.targets
-        )
-    ]
-    assert env_assignments
-
-    gw_envelope_call = env_assignments[0].value
-    assert isinstance(gw_envelope_call, ast.Call)
-    assert isinstance(gw_envelope_call.func, ast.Name)
-    assert gw_envelope_call.func.id == "GwRawEnvelope"
-
-    keywords = {
-        kw.arg: kw.value for kw in gw_envelope_call.keywords if kw.arg is not None
-    }
-    kind_literal = keywords.get("kind")
-    assert isinstance(kind_literal, ast.Constant)
-    assert kind_literal.value == "asgi3"
+    assert len(call_method.body) == 1
+    delegation = call_method.body[0]
+    assert isinstance(delegation, ast.Expr)
+    assert isinstance(delegation.value, ast.Await)
+    assert ast.unparse(delegation.value.value) == (
+        "self.runtime.dispatch_asgi(self, scope, receive, send)"
+    )

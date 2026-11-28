@@ -9,11 +9,14 @@ from typing import Any
 import pytest
 
 from tigrbl import WebTransportBindingSpec
-from tigrbl_core._spec import TextFramingSpec
+from tigrbl_core._spec import JsonRpcFramingSpec, TextFramingSpec
 from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_core._spec.hook_types import HookPhase
 from tigrbl_concrete._concrete._app import App as TigrblApp
+from tigrbl_atoms.atoms.framing import WebTransportRecordDecoder, encode_jsonrpc_record
 from tigrbl_atoms.runtime_channel import WebTransportSessionState
+from tigrbl_kernel.webtransport_session_plan import WebTransportSessionPlan
+from tigrbl_ops_realtime import InMemoryRealtimeBroker, WebTransportRealtimeSink
 
 
 def _install_adjacent_tigrcorn_sources() -> None:
@@ -160,7 +163,15 @@ def _wt_state(scope: dict[str, Any]) -> dict[str, Any]:
 
 
 @pytest.mark.asyncio
-async def test_webtransport_tigrcorn_session_multiplexes_native_lanes() -> None:
+async def test_webtransport_tigrcorn_session_multiplexes_native_lanes(monkeypatch) -> None:
+    entries = []
+    original_run = WebTransportSessionPlan.run
+
+    async def observe_run(plan, scope, invoke, snapshot):
+        entries.append(plan)
+        await original_run(plan, scope, invoke, snapshot)
+
+    monkeypatch.setattr(WebTransportSessionPlan, "run", observe_run)
     scope = _scope("/transport/multiplex")
     events = [
         webtransport_connect("session-1"),
@@ -182,6 +193,19 @@ async def test_webtransport_tigrcorn_session_multiplexes_native_lanes() -> None:
 
     sent = await _run_contract_session(_app("/transport/multiplex"), scope, events)
 
+    state = _wt_state(scope)
+    assert entries == [state["session_plan"]]
+    assert state["session"].closed
+    assert all(lane.closed for lane in state["session"].streams.values())
+    inbound = [row for row in state["trace"] if row["phase"] == "ctx.channel_message"]
+    assert {row["transport_session_id"] for row in inbound} == {"session-1"}
+    assert len({row["correlation_id"] for row in inbound}) == 1
+    assert {row["stream_id"] for row in inbound if "stream_id" in row} == {
+        "bidi-1", "bidi-2", "client-1"
+    }
+    assert {row["datagram_id"] for row in inbound if "datagram_id" in row} == {
+        "dg-client-1", "dg-client-2"
+    }
     assert sent[0] == {"type": "webtransport.accept", "session_id": "session-1"}
     assert sent[-1] == {"type": "webtransport.close", "code": 1000, "session_id": "session-1"}
     assert sum(1 for event in sent if event.get("type") == "webtransport.accept") == 1
@@ -200,6 +224,106 @@ async def test_webtransport_tigrcorn_session_multiplexes_native_lanes() -> None:
         projected = project_send_event(scope, event)
         assert projected.scope_type == "webtransport"
         assert event["session_id"] == "session-1"
+
+
+@pytest.mark.asyncio
+async def test_control_stream_records_dispatch_and_reply_independently():
+    path = "/transport/control"
+    scope = _scope(path)
+    scope["state"] = {"tigrbl_webtransport": {"eager_drain": True}}
+    app = TigrblApp()
+    broker = app.__realtime_broker__ = InMemoryRealtimeBroker()
+    calls = []
+
+    async def control(ctx):
+        identity = ctx["temp"]["identity"].copy()
+        calls.append(identity)
+        return "ok"
+
+    async def datagram(ctx):
+        assert _wt_state(scope)["session"].streams["control"].closed
+        assert broker.subscriber_count("closing") == 0
+        assert broker.subscriber_count("other") == 1
+        return "pong"
+
+    app.add_route(
+        path, control, methods=("POST",),
+        tigrbl_binding=WebTransportBindingSpec(
+            proto="webtransport", path=path, profile="bidi_stream",
+            inner_framing=JsonRpcFramingSpec(), rpc_method="Control.echo",
+        ),
+        tigrbl_exchange="bidirectional_stream",
+    )
+    app.add_route(
+        path, datagram, methods=("POST",),
+        tigrbl_binding=WebTransportBindingSpec(
+            proto="webtransport", path=path, profile="datagram",
+            inner_framing=TextFramingSpec(),
+        ),
+        tigrbl_exchange="datagram",
+    )
+
+    session_id = "session-1"
+    records = [
+        encode_jsonrpc_record({"jsonrpc": "2.0", "id": n, "method": "Control.echo"})
+        for n in (1, 2)
+    ]
+    chunks = [records[0][:2], records[0][2:8], records[0][8:] + records[1]]
+    events = iter([
+        webtransport_connect(session_id),
+        *[
+            webtransport_stream_receive(
+                session_id, "control", chunk, stream_direction="bidi",
+                framing="jsonrpc", more=True,
+            )
+            for chunk in chunks
+        ],
+        {"type": "webtransport.stream.close", "session_id": session_id, "stream_id": "control"},
+        webtransport_datagram_receive(session_id, "d1", b"ping", framing="text"),
+        {"type": "webtransport.disconnect", "session_id": session_id},
+    ])
+    reads = 0
+    sent = []
+
+    async def receive():
+        nonlocal reads
+        reads += 1
+        if reads <= 4:
+            assert calls == []
+        if reads == 5:
+            assert len(calls) == 2
+        return next(events)
+
+    async def send(event):
+        sent.append(event)
+
+    try:
+        await broker.subscribe(
+            channel="closing", session_id=session_id,
+            sink=WebTransportRealtimeSink(send, session_id, "control"),
+        )
+        await broker.subscribe(
+            channel="other", session_id=session_id,
+            sink=WebTransportRealtimeSink(send, session_id, "other-lane"),
+        )
+        await app(scope, receive, send)
+        assert broker.subscriber_count("other") == 0
+    finally:
+        await broker.close()
+    assert [call["rpc_id"] for call in calls] == [1, 2]
+    assert len({call["invocation_id"] for call in calls}) == 2
+    assert len({call["stream_correlation_id"] for call in calls}) == 1
+    assert {call["stream_id"] for call in calls} == {"control"}
+    assert {call["transport_session_id"] for call in calls} == {session_id}
+    replies = _stream_sends(sent)
+    assert len(replies) == 2
+    assert all(event["more"] is True and event["stream_id"] == "control" for event in replies)
+    assert [
+        WebTransportRecordDecoder().feed(event["data"], final=True)[0]
+        for event in replies
+    ] == [{"jsonrpc": "2.0", "id": n, "result": "ok"} for n in (1, 2)]
+    assert _datagram_sends(sent)[0]["data"] == b"pong"
+    assert _wt_state(scope)["session_plan"].control_decoders == {}
 
 
 @pytest.mark.asyncio

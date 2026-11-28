@@ -100,7 +100,9 @@ class _PackedExecuteMixin:
             program_id = await self._prime_exact_jsonrpc_program(ctx, env, plan, packed)
         if program_id < 0 and hot.scope_type != "webtransport":
             program_id = self._prime_exact_channel_program(ctx, env, plan, packed)
-        if program_id < 0:
+        wt_selection = temp.get("webtransport_selection")
+        disposition = getattr(wt_selection, "disposition", None)
+        if program_id < 0 and disposition != "lifecycle":
             try:
                 program_id = await self._probe_ingress_for_program(ctx, plan, packed)
             except StatusDetailError as exc:
@@ -112,8 +114,6 @@ class _PackedExecuteMixin:
                     "body": {"detail": exc.detail},
                 }
         if program_id < 0:
-            wt_selection = temp.get("webtransport_selection")
-            disposition = getattr(wt_selection, "disposition", None)
             rpc_envelope = getattr(wt_selection, "rpc_envelope", None)
             if disposition in {"method_not_found", "invalid_jsonrpc"}:
                 ctx.result = _jsonrpc_error_payload(
@@ -245,6 +245,8 @@ class _PackedExecuteMixin:
                     hot_op_plan,
                 )(ctx)
             except StatusDetailError as exc:
+                if temp.get("session_failure") is exc:
+                    raise
                 detail = (
                     exc.detail
                     if getattr(exc, "detail", None) not in (None, "")
@@ -276,6 +278,8 @@ class _PackedExecuteMixin:
                 )
                 return
             except Exception as exc:
+                if temp.get("session_failure") is exc:
+                    raise
                 std = create_standardized_error(exc)
                 detail = (
                     std.detail

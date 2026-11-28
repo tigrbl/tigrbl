@@ -10,8 +10,13 @@ from typing import Any
 from tigrbl_atoms.atoms.framing import websocket_jsonrpc as _jsonrpc_framing
 from tigrbl_atoms.atoms.framing.codec import decode_frame
 from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
+from tigrbl_atoms.atoms.transport.asgi_channel import (
+    disconnect_presentation_hub,
+    disconnect_realtime_broker,
+)
 from tigrbl_typing.status.converters import http_exc_to_rpc
 from tigrbl_typing.status.exceptions import HTTPException
+from ..session_lifecycle import SessionTermination
 from ..trace import OperationTrace, emit_operation_trace, operation_trace_scope
 
 ANCHORS: tuple[str, ...] = (
@@ -368,26 +373,6 @@ def _session_rpc_context(
     return rpc_ctx
 
 
-async def _maybe_await(value: Any) -> Any:
-    if hasattr(value, "__await__"):
-        return await value
-    return value
-
-
-async def _cleanup_realtime_session(ctx: Any) -> None:
-    temp = _ctx_get(ctx, "temp", {})
-    if not isinstance(temp, Mapping):
-        return
-    realtime = temp.get("realtime")
-    if not isinstance(realtime, Mapping):
-        return
-    broker = realtime.get("broker")
-    session_id = realtime.get("session_id")
-    unregister = getattr(broker, "disconnect_session", None) or getattr(broker, "unsubscribe_session", None)
-    if callable(unregister) and session_id is not None:
-        await _maybe_await(unregister(str(session_id)))
-
-
 def _resolve_rpc_target(router: Any, method: str) -> tuple[Any, str] | None:
     table_name, sep, alias = method.partition(".")
     if not sep or not table_name or not alias:
@@ -540,28 +525,31 @@ def build_websocket_jsonrpc_session_handler(
     """Build a kernel-owned WebSocket JSON-RPC session handler step."""
 
     async def _websocket_jsonrpc_session(ctx: Any) -> None:
-        await _websocket_transport.accept(ctx, subprotocol=subprotocol)
+        temp = ctx.get("temp")
+        if not isinstance(temp, dict):
+            temp = ctx["temp"] = {}
+        ws_state = temp.setdefault("websocket", {})
+        realtime_state = temp.setdefault("realtime", {})
+        carrier = temp.get("identity", {})
+        session_id = ws_state.setdefault(
+            "session_id", carrier.get("transport_session_id") or uuid4().hex,
+        )
+        realtime_state.setdefault("session_id", session_id)
         channel = ctx.get("channel")
-        channel_state = getattr(channel, "state", None)
-        if isinstance(channel_state, dict):
-            channel_state["transport_sent"] = True
-        temp = ctx.get("temp", {})
-        if isinstance(temp, dict):
-            ws_state = temp.setdefault("websocket", {})
-            realtime_state = temp.setdefault("realtime", {})
-            carrier = temp.get("identity", {})
-            session_id = ws_state.setdefault(
-                "session_id", carrier.get("transport_session_id") or uuid4().hex,
-            )
-            realtime_state.setdefault("session_id", session_id)
-            realtime_state.setdefault("sink", ctx.get("channel"))
-            if realtime_broker is not None:
-                realtime_state.setdefault("broker", realtime_broker)
+        realtime_state.setdefault("sink", channel)
+        if realtime_broker is not None:
+            realtime_state.setdefault("broker", realtime_broker)
+        app = ctx.get("app")
+        hub = getattr(app, "__presentation_hub__", None)
+        termination = SessionTermination()
         try:
+            await _websocket_transport.accept(ctx, subprotocol=subprotocol)
+            channel_state = getattr(channel, "state", None)
+            if isinstance(channel_state, dict):
+                channel_state["transport_sent"] = True
             while True:
                 await _websocket_transport.receive(ctx)
-                ws_state = ctx.get("temp", {}).setdefault("websocket", {})
-                if isinstance(ws_state, dict) and ws_state.get("disconnected"):
+                if ws_state.get("disconnected"):
                     break
                 try:
                     decoded = await _jsonrpc_framing.decode(ctx)
@@ -577,9 +565,17 @@ def build_websocket_jsonrpc_session_handler(
                 ws_state["response"] = response
                 await _jsonrpc_framing.encode(ctx)
                 await _websocket_transport.emit(ctx)
+        except Exception as exc:
+            temp["session_failure"] = exc
+            raise
         finally:
-            await _cleanup_realtime_session(ctx)
-            await _websocket_transport.close(ctx)
+            await termination.run(
+                lambda: disconnect_realtime_broker(
+                    realtime_state.get("broker"), realtime_state["session_id"]
+                ),
+                lambda: _websocket_transport.close(ctx),
+                lambda: disconnect_presentation_hub(hub, realtime_state["session_id"]),
+            )
 
     setattr(
         _websocket_jsonrpc_session,

@@ -9,6 +9,7 @@ from tigrbl_atoms import protocol_scope
 from tigrbl_core._spec import TextFramingSpec
 from tigrbl_kernel import asgi_dispatch
 from tigrbl_kernel.trace import Timeline
+from tigrbl_kernel.webtransport_session_plan import WebTransportSessionPlan
 
 
 class GuardedScope(dict):
@@ -119,6 +120,7 @@ async def test_websocket_dispatch_reuses_projection_for_session(monkeypatch):
         await websocket.accept()
         seen.append(await websocket.receive_text())
         await websocket.send_text("echo:" + seen[-1])
+        await websocket.close(code=1000)
 
     scope = GuardedScope(type="websocket", path="/socket", headers=[], query_string=b"")
     sent = await _call(
@@ -134,6 +136,7 @@ async def test_websocket_dispatch_reuses_projection_for_session(monkeypatch):
     assert seen == ["hello"]
     assert any(message["type"] == "websocket.accept" for message in sent)
     assert any(message.get("text") == "echo:hello" for message in sent)
+    assert sent[-1] == {"type": "websocket.close", "code": 1000}
 
 
 @pytest.mark.asyncio
@@ -141,8 +144,23 @@ async def test_webtransport_dispatch_reuses_projection_for_session(monkeypatch):
     app = TigrblApp()
     path = "/transport"
     calls = _instrument_handoff(monkeypatch, app)
+    invocations = []
+    entries = []
+    original_run = WebTransportSessionPlan.run
+
+    async def run(plan, scope, invoke, snapshot):
+        entries.append(plan)
+        await original_run(plan, scope, invoke, snapshot)
+
+    monkeypatch.setattr(WebTransportSessionPlan, "run", run)
 
     async def echo(ctx):
+        message = ctx["channel_message"]
+        invocations.append(message["type"])
+        if message["type"] == "webtransport.datagram.receive":
+            session = ctx["channel"].state["webtransport_session"]
+            assert session.streams["stream-1"].closed
+            assert not session.closed
         return "echo"
 
     app.add_route(
@@ -161,6 +179,7 @@ async def test_webtransport_dispatch_reuses_projection_for_session(monkeypatch):
         type="webtransport",
         path=path,
         headers=[],
+        state={},
         query_string=b"",
         quic={"alpn": "h3"},
         ext={
@@ -172,28 +191,53 @@ async def test_webtransport_dispatch_reuses_projection_for_session(monkeypatch):
             },
         },
     )
+    datagram = {
+        "type": "webtransport.datagram.receive",
+        "session_id": "session-1",
+        "datagram_id": "d-1",
+        "data": b"ping",
+        "framing": "text",
+    }
+    def stream(data):
+        return {
+            "type": "webtransport.stream.receive",
+            "session_id": "session-1",
+            "stream_id": "stream-1",
+            "stream_direction": "bidi",
+            "stream_initiator": "client",
+            "framing": "text",
+            "data": data,
+            "more": True,
+        }
+
     sent = await _call(
         app,
         scope,
         [
             {"type": "webtransport.connect", "session_id": "session-1"},
+            stream(b"hello"),
             {
-                "type": "webtransport.stream.receive",
+                "type": "webtransport.stream.close",
                 "session_id": "session-1",
                 "stream_id": "stream-1",
-                "stream_direction": "bidi",
-                "stream_initiator": "client",
-                "framing": "text",
-                "data": b"hello",
-                "more": False,
             },
+            stream(b"late stream data"),
+            datagram,
             {"type": "webtransport.disconnect", "session_id": "session-1", "code": 0},
+            dict(datagram, datagram_id="late"),
         ],
     )
     _assert_handoff(calls, scope, protocol_scope.AsgiScopeKind.WEBTRANSPORT)
+    state = scope["state"]["tigrbl_webtransport"]
+    assert entries == [state["session_plan"]]
+    assert invocations == ["webtransport.stream.receive", "webtransport.datagram.receive"]
     assert sent[0] == {"type": "webtransport.accept", "session_id": "session-1"}
     assert sent[1]["type"] == "webtransport.stream.send"
     assert sent[1]["data"] == b"echo"
+    assert sent[2]["type"] == "webtransport.datagram.send"
+    assert sent[2]["datagram_id"] == "d-1"
+    assert sent[3]["type"] == "webtransport.close"
+    assert state["session"].closed
 
 
 @pytest.mark.asyncio
