@@ -352,6 +352,8 @@ def _inject_atoms(
     for anchor, run in sorted(atoms, key=_sort_key):
         if _ev.is_valid_event(anchor):
             info = _ev.get_anchor_info(anchor)
+            if info.explicit_only:
+                continue
             phase = info.phase
             persist_tied = info.persist_tied
         elif anchor == "INGRESS_ROUTE":

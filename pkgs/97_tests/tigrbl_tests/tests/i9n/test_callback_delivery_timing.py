@@ -40,9 +40,25 @@ async def _build_receiver(events):
     return app
 
 
+@pytest.fixture
+def callback_attempt_contexts(monkeypatch):
+    from tigrbl_atoms.atoms.transport.callback import INSTANCE
+
+    seen = []
+    atom_type = type(INSTANCE)
+    attempt = atom_type.__call__
+
+    async def observe(atom, obj, ctx):
+        seen.append(ctx)
+        return await attempt(atom, obj, ctx)
+
+    monkeypatch.setattr(atom_type, "__call__", observe)
+    return seen
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("timing", ["post_commit", "after_emit"])
-async def test_callback_and_original_response_order(timing):
+async def test_callback_and_original_response_order(timing, callback_attempt_contexts):
     events = []
     receiver = await _build_receiver(events)
 
@@ -90,6 +106,8 @@ async def test_callback_and_original_response_order(timing):
         result = await client.post("/invoice/pay", json={})
     assert result.status_code == 200, result.text
     assert result.json() == {"invoice_id": "inv-1"}
+    (attempt,) = callback_attempt_contexts
+    assert attempt.endpoint == "https://test/hooks"
     callback = ("callback", {"invoice_id": "inv-1"})
     response = ("response", None)
     assert events == (
@@ -112,6 +130,7 @@ async def test_callback_and_original_response_order(timing):
             with pytest.raises(OSError, match="disconnected"):
                 await client.post("/invoice/pay", json={})
         assert events == []
+        assert callback_attempt_contexts == [attempt]
 
 
 @pytest.mark.asyncio
@@ -154,7 +173,9 @@ async def test_emitted_error_response_does_not_release_success_only_callback():
 
 
 @pytest.mark.asyncio
-async def test_worker_callback_is_created_by_the_mounted_source_operation(tmp_path):
+async def test_worker_callback_is_created_by_the_mounted_source_operation(
+    tmp_path, callback_attempt_contexts
+):
     from sqlalchemy import Column, String, create_engine, select
     from sqlalchemy.orm import sessionmaker
     from tigrbl import DefineCallback, run_callback_attempts
@@ -213,6 +234,8 @@ async def test_worker_callback_is_created_by_the_mounted_source_operation(tmp_pa
         assert db.scalar(select(CallbackAttempt.status)) == "pending"
     assert await run_callback_attempts(sessions, send=send) == 1
     assert sent == [delivery_id]
+    (attempt,) = callback_attempt_contexts
+    assert attempt.payload["idempotency_key"] == delivery_id
     with sessions() as db:
         assert db.scalar(select(CallbackAttempt.status)) == "delivered"
     engine.dispose()

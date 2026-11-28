@@ -1,4 +1,4 @@
-"""Outbound HTTP callback preparation and one-attempt transport execution."""
+"""Outbound HTTP callback preparation and one-attempt transport atom."""
 
 from __future__ import annotations
 
@@ -8,9 +8,32 @@ import hmac
 import http.client
 import inspect
 import json
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urlsplit
+
+from ... import events as _ev
+from ...stages import Egressed, Emitting
+from ...types import Atom, BaseCtx
+
+
+# This carrier event is selected by callback plans outside the request atom chain.
+ANCHOR = _ev.CALLBACK_DELIVERY_EMIT
+
+
+@dataclass(slots=True, kw_only=True)
+class CallbackAttemptCtx(BaseCtx[Emitting, Exception]):
+    endpoint: str
+    payload: Mapping[str, Any]
+    timeout: float
+    secret: str | None = field(default=None, repr=False)
+    send: Callable[..., Any] | None = field(default=None, repr=False)
+
+
+@dataclass(slots=True, kw_only=True)
+class CallbackAttemptedCtx(BaseCtx[Egressed, Exception]):
+    outcome: dict[str, Any]
 
 
 def build_callback_payload(
@@ -92,4 +115,32 @@ def _is_transient(status_code: int) -> bool:
     return status_code == 429 or 500 <= status_code < 600
 
 
-__all__ = ["attempt_callback", "build_callback_payload", "sign_callback_payload"]
+class AtomImpl(Atom[Emitting, Egressed, Exception]):
+    name = "transport.callback_attempt"
+    anchor = ANCHOR
+
+    async def __call__(
+        self, obj: object | None, ctx: CallbackAttemptCtx
+    ) -> CallbackAttemptedCtx:
+        outcome = await attempt_callback(
+            ctx.endpoint,
+            ctx.payload,
+            timeout=ctx.timeout,
+            secret=ctx.secret,
+            send=ctx.send,
+        )
+        return ctx.promote(CallbackAttemptedCtx, outcome=outcome)
+
+
+INSTANCE = AtomImpl()
+
+
+__all__ = [
+    "ANCHOR",
+    "INSTANCE",
+    "CallbackAttemptCtx",
+    "CallbackAttemptedCtx",
+    "attempt_callback",
+    "build_callback_payload",
+    "sign_callback_payload",
+]

@@ -33,8 +33,7 @@ from tigrbl_core.schema.utils import (
     namely_model,
 )
 from tigrbl_base._base._schema_base import SchemaBase
-from tigrbl_concrete._runtime_services import compile_opview_from_specs
-from tigrbl_kernel.trace import trace_bound_hook
+from tigrbl_concrete._runtime_services import compile_opview_from_specs, trace_bound_hook
 from tigrbl_typing.phases import HOOK_PHASES
 
 from tigrbl_concrete._mapping.op_resolver import resolve as resolve_ops
