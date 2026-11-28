@@ -1,6 +1,8 @@
 """Verify Notes Pilot export through a running Trace Lab collector."""
 
 import argparse
+from importlib.metadata import version
+import json
 import os
 from pathlib import Path
 import socket
@@ -28,7 +30,7 @@ def eventually(fetch, process=None):
     raise RuntimeError("Timed out waiting for the trace service")
 
 
-def verify_browser(url, credentials, correlation):
+def verify_browser(url, credentials, correlation, expected_image_version=None):
     from playwright.sync_api import sync_playwright
 
     with sync_playwright() as playwright:
@@ -69,6 +71,28 @@ def verify_browser(url, credentials, correlation):
             i for i in range(tx + 1, len(labels)) if labels[i][0] == "db.tx.begin"
         )
         assert labels[phase][1] < labels[tx][1] < labels[begin][1], labels
+        if expected_image_version is not None:
+            packages = Path(__file__).resolve().parents[4]
+            manifest = packages / "130_frontend/trace-lab-ui/package.json"
+            frontend_version = json.loads(manifest.read_text(encoding="utf-8"))[
+                "version"
+            ]
+            expected = {
+                "backend": version("tigrbl-transport-trace-lab"),
+                "frontend": frontend_version,
+                "image": expected_image_version,
+            }
+            for component, expected_version in expected.items():
+                displayed = page.get_by_test_id(f"{component}-version").inner_text()
+                assert displayed == f"v{expected_version}", (
+                    component,
+                    displayed,
+                    expected_version,
+                )
+            print(
+                "Footer versions verified:",
+                ", ".join(f"{k} v{v}" for k, v in expected.items()),
+            )
         return direct
 
 
@@ -76,7 +100,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--collector", default="http://127.0.0.1:8766")
     parser.add_argument("--browser", action="store_true")
+    parser.add_argument("--expect-image-version")
     args = parser.parse_args()
+    if args.expect_image_version is not None and not args.browser:
+        parser.error("--expect-image-version requires --browser")
     collector = args.collector.rstrip("/")
     credentials = (
         os.environ["TRACE_OPERATOR_USER"],
@@ -146,7 +173,14 @@ def main():
                     f"Notes Pilot correlation {correlation} returned {len(events)} projected events"
                 )
                 if args.browser:
-                    print(verify_browser(collector, credentials, correlation))
+                    print(
+                        verify_browser(
+                            collector,
+                            credentials,
+                            correlation,
+                            args.expect_image_version,
+                        )
+                    )
             finally:
                 if process.poll() is None:
                     if os.name == "nt":
