@@ -368,9 +368,19 @@ class WebTransportSessionState:
             self.accepted = True
             return
         if event in {"webtransport.close", "webtransport.disconnect"}:
-            self.closed = True
-            for state in self.streams.values():
-                state.closed = True
+            self.close()
+
+    def close(self) -> None:
+        self.closed = True
+        for stream_id in self.streams:
+            self.close_stream(stream_id)
+
+    def close_stream(self, stream_id: str) -> None:
+        state = self.streams.get(stream_id)
+        if state is not None:
+            state.closed = True
+            state.receive_closed = True
+            state.send_closed = True
 
     def _apply_stream_event(
         self,

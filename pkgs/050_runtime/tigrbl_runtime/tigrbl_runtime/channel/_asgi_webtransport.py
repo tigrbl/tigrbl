@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 from collections import deque
 import inspect
 from typing import Any, Mapping
@@ -9,6 +8,8 @@ from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_atoms.atoms.transport.asgi_channel import (
     message_payload as _message_payload,
     payload_size as _webtransport_payload_size,
+    webtransport_scope_session_id,
+    webtransport_scope_state,
 )
 from tigrbl_kernel.channel_taxonomy import (
     select_webtransport_hooks,
@@ -16,40 +17,21 @@ from tigrbl_kernel.channel_taxonomy import (
 )
 from tigrbl_atoms.atoms.ingress.identity import stream_correlation_id, webtransport_lane_identity
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
-from tigrbl_kernel.webtransport_session_plan import WebTransportSessionPlan
+from tigrbl_kernel.webtransport_session_plan import (
+    STREAM_TERMINATION_EVENTS,
+    WebTransportSessionPlan,
+)
 from tigrbl_atoms.runtime_channel import WebTransportSessionState
 from tigrbl_typing.channel import OpChannel
 
-MAX_EAGER_DRAIN_EVENTS = 16
-
-
 def _webtransport_scope_state(env: Any) -> dict[str, Any]:
-    scope = getattr(env, "scope", {}) or {}
-    if not isinstance(scope, dict):
-        return {}
-    state = scope.setdefault("state", {})
-    if not isinstance(state, dict):
-        state = {}
-        scope["state"] = state
-    wt_state = state.setdefault("tigrbl_webtransport", {})
-    if not isinstance(wt_state, dict):
-        wt_state = {}
-        state["tigrbl_webtransport"] = wt_state
-    return wt_state
+    scope = getattr(env, "scope", None)
+    return webtransport_scope_state(scope) if isinstance(scope, dict) else {}
 
 
 def _webtransport_scope_session_id(env: Any) -> Any:
-    scope = getattr(env, "scope", {}) or {}
-    if not isinstance(scope, Mapping):
-        return None
-    if scope.get("session_id") is not None:
-        return scope.get("session_id")
-    for group, key in (("ext", "webtransport"), ("ext", "tigrcorn.unit"), ("extensions", "tigrcorn.unit")):
-        values = scope.get(group)
-        item = values.get(key) if isinstance(values, Mapping) else None
-        if isinstance(item, Mapping) and item.get("session_id") is not None:
-            return item["session_id"]
-    return None
+    scope = getattr(env, "scope", None)
+    return webtransport_scope_session_id(scope) if isinstance(scope, Mapping) else None
 
 
 def _enrich_webtransport_message(
@@ -249,15 +231,6 @@ async def _receive_webtransport_session_messages(
         session_plan = WebTransportSessionPlan()
         shared_state["session_plan"] = session_plan
 
-    async def _receive_record_or_event() -> Mapping[str, Any]:
-        if session_plan.has_pending():
-            return session_plan.pop_pending()
-        while True:
-            raw = _enrich_webtransport_message(env, await receive())
-            session_plan.project_receive(raw)
-            if session_plan.has_pending():
-                return session_plan.pop_pending()
-
     def _ensure_session(message: Mapping[str, Any]) -> WebTransportSessionState | None:
         nonlocal session
         session_id = message.get("session_id") or _webtransport_scope_session_id(env)
@@ -303,11 +276,15 @@ async def _receive_webtransport_session_messages(
             phase="ctx.channel_message",
             message=message,
         )
-        if message_type in {"webtransport.stream.reset", "webtransport.stream.close"}:
-            shared_state.get("stream_correlations", {}).pop(str(message.get("stream_id")), None)
         if message_type.startswith("webtransport.message"):
             raise ValueError("WebTransport message is not a native transport lane")
         current_session = _ensure_session(message)
+        if message_type in STREAM_TERMINATION_EVENTS:
+            stream_id = message.get("stream_id")
+            if stream_id is not None:
+                await session_plan.terminate_stream(env.scope, str(stream_id))
+            await _run_webtransport_hooks(env, ctx, direction="receive", message=message)
+            return
         if message_type == "webtransport.connect":
             state["connected"] = True
             shared_state["connected"] = True
@@ -371,26 +348,10 @@ async def _receive_webtransport_session_messages(
             return
         ctx["channel_message"] = message
 
-    message = await _receive_record_or_event()
-    await _record_payload_message(message)
-    if message.get("type") == "webtransport.connect":
-        if "channel_message" not in ctx:
-            message = await _receive_record_or_event()
-            await _record_payload_message(message)
-
-    drained_events = 0
-    while (
-        shared_state.get("eager_drain") is True
-        and not state.get("disconnected")
-        and drained_events < MAX_EAGER_DRAIN_EVENTS
-    ):
-        try:
-            message = await asyncio.wait_for(
-                _receive_record_or_event(), timeout=0.001
-            )
-        except TimeoutError:
-            break
-        await _record_payload_message(message)
-        drained_events += 1
+    await session_plan.receive_unit(
+        receive,
+        _record_payload_message,
+        eager_drain=shared_state.get("eager_drain") is True,
+    )
 
     state["receive_queue"] = queue

@@ -469,23 +469,7 @@ class App(AppBase):
         self._runtime_boot_warm_revision = revision
 
     async def invoke(self, env: GwRawEnvelope) -> None:
-        plan, packed_plan = self.runtime.compile(self)
-        ctx: dict[str, Any] = {
-            "app": self,
-            "router": self,
-            "raw": env,
-            "env": env,
-            "kernel_plan": plan,
-            "plan": plan,
-            "packed_plan": packed_plan,
-            "temp": {},
-        }
-        await self.runtime.invoke(
-            env=env,
-            ctx=ctx,
-            plan=plan,
-            packed_plan=packed_plan,
-        )
+        await self.runtime.invoke_app(self, env)
 
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
         await self.runtime.dispatch_asgi(self, scope, receive, send)
@@ -542,58 +526,6 @@ class App(AppBase):
                     return
         env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
         await self.invoke(env)
-
-    async def _handle_websocket(
-        self, scope: dict[str, Any], receive: Any, send: Any
-    ) -> None:
-        env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
-        await self.invoke(env)
-
-    async def _handle_webtransport(
-        self, scope: dict[str, Any], receive: Any, send: Any
-    ) -> None:
-        scope_state = scope.setdefault("state", {})
-        if not isinstance(scope_state, dict):
-            scope_state = {}
-            scope["state"] = scope_state
-        wt_state = scope_state.setdefault("tigrbl_webtransport", {})
-        if not isinstance(wt_state, dict):
-            wt_state = {}
-            scope_state["tigrbl_webtransport"] = wt_state
-
-        try:
-            while wt_state.get("closed") is not True:
-                env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
-                await self.invoke(env)
-                trace = wt_state.get("trace")
-                if isinstance(trace, list):
-                    self._webtransport_trace_latest = list(trace)
-                    snapshots = getattr(self, "_webtransport_trace_snapshots", None)
-                    if not isinstance(snapshots, list):
-                        snapshots = []
-                        self._webtransport_trace_snapshots = snapshots
-                    snapshots.append(list(trace))
-                if wt_state.get("closed") is True or wt_state.get("disconnected") is True:
-                    break
-        finally:
-            session_id = scope.get("session_id")
-            extensions = scope.get("extensions")
-            if session_id is None and isinstance(extensions, dict):
-                extension = extensions.get("webtransport")
-                if isinstance(extension, dict):
-                    session_id = extension.get("session_id")
-            callbacks = []
-            broker = getattr(self, "__realtime_broker__", None)
-            disconnect = getattr(broker, "disconnect_session", None) or getattr(broker, "unsubscribe_session", None)
-            if session_id is not None and callable(disconnect):
-                callbacks.append(lambda: disconnect(str(session_id)))
-            hub = getattr(self, "__presentation_hub__", None)
-            if session_id is not None and callable(getattr(hub, "disconnect", None)):
-                callbacks.append(lambda: hub.disconnect(str(session_id)))
-            session_plan = wt_state.get("session_plan")
-            cleanup = getattr(session_plan, "cleanup", None)
-            if callable(cleanup):
-                await cleanup(*callbacks)
 
     async def _handle_lifespan(
         self, _scope: dict[str, Any], receive: Any, send: Any

@@ -93,10 +93,12 @@ async def close(ctx: Any, *, code: int = 1000) -> None:
     channel = _channel(ctx)
     send = getattr(channel, "send", None)
     state = _ws_state(ctx)
-    if callable(send) and not state.get("disconnected"):
-        await send({"type": "websocket.close", "code": code})
-    state["closed"] = True
-    state["disconnected"] = True
+    try:
+        if callable(send) and not state.get("disconnected"):
+            await send({"type": "websocket.close", "code": code})
+    finally:
+        state["closed"] = True
+        state["disconnected"] = True
 
 
 for _name, _fn in {

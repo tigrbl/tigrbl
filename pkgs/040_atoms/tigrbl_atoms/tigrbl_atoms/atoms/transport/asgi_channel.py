@@ -13,11 +13,69 @@ from ..framing.webtransport_records import encode_jsonrpc_record
 from ..ingress.identity import prepare_transport_identity
 
 
+def disconnect_realtime_broker(broker: Any, session_id: Any) -> Any:
+    disconnect = getattr(broker, "disconnect_session", None) or getattr(
+        broker, "unsubscribe_session", None
+    )
+    if session_id is not None and callable(disconnect):
+        return disconnect(str(session_id))
+    return None
+
+
+def disconnect_realtime_stream(broker: Any, session_id: str, stream_id: str) -> Any:
+    disconnect = getattr(broker, "disconnect_stream", None)
+    if callable(disconnect):
+        return disconnect(session_id, stream_id)
+    return None
+
+
+def disconnect_presentation_hub(hub: Any, session_id: Any) -> Any:
+    disconnect = getattr(hub, "disconnect", None)
+    if session_id is not None and callable(disconnect):
+        return disconnect(str(session_id))
+    return None
+
+
+def webtransport_scope_state(scope: dict[str, Any]) -> dict[str, Any]:
+    state = scope.get("state")
+    if not isinstance(state, dict):
+        state = scope["state"] = {}
+    wt_state = state.get("tigrbl_webtransport")
+    if not isinstance(wt_state, dict):
+        wt_state = state["tigrbl_webtransport"] = {}
+    return wt_state
+
+
+def webtransport_scope_session_id(scope: Mapping[str, Any]) -> Any:
+    if scope.get("session_id") is not None:
+        return scope["session_id"]
+    for group in ("ext", "extensions"):
+        values = scope.get(group)
+        if not isinstance(values, Mapping):
+            continue
+        for key in ("webtransport", "tigrcorn.unit"):
+            item = values.get(key)
+            if isinstance(item, Mapping) and item.get("session_id") is not None:
+                return item["session_id"]
+    return None
+
+
+def _observe_webtransport_close(scope: dict[str, Any], send: Any) -> Any:
+    async def send_and_observe(message):
+        await send(message)
+        if message.get("type") == "webtransport.close":
+            webtransport_scope_state(scope)["closed"] = True
+
+    return send_and_observe
+
+
 def bind_asgi_ingress(
     scope: dict[str, Any], projection: AsgiScope, send: Any, sink: TraceSink | None
 ) -> Any:
     """Bind transport identity and HTTP response correlation to the carrier."""
     scope_type = projection.kind.value
+    if scope_type == "webtransport":
+        send = _observe_webtransport_close(scope, send)
     request_start = (
         (perf_counter_ns(), datetime.now(timezone.utc).isoformat())
         if sink is not None and scope_type == "http"
