@@ -6,7 +6,7 @@
 <p align="center">Tigrbl trace collector and monitor</p>
 <p align="center">
 <a href="https://pypi.org/project/tigrbl-transport-trace-lab/"><img alt="pypi: tigrbl-transport-trace-lab unpublished" src="https://img.shields.io/static/v1?label=pypi&amp;message=tigrbl-transport-trace-lab%20unpublished&amp;labelColor=1E293B&amp;color=92400E"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/pyproject.toml"><img alt="Source version: 0.1.0" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.1.0&amp;labelColor=1E293B&amp;color=4338CA"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/pyproject.toml"><img alt="Source version: 0.1.1" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.1.1&amp;labelColor=1E293B&amp;color=4338CA"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/pyproject.toml"><img alt="Python: &gt;=3.10,&lt;3.15" src="https://img.shields.io/static/v1?label=Python&amp;message=%3E%3D3.10%2C%3C3.15&amp;labelColor=1E293B&amp;color=0F766E"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/pyproject.toml"><img alt="Layer: 110_backend" src="https://img.shields.io/static/v1?label=Layer&amp;message=110_backend&amp;labelColor=1E293B&amp;color=6D28D9"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/README.md#lifecycle-and-migration"><img alt="Lifecycle: active" src="https://img.shields.io/static/v1?label=Lifecycle&amp;message=active&amp;labelColor=1E293B&amp;color=166534"></a>
