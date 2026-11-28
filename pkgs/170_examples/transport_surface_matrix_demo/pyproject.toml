@@ -1,0 +1,94 @@
+[project]
+name = "tigrbl-transport-surface-matrix-demo"
+version = "0.1.0"
+description = "Tigrbl transport surface matrix example for REST, JSON-RPC, streaming, SSE, WebSocket, mTLS, and WebTransport."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+  "tigrbl",
+  "tigrbl-core",
+  "tigrbl-kernel",
+  "httpx>=0.27.0,<0.28",
+  "uvicorn",
+]
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+
+[dependency-groups]
+dev = [
+  "aioquic>=1.3.0",
+  "cryptography>=46.0.0",
+  "h11>=0.14.0",
+  "h2>=4.1.0",
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24.0",
+  "PyYAML>=6.0",
+  "websockets>=13",
+  "wsproto>=1.3.0",
+  "readme-standards==0.1.3; python_version >= \"3.11\"",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+tigrbl = { path = "../../080_facade/tigrbl", editable = true }
+tigrbl-core = { path = "../../010_core/tigrbl_core", editable = true }
+tigrbl-kernel = { path = "../../045_kernel/tigrbl_kernel", editable = true }
+
+[tool.pytest.ini_options]
+addopts = [
+  "--import-mode=importlib",
+]
+testpaths = [
+  "tests",
+]
+
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/170_examples/transport_surface_matrix_demo"
+layer = "170_examples"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl-transport-surface-matrix-demo"
+published = false
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.sh"
+test = "docs/readme/test_examples.py"
+language = "bash"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.sh"
+test = "docs/readme/test_examples.py"
+language = "bash"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/170_examples/transport_surface_matrix_demo/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/170_examples/transport_surface_matrix_demo/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"

@@ -1,0 +1,224 @@
+[project]
+name = "tigrbl"
+version = "0.4.6.dev3"
+description = "Schema-first ASGI framework for REST, JSON-RPC, streaming, SSE, WebSocket, runtime plans, hooks, diagnostics, and engine plugins."
+readme = "README.md"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "api framework",
+    "asgi framework",
+    "dependency injection",
+    "fastapi alternative",
+    "json-rpc",
+    "framework",
+    "openapi",
+    "openrpc",
+    "pydantic",
+    "rest",
+    "runtime plans",
+    "schema-first",
+    "sqlalchemy",
+    "sse",
+    "streaming",
+    "typed validation",
+    "websocket",
+    "webtransport",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
+dependencies = [
+    "tigrbl-core>=0.4.5.dev6",
+    "tigrbl-base>=0.4.5.dev6",
+    "tigrbl-concrete>=0.4.5.dev7",
+    "tigrbl-orm",
+    "tigrbl-runtime>=0.4.6.dev1",
+    "tigrbl-atoms>=0.4.5.dev5",
+    "tigrbl-kernel>=0.4.5.dev5",
+    "tigrbl-ops-oltp",
+    "pydantic>=2.0.0",
+    "sqlalchemy>=2.0",
+    "aiosqlite>=0.19.0",
+    "httpx>=0.27.0",
+    "greenlet>=3.2.3",
+]
+license-files = ["LICENSE", "NOTICE"]
+
+
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[project.scripts]
+tigrbl = "tigrbl.cli:console_main"
+
+[project.optional-dependencies]
+numba = [
+    "tigrbl-runtime[numba]>=0.4.6.dev1",
+]
+postgres = [
+    "asyncpg>=0.30.0",
+    "psycopg2-binary>=2.9.9",
+]
+templates = [
+    "jinja2>=3.1.4",
+]
+servers = [
+    "uvicorn",
+    "tigrcorn",
+    "hypercorn>=0.16.0",
+    "gunicorn>=21.2.0",
+]
+uvicorn = [
+    "uvicorn",
+]
+tigrcorn = [
+    "tigrcorn",
+]
+hypercorn = [
+    "hypercorn>=0.16.0",
+]
+gunicorn = [
+    "gunicorn>=21.2.0",
+]
+tests = [
+    "tigrbl-tests",
+]
+
+[tool.uv.sources]
+"tigrbl-core" = { workspace = true }
+"tigrbl-base" = { workspace = true }
+"tigrbl-concrete" = { workspace = true }
+"tigrbl-orm" = { workspace = true }
+"tigrbl-runtime" = { workspace = true }
+"tigrbl-atoms" = { workspace = true }
+"tigrbl-kernel" = { workspace = true }
+"tigrbl-ops-oltp" = { workspace = true }
+tigrbl-tests = { workspace = true }
+tigrbl_client = { workspace = true }
+
+
+[tool.pytest.ini_options]
+norecursedirs = ["combined", "scripts"]
+testpaths = ["../tigrbl_tests/tests"]
+markers = [
+    "test: standard test",
+    "unit: Unit tests",
+    "i9n: Integration tests",
+    "r8n: Regression tests",
+    "timeout: mark test to timeout after X seconds",
+    "xpass: Expected passes",
+    "xfail: Expected failures",
+    "acceptance: Acceptance tests",
+    "perf: Performance tests that measure execution time and resource usage",
+]
+timeout = 300
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)s] %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/080_facade/tigrbl"
+layer = "080_facade"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl"
+published = true
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/080_facade/tigrbl/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/080_facade/tigrbl/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [
+    { include = "tigrbl" },
+]
+
+[dependency-groups]
+dev = [
+    "tigrbl_client",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-xdist>=3.6.1",
+    "pytest-json-report>=1.5.0",
+    "python-dotenv",
+    "requests>=2.32.3",
+    "flake8>=7.0",
+    "pytest-timeout>=2.3.1",
+    "ruff>=0.9.9",
+    "pytest-benchmark>=4.0.0",
+    "asyncpg>=0.30.0",
+    "psycopg2-binary>=2.9.9",
+    "readme-standards==0.1.3; python_version >= \"3.11\"",
+]

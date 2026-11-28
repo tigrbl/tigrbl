@@ -5,10 +5,10 @@ from tigrbl_tests.factory_conformance import discover_factory_candidates, load_m
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOTS = {
-    REPO_ROOT / "pkgs/10_core/tigrbl_core/tigrbl_core": "tigrbl_core",
-    REPO_ROOT / "pkgs/20_base/tigrbl_base/tigrbl_base": "tigrbl_base",
-    REPO_ROOT / "pkgs/45_kernel/tigrbl_kernel/tigrbl_kernel": "tigrbl_kernel",
-    REPO_ROOT / "pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete": "tigrbl_concrete",
+    REPO_ROOT / "pkgs/010_core/tigrbl_core/tigrbl_core": "tigrbl_core",
+    REPO_ROOT / "pkgs/020_base/tigrbl_base/tigrbl_base": "tigrbl_base",
+    REPO_ROOT / "pkgs/045_kernel/tigrbl_kernel/tigrbl_kernel": "tigrbl_kernel",
+    REPO_ROOT / "pkgs/070_concrete/tigrbl_concrete/tigrbl_concrete": "tigrbl_concrete",
 }
 
 

@@ -16,7 +16,7 @@ ROOT = repo_root()
 REGISTRY = ROOT / '.ssot' / 'registry.json'
 DOC_POINTERS = ROOT / 'docs' / 'governance' / 'DOC_POINTERS.md'
 VERSIONING = ROOT / 'docs' / 'governance' / 'VERSIONING_POLICY.md'
-PACKAGE_PYPROJECT = ROOT / 'pkgs' / '80_facade' / 'tigrbl' / 'pyproject.toml'
+PACKAGE_PYPROJECT = ROOT / 'pkgs' / '080_facade' / 'tigrbl' / 'pyproject.toml'
 REQUIRED_ADRS = {'adr:1043', 'adr:1044'}
 STATIC_REQUIRED_PATHS = [
     ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'post-promotion-handoff' / 'README.md',
@@ -93,10 +93,10 @@ def main() -> None:
     if governed_key is None:
         errors.append(f'.ssot/registry.json repo.version must be a dev checkpoint version, got {governed_dev_version!r}')
     elif package_key is None:
-        errors.append(f'pkgs/80_facade/tigrbl/pyproject.toml must record a valid semver, got {package_version!r}')
+        errors.append(f'pkgs/080_facade/tigrbl/pyproject.toml must record a valid semver, got {package_version!r}')
     elif package_key < governed_key:
         errors.append(
-            'pkgs/80_facade/tigrbl/pyproject.toml must not lag behind '
+            'pkgs/080_facade/tigrbl/pyproject.toml must not lag behind '
             f'.ssot/registry.json repo.version {governed_dev_version}; got {package_version}'
         )
 

@@ -1,0 +1,92 @@
+[project]
+name = "tigrbl-trace-lab-demo"
+version = "0.1.0"
+description = "Public Trace Lab walkthrough and Notes Pilot"
+requires-python = ">=3.10,<3.15"
+readme = "README.md"
+license = "Apache-2.0"
+dependencies = [
+    "tigrbl",
+    "tigrbl-core",
+    "tigrbl-ops-realtime",
+    "tigrbl-transport-trace-lab",
+    "tigrbl-trace-transport==0.1.0",
+    "tigrbl-engine-sqlite",
+    "httpx>=0.27,<1",
+    "websockets>=15,<16",
+    "tigrbl-trace==0.1.0",
+    "tigrbl-engine-postgres",
+    "tigrcorn[certification]==0.3.19",
+    "tigr-asgi-contract",
+    "pydantic>=2,<3",
+    "sqlalchemy>=2,<3",
+]
+
+[project.scripts]
+tigrbl-trace-lab-demo = "trace_lab_demo.run:main"
+notes-pilot = "trace_lab_demo.notes_pilot:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/trace_lab_demo"]
+
+[tool.uv.sources]
+tigrbl-ops-realtime = { workspace = true }
+tigrbl-core = { workspace = true }
+tigrbl-transport-trace-lab = { workspace = true }
+tigrbl-trace-transport = { workspace = true }
+tigrbl-engine-sqlite = { workspace = true }
+tigrbl = { workspace = true }
+tigrbl-trace = { workspace = true }
+tigrbl-engine-postgres = { workspace = true }
+
+[tool.readme_standards]
+policy = "package-guide-v1"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/170_examples/trace-lab-demo"
+layer = "170_examples"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl-trace-lab-demo"
+published = false
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/quick_start.sh"
+test = "tests/test_monitor_e2e.py"
+language = "sh"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/verify.sh"
+test = "tests/test_monitor_e2e.py"
+language = "sh"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/verify.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "pytest suite"
+url = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/170_examples/trace-lab-demo/tests"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/170_examples/trace-lab-demo/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "registry"
+url = "https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json"
+
+[tool.readme_standards.statuses.evidence]
+label = "test evidence"
+url = "https://github.com/tigrbl/tigrbl/tree/master/.ssot/evidence"

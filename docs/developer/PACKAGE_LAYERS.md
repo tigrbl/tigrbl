@@ -61,4 +61,4 @@ When adding, removing, or moving a package:
 
 1. Update `index.toml`.
 2. Update this document and `docs/developer/PACKAGE_CATALOG.md`.
-3. Run `uv run pytest pkgs/97_tests/tigrbl_tests/tests/unit/test_package_layers.py -q`.
+3. Run `uv run pytest pkgs/210_tests/tigrbl_tests/tests/unit/test_package_layers.py -q`.

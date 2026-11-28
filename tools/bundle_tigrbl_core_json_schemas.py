@@ -6,7 +6,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_DIR = ROOT / "pkgs" / "10_core" / "tigrbl_core" / "schemas"
+SCHEMA_DIR = ROOT / "pkgs" / "010_core" / "tigrbl_core" / "schemas"
 BUNDLE_PATH = SCHEMA_DIR / "bundle.json"
 
 

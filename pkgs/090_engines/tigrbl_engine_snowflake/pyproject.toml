@@ -1,0 +1,137 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrbl_engine_snowflake"
+version = "0.4.6.dev2"
+description = "Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration."
+readme = "README.md"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "snowflake",
+    "warehouse",
+    "analytics",
+    "openapi",
+    "openrpc",
+    "schema-first",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+]
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
+dependencies = [
+  "SQLAlchemy>=2.0,<3.0",
+  "snowflake-sqlalchemy>=1.5,<2.0",
+  "snowflake-connector-python>=4.7.3,<5.0",
+]
+
+# Auto-registration with Tigrbl
+license-files = ["LICENSE", "NOTICE"]
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/090_engines/tigrbl_engine_snowflake"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[project.entry-points."tigrbl.engine_plugins"]
+snowflake = "tigrbl_engine_snowflake:register"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.readme_standards]
+policy = "package-guide-v1"
+readme = "README.md"
+brand = "tigrbl"
+brand_catalog = "../../../tools/readme/brands.toml"
+repository = "https://github.com/tigrbl/tigrbl"
+ref = "master"
+package_path = "pkgs/090_engines/tigrbl_engine_snowflake"
+layer = "090_engines"
+lifecycle = "active"
+license_file = "LICENSE"
+notice_file = "NOTICE"
+
+[tool.readme_standards.distributions.pypi]
+name = "tigrbl_engine_snowflake"
+published = true
+
+[tool.readme_standards.examples.quick_start]
+source = "docs/readme/quick_start.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.examples.usage]
+source = "docs/readme/usage.py"
+test = "docs/readme/test_examples.py"
+language = "python"
+expected_exit_code = 0
+
+[tool.readme_standards.statuses.readme]
+label = "CI gate"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+
+[tool.readme_standards.statuses.tests]
+label = "example source"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/090_engines/tigrbl_engine_snowflake/docs/readme/test_examples.py"
+
+[tool.readme_standards.statuses.certification]
+label = "not certified"
+url = "https://github.com/tigrbl/tigrbl/blob/master/pkgs/090_engines/tigrbl_engine_snowflake/README.md#certification-status"
+
+[tool.readme_standards.statuses.governance]
+label = "repository policy"
+url = "https://github.com/tigrbl/tigrbl/blob/master/tools/readme/POLICY.md"
+
+[tool.readme_standards.statuses.evidence]
+label = "source and CI"
+url = "https://github.com/tigrbl/tigrbl/actions/workflows/readme-standards.yml"
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24.0",
+  "pytest-xdist>=3.6.1",
+  "pytest-json-report>=1.5.0",
+  "python-dotenv",
+  "requests>=2.32.3",
+  "flake8>=7.0",
+  "pytest-timeout>=2.3.1",
+  "ruff>=0.9.9",
+  "pytest-benchmark>=4.0.0",
+  "readme-standards==0.1.3; python_version >= \"3.11\"",
+]
