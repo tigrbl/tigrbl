@@ -246,7 +246,8 @@ async def test_concurrent_terminal_signals_share_one_cleanup_even_when_waiter_is
     await asyncio.sleep(0)
     assert not first.done()
     release.set()
-    with pytest.raises(asyncio.CancelledError, match="first signal"):
+    # Python 3.10 can omit the cancellation message when awaiting the task.
+    with pytest.raises(asyncio.CancelledError):
         await first
     await duplicate
     await termination.run(lambda: calls.append("late"))
