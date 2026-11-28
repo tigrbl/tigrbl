@@ -438,6 +438,7 @@ class App(AppBase):
                 trace_sink=self.trace_sink,
                 trace_atoms=self.trace_atoms,
             )
+            runtime.bind_asgi(self)
             self._runtime_instance = runtime
         return runtime
 
@@ -472,19 +473,21 @@ class App(AppBase):
         await self.runtime.invoke_app(self, env)
 
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
-        await self.runtime.dispatch_asgi(self, scope, receive, send)
+        await self.runtime.dispatch_asgi(scope, receive, send)
 
-    async def _handle_http(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
+    async def _handle_http_prelude(
+        self, scope: dict[str, Any], receive: Any, send: Any
+    ) -> bool:
         path = scope.get("path")
         if isinstance(path, str):
             mounted = _serve_mounted_app(self, scope, receive, send)
             if mounted is not None:
                 await mounted
-                return
+                return True
             static_response = _serve_static(self, Request.from_scope(scope, app=self))
             if static_response is not None:
                 await static_response(scope, receive, send)
-                return
+                return True
             if str(scope.get("method") or "").upper() == "OPTIONS":
                 path_value = path.rstrip("/") or "/"
                 allowed: set[str] = set()
@@ -523,9 +526,8 @@ class App(AppBase):
                     await Response(status_code=204, headers=headers)(
                         scope, receive, send
                     )
-                    return
-        env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
-        await self.invoke(env)
+                    return True
+        return False
 
     async def _handle_lifespan(
         self, _scope: dict[str, Any], receive: Any, send: Any

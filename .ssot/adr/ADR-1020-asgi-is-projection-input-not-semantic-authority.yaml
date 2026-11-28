@@ -20,7 +20,7 @@ body: |-
 
   For each inbound ASGI scope entering Tigrbl framework dispatch, the designated ingress projector in `tigrbl_atoms` is the sole reader of the raw `scope["type"]` discriminator. It reads the discriminator once and projects it into a typed scope context. SPEC-1003 governs validation and error handling at this boundary. SPEC-2100 defines the supported ASGI scope kinds.
 
-  The kernel receives the projected scope context and uses it with compiled bindings to select the execution path under ADR-1047. Runtime invokes the projector at ingress and executes the kernel's selection. Packed and fallback execution, trace classification, transport completion, and internal re-entry for the same inbound scope consume the original projection. They may read its typed discriminator. Raw scope fields can still pass through existing ASGI interfaces for carrier interoperability.
+  The kernel calls the atoms projector after receiving the original ASGI scope, receive, and send from the runtime forwarder under ADR-1000. The kernel uses the projected scope context with compiled bindings to select and drive the execution path under ADR-1047. Packed and fallback execution, trace classification, transport completion, and internal re-entry for the same inbound scope consume the original projection. They may read its typed discriminator. Raw scope fields can still pass through existing ASGI interfaces for carrier interoperability.
 
   This rule covers the inbound ASGI scope discriminator in Tigrbl framework dispatch. ASGI receive and send message discriminators remain inputs to their respective projection contracts.
 

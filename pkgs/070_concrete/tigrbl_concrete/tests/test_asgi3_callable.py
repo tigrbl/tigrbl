@@ -35,5 +35,5 @@ def test_app_call_delegates_asgi3_to_runtime() -> None:
     assert isinstance(delegation, ast.Expr)
     assert isinstance(delegation.value, ast.Await)
     assert ast.unparse(delegation.value.value) == (
-        "self.runtime.dispatch_asgi(self, scope, receive, send)"
+        "self.runtime.dispatch_asgi(scope, receive, send)"
     )

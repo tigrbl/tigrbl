@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import inspect
 import re
-from contextlib import AsyncExitStack, aclosing, closing
 from dataclasses import dataclass, replace
 from types import SimpleNamespace
 from typing import (
@@ -19,6 +18,7 @@ from typing import (
     get_origin,
 )
 
+from tigrbl_atoms.route_handler import RouteHandlerDeclaration
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from tigrbl_concrete.security.dependencies import Dependency
 from tigrbl_core._spec.binding_spec import (
@@ -38,7 +38,6 @@ from tigrbl_core.config.constants import (
 from tigrbl_core._spec.op_spec import OpSpec, TxScope
 
 from ._request import Request
-from ._response import Response
 
 Handler = Callable[..., Any]
 
@@ -209,14 +208,6 @@ def ensure_route_ops_model(owner: Any) -> type | None:
     return model
 
 
-def _route_registry(model: Any) -> dict[str, Route]:
-    registry = getattr(model, "__tigrbl_route_registry__", None)
-    if not isinstance(registry, dict):
-        registry = {}
-        setattr(model, "__tigrbl_route_registry__", registry)
-    return registry
-
-
 def _binding_key(binding: Any) -> tuple[str, str, tuple[str, ...]]:
     return (
         str(getattr(binding, "proto", "") or ""),
@@ -314,9 +305,6 @@ def _remove_route_opspec(owner: Any, alias: str) -> None:
     hooks = getattr(model, "hooks", None)
     if hooks is not None and hasattr(hooks, alias):
         delattr(hooks, alias)
-    registry = getattr(model, "__tigrbl_route_registry__", None)
-    if isinstance(registry, dict):
-        registry.pop(alias, None)
 
 
 def _route_is_default_root(route: Any) -> bool:
@@ -362,18 +350,23 @@ def _coerce_request_query(value: Any) -> dict[str, list[str]]:
     return out
 
 
-def _route_request(route: Route, ctx: Any, *, coerce_concrete: bool = True) -> Any:
+def _route_request(ctx: Any) -> Any:
     request = getattr(ctx, "request", None)
-    if isinstance(request, Request) or not coerce_concrete:
+    path_params = ctx.get("path_params")
+    if isinstance(request, Request):
+        if path_params is not None:
+            request.path_params = dict(path_params)
         return request
     if request is not None:
         scope = getattr(request, "scope", None)
+        if path_params is None:
+            path_params = getattr(request, "path_params", None)
         concrete = Request(
             str(getattr(request, "method", "GET") or "GET"),
             str(getattr(request, "path", "/") or "/"),
             headers=getattr(request, "headers", {}) or {},
             query=_coerce_request_query(getattr(request, "query", {})),
-            path_params=dict(getattr(request, "path_params", {}) or {}),
+            path_params=dict(path_params or {}),
             body=_coerce_request_body(getattr(request, "body", b"")),
             script_name=str(getattr(request, "script_name", "") or ""),
             app=getattr(request, "app", None) or getattr(ctx, "app", None),
@@ -391,8 +384,7 @@ def _route_request(route: Route, ctx: Any, *, coerce_concrete: bool = True) -> A
         if body is None:
             body = getattr(ctx, "body", None)
         request.body = _coerce_request_body(body)
-        path_params = getattr(hot, "path_params", None)
-        if isinstance(path_params, dict):
+        if path_params is not None:
             request.path_params = dict(path_params)
         setattr(ctx, "request", request)
         return request
@@ -404,151 +396,11 @@ def _route_request(route: Route, ctx: Any, *, coerce_concrete: bool = True) -> A
     return None
 
 
-def _route_path_params(route: Route, ctx: Any) -> dict[str, Any]:
-    if isinstance(ctx, dict):
-        values = ctx.get("path_params")
-        return dict(values or {})
-    getter = getattr(ctx, "get", None)
-    if callable(getter):
-        values = getter("path_params")
-        return dict(values or {})
-    values = getattr(ctx, "path_params", None)
-    return dict(values or {})
-
-
-def _resolve_route_from_ctx(ctx: Any) -> Route | None:
-    model = getattr(ctx, "model", None)
-    alias = getattr(ctx, "op", None)
-    if isinstance(alias, str) and model is not None:
-        registry = getattr(model, "__tigrbl_route_registry__", None)
-        if isinstance(registry, dict):
-            route = registry.get(alias)
-            if isinstance(route, Route):
-                return route
-
-    owner = getattr(ctx, "app", None) or getattr(ctx, "router", None)
-    routes = getattr(owner, "routes", None)
-    if not isinstance(alias, str) or not isinstance(routes, list):
-        return None
-    for route in routes:
-        if not isinstance(route, Route):
-            continue
-        route_alias = getattr(route, "tigrbl_alias", None) or getattr(
-            route, "name", None
-        )
-        if route_alias == alias:
-            return route
-    return None
-
-
-async def _resolve_dependency_value(
-    stack: AsyncExitStack, resolver: Callable[[], Any]
-) -> Any:
-    resolved = resolver()
-    if inspect.isasyncgen(resolved):
-        generator = await stack.enter_async_context(aclosing(resolved))
-        try:
-            return await anext(generator)
-        except StopAsyncIteration as exc:
-            raise RuntimeError("Async dependency did not yield a value.") from exc
-    if inspect.isgenerator(resolved):
-        generator = stack.enter_context(closing(resolved))
-        try:
-            return next(generator)
-        except StopIteration as exc:
-            raise RuntimeError("Dependency did not yield a value.") from exc
-    if inspect.isawaitable(resolved):
-        return await resolved
-    return resolved
-
-
-async def _invoke_route_handler(route: Route, ctx: Any) -> None:
-    async with AsyncExitStack() as dependency_stack:
-        request: Any | None = None
-        path_params = _route_path_params(route, ctx)
-        kwargs: dict[str, Any] = {}
-        signature = inspect.signature(route.handler)
-        params = list(signature.parameters.items())
-        for name, param in params:
-            if name in path_params:
-                kwargs[name] = path_params[name]
-                continue
-            default = param.default
-            dep_callable = getattr(default, "dependency", None)
-            if callable(dep_callable):
-                owner = getattr(ctx, "app", None) or getattr(ctx, "router", None)
-                overrides = getattr(owner, "dependency_overrides", {}) or {}
-                resolver = overrides.get(dep_callable, dep_callable)
-                kwargs[name] = await _resolve_dependency_value(
-                    dependency_stack, resolver
-                )
-                continue
-            annotation = param.annotation
-            if name in {"ctx", "_ctx"} or annotation is dict or annotation is Any:
-                kwargs[name] = ctx
-                continue
-            if (
-                name in {"request", "_request"}
-                or getattr(annotation, "__name__", None) == "Request"
-            ):
-                if request is None:
-                    request = _route_request(route, ctx, coerce_concrete=True)
-                kwargs[name] = request
-                continue
-            if len(params) == 1 and not path_params and param.default is inspect._empty:
-                if request is None:
-                    request = _route_request(route, ctx, coerce_concrete=False)
-                kwargs[name] = request
-
-        if route.status_code is not None:
-            ctx.status_code = route.status_code
-        response = route.handler(**kwargs) if kwargs else route.handler()
-        if inspect.isawaitable(response):
-            response = await response
-
-        if isinstance(response, Response):
-            payload = {
-                "status_code": int(getattr(response, "status_code", 200) or 200),
-                "headers": dict(getattr(response, "headers", ()) or ()),
-                "body": (
-                    response
-                    if hasattr(response, "body_iterator")
-                    else getattr(response, "body", b"")
-                ),
-            }
-            temp = getattr(ctx, "temp", None)
-            if isinstance(temp, dict):
-                temp.setdefault("route", {})["short_circuit"] = True
-                temp.setdefault("egress", {})["transport_response"] = payload
-                temp["egress"]["suppress_asgi_send"] = True
-            setattr(ctx, "transport_response", payload)
-            return
-
-        setattr(ctx, "result", response)
-        temp = getattr(ctx, "temp", None)
-        if isinstance(temp, dict):
-            temp.setdefault("egress", {})["result"] = response
-
-
-async def _shared_route_step(ctx: Any) -> None:
-    route = _resolve_route_from_ctx(ctx)
-    if route is None:
-        raise RuntimeError("Route handler metadata unavailable for current operation.")
-    await _invoke_route_handler(route, ctx)
-
-
-setattr(_shared_route_step, "__tigrbl_label", "hook:wire:tigrbl:route:handler")
-
-
-def _build_route_step(_route: Route) -> Handler:
-    return _shared_route_step
-
-
 def upsert_route_opspec(
     owner: Any,
     spec: OpSpec,
     *,
-    handler_step: Handler | None = None,
+    handler_step: Handler | RouteHandlerDeclaration | None = None,
     route: Route | None = None,
 ) -> None:
     model = ensure_route_ops_model(owner)
@@ -565,8 +417,10 @@ def upsert_route_opspec(
     updated_ops = _rebuild_ops_namespace(updated_specs)
     model.ops = updated_ops
     model.opspecs = updated_ops
-    if route is not None:
-        _route_registry(model)[str(spec.alias)] = route
+    if route is not None and handler_step is None:
+        handler_step = RouteHandlerDeclaration(
+            route.handler, _route_request, route.status_code,
+        )
 
     if handler_step is None:
         return
@@ -613,12 +467,9 @@ def prune_route_ops(owner: Any, *paths: str) -> None:
     model.opspecs = updated_ops
 
     hooks = getattr(model, "hooks", None)
-    registry = getattr(model, "__tigrbl_route_registry__", None)
     for alias in removed_aliases:
         if hooks is not None and hasattr(hooks, alias):
             delattr(hooks, alias)
-        if isinstance(registry, dict):
-            registry.pop(alias, None)
 
 
 def add_route(
@@ -770,7 +621,6 @@ def add_route(
         upsert_route_opspec(
             owner,
             route_spec,
-            handler_step=_build_route_step(route),
             route=route,
         )
 

@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Mapping
 from tigrbl_atoms import StepFn
 from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
 from tigrbl_atoms.phases import phase_info
+from tigrbl_atoms.route_handler import RouteHandlerDeclaration
 from tigrbl_atoms.types import PHASE_SEQUENCE, EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
 from tigrbl_core.config.resolver import resolve_cfg
 from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
@@ -31,6 +32,7 @@ from .measure import (
     measure_packed_kernel,
     serialize_packed_kernel_measurement_view,
 )
+from .route_handlers import compile_route_handler
 from .types import (
     EGRESS_PHASES,
     INGRESS_PHASES,
@@ -272,6 +274,12 @@ def _build_op(
         return cached[1]
 
     chains = _hook_phase_chains(model, alias)
+    chains["HANDLER"] = [
+        compile_route_handler(model, alias, step)
+        if isinstance(step, RouteHandlerDeclaration)
+        else step
+        for step in chains.get("HANDLER", ())
+    ]
     specs = getattr(getattr(model, "ops", SimpleNamespace()), "by_alias", {})
     sp_list = specs.get(alias) or ()
     sp = sp_list[0] if sp_list else None
@@ -434,7 +442,10 @@ def _structural_atom_signature(
 
 
 def _structural_atom_scope(step: StepFn) -> tuple[str, int]:
-    if _step_has_route_binding(step):
+    if (
+        getattr(step, "_tigrbl_route_handler_plan", None) is not None
+        or _step_has_route_binding(step)
+    ):
         return ("route", id(step))
     direct_dep = getattr(step, "__tigrbl_direct_dep", None)
     if direct_dep is not None:

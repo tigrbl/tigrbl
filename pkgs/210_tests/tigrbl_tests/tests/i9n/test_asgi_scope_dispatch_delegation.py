@@ -33,13 +33,22 @@ def _instrument_handoff(monkeypatch, app):
     calls = []
     runtime = app.runtime
     real_dispatch = runtime.dispatch_asgi
+    real_entry = runtime._asgi_entry_point
+    raw_calls = []
     real_project = protocol_scope.project_asgi_scope
     real_select = asgi_dispatch.select_asgi_ingress
 
-    async def dispatch(actual_app, scope, receive, send):
-        assert actual_app is app
+    async def dispatch(scope, receive, send):
+        raw_calls.append((scope, receive, send))
         calls.append(("runtime", scope))
-        await real_dispatch(actual_app, scope, receive, send)
+        await real_dispatch(scope, receive, send)
+
+    async def entry(scope, receive, send):
+        assert all(original is actual for original, actual in zip(
+            raw_calls.pop(), (scope, receive, send)
+        ))
+        calls.append(("kernel-entry", scope))
+        await real_entry(scope, receive, send)
 
     def project(scope):
         projected = real_project(scope)
@@ -52,6 +61,7 @@ def _instrument_handoff(monkeypatch, app):
         return real_select(projected)
 
     monkeypatch.setattr(runtime, "dispatch_asgi", dispatch)
+    monkeypatch.setattr(runtime, "_asgi_entry_point", entry)
     monkeypatch.setattr(protocol_scope, "project_asgi_scope", project)
     monkeypatch.setattr(asgi_dispatch, "select_asgi_ingress", select)
     return calls
@@ -73,10 +83,11 @@ async def _call(app, scope, incoming):
 
 def _assert_handoff(calls, scope, kind):
     assert scope.type_reads == 1
-    assert [owner for owner, _ in calls] == ["runtime", "projector", "kernel"]
+    assert [owner for owner, _ in calls] == ["runtime", "kernel-entry", "projector", "kernel"]
     assert calls[0][1] is scope
-    assert calls[1][1] is calls[2][1]
-    assert calls[2][1].kind is kind
+    assert calls[1][1] is scope
+    assert calls[2][1] is calls[3][1]
+    assert calls[3][1].kind is kind
 
 
 @pytest.mark.asyncio
@@ -275,7 +286,7 @@ async def test_invalid_scope_fails_before_kernel_selection(monkeypatch, values):
     with pytest.raises(ValueError, match="scope type"):
         await _call(app, scope, [])
     assert scope.type_reads == 1
-    assert [owner for owner, _ in calls] == ["runtime"]
+    assert [owner for owner, _ in calls] == ["runtime", "kernel-entry"]
 
 
 @pytest.mark.asyncio
@@ -314,4 +325,5 @@ async def test_jsonrpc_batch_reuses_ingress_projection_and_selection(
     assert len(reads) == 1 and reads[0] is scope
     selected = [value for owner, value in calls if owner == "kernel"]
     assert len(selected) == 1
-    assert all(value is selected[0] for owner, value in calls if owner == "projector")
+    projected = [value for owner, value in calls if owner == "projector"]
+    assert len(projected) == 1 and projected[0] is selected[0]

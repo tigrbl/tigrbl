@@ -23,13 +23,13 @@ body: |-
   1. `tigrbl_concrete` package source must not contain static imports from `tigrbl_kernel`.
   2. `tigrbl_concrete` package source must not contain literal dynamic import calls targeting `tigrbl_kernel`.
   3. Importing `tigrbl_concrete` must not load `tigrbl_kernel` into `sys.modules`.
-  4. `pkgs/70_concrete/tigrbl_concrete/pyproject.toml` must not list `tigrbl-kernel` in required or optional dependencies.
-  5. `tigrbl_runtime` remains the authorized package boundary for importing `tigrbl_kernel` and mediating kernel lifecycle operations.
+  4. `pkgs/070_concrete/tigrbl_concrete/pyproject.toml` must not list `tigrbl-kernel` in required or optional dependencies.
+  5. `tigrbl_runtime` remains the authorized package boundary for importing `tigrbl_kernel` and exposing the raw ASGI handoff to concrete.
   
   ## Required Verification
   
-  - Static AST scan of `pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete` for forbidden imports.
-  - Dependency metadata scan of `pkgs/70_concrete/tigrbl_concrete/pyproject.toml`.
+  - Static AST scan of `pkgs/070_concrete/tigrbl_concrete/tigrbl_concrete` for forbidden imports.
+  - Dependency metadata scan of `pkgs/070_concrete/tigrbl_concrete/pyproject.toml`.
   - Isolated interpreter import probe proving `import tigrbl_concrete` does not load `tigrbl_kernel`.
   
   ## Non-Conformance
@@ -38,9 +38,9 @@ body: |-
 
   ## Public ASGI entry point
 
-  `TigrblApp.__call__` must pass the inbound scope, receive callable, send callable, and app context to the runtime ingress entry point. Concrete provides route registrations and app lifecycle handlers. It must delegate scope projection and plan selection through runtime. SPEC-1148 defines the runtime-to-atoms and runtime-to-kernel contracts.
+  Setup binds concrete app configuration, route registrations, and lifecycle handlers to the kernel entry point through the authorized package boundary. For each ASGI call, `TigrblApp.__call__` MUST pass the original `scope`, `receive`, and `send` to the runtime forwarder. The forwarder MUST pass exactly those objects to the configured kernel entry point under SPEC-1148.
 
-  An integration test must observe delegation through the real public app call, runtime entry point, atoms projector, and kernel selector for HTTP, WebSocket, WebTransport, and lifespan. A behavioral bypass fails this contract even when the import checks pass.
+  For HTTP, WebSocket, WebTransport, and lifespan, an integration test must observe the public app call reaching the configured kernel entry point through the runtime forwarder. The test must verify that the kernel calls the atoms projector and selects the plan. A behavioral bypass fails this contract even when the import checks pass.
 spec_kind: "normative"
 adr_ids:
   - "adr:1000"

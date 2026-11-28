@@ -21,7 +21,7 @@ body: |-
   ## Contract
   1. `tigrbl_concrete` is the public authoring and concrete lowering layer.
   2. `tigrbl_concrete` owns concrete classes, decorators, shortcuts, aliases, factory surfaces, and governed CamelCase `Make*`, `Define*`, and `Derive*` authoring forms.
-  3. `tigrbl_concrete` lowers concrete authoring forms into canonical `tigrbl_core` specs and metadata for atoms/kernel compilation.
+  3. `tigrbl_concrete` lowers concrete authoring forms into canonical `tigrbl_core` specs and metadata for atoms/kernel compilation. For authored routes, setup supplies the callable, canonical operation identity, dependency declarations, and public compatibility adapters under SPEC-1155. Per-call ASGI delegation follows SPEC-1148.
   4. `tigrbl_concrete` may depend on `tigrbl_core`, `tigrbl_base`, and approved runtime-facing public adapters only where import-time behavior does not load kernel or execute plans.
   5. `tigrbl_concrete` must not define new canonical specs, own reusable base abstractions that belong in `tigrbl_base`, compile kernel plans, import `tigrbl_kernel` during package import, or execute runtime behavior.
   6. Concrete shortcuts and aliases must expand to canonical forms; they must not create independent feature trees unavailable through core specs.

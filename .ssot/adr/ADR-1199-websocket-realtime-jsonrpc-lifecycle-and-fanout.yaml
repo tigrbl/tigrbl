@@ -22,7 +22,7 @@ body: |-
   
   1. WebSocket subprotocols are inferred from the framing spec. `JsonRpcFramingSpec` implies JSON-RPC WebSocket subprotocol negotiation.
   2. The kernel plan owns the receive, decode, dispatch, reply, and termination sequence for framework-managed realtime bindings. Transport, framing, fanout, and cleanup atoms perform their respective effects under the plan.
-  3. Runtime enters and executes the selected kernel plan directly with the projected scope and carrier callables. Concrete supplies the binding, handlers, hooks, and configured services.
+  3. Runtime forwards the original ASGI scope, receive, and send under ADR-1000. The kernel calls the atoms scope projector and directs the selected WebSocket plan. Concrete supplies the binding, handlers, hooks, and configured services.
   4. WebSocket open and close are structural lifecycle concerns.
   5. Domain-specific cleanup belongs to hooks.
   6. `framing.decode` and `framing.encode` are first-class atoms backed by the codec registry.

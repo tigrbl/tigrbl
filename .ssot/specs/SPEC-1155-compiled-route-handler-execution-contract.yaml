@@ -1,0 +1,45 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1155"
+number: 1155
+slug: "compiled-route-handler-execution-contract"
+title: "Compiled route-handler execution contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract applies to authored route handlers selected through the kernel ASGI entry point. SPEC-1148 governs the raw ASGI handoff. SPEC-2144 governs compiled execution. SPEC-2201 governs the public table-bound invocation modes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+
+  This contract applies to authored route handlers selected through the kernel ASGI entry point. SPEC-1148 governs the raw ASGI handoff. SPEC-2144 governs compiled execution. SPEC-2201 governs the public table-bound invocation modes.
+
+  ## Compiled handler
+
+  1. Concrete supplies the authored callable, its canonical operation identity, declared dependency metadata, and supported public request or response adapters during setup.
+  2. Kernel compilation MUST resolve the callable and its signature into an operation plan that records each argument source and the applicable invocation, cleanup, and egress steps. The plan MUST retain the selected operation identity. Packed and fallback execution MUST consume the same handler contract and MUST NOT inspect the callable signature or scan the concrete route registry at invocation time.
+  3. Atoms MUST bind values from the selected operation context using the compiled argument sources. Preserve supported path parameter, request, context, and dependency injection, argument precedence, and sync or async invocation. Use the registered compatibility adapter when the handler requires the public Request type.
+
+  ## Dependencies and cleanup
+
+  Atoms MUST use the applicable configured dependency overrides at invocation. Handler-scoped generator dependencies MUST release acquired resources at the handler boundary on success, failure, and cancellation. This includes partial acquisition if a later dependency fails. SPEC-2074 governs the ordering and pre-transaction lifetime of operation-level dependency gates.
+
+  ## Results and egress
+
+  Atoms MUST project plain results and response-like returns through canonical egress. Preserve the response status, headers, body or stream, and existing error behavior. Preserve streaming without buffering the entire body. The kernel directs one emission through the plan. SPEC-2056 and SPEC-2121 govern response and completion timing.
+
+  ## Verification
+
+  Use public ASGI ingress to exercise exact and templated authored routes through packed and fallback execution. Verify canonical operation identity, equivalent arguments and outcomes, dependency overrides and ordered teardown, and response-like and streaming returns. Assert a single handler invocation and a single response emission. Cover cancellation and failure after partial dependency acquisition.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1203"
+  - "adr:1000"
+  - "adr:1020"
+  - "adr:1059"
+  - "adr:1078"
+  - "adr:1125"

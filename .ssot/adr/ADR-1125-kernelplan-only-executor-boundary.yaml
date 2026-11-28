@@ -23,7 +23,7 @@ body: |-
 
   Executor code MUST NOT author protocol policy, transport-chain structure, callback-fence policy, subevent lookup tables, segment descriptions, segment fusion rules, subevent transaction policy, or similar control-flow artifacts at runtime.
 
-  Kernel compilation owns plan authorship. Atoms own concrete executable step behavior. Engines own storage/session/provider behavior. Python executors only traverse the compiled plan, instantiate execution context, invoke planned atoms and engine hooks, and carry plan-defined results and errors forward.
+  Kernel compilation owns plan authorship. Atoms own concrete executable step behavior. Engines own storage/session/provider behavior. Python executors only traverse the compiled plan, instantiate execution context, invoke planned atoms and engine hooks, and carry plan-defined results and errors forward. For ASGI, executor entry belongs to the kernel after the raw runtime handoff under ADR-1000.
 
   `tigrbl_kernel` MUST NOT expose alternate in-core Rust compiler, plan, or spec surfaces such as `rust_spec`, `rust_plan`, or `rust_compile` as supported execution/compiler lanes.
 
@@ -43,7 +43,7 @@ body: |-
   1. `tigrbl_kernel` owns Python plan authorship.
   2. `tigrbl_atoms` own executable step implementation.
   3. engines own engine behavior.
-  4. `tigrbl_runtime` Python executors consume plans only.
+  4. At ASGI ingress, `tigrbl_runtime` only forwards the original scope, receive, and send to the kernel. Kernel-directed packed and fallback execution consume the same compiled handler and argument binding contract under ADR-1203. Neither path resolves a concrete route by alias or inspects the handler signature during invocation.
 
   ## Consequences
   - Runtime helper modules that encode transport chains, callback-fence policy, handler lookup policy, fusion policy, or transaction-unit policy outside the compiled plan are architectural debt and should be migrated toward kernel- or atom-owned surfaces.
