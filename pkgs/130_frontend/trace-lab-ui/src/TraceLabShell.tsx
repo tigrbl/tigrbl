@@ -169,6 +169,14 @@ export function TraceLabShell({
     pushLocation(target);
   }
 
+  const deployedVersions = Object.entries({
+    b: backendVersion,
+    f: frontendVersion,
+    i: imageVersion,
+  })
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([prefix, value]) => prefix + (value || '—'))
+    .join(' ');
   const controlStyle = { backgroundColor: 'var(--canvas)', borderColor: 'var(--border)' };
   return (
     <div className="flex h-dvh flex-col overflow-hidden" style={{ backgroundColor: 'var(--canvas)', color: 'var(--text-primary)' }}>
@@ -222,20 +230,9 @@ export function TraceLabShell({
       <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t px-3 py-2 text-[12px] sm:px-4" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--border)' }}>
         <div className="flex flex-wrap items-baseline gap-x-3" style={{ color: 'var(--text-muted)' }}>
           <span>© 2026 Tigrbl – Transport Trace Lab</span>
-          <dl aria-label="Deployed versions" className="flex flex-wrap gap-x-3 gap-y-1 tabular-nums">
-            <div className="flex gap-1">
-              <dt>Backend</dt>
-              <dd data-testid="backend-version">{backendVersion ? 'v' + backendVersion : 'Unavailable'}</dd>
-            </div>
-            <div className="flex gap-1">
-              <dt>Frontend</dt>
-              <dd data-testid="frontend-version">v{frontendVersion}</dd>
-            </div>
-            <div className="flex gap-1">
-              <dt>Image</dt>
-              <dd data-testid="image-version">{imageVersion ? 'v' + imageVersion : 'Unavailable'}</dd>
-            </div>
-          </dl>
+          <span data-testid="deployed-versions" className="whitespace-nowrap tabular-nums">
+            {deployedVersions}
+          </span>
         </div>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <label className="flex items-center gap-2">
