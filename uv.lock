@@ -64,6 +64,7 @@ members = [
     "tigrbl-runtime",
     "tigrbl-spec",
     "tigrbl-tests",
+    "tigrbl-trace-transport",
     "tigrbl-typing",
 ]
 
@@ -5736,6 +5737,23 @@ dev = [
     { name = "fastapi", specifier = "==0.136.0" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
     { name = "ruff", specifier = ">=0.11.0" },
+]
+
+[[package]]
+name = "tigrbl-trace-transport"
+version = "0.1.0"
+source = { editable = "pkgs/95_client/tigrbl_trace_transport" }
+dependencies = [
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "tigrbl-typing" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "httpx", specifier = ">=0.27,<1" },
+    { name = "pydantic", specifier = ">=2,<3" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
 ]
 
 [[package]]
