@@ -72,8 +72,8 @@ def verify_browser(url, credentials, correlation, expected_image_version=None):
         )
         assert labels[phase][1] < labels[tx][1] < labels[begin][1], labels
         if expected_image_version is not None:
-            workspace = Path(__file__).resolve().parents[4]
-            manifest = workspace / "pkgs/130_frontend/trace-lab-ui/package.json"
+            packages = Path(__file__).resolve().parents[4]
+            manifest = packages / "130_frontend/trace-lab-ui/package.json"
             frontend_version = json.loads(manifest.read_text(encoding="utf-8"))[
                 "version"
             ]
