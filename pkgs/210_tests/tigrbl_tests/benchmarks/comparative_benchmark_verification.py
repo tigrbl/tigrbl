@@ -38,7 +38,7 @@ from tests.perf.helper_tigrbl_create_app import (
 )
 
 ROOT = Path(__file__).resolve().parents[4]
-PERF_DIR = ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "perf"
+PERF_DIR = Path(__file__).resolve().parents[1] / "tests" / "perf"
 TMP_ROOT = ROOT / ".tmp" / "comparative-benchmark"
 DEFAULT_JSON_OUTPUT = PERF_DIR / "comparative_benchmark_verification.json"
 DEFAULT_MD_OUTPUT = PERF_DIR / "comparative_benchmark_verification.md"

@@ -36,7 +36,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PY_PATH="$GITHUB_WORKSPACE"
+          PY_PATH="$GITHUB_WORKSPACE/pkgs/210_tests/tigrbl_tests:$GITHUB_WORKSPACE"
           for base in "$GITHUB_WORKSPACE/pkgs"/*; do
             if [[ -d "$base" ]]; then
               for child in "$base"/*; do
