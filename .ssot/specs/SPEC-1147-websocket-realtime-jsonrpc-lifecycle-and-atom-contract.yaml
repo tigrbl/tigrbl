@@ -115,7 +115,7 @@ body: |-
   
   ### Runtime Boundary
   
-  For a framework-managed realtime binding, runtime MUST enter the kernel-selected WebSocket session plan directly through the ASGI handoff in SPEC-1148. The plan owns accept and close ordering, the receive and dispatch loop, reply routing, and cleanup policy. Transport and framing atoms perform those effects. Concrete provides registered bindings, handlers, hooks, and configured services. Session termination and attachment cleanup follow SPEC-1153.
+  For a framework-managed realtime binding, the kernel MUST enter and direct the selected WebSocket session plan after the raw ASGI handoff in SPEC-1148. The plan owns accept and close ordering, the receive and dispatch loop, reply routing, and cleanup policy. Transport and framing atoms perform those effects. Concrete provides registered bindings, handlers, hooks, and configured services. Session termination and attachment cleanup follow SPEC-1153.
 
   An explicit `@app.websocket` binding MUST invoke its authored handler through the selected plan. The handler retains access to accept, receive, send, and close through the socket API. An authored handler controls its application-level conversation. Framework-managed JSON-RPC dispatch belongs to the framework-managed binding.
 
@@ -146,9 +146,9 @@ body: |-
   
   ### Reply ownership and operation fallback
   
-  The kernel WebSocket JSON-RPC binding MUST consume the authoritative invocation outcome defined in SPEC-2169 and own its projection into a JSON-RPC result or error. Framing atoms and their codecs own wire encoding and decoding. Runtime executes the compiled plan and mediates the invocation.
+  The kernel WebSocket JSON-RPC binding MUST consume the authoritative invocation outcome defined in SPEC-2169 and own its projection into a JSON-RPC result or error. Framing atoms and their codecs own wire encoding and decoding. The kernel directs compiled execution and consumes the invocation outcome.
   
-  Handling or framing a reply MUST NOT invoke CRUD a second time. This applies to an ordinary result, a result already encoded by the runtime, and an authoritative failure or rejection. The request ID and existing error mapping MUST carry through. Verification MUST exercise the mounted WebSocket call and assert both the reply and one delete invocation, plus a kernel check that completed success and failure outcomes produce the corresponding replies without redispatch.
+  Handling or framing a reply MUST NOT invoke CRUD a second time. This applies to an ordinary result, a result already encoded by an atom, and an authoritative failure or rejection. The request ID and existing error mapping MUST carry through. Verification MUST exercise the mounted WebSocket call and assert both the reply and one delete invocation, plus a kernel check that completed success and failure outcomes produce the corresponding replies without redispatch.
 spec_kind: "normative"
 adr_ids:
   - "adr:1199"

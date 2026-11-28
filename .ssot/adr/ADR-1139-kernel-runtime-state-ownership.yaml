@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Decision: The kernel owns the shape and legality of lifecycle state machines. Runtime drives the compiled plan with observed transport or engine events. Atoms perform the effects selected by the plan. Context: Tigrbl needs formal semantics without moving transport/session mechanics into the kernel or letting adapters invent lifecycle rules. Consequences: Kernel plans must expose lifecycle requirements and legal transition tables; runtime adapters must enforce those tables and record concrete attempt, session, stream, datagram, engine session, atom, and trace identifiers. Verification: Tests must reject undocumented transitions, cross-session and cross-engine-session leakage, unsupported framing fallback, and undeclared engine/session downgrade behavior."
+summary: "Decision: The kernel owns the shape and legality of lifecycle state machines. The kernel directs ASGI lifecycle execution after runtime forwards the original scope, receive, and send. Atoms perform the effects selected by the plan. Context: Tigrbl needs formal semantics without moving transport/session mechanics into the kernel or letting adapters invent lifecycle rules. Consequences: Kernel plans must expose lifecycle requirements and legal transition tables; the kernel directs those transitions and execution records concrete attempt, session, stream, datagram, engine session, atom, and trace identifiers. Verification: Tests must reject undocumented transitions, cross-session and cross-engine-session leakage, unsupported framing fallback, and undeclared engine/session downgrade behavior."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -20,11 +20,11 @@ references: []
 body: |-
   ## Decision
 
-  Decision: The kernel owns the shape and legality of lifecycle state machines. Runtime drives the compiled plan with observed transport or engine events. Atoms perform the effects selected by the plan. Context: Tigrbl needs formal semantics without moving transport/session mechanics into the kernel or letting adapters invent lifecycle rules. Consequences: Kernel plans must expose lifecycle requirements and legal transition tables; runtime adapters must enforce those tables and record concrete attempt, session, stream, datagram, engine session, atom, and trace identifiers. Verification: Tests must reject undocumented transitions, cross-session and cross-engine-session leakage, unsupported framing fallback, and undeclared engine/session downgrade behavior.
+  Decision: The kernel owns the shape and legality of lifecycle state machines. The kernel directs ASGI lifecycle execution after runtime forwards the original scope, receive, and send. Atoms perform the effects selected by the plan. Context: Tigrbl needs formal semantics without moving transport/session mechanics into the kernel or letting adapters invent lifecycle rules. Consequences: Kernel plans must expose lifecycle requirements and legal transition tables; the kernel directs those transitions and execution records concrete attempt, session, stream, datagram, engine session, atom, and trace identifiers. Verification: Tests must reject undocumented transitions, cross-session and cross-engine-session leakage, unsupported framing fallback, and undeclared engine/session downgrade behavior.
 
   ## Long-lived session termination
 
-  The kernel plan owns continuation, terminal transitions, and cleanup ordering for framework-managed sessions. Runtime drives those transitions using carrier callables. Atoms perform receive, send, close, and attachment cleanup effects. Concrete supplies registered handlers and configured services.
+  The kernel plan owns and drives continuation, terminal transitions, and cleanup ordering for framework-managed ASGI sessions after the raw handoff under ADR-1000. Atoms perform receive, send, close, and attachment cleanup effects. Concrete supplies registered handlers and configured services.
 
   Each session runs its cleanup sequence once when a peer disconnects, the session is cancelled, or terminal I/O fails. The plan releases resources still owned by that session. Cleanup must respect attachment ownership and generation so it cannot release an attachment that has moved to another session. A failed cleanup effect must leave the remaining independent cleanup effects eligible to run. Preserve the original cancellation or terminal failure after cleanup.
 

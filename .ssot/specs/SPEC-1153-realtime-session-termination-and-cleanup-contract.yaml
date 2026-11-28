@@ -22,13 +22,13 @@ body: |-
 
   1. The selected kernel plan admits at most one session-terminal transition for each transport session. A peer disconnect, cancellation of the session, or terminal carrier I/O failure MUST enter this transition. Repeated or concurrent terminal signals MUST share the same termination outcome and MUST NOT schedule another cleanup sequence.
   2. Once termination begins, the plan MUST stop admitting new operations or lanes. Completion of a message or operation leaves the session open. A stream-terminal event applies to that stream. The kernel plan decides whether a WebTransport stream failure is isolated or also terminates the session.
-  3. Runtime drives the selected transition with the already-projected scope and carrier callables. The plan owns cleanup ordering and invokes atoms for transport, lane, subscription, and sink effects. Concrete supplies registered hooks and configured services.
+  3. After the raw ASGI handoff in SPEC-1148, the kernel directs the selected transition using the original scope projection and carrier callables. The plan owns cleanup ordering and invokes atoms for transport, lane, subscription, and sink effects. Concrete supplies registered hooks and configured services.
 
   ## Cleanup
 
   1. The plan MUST attempt each independent cleanup effect in the defined sequence. Failure of one effect MUST leave the remaining independent effects eligible to run. Cleanup MUST retain access to the session state it needs until its last use.
   2. A stale attachment owner or generation MUST NOT release an attachment that has resumed on a different destination. Stream cleanup MUST be scoped to that stream. Session cleanup MUST be scoped to resources still owned by the terminating session.
-  3. A peer disconnect or unavailable carrier MUST NOT prevent local resource cleanup. The plan MAY emit a structural close where the carrier still permits it. Runtime MUST preserve the original cancellation or terminal I/O failure after cleanup and keep cleanup failures observable.
+  3. A peer disconnect or unavailable carrier MUST NOT prevent local resource cleanup. The plan MAY emit a structural close where the carrier still permits it. The kernel-directed plan MUST preserve the original cancellation or terminal I/O failure after cleanup and keep cleanup failures observable.
 
   ## Verification
 

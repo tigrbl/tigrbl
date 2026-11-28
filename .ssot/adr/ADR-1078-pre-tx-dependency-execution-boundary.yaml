@@ -20,17 +20,18 @@ references: []
 body: |-
   ## Decision
   
-  1. Operation security dependencies and ordinary dependencies are pre-transaction gates.
+  1. Operation-level security dependencies (`secdeps`) and dependencies (`deps`) are pre-transaction gates.
   2. `SECURITY` runs before `DEPENDENCIES`, and both run before application `PRE_TX_BEGIN` hooks. A protected operation requires an explicit allow before it can leave `SECURITY`.
   3. Dependency failures fail closed before `START_TX`, handler execution, persistence, or commit-side effects.
   4. The pre-transaction dependency boundary is operation-level and must project consistently through REST, JSON-RPC, diagnostics, and kernel-step views where the transport executes the semantic operation.
   5. Diagnostics may expose dependency placement and ordering, but diagnostics do not redefine the execution boundary.
+  6. Dependencies injected through an authored route handler's signature retain their handler-scoped lifetime under ADR-1203. A dependency participates in a pre-transaction gate when explicitly declared as an operation-level dependency.
   
   ## Context
   
   The pre-transaction dependency tests assert that `secdeps` and `deps` execute in `SECURITY` and `DEPENDENCIES` respectively, that failures abort before `PRE_TX_BEGIN` and `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary.
   
-  The legacy package edge inventory also identifies `pkgs/97_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` as the concrete edge-row verification for this boundary. That test should be treated as evidence for this ADR and for the companion contract `spc:2074`, rather than being mapped only to broader status/auth/error or OAS security decisions.
+  The legacy package edge inventory also identifies `pkgs/210_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` as the concrete edge-row verification for this boundary. That test should be treated as evidence for this ADR and for the companion contract `spc:2074`, rather than being mapped only to broader status/auth/error or OAS security decisions.
   
   ## Consequences
   
@@ -41,7 +42,7 @@ body: |-
   
   ## Verification
   
-  - `pkgs/97_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py`
+  - `pkgs/210_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py`
   
   ## Rejected Alternatives
   

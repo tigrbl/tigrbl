@@ -25,6 +25,7 @@ body: |-
   3. Transport builders may accept plain callables or `Depends(...)` values, but normalization must preserve a single canonical dependency-helper contract.
   4. The helper does not redefine auth ordering, failure semantics, or middleware ownership; those remain governed by the existing security, status, and middleware decisions.
   5. Public projection through `tigrbl` and `tigrbl_concrete` does not widen the helper into an unbounded framework abstraction.
+  6. For authored route-handler arguments, concrete supplies the dependency declaration and override configuration. The kernel compiles the binding, and atoms resolve the effective dependency and close its generator at the handler boundary under ADR-1203. Operation-level dependency gates follow ADR-1078.
   
   ## Context
   

@@ -21,7 +21,7 @@ body: |-
   ## Intent
   Define which execution responsibilities belong to KernelPlan compilation, atom implementation, engine implementation, and Python executors that consume a compiled plan without re-authoring plan semantics at runtime.
 
-  This SPEC also defines execution-path structural constraints shared by `tigrbl_kernel`, `tigrbl_atoms`, and `tigrbl_runtime`:
+  This SPEC also defines structural constraints for the kernel-directed execution path and its atoms:
   - zero dynamic field lookup
   - cache-friendly layout
   - protocol-agnostic payload
@@ -63,15 +63,14 @@ body: |-
   Engines own provider/session/storage behavior.
 
   ### Executor authority
-  Python executors consume a compiled `KernelPlan`.
+  Python executors consume a compiled `KernelPlan`. For ASGI, the kernel selects and directs packed and fallback execution after the raw handoff in SPEC-1148. Both paths MUST consume the same compiled handler and argument bindings under SPEC-1155. The runtime ingress forwarder MUST NOT enter either executor.
 
   Executor-owned behavior is limited to:
   - creating and carrying per-request execution context
-  - selecting the already-compiled plan path for the current request/channel
   - traversing compiled phases, branches, segments, and tables
   - invoking referenced atoms and engine hooks
   - applying already-compiled error branches, rollback branches, and completion behavior
-  - surfacing plan-driven outcomes to runtime integration boundaries
+  - returning plan-driven outcomes to the owning kernel entry point
 
   Executors MUST NOT act as fallback compilers, synthesize callback-fence policy, construct new subevent transaction policy, or invent alternate language-specific compiler outputs.
 
@@ -88,6 +87,7 @@ body: |-
   Tests and review evidence for this SPEC MUST prove:
   - compiled plan artifacts contain the authority needed for execution
   - executor traversal works by consuming compiled plan sections rather than reconstructing policy
+  - packed and fallback paths consume the same compiled handler contract without inspecting handler signatures or scanning the concrete route registry at invocation
   - atom implementations are invokable via plan references
   - execution-path payload and table layouts avoid dynamic semantic lookup in the governed path
   - Rust kernel compiler/spec/plan helpers are deprecated, removed, or fail closed as unsupported surfaces

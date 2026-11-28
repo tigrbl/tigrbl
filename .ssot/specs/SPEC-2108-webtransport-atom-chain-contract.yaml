@@ -46,7 +46,7 @@ body: |-
   
   ## Outer session loop
 
-  For one inbound ASGI WebTransport session, runtime MUST enter one kernel-selected session plan through SPEC-1148. The kernel plan owns session admission, event selection, dispatch, continuation, and terminal transitions. Transport atoms receive and project carrier events, encode and emit results, perform close effects, and run the cleanup effects chosen by the plan. Concrete supplies bindings, handlers, hooks, and configured services.
+  For one inbound ASGI WebTransport session, the kernel MUST enter and direct one selected session plan after the raw ASGI handoff in SPEC-1148. The kernel plan owns session admission, event selection, dispatch, continuation, and terminal transitions. Transport atoms receive and project carrier events, encode and emit results, perform close effects, and run the cleanup effects chosen by the plan. Concrete supplies bindings, handlers, hooks, and configured services.
 
   The plan MUST preserve session and lane identities across interleaved events. Operation completion emits its result and leaves lane lifetime to the plan. A terminal stream event releases state attached to that stream. Other streams and datagrams remain eligible until the session transitions to terminal. Session termination follows SPEC-1153. The inner control-stream record loop follows SPEC-2207.
 
