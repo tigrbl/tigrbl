@@ -1,6 +1,8 @@
+from importlib.metadata import version
+
 import httpx
 import pytest
-from trace_lab.gateway import FAVICON_PATH
+from trace_lab.gateway import FAVICON_PATH, IMAGE_VERSION_FILE
 
 
 @pytest.mark.asyncio
@@ -66,13 +68,20 @@ async def test_persists_deduplicates_and_filters_timeline(tmp_path):
         selected = await client.get("/api/timeline?correlation_id=one", auth=operator)
         assert len(selected.json()["events"]) == 1
         assert "private" not in selected.text
-        assert "data-trace-monitor" in (await client.get("/", auth=operator)).text
+        page = await client.get("/", auth=operator)
+        assert "data-trace-monitor" in page.text
+        installed = version("tigrbl-transport-trace-lab")
+        assert f'data-trace-backend-version="{installed}"' in page.text
+        assert "data-trace-image-version" not in page.text
+        (tmp_path / IMAGE_VERSION_FILE).write_text("0.1.7\n", encoding="utf-8")
         distribution = await client.get("/distributions", auth=operator)
         assert distribution.is_success and "data-trace-monitor" in distribution.text
         detail = await client.get(
             "/correlations/collector%7Chttp_request%7Cone", auth=operator
         )
         assert detail.is_success and "data-trace-monitor" in detail.text
+        assert f'data-trace-backend-version="{installed}"' in detail.text
+        assert 'data-trace-image-version="0.1.7"' in detail.text
         latest = await client.get("/api/correlations", auth=operator)
         assert latest.is_success, latest.text
         assert len(latest.json()["events"]) == 2
