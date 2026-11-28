@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrbl WebSocket realtime support is governed as a kernel-plan and atom-catalog feature, not as application-local WebSocket handler code."
+summary: "The kernel plan and transport atoms govern framework-managed WebSocket realtime sessions."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -16,13 +16,13 @@ references: []
 body: |-
   ## Decision
   
-  Tigrbl WebSocket realtime support is governed as a kernel-plan and atom-catalog feature, not as application-local WebSocket handler code.
+  The kernel plan and transport atoms govern framework-managed WebSocket realtime sessions.
   
   The settled design decisions are:
   
   1. WebSocket subprotocols are inferred from the framing spec. `JsonRpcFramingSpec` implies JSON-RPC WebSocket subprotocol negotiation.
-  2. App WebSocket handlers must not implement operation dispatch loops, JSON parsing loops, send calls, broadcast loops, or framework-owned cleanup.
-  3. Runtime executes the compiled kernel plan. Runtime does not own WebSocket lifecycle semantics, JSON-RPC dispatch, emission, broadcast, or cleanup policy.
+  2. The kernel plan owns the receive, decode, dispatch, reply, and termination sequence for framework-managed realtime bindings. Transport, framing, fanout, and cleanup atoms perform their respective effects under the plan.
+  3. Runtime forwards the original ASGI scope, receive, and send under ADR-1000. The kernel calls the atoms scope projector and directs the selected WebSocket plan. Concrete supplies the binding, handlers, hooks, and configured services.
   4. WebSocket open and close are structural lifecycle concerns.
   5. Domain-specific cleanup belongs to hooks.
   6. `framing.decode` and `framing.encode` are first-class atoms backed by the codec registry.
@@ -35,6 +35,10 @@ body: |-
   13. Subscription registration and cleanup are atoms.
   14. The core WebSocket realtime atom catalog is settled.
   
+  ## Authored socket handlers
+
+  An explicit `@app.websocket` handler retains control of its application-level conversation through the socket API. Its calls to accept, receive, send, and close are part of that authoring contract. Framework-managed realtime bindings use the kernel session loop and canonical operation dispatch. The selected binding determines which mode runs for the session.
+
   ## Lifecycle
   
   The WebSocket session lifecycle is:
@@ -119,6 +123,7 @@ body: |-
   - Add codec atom tests for `framing.decode` and `framing.encode`.
   - Add transport atom tests for accept, receive, emit, and close phase placement.
   - Add subscribe ack and session cleanup tests.
+  - Verify public ASGI ingress enters the selected kernel plan directly and preserve observable behavior for both framework-managed JSON-RPC sessions and explicit socket handlers.
   - Add publish fanout tests proving post-commit enqueue and egress fanout behavior.
   
   ## Request and message identity

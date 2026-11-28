@@ -1,0 +1,40 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1148"
+number: 1148
+slug: "asgi-scope-dispatch-handoff"
+title: "ASGI Scope Dispatch Handoff"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract governs ingress and plan selection. The transport-specific specs govern lifecycle loops, routing semantics, and carrier events."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Contract
+
+  1. Setup MUST bind app configuration, authored bindings, and registered lifecycle handlers to the kernel entry point before the ASGI call. Concrete forwards the original ASGI scope and its receive and send callables through the runtime ingress entry point.
+  2. For each inbound ASGI call, `tigrbl_runtime` MUST invoke the configured kernel entry point exactly once with only the original `scope`, `receive`, and `send` objects. It MUST preserve their object identities and MUST NOT inspect or mutate the scope, wrap or call either carrier callable, project the scope, select or execute a plan, or invoke atoms or handlers. The forwarder MUST propagate the kernel outcome, including exceptions and cancellation.
+  3. The kernel MUST invoke the designated atoms projector once per inbound ASGI scope. The projector exclusively reads the raw scope discriminator and returns the typed context defined by SPEC-1003. An ingress validation failure stops before plan selection.
+  4. The kernel uses the typed scope and compiled bindings to select and direct HTTP, WebSocket, WebTransport, or lifespan execution. When no plan matches, the kernel directs the applicable carrier miss outcome. Atoms perform the selected effects. Packed and fallback execution follow SPEC-2144.
+  5. Tracing, completion, and internal re-entry for the same inbound scope MUST reuse the original projection. Internal sub-invocations may select their own operation within the selected carrier path.
+
+  This contract governs ingress and plan selection. The transport-specific specs govern lifecycle loops, routing semantics, and carrier events.
+
+  ## Verification
+
+  - A source architecture test detects raw inbound scope discriminator access outside the atoms projector, with an allowance for ASGI message discriminators.
+  - Scope projection tests cover supported ASGI kinds and invalid inputs.
+  - Kernel tests verify plan selection and miss outcomes from typed scope and compiled inputs.
+  - A runtime boundary test proves one kernel call with all three original objects. Scope and carrier spies detect runtime reads, writes, and calls. Verify propagation of the kernel outcome, errors, and cancellation.
+  - Kernel execution tests verify packed and fallback parity and projection reuse for tracing, completion, and JSON-RPC batch re-entry.
+  - A public app integration test verifies the kernel handoff, single atoms projection, plan selection, and carrier behavior for all four ASGI scope kinds.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"
+  - "adr:1020"
+  - "adr:1047"
+  - "adr:1139"

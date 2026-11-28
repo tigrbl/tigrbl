@@ -12,6 +12,8 @@ EXPECTED_PHASES = (
     "MESSAGE_RECEIVE",
     "INGRESS_PARSE",
     "INGRESS_DISPATCH",
+    "SECURITY",
+    "DEPENDENCIES",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -58,7 +60,7 @@ def test_websocket_session_close_cleanup_order_contract() -> None:
 
 
 def test_websocket_app_handler_does_not_own_loop_contract() -> None:
-    source = Path("pkgs/96_examples/websocket_realtime_ops/app.py").read_text()
+    source = Path("pkgs/170_examples/websocket_realtime_ops/app.py").read_text()
     tree = ast.parse(source)
     assigned_names = {
         target.id

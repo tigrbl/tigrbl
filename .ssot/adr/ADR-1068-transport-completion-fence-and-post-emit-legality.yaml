@@ -22,6 +22,7 @@ body: |-
 
   1. `POST_EMIT` is a governed runtime completion fence for transports whose emission completes after response assembly.
   2. `POST_EMIT` is runtime-owned and diagnostics-visible on the active line, but it is not a public hook phase in this checkpoint.
+     For HTTP, kernel plans declare the fence, the transport atom observes the final successful carrier send, and the executor advances completion and releases continuations. A fully emitted error response satisfies the transport fence. Callback eligibility is evaluated separately from transport completion.
   3. `POST_RESPONSE` remains the last public hook phase and operates after canonical routing through `INGRESS_ROUTE` and before final transport completion.
   4. `EGRESS_SHAPE` and `EGRESS_FINALIZE` remain runtime-owned egress phases.
   5. Stream, socket, and session transports may project `POST_EMIT`; plain request-response HTTP may elide it when completion is synchronous or implicit.

@@ -18,31 +18,46 @@ status_notes:
     note: "Created to replace outbound webhook delivery terminology with callback delivery."
     status: "draft"
   -
-    status: "accepted"
-    note: "Outbound remote delivery is now governed as callback delivery; first-class webhook means inbound ingress."
     at: "2026-06-17T10:17:38Z"
+    note: "Outbound remote delivery is now governed as callback delivery; first-class webhook means inbound ingress."
+    status: "accepted"
 references: []
 body: |-
   ## Intent
-  
+
   Define outbound callback delivery as the replacement contract for the prior outbound webhook-delivery surface.
-  
+
   ## Contract
-  
+
   1. Outbound callback delivery emits a runtime-managed event payload to a configured remote endpoint.
   2. The delivery contract MUST declare event schema, endpoint metadata, payload framing, signing or authentication, retry and backoff policy, timeout behavior, idempotency key handling, dead-letter behavior, delivery status, and completion subevents.
   3. HTTP POST is an allowed outbound delivery mechanism, but using HTTP POST does not make this surface an inbound webhook.
-  4. Outbound callback delivery MUST NOT be represented as `WebhookSpec` and MUST NOT imply a public `CallbackSpec`.
+  4. Outbound callback delivery MUST NOT be represented as `WebhookSpec`; introduction of a public `CallbackSpec` is governed by ADR-1210.
   5. Delivery ordering relative to transaction completion, egress shaping, egress finalization, callback fences, and `POST_EMIT` MUST be explicit and diagnostics-visible.
   6. Compatibility modules or test names that still use webhook vocabulary are historical aliases until renamed; normative docs and new tests use callback-delivery vocabulary.
-  
+
   ## Traceability
-  
+
   ADRs: adr:1184, adr:1183, adr:1068.
   Supersedes: spc:2112.
   Related specs: spc:2098, spc:2101.
+
+  ## First-class authoring and attempt timing
+
+  When ADR-1210 is accepted, CallbackSpec selects an existing source operation and declares the destination, payload builder, signing, attempt timing, timeout, retry and persistence policies. Concrete Callback, DefineCallback, and callback_ctx must normalize to the same declaration. The callback_ctx function builds the outgoing payload from the source operation context.
+
+  Lower preparation and inline delivery into existing hooks at legal phases. For success notifications tied to committed state, a worker may attempt an eligible committed record independently of response egress. An awaited POST_COMMIT attempt may contribute its observed result to the original response before egress shaping. An after-emission policy uses the actual runtime POST_EMIT completion fence and defines what to do if emission fails or is unavailable. An explicit pre-commit attempt can participate in response and transaction decisions, but a successful remote side effect can outlive a local rollback. Keep per-attempt HTTP completion distinct from original-response completion. Define a per-attempt timeout, a total budget for synchronous work and explicit retry eligibility. Exhaustion is representable as a terminal attempt state.
+
+  See SPEC-2210 for durability and SPEC-2211 for trace. Governed feature: feat:callback-spec-authoring-and-execution.
+
+  ## Transport attempt atom
+
+  Kernel discovery exposes `transport.callback_attempt` at the `callback.delivery.emit` carrier event. The kernel lowers it into a callback-only execution step for inline and worker delivery. The source operation keeps its existing hook timing, and the original response keeps its independent HTTP completion fence.
+
+  One atom invocation takes a prepared destination, payload, timeout, and optional signing secret and sender. It performs one HTTP attempt and returns the observed status, response, or transport failure for the caller to apply retry and persistence policy. Each retry invokes the same atom for a new attempt. Preparation, eligibility, retries, and durable attempt state follow their existing policies.
 spec_kind: "normative"
 adr_ids:
   - "adr:1184"
   - "adr:1183"
   - "adr:1068"
+  - "adr:1210"

@@ -45,8 +45,8 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/050_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Run CLI smoke and server-compat tests
-        run: uv run --no-sync python -m pytest --noconftest -q pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider
+        run: uv run --no-sync python -m pytest --noconftest -q pkgs/210_tests/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/210_tests/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider

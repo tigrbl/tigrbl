@@ -1,0 +1,443 @@
+from __future__ import annotations
+
+import json
+from collections.abc import Mapping
+from datetime import datetime, timezone
+from time import perf_counter_ns
+from typing import Any
+
+from tigrbl_typing.trace import TraceSink, emit_trace, transport_name
+
+from ...protocol_scope import AsgiScope
+from ..framing.webtransport_records import encode_jsonrpc_record
+from ..ingress.identity import prepare_transport_identity
+
+
+def disconnect_realtime_broker(broker: Any, session_id: Any) -> Any:
+    disconnect = getattr(broker, "disconnect_session", None) or getattr(
+        broker, "unsubscribe_session", None
+    )
+    if session_id is not None and callable(disconnect):
+        return disconnect(str(session_id))
+    return None
+
+
+def disconnect_realtime_stream(broker: Any, session_id: str, stream_id: str) -> Any:
+    disconnect = getattr(broker, "disconnect_stream", None)
+    if callable(disconnect):
+        return disconnect(session_id, stream_id)
+    return None
+
+
+def disconnect_presentation_hub(hub: Any, session_id: Any) -> Any:
+    disconnect = getattr(hub, "disconnect", None)
+    if session_id is not None and callable(disconnect):
+        return disconnect(str(session_id))
+    return None
+
+
+def webtransport_scope_state(scope: dict[str, Any]) -> dict[str, Any]:
+    state = scope.get("state")
+    if not isinstance(state, dict):
+        state = scope["state"] = {}
+    wt_state = state.get("tigrbl_webtransport")
+    if not isinstance(wt_state, dict):
+        wt_state = state["tigrbl_webtransport"] = {}
+    return wt_state
+
+
+def webtransport_scope_session_id(scope: Mapping[str, Any]) -> Any:
+    if scope.get("session_id") is not None:
+        return scope["session_id"]
+    for group in ("ext", "extensions"):
+        values = scope.get(group)
+        if not isinstance(values, Mapping):
+            continue
+        for key in ("webtransport", "tigrcorn.unit"):
+            item = values.get(key)
+            if isinstance(item, Mapping) and item.get("session_id") is not None:
+                return item["session_id"]
+    return None
+
+
+def _observe_webtransport_close(scope: dict[str, Any], send: Any) -> Any:
+    async def send_and_observe(message):
+        await send(message)
+        if message.get("type") == "webtransport.close":
+            webtransport_scope_state(scope)["closed"] = True
+
+    return send_and_observe
+
+
+def bind_asgi_ingress(
+    scope: dict[str, Any], projection: AsgiScope, send: Any, sink: TraceSink | None
+) -> Any:
+    """Bind transport identity and HTTP response correlation to the carrier."""
+    scope_type = projection.kind.value
+    if scope_type == "webtransport":
+        send = _observe_webtransport_close(scope, send)
+    request_start = (
+        (perf_counter_ns(), datetime.now(timezone.utc).isoformat())
+        if sink is not None and scope_type == "http"
+        else None
+    )
+    if scope_type != "http" and (
+        sink is None or scope_type not in {"websocket", "webtransport"}
+    ):
+        return send
+
+    identity = prepare_transport_identity(scope)
+    details = {**identity, "path": scope.get("path")}
+    emit_trace(sink, "Scope opened", transport_name(scope_type), details)
+    if scope_type != "http":
+        return send
+
+    correlation_id = identity["correlation_id"].encode("ascii")
+
+    async def send_with_correlation(message):
+        if message.get("type") == "http.response.start":
+            headers = [
+                (key, value)
+                for key, value in message.get("headers", ())
+                if key.lower() != b"x-correlation-id"
+            ]
+            message = {**message, "headers": [*headers, (b"x-correlation-id", correlation_id)]}
+            if request_start is not None:
+                started_ns, started_at = request_start
+                duration_ms = (perf_counter_ns() - started_ns) / 1_000_000
+                ended_at = datetime.now(timezone.utc).isoformat()
+                await send(message)
+                emit_trace(
+                    sink,
+                    "Response",
+                    "HTTP",
+                    {
+                        **details,
+                        "status": message["status"],
+                        "source_started_at": started_at,
+                        "source_ended_at": ended_at,
+                        "measured_duration_ms": duration_ms,
+                        "timing_boundary": "ingress_to_egress_monotonic",
+                        "clock_domain": "server_monotonic",
+                    },
+                )
+                return
+        await send(message)
+
+    return send_with_correlation
+
+
+def message_payload(message: Mapping[str, Any]) -> Any:
+    payload = message.get("bytes")
+    if payload is None:
+        payload = message.get("data")
+    if payload is None and message.get("text") is not None:
+        payload = str(message.get("text")).encode("utf-8")
+    return payload
+
+
+def payload_size(message: Mapping[str, Any]) -> int | None:
+    payload = message_payload(message)
+    if isinstance(payload, (bytes, bytearray)):
+        return len(payload)
+    if isinstance(payload, str):
+        return len(payload.encode("utf-8"))
+    return None
+
+
+def session_payload_events(
+    payload: Any,
+    *,
+    accept_type: str,
+    send_type: str,
+    close_type: str,
+) -> tuple[dict[str, Any], ...]:
+    events: list[dict[str, Any]] = [{"type": accept_type}]
+    if payload is not None:
+        if isinstance(payload, (bytes, bytearray)):
+            events.append({"type": send_type, "bytes": bytes(payload)})
+        elif isinstance(payload, str):
+            events.append({"type": send_type, "text": payload})
+        else:
+            events.append(
+                {
+                    "type": send_type,
+                    "text": json.dumps(payload, separators=(",", ":"), default=str),
+                }
+            )
+    events.append({"type": close_type, "code": 1000})
+    return tuple(events)
+
+
+def webtransport_payload_event(
+    *,
+    base: Mapping[str, Any],
+    payload: Any,
+) -> dict[str, Any]:
+    event_type = str(base.get("type") or "")
+    session_id = base.get("session_id")
+    if event_type == "webtransport.stream.receive":
+        if base.get("stream_direction") == "client_to_server":
+            raise ValueError(
+                "cannot automatically reply on a client_to_server WebTransport "
+                "stream; return None or emit an explicit server_to_client stream "
+                "or datagram"
+            )
+        out: dict[str, Any] = {
+            "type": "webtransport.stream.send",
+            "session_id": session_id,
+            "stream_id": base.get("stream_id"),
+            "stream_direction": base.get("stream_direction", "bidi"),
+        }
+        if base.get("stream_initiator") is not None:
+            out["stream_initiator"] = base.get("stream_initiator")
+        elif out["stream_direction"] == "bidi":
+            out["stream_initiator"] = "client"
+        if base.get("framing") is not None:
+            out["framing"] = base.get("framing")
+        request_id = base.get("jsonrpc_request_id")
+        persistent_control = request_id is not None or base.get("framing") == "jsonrpc"
+        if persistent_control and isinstance(payload, (bytes, bytearray)):
+            raw_payload = bytes(payload)
+            if (
+                len(raw_payload) >= 4
+                and int.from_bytes(raw_payload[:4], "big") == len(raw_payload) - 4
+            ):
+                out["data"] = raw_payload
+            else:
+                response = json.loads(raw_payload)
+                if not isinstance(response, Mapping):
+                    raise TypeError(
+                        "persistent WebTransport control bytes must encode a JSON object"
+                    )
+                out["data"] = encode_jsonrpc_record(response)
+            out["framing"] = "jsonrpc"
+        elif persistent_control and isinstance(payload, str):
+            response = json.loads(payload)
+            if not isinstance(response, Mapping):
+                raise TypeError(
+                    "persistent WebTransport control text must encode a JSON object"
+                )
+            out["data"] = encode_jsonrpc_record(response)
+            out["framing"] = "jsonrpc"
+        elif isinstance(payload, (bytes, bytearray)):
+            out["data"] = bytes(payload)
+        elif isinstance(payload, str):
+            out["data"] = payload.encode("utf-8")
+        elif persistent_control:
+            response = payload
+            if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+                response = payload
+            elif request_id is not None:
+                response = {"jsonrpc": "2.0", "id": request_id, "result": payload}
+            out["data"] = encode_jsonrpc_record(response)
+            out["framing"] = "jsonrpc"
+        else:
+            out["data"] = json.dumps(
+                payload, separators=(",", ":"), default=str
+            ).encode("utf-8")
+        out["more"] = persistent_control
+        return out
+    if event_type == "webtransport.datagram.receive":
+        out = {
+            "type": "webtransport.datagram.send",
+            "session_id": session_id,
+            "datagram_id": base.get("datagram_id"),
+        }
+        if base.get("framing") is not None:
+            out["framing"] = base.get("framing")
+        if isinstance(payload, (bytes, bytearray)):
+            out["data"] = bytes(payload)
+        elif isinstance(payload, str):
+            out["data"] = payload.encode("utf-8")
+        else:
+            out["data"] = json.dumps(
+                payload, separators=(",", ":"), default=str
+            ).encode("utf-8")
+        return out
+    out = {"type": "webtransport.send", "session_id": session_id}
+    if isinstance(payload, (bytes, bytearray)):
+        out["bytes"] = bytes(payload)
+    elif isinstance(payload, str):
+        out["text"] = payload
+    else:
+        out["text"] = json.dumps(payload, separators=(",", ":"), default=str)
+    return out
+
+
+def _coerce_webtransport_stream_id(value: Any, *, fallback: int) -> Any:
+    if value is None or value == "":
+        return fallback
+    return value
+
+
+def _row_for_lane(rows: Any, *, lane_id: Any, index: int) -> Mapping[str, Any]:
+    if not isinstance(rows, list) or not rows:
+        return {}
+    for row in rows:
+        if isinstance(row, Mapping) and str(row.get("id") or "") == str(lane_id):
+            return row
+    if index < len(rows) and isinstance(rows[index], Mapping):
+        return rows[index]
+    return {}
+
+
+def _webtransport_payload_bytes(value: Any) -> bytes:
+    if isinstance(value, (bytes, bytearray, memoryview)):
+        return bytes(value)
+    return str(value).encode("utf-8")
+
+
+def webtransport_structured_payload_events(
+    *,
+    session_id: Any,
+    inbound: Mapping[str, Any] | list[Mapping[str, Any]],
+    payload: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    events: list[dict[str, Any]] = []
+    inbound_events = inbound if isinstance(inbound, list) else [inbound]
+    receive_only = any(
+        str(item.get("type") or "") == "webtransport.stream.receive"
+        and str(item.get("stream_direction") or "") == "client_to_server"
+        for item in inbound_events
+    )
+    has_bidirectional_input = any(
+        str(item.get("type") or "") == "webtransport.stream.receive"
+        and str(item.get("stream_direction") or "bidi") == "bidi"
+        for item in inbound_events
+    )
+    if (
+        receive_only
+        and not has_bidirectional_input
+        and payload.get("bidirectional_streams")
+    ):
+        raise ValueError(
+            "bidirectional_streams output is invalid for a client_to_server "
+            "WebTransport stream; use unidirectional_streams or datagrams"
+        )
+    bidi_index = 0
+    for current in inbound_events:
+        inbound_type = str(current.get("type") or "")
+        inbound_stream_id = _coerce_webtransport_stream_id(
+            current.get("stream_id"),
+            fallback=4 + bidi_index,
+        )
+        inbound_direction = str(current.get("stream_direction") or "bidi")
+        framing = current.get("framing")
+
+        if (
+            inbound_type == "webtransport.stream.receive"
+            and inbound_direction == "bidi"
+        ):
+            row = _row_for_lane(
+                payload.get("bidirectional_streams"),
+                lane_id=inbound_stream_id,
+                index=bidi_index,
+            )
+            bidi_index += 1
+            message = row.get("message") if isinstance(row, Mapping) else None
+            if message is None:
+                message = payload.get("message")
+            if message is None:
+                message = "demo-bidirectional"
+            event: dict[str, Any] = {
+                "type": "webtransport.stream.send",
+                "session_id": session_id,
+                "stream_id": inbound_stream_id,
+                "stream_direction": "bidi",
+                "stream_initiator": current.get("stream_initiator", "client"),
+                "data": _webtransport_payload_bytes(message),
+                "more": bool(row.get("more", False))
+                if isinstance(row, Mapping)
+                else False,
+            }
+            if framing is not None:
+                event["framing"] = framing
+            if isinstance(row, Mapping) and row.get("priority") is not None:
+                event["priority"] = bool(row["priority"])
+            events.append(event)
+
+    uni_rows = payload.get("unidirectional_streams")
+    if isinstance(uni_rows, list):
+        for index, row in enumerate(uni_rows):
+            if not isinstance(row, Mapping):
+                continue
+            message = row.get("message")
+            if message is None:
+                continue
+            stream_id: Any = row.get("id") or f"server-stream-{index + 1}"
+            event = {
+                "type": "webtransport.stream.send",
+                "session_id": session_id,
+                "stream_id": stream_id,
+                "stream_direction": "server_to_client",
+                "stream_initiator": "server",
+                "data": _webtransport_payload_bytes(message),
+                "more": bool(row.get("more", False)),
+            }
+            row_framing = row.get("framing") if isinstance(row, Mapping) else None
+            if row_framing is not None:
+                event["framing"] = row_framing
+            if row.get("priority") is not None:
+                event["priority"] = bool(row["priority"])
+            events.append(event)
+
+    datagram_rows = payload.get("datagrams")
+    inbound_datagram_ids = [
+        item.get("datagram_id")
+        for item in inbound_events
+        if str(item.get("type") or "") == "webtransport.datagram.receive"
+        and item.get("datagram_id") is not None
+    ]
+    inbound_datagram_framings = [
+        item.get("framing")
+        for item in inbound_events
+        if str(item.get("type") or "") == "webtransport.datagram.receive"
+        and item.get("framing") is not None
+    ]
+    if isinstance(datagram_rows, list):
+        for index, row in enumerate(datagram_rows):
+            if not isinstance(row, Mapping):
+                continue
+            if str(row.get("direction") or "") == "client-to-server":
+                continue
+            body = row.get("payload")
+            if body is None:
+                continue
+            event = {
+                "type": "webtransport.datagram.send",
+                "session_id": session_id,
+                "datagram_id": str(
+                    row.get("id")
+                    or (
+                        inbound_datagram_ids[index]
+                        if index < len(inbound_datagram_ids)
+                        else None
+                    )
+                    or f"datagram-{index + 1}"
+                ),
+                "data": _webtransport_payload_bytes(body),
+            }
+            row_framing = row.get("framing") if isinstance(row, Mapping) else None
+            if row_framing is None and index < len(inbound_datagram_framings):
+                row_framing = inbound_datagram_framings[index]
+            if row_framing is not None:
+                event["framing"] = row_framing
+            events.append(event)
+    return events
+
+
+def complete_channel_state(state: dict[str, Any]) -> dict[str, Any]:
+    state["completed"] = True
+    state["completion_fence"] = "POST_EMIT"
+    return state
+
+
+__all__ = [
+    "complete_channel_state",
+    "message_payload",
+    "payload_size",
+    "session_payload_events",
+    "webtransport_payload_event",
+    "webtransport_structured_payload_events",
+]

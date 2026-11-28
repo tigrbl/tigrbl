@@ -1,0 +1,662 @@
+from __future__ import annotations
+
+from tigrbl_atoms.protocol_scope import scope_type as projected_scope_type
+
+from ...types import Atom, Ctx, EgressedCtx
+from ...stages import Emitting, Egressed
+
+import json
+from pathlib import Path
+from typing import Any, Mapping
+
+from ... import events as _ev
+from ...types import ResponseLike, is_response_like
+
+ANCHOR = _ev.EGRESS_ASGI_SEND
+
+
+NO_BODY_STATUS = set(range(100, 200)) | {204, 205, 304}
+UNMATCHED_RUNTIME_DETAIL = "No runtime operation matched request."
+
+
+def _json_default(value: Any) -> Any:
+    model_dump = getattr(value, "model_dump", None)
+    if callable(model_dump):
+        return model_dump()
+
+    table = getattr(value, "__table__", None)
+    columns = getattr(table, "columns", None)
+    if columns is not None:
+        serialized: dict[str, Any] = {}
+        for column in columns:
+            key = getattr(column, "key", None)
+            if isinstance(key, str) and key:
+                serialized[key] = getattr(value, key, None)
+        if serialized:
+            return serialized
+
+    obj_dict = getattr(value, "__dict__", None)
+    if isinstance(obj_dict, dict):
+        return {
+            key: val
+            for key, val in obj_dict.items()
+            if not key.startswith("_") and not callable(val)
+        }
+
+    return str(value)
+
+
+def _coerce_body_bytes(body: Any) -> bytes:
+    if isinstance(body, bytes):
+        return body
+    if isinstance(body, bytearray):
+        return bytes(body)
+    if isinstance(body, memoryview):
+        return body.tobytes()
+    return bytes(body)
+
+
+def _pathsend_extension(scope: Mapping[str, Any]) -> str | None:
+    extensions = scope.get("extensions")
+    if not isinstance(extensions, Mapping):
+        return None
+    if "http.response.pathsend" in extensions:
+        return "http.response.pathsend"
+    if "http.response.zerocopysend" in extensions:
+        return "http.response.zerocopysend"
+    return None
+
+
+async def _send_file_path(
+    env: Any,
+    *,
+    scope: Mapping[str, Any],
+    status: int,
+    headers: list[tuple[bytes, bytes]],
+    path: str,
+) -> bool:
+    if not path:
+        return False
+    extension = _pathsend_extension(scope)
+    if extension is None:
+        return False
+    if str(scope.get("method", "GET")).upper() == "HEAD" or status in NO_BODY_STATUS:
+        headers, body = finalize_transport_response(scope, status, headers, b"")
+        await env.send(
+            {"type": "http.response.start", "status": status, "headers": headers}
+        )
+        await env.send({"type": "http.response.body", "body": body, "more_body": False})
+        return True
+    try:
+        file_size = Path(path).stat().st_size
+    except OSError:
+        return False
+    headers = [(k, v) for (k, v) in headers if k.lower() != b"content-length"]
+    headers.append((b"content-length", str(file_size).encode("latin-1")))
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    if extension == "http.response.pathsend":
+        await env.send({"type": "http.response.pathsend", "path": path})
+        return True
+    with Path(path).open("rb") as handle:
+        await env.send(
+            {
+                "type": "http.response.zerocopysend",
+                "file": handle,
+                "more_body": False,
+            }
+        )
+    return True
+
+
+def finalize_transport_response(
+    scope: Mapping[str, Any],
+    status: int,
+    headers: list[tuple[bytes, bytes]],
+    body: bytes,
+) -> tuple[list[tuple[bytes, bytes]], bytes]:
+    method = str(scope.get("method", "GET")).upper()
+
+    if method == "HEAD" or status in NO_BODY_STATUS:
+        drop = {b"content-length", b"content-type", b"transfer-encoding"}
+        headers = [(k, v) for (k, v) in headers if k.lower() not in drop]
+        return headers, b""
+
+    headers = [(k, v) for (k, v) in headers if k.lower() != b"content-length"]
+    headers.append((b"content-length", str(len(body)).encode("latin-1")))
+    return headers, body
+
+
+async def _send_json(
+    env: Any,
+    status: int,
+    payload: Any,
+    headers: Mapping[str, str] | None = None,
+) -> None:
+    scope = getattr(env, "scope", {}) or {}
+    path = scope.get("path") if isinstance(scope, Mapping) else None
+    is_jsonrpc = False
+    if isinstance(path, str):
+        normalized = path.rstrip("/") or "/"
+        if normalized == "/rpc":
+            is_jsonrpc = True
+        else:
+            owner = scope.get("app") if isinstance(scope, Mapping) else None
+            mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
+            if isinstance(mounts, Mapping) and (
+                normalized in mounts or f"{normalized}/" in mounts
+            ):
+                is_jsonrpc = True
+            elif normalized.startswith("/rpc"):
+                is_jsonrpc = True
+    if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+        is_jsonrpc = True
+    detail = payload.get("detail") if isinstance(payload, Mapping) else None
+    if detail == UNMATCHED_RUNTIME_DETAIL:
+        if is_jsonrpc:
+            payload = {
+                "jsonrpc": "2.0",
+                "error": {"code": -32601, "message": "Method not found"},
+                "id": None,
+            }
+            status = 200
+        else:
+            payload = {"detail": "Not Found"}
+    if is_jsonrpc and isinstance(payload, Mapping) and "error" not in payload:
+        from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
+
+        rpc_code = _HTTP_TO_RPC.get(int(status), -32603)
+        detail = payload.get("detail")
+        rpc_payload: dict[str, Any] = {
+            "jsonrpc": "2.0",
+            "error": {
+                "code": rpc_code,
+                "message": ERROR_MESSAGES.get(rpc_code, "Internal error"),
+            },
+            "id": None,
+        }
+        if isinstance(detail, Mapping):
+            rpc_payload["error"]["data"] = dict(detail)
+        elif detail is not None:
+            rpc_payload["error"]["data"] = {"detail": detail}
+        payload = rpc_payload
+        status = 200
+
+    body = json.dumps(
+        payload,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        default=_json_default,
+    ).encode("utf-8")
+    asgi_headers = [(b"content-type", b"application/json")]
+    for key, value in (headers or {}).items():
+        if value is None:
+            continue
+        asgi_headers.append((str(key).encode("latin-1"), str(value).encode("latin-1")))
+    asgi_headers, body = finalize_transport_response(scope, status, asgi_headers, body)
+    await env.send(
+        {
+            "type": "http.response.start",
+            "status": status,
+            "headers": asgi_headers,
+        }
+    )
+    await env.send(
+        {
+            "type": "http.response.body",
+            "body": body,
+            "more_body": False,
+        }
+    )
+
+
+async def _send_transport_response(env: Any, ctx: Any) -> None:
+    temp = getattr(ctx, "temp", None)
+    if not isinstance(temp, dict):
+        temp = {}
+        setattr(ctx, "temp", temp)
+    egress = temp.setdefault("egress", {})
+    if not isinstance(egress, dict) or egress.get("response_sent"):
+        return
+
+    transport = egress.get("transport_response")
+    if not isinstance(transport, dict):
+        transport = {
+            "status_code": int(getattr(ctx, "status_code", 200) or 200),
+            "headers": {},
+            "body": getattr(ctx, "result", None),
+        }
+
+    status = int(transport.get("status_code", getattr(ctx, "status_code", 200) or 200))
+    headers_obj = transport.get("headers", {})
+    headers: list[tuple[bytes, bytes]] = []
+    if isinstance(headers_obj, dict):
+        headers = [
+            (str(k).encode("latin-1"), str(v).encode("latin-1"))
+            for k, v in headers_obj.items()
+            if v is not None
+        ]
+
+    body_obj = transport.get("body", None)
+    if body_obj is None:
+        body_obj = getattr(ctx, "result", None)
+        if body_obj is None and status == 200:
+            status = 204
+    if is_response_like(body_obj):
+        await _send_response_like(env, body_obj)
+        egress["response_sent"] = True
+        return
+
+    stream_binding = _find_http_stream_binding(ctx)
+    if stream_binding is not None and body_obj is not None:
+        await _send_http_stream_response(
+            env,
+            ctx,
+            status=status,
+            headers=headers,
+            body_obj=body_obj,
+            binding=stream_binding,
+        )
+        egress["response_sent"] = True
+        return
+
+    if isinstance(body_obj, Mapping) and set(body_obj.keys()) == {"body"}:
+        nested = body_obj.get("body")
+        if isinstance(nested, (bytes, bytearray)):
+            body_obj = nested
+
+    if not isinstance(
+        body_obj, (bytes, bytearray, str, Mapping, list, tuple, set)
+    ) and hasattr(body_obj, "body"):
+        body_obj = getattr(body_obj, "body")
+
+    if (
+        isinstance(body_obj, Mapping)
+        and "body" in body_obj
+        and "status_code" not in body_obj
+        and "headers" not in body_obj
+    ):
+        body_obj = body_obj.get("body")
+
+    if (
+        isinstance(body_obj, str)
+        and body_obj.startswith("b'")
+        and body_obj.endswith("'")
+    ):
+        try:
+            body_obj = body_obj[2:-1].encode("latin-1", errors="ignore")
+        except Exception:
+            pass
+
+    if isinstance(body_obj, (bytes, bytearray, memoryview)):
+        body = _coerce_body_bytes(body_obj)
+    elif body_obj is None:
+        body = b""
+    else:
+        body = json.dumps(
+            body_obj,
+            separators=(",", ":"),
+            default=_json_default,
+        ).encode("utf-8")
+        if not any(k.lower() == b"content-type" for k, _ in headers):
+            headers.append((b"content-type", b"application/json; charset=utf-8"))
+
+    headers, body = finalize_transport_response(env.scope, status, headers, body)
+
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    await env.send({"type": "http.response.body", "body": body, "more_body": False})
+    egress["response_sent"] = True
+
+
+def _headers_to_asgi(headers: Mapping[str, Any]) -> list[tuple[bytes, bytes]]:
+    out: list[tuple[bytes, bytes]] = []
+    for k, v in (headers or {}).items():
+        if v is None:
+            continue
+        out.append((str(k).encode("latin-1"), str(v).encode("latin-1")))
+    return out
+
+
+def _json_bytes(obj: Any) -> bytes:
+    return json.dumps(
+        obj,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        default=_json_default,
+    ).encode("utf-8")
+
+
+def _find_http_stream_binding(ctx: Any) -> Any | None:
+    model = getattr(ctx, "model", None)
+    alias = getattr(ctx, "op", None) or getattr(ctx, "method", None)
+    if model is None or not isinstance(alias, str):
+        return None
+
+    request_path = str(getattr(ctx, "path", "") or "")
+    ops = tuple(getattr(getattr(model, "ops", None), "all", ()) or ())
+    fallback = None
+    for spec in ops:
+        if getattr(spec, "alias", None) != alias:
+            continue
+        for binding in tuple(getattr(spec, "bindings", ()) or ()):
+            proto = str(getattr(binding, "proto", "") or "")
+            if proto not in {"http.stream", "https.stream"}:
+                continue
+            if fallback is None:
+                fallback = binding
+            binding_path = str(getattr(binding, "path", "") or "")
+            if request_path and binding_path == request_path:
+                return binding
+    return fallback
+
+
+def _stream_chunk_source(payload: Any) -> Any:
+    if isinstance(payload, Mapping):
+        chunks = payload.get("chunks")
+        if chunks is not None:
+            return chunks
+        chunk = payload.get("chunk")
+        if chunk is not None:
+            return (chunk,)
+        return (payload,)
+    if isinstance(payload, (bytes, bytearray, memoryview, str)):
+        return (payload,)
+    if isinstance(payload, (list, tuple)):
+        return tuple(payload)
+    if hasattr(payload, "__aiter__"):
+        return payload
+    if hasattr(payload, "__iter__"):
+        return payload
+    return (payload,)
+
+
+def _frame_stream_chunk(item: Any, *, framing: str, index: int, ctx: Any) -> bytes:
+    if framing in {"bytes", "binary"}:
+        return _coerce_body_bytes(item)
+    if framing == "text":
+        return (item if isinstance(item, str) else str(item)).encode("utf-8")
+    if framing == "jsonrpc":
+        model = getattr(ctx, "model", None)
+        model_name = getattr(model, "__name__", "Stream")
+        alias = getattr(ctx, "op", None) or getattr(ctx, "method", None) or "chunk"
+        item = {
+            "jsonrpc": "2.0",
+            "method": f"{model_name}.{alias}.chunk",
+            "params": {"index": index, "data": item},
+        }
+    return _json_bytes(item) + b"\n"
+
+
+async def _send_http_stream_response(
+    env: Any,
+    ctx: Any,
+    *,
+    status: int,
+    headers: list[tuple[bytes, bytes]],
+    body_obj: Any,
+    binding: Any,
+) -> None:
+    from ...protocol_runtime import iter_items
+
+    framing = str(getattr(binding, "framing", "stream") or "stream")
+    headers = [(k, v) for k, v in headers if k.lower() != b"content-length"]
+    if not any(k.lower() == b"content-type" for k, _ in headers):
+        media_type = {
+            "bytes": "application/octet-stream",
+            "binary": "application/octet-stream",
+            "text": "text/plain; charset=utf-8",
+            "jsonrpc": "application/json",
+        }.get(framing, "application/x-ndjson")
+        headers.append((b"content-type", media_type.encode("latin-1")))
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    index = 0
+    async for item in iter_items(_stream_chunk_source(body_obj)):
+        await env.send(
+            {
+                "type": "http.response.body",
+                "body": _frame_stream_chunk(
+                    item,
+                    framing=framing,
+                    index=index,
+                    ctx=ctx,
+                ),
+                "more_body": True,
+            }
+        )
+        index += 1
+    await env.send({"type": "http.response.body", "body": b"", "more_body": False})
+
+
+async def _send_response_like(env: Any, resp: Any) -> None:
+    status = int(getattr(resp, "status_code", 200) or 200)
+    headers = list(getattr(resp, "raw_headers", ()) or ())
+    body_iterator = getattr(resp, "body_iterator", None)
+    file_path = getattr(resp, "path", None)
+    if isinstance(file_path, str) and file_path:
+        if await _send_file_path(
+            env,
+            scope=getattr(env, "scope", {}) or {},
+            status=status,
+            headers=headers,
+            path=file_path,
+        ):
+            return
+    if body_iterator is not None:
+        await env.send(
+            {"type": "http.response.start", "status": status, "headers": headers}
+        )
+        async for chunk in body_iterator:
+            await env.send(
+                {
+                    "type": "http.response.body",
+                    "body": _coerce_body_bytes(chunk),
+                    "more_body": True,
+                }
+            )
+        await env.send({"type": "http.response.body", "body": b"", "more_body": False})
+        return
+
+    body = getattr(resp, "body", None) or b""
+    if not isinstance(body, (bytes, bytearray, memoryview)):
+        body = _json_bytes(body)
+    else:
+        body = _coerce_body_bytes(body)
+    headers, body = finalize_transport_response(env.scope, status, headers, body)
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    await env.send({"type": "http.response.body", "body": body, "more_body": False})
+
+
+def _to_headers_mapping(headers: Any) -> dict[str, Any]:
+    if isinstance(headers, dict):
+        return dict(headers)
+    data = getattr(headers, "__dict__", None)
+    if isinstance(data, dict):
+        return dict(data)
+    try:
+        return dict(headers)
+    except Exception:
+        return {}
+
+
+async def _run(obj: object | None, ctx: Any) -> None:
+    del obj
+    raw = getattr(ctx, "raw", None)
+    send = getattr(raw, "send", None) if raw is not None else None
+    scope = getattr(raw, "scope", None) if raw is not None else None
+    if not callable(send) or not isinstance(scope, dict) or projected_scope_type(scope) != "http":
+        return
+
+    temp = getattr(ctx, "temp", None)
+    egress = temp.get("egress") if isinstance(temp, dict) else None
+    if isinstance(egress, dict) and egress.get("suppress_asgi_send"):
+        has_transport_response = "transport_response" in egress
+        if not has_transport_response:
+            return
+
+    resp = None
+    resp_ns = getattr(ctx, "response", None)
+    if resp_ns is not None:
+        candidate = getattr(resp_ns, "result", None)
+        if isinstance(candidate, ResponseLike) and is_response_like(candidate):
+            resp = candidate
+
+    temp = getattr(ctx, "temp", None)
+    if not isinstance(temp, dict):
+        temp = {}
+        setattr(ctx, "temp", temp)
+    egress = temp.setdefault("egress", {})
+    if egress.get("response_sent"):
+        return
+
+    if resp is None:
+        tr = egress.get("transport_response") if isinstance(egress, dict) else None
+
+        status = int(tr.get("status_code", 200)) if isinstance(tr, dict) else 200
+        headers = tr.get("headers", {}) if isinstance(tr, dict) else {}
+        body_obj = tr.get("body", None) if isinstance(tr, dict) else None
+        if body_obj is None:
+            body_obj = getattr(ctx, "result", None)
+            if body_obj is None and status == 200:
+                status = 204
+        if is_response_like(body_obj):
+            await _send_response_like(raw, body_obj)
+            egress["response_sent"] = True
+            return
+
+        stream_binding = _find_http_stream_binding(ctx)
+        if stream_binding is not None and body_obj is not None:
+            await _send_http_stream_response(
+                raw,
+                ctx,
+                status=status,
+                headers=_headers_to_asgi(_to_headers_mapping(headers)),
+                body_obj=body_obj,
+                binding=stream_binding,
+            )
+            egress["response_sent"] = True
+            return
+
+        if isinstance(body_obj, (bytes, bytearray, memoryview)):
+            body = _coerce_body_bytes(body_obj)
+        elif body_obj is None:
+            body = b""
+        else:
+            body = _json_bytes(body_obj)
+            headers = _to_headers_mapping(headers)
+            headers.setdefault("content-type", "application/json; charset=utf-8")
+
+        egress["transport_response"] = {
+            "status_code": status,
+            "headers": _to_headers_mapping(headers),
+            "body": body,
+        }
+        asgi_headers = _headers_to_asgi(headers)
+        asgi_headers, body = finalize_transport_response(
+            scope, status, asgi_headers, body
+        )
+        await send(
+            {
+                "type": "http.response.start",
+                "status": status,
+                "headers": asgi_headers,
+            }
+        )
+        await send({"type": "http.response.body", "body": body, "more_body": False})
+        egress["response_sent"] = True
+        return
+
+    egress["transport_response"] = {
+        "status_code": int(resp.status_code),
+        "headers": {
+            k.decode("latin-1"): v.decode("latin-1") for k, v in resp.raw_headers
+        },
+        "body": resp.body or b"",
+    }
+    body_iterator = getattr(resp, "body_iterator", None)
+    file_path = getattr(resp, "path", None)
+    headers = list(resp.raw_headers)
+    if isinstance(file_path, str) and file_path:
+        if await _send_file_path(
+            raw,
+            scope=scope,
+            status=int(resp.status_code),
+            headers=headers,
+            path=file_path,
+        ):
+            egress["response_sent"] = True
+            return
+    if body_iterator is not None:
+        await send(
+            {
+                "type": "http.response.start",
+                "status": int(resp.status_code),
+                "headers": headers,
+            }
+        )
+        async for chunk in body_iterator:
+            await send(
+                {
+                    "type": "http.response.body",
+                    "body": _coerce_body_bytes(chunk),
+                    "more_body": True,
+                }
+            )
+        await send(
+            {
+                "type": "http.response.body",
+                "body": b"",
+                "more_body": False,
+            }
+        )
+        egress["response_sent"] = True
+        return
+
+    body = resp.body or b""
+    if not isinstance(body, bytes):
+        body = _coerce_body_bytes(body)
+    headers, body = finalize_transport_response(
+        scope, int(resp.status_code), headers, body
+    )
+    await send(
+        {
+            "type": "http.response.start",
+            "status": int(resp.status_code),
+            "headers": headers,
+        }
+    )
+    await send(
+        {
+            "type": "http.response.body",
+            "body": body,
+            "more_body": False,
+        }
+    )
+    egress["response_sent"] = True
+
+
+class AtomImpl(Atom[Emitting, Egressed, Exception]):
+    name = "egress.asgi_send"
+    anchor = ANCHOR
+
+    async def __call__(self, obj: object | None, ctx: Ctx[Emitting]) -> Ctx[Egressed]:
+        await _run(obj, ctx)
+        return ctx.promote(EgressedCtx)
+
+
+INSTANCE = AtomImpl()
+
+__all__ = [
+    "ANCHOR",
+    "NO_BODY_STATUS",
+    "finalize_transport_response",
+    "_send_json",
+    "_send_transport_response",
+    "INSTANCE",
+]

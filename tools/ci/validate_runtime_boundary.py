@@ -12,7 +12,7 @@ except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PACKAGE_ROOT = ROOT / "pkgs" / "50_runtime" / "tigrbl_runtime"
+PACKAGE_ROOT = ROOT / "pkgs" / "050_runtime" / "tigrbl_runtime"
 RUNTIME_ROOT = PACKAGE_ROOT / "tigrbl_runtime"
 BOUNDARY_PATH = PACKAGE_ROOT / "BOUNDARY.yaml"
 PYPROJECT_PATH = PACKAGE_ROOT / "pyproject.toml"

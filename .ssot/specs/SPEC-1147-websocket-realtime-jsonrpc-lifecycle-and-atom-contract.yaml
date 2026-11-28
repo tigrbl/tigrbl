@@ -30,6 +30,8 @@ body: |-
   MESSAGE_RECEIVE
   INGRESS_PARSE
   INGRESS_DISPATCH
+  SECURITY
+  DEPENDENCIES
   PRE_TX_BEGIN
   START_TX
   PRE_HANDLER
@@ -113,7 +115,11 @@ body: |-
   
   ### Runtime Boundary
   
-  Runtime MUST execute the compiled kernel plan. Runtime MUST NOT own WebSocket lifecycle semantics, JSON-RPC method dispatch, publish fanout policy, or domain cleanup policy.
+  For a framework-managed realtime binding, the kernel MUST enter and direct the selected WebSocket session plan after the raw ASGI handoff in SPEC-1148. The plan owns accept and close ordering, the receive and dispatch loop, reply routing, and cleanup policy. Transport and framing atoms perform those effects. Concrete provides registered bindings, handlers, hooks, and configured services. Session termination and attachment cleanup follow SPEC-1153.
+
+  An explicit `@app.websocket` binding MUST invoke its authored handler through the selected plan. The handler retains access to accept, receive, send, and close through the socket API. An authored handler controls its application-level conversation. Framework-managed JSON-RPC dispatch belongs to the framework-managed binding.
+
+  Verification MUST enter through public ASGI ingress and cover both binding modes. Verify that a managed session accepts once, dispatches each complete message through the canonical operation index, and preserves reply identity and disconnect behavior. Verify that an authored handler can accept, receive, send, and close through the existing socket API.
   
   ## Traceability
   
@@ -140,10 +146,11 @@ body: |-
   
   ### Reply ownership and operation fallback
   
-  The kernel WebSocket JSON-RPC binding MUST consume the authoritative invocation outcome defined in SPEC-2169 and own its projection into a JSON-RPC result or error. Framing atoms and their codecs own wire encoding and decoding. Runtime executes the compiled plan and mediates the invocation.
+  The kernel WebSocket JSON-RPC binding MUST consume the authoritative invocation outcome defined in SPEC-2169 and own its projection into a JSON-RPC result or error. Framing atoms and their codecs own wire encoding and decoding. The kernel directs compiled execution and consumes the invocation outcome.
   
-  Handling or framing a reply MUST NOT invoke CRUD a second time. This applies to an ordinary result, a result already encoded by the runtime, and an authoritative failure or rejection. The request ID and existing error mapping MUST carry through. Verification MUST exercise the mounted WebSocket call and assert both the reply and one delete invocation, plus a kernel check that completed success and failure outcomes produce the corresponding replies without redispatch.
+  Handling or framing a reply MUST NOT invoke CRUD a second time. This applies to an ordinary result, a result already encoded by an atom, and an authoritative failure or rejection. The request ID and existing error mapping MUST carry through. Verification MUST exercise the mounted WebSocket call and assert both the reply and one delete invocation, plus a kernel check that completed success and failure outcomes produce the corresponding replies without redispatch.
 spec_kind: "normative"
 adr_ids:
   - "adr:1199"
   - "adr:1207"
+  - "adr:1139"

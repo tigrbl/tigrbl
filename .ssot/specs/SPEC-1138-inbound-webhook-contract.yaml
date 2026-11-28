@@ -17,17 +17,17 @@ status_notes:
     note: "Created to define first-class inbound webhook ingress."
     status: "draft"
   -
-    status: "accepted"
-    note: "Inbound webhook ingress is implemented through PathSpec, OpSpec, POST HttpRestBindingSpec lowering, signature verification, idempotency, and ack tests."
     at: "2026-06-17T12:15:57Z"
+    note: "Inbound webhook ingress is implemented through PathSpec, OpSpec, POST HttpRestBindingSpec lowering, signature verification, idempotency, and ack tests."
+    status: "accepted"
 references: []
 body: |-
   ## Intent
-  
+
   Define first-class inbound webhook ingress without inventing a parallel router, callback, or lifecycle model.
-  
+
   ## Contract
-  
+
   1. An inbound webhook is an externally invoked HTTP event ingress endpoint.
   2. Canonical lowering MUST use existing spec composition:
      - `PathSpec(kind=resource)` owns the webhook URL path.
@@ -38,12 +38,19 @@ body: |-
   5. Startup and shutdown lifespan handlers are not webhook callbacks.
   6. `POST_RESPONSE` hooks are in-process semantic hooks. `POST_EMIT` remains a runtime-owned completion fence and is not a public webhook or callback hook phase.
   7. Inbound webhook documentation projection MUST expose the HTTP POST ingress operation through the ordinary docs projection path selected for HTTP/REST operations.
-  
+
   ## Traceability
-  
+
   ADRs: adr:1183, adr:1068.
   Related specs: spc:2028, spc:2150.
+
+  ## First-class authoring
+
+  When ADR-1210 is accepted, WebhookSpec is a public, serializable authoring input. Concrete Webhook, DefineWebhook, and webhook_ctx must normalize to the same declaration. The webhook_ctx function handles the incoming event and returns the HTTP acknowledgement. Explicit app or router composition must mount the operation through the normal REST registration path. Verify signatures against original request bytes before handling the event. An application promising durable acceptance must commit its event or inbox record before success acknowledgement. Provider event identity can be used to acknowledge retries idempotently.
+
+  Governed feature: feat:webhook-spec-authoring-and-registration.
 spec_kind: "normative"
 adr_ids:
   - "adr:1183"
   - "adr:1068"
+  - "adr:1210"

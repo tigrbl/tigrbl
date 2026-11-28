@@ -1,0 +1,270 @@
+from __future__ import annotations
+
+from ...types import Atom, Ctx, EmittingCtx, is_response_like
+from ...stages import Encoded, Emitting
+
+import json
+from typing import Any, Mapping
+
+from ... import events as _ev
+from .._temp import _ensure_temp
+
+ANCHOR = _ev.EGRESS_TO_TRANSPORT_RESPONSE
+UNMATCHED_RUNTIME_DETAIL = "No runtime operation matched request."
+
+
+def project_handler_result(ctx: Any, result: Any) -> None:
+    temp = _ensure_temp(ctx)
+    egress = temp.setdefault("egress", {})
+    if is_response_like(result):
+        # Keep the response object for canonical raw headers and streaming.
+        transport = {
+            "status_code": int(result.status_code or 200),
+            "headers": {},
+            "body": result,
+        }
+        temp.setdefault("route", {})["short_circuit"] = True
+        egress["transport_response"] = transport
+        egress["suppress_asgi_send"] = True
+        ctx.transport_response = transport
+    else:
+        ctx.result = result
+        egress["result"] = result
+
+
+def _jsonrpc_request_id(ctx: Any) -> Any:
+    temp = getattr(ctx, "temp", None)
+    route = temp.get("route", {}) if isinstance(temp, dict) else {}
+    rpc_env = route.get("rpc_envelope") if isinstance(route, dict) else None
+    if isinstance(rpc_env, Mapping):
+        return rpc_env.get("id")
+
+    raw = getattr(ctx, "gw_raw", None) or getattr(ctx, "raw", None)
+    rpc = getattr(raw, "rpc", None)
+    if isinstance(rpc, Mapping):
+        return rpc.get("id")
+
+    temp = getattr(ctx, "temp", None)
+    dispatch = temp.get("dispatch", {}) if isinstance(temp, dict) else {}
+    if isinstance(dispatch, Mapping):
+        rpc_dispatch = dispatch.get("rpc")
+        if isinstance(rpc_dispatch, Mapping):
+            return rpc_dispatch.get("id")
+
+    body = getattr(ctx, "body", None)
+    if isinstance(body, (bytes, bytearray)):
+        try:
+            body = json.loads(bytes(body).decode("utf-8"))
+        except Exception:
+            body = None
+    if isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
+        return body.get("id")
+
+    if isinstance(dispatch, Mapping):
+        parsed_payload = dispatch.get("parsed_payload")
+        if isinstance(parsed_payload, Mapping) and "id" in parsed_payload:
+            return parsed_payload.get("id")
+
+    request = getattr(ctx, "request", None)
+    req_body = getattr(request, "_json", None)
+    if isinstance(req_body, Mapping) and req_body.get("jsonrpc") == "2.0":
+        return req_body.get("id")
+    return None
+
+
+def _jsonrpc_request_payload(ctx: Any) -> Any:
+    temp = getattr(ctx, "temp", None)
+    route = temp.get("route", {}) if isinstance(temp, dict) else {}
+    rpc_env = route.get("rpc_envelope") if isinstance(route, dict) else None
+    if isinstance(rpc_env, Mapping):
+        return rpc_env
+
+    raw = getattr(ctx, "gw_raw", None) or getattr(ctx, "raw", None)
+    rpc = getattr(raw, "rpc", None)
+    if isinstance(rpc, Mapping):
+        return rpc
+
+    dispatch = temp.get("dispatch", {}) if isinstance(temp, dict) else {}
+    if isinstance(dispatch, Mapping):
+        rpc_dispatch = dispatch.get("rpc")
+        if isinstance(rpc_dispatch, Mapping):
+            return rpc_dispatch
+        rpc_batch = dispatch.get("rpc_batch")
+        if isinstance(rpc_batch, list):
+            return rpc_batch
+
+    body = getattr(ctx, "body", None)
+    if isinstance(body, (bytes, bytearray)):
+        try:
+            body = json.loads(bytes(body).decode("utf-8"))
+        except Exception:
+            body = None
+    if isinstance(body, (Mapping, list)):
+        return body
+
+    request = getattr(ctx, "request", None)
+    req_body = getattr(request, "_json", None)
+    if isinstance(req_body, (Mapping, list)):
+        return req_body
+    return None
+
+
+def _is_jsonrpc_notification(ctx: Any) -> bool:
+    payload = _jsonrpc_request_payload(ctx)
+    return (
+        isinstance(payload, Mapping)
+        and payload.get("jsonrpc") == "2.0"
+        and "id" not in payload
+    )
+
+
+def _is_jsonrpc_request(ctx: Any) -> bool:
+    raw = getattr(ctx, "gw_raw", None) or getattr(ctx, "raw", None)
+    if getattr(raw, "kind", None) == "jsonrpc":
+        return True
+
+    temp = getattr(ctx, "temp", None)
+    route = temp.get("route", {}) if isinstance(temp, dict) else {}
+    rpc_env = route.get("rpc_envelope") if isinstance(route, dict) else None
+    if isinstance(rpc_env, Mapping) and rpc_env.get("jsonrpc") == "2.0":
+        return True
+
+    path = getattr(raw, "path", None)
+    app = getattr(ctx, "app", None)
+    prefix = getattr(app, "jsonrpc_prefix", None)
+    if isinstance(path, str) and isinstance(prefix, str):
+        return (path.rstrip("/") or "/") == (prefix.rstrip("/") or "/")
+
+    return False
+
+
+def _normalize_jsonrpc_transport_response(
+    ctx: Any, response: dict[str, Any]
+) -> dict[str, Any]:
+    normalized = dict(response)
+    body = normalized.get("body")
+    status_code = int(normalized.get("status_code", 200) or 200)
+    if status_code == 204 and body in (None, b"", ""):
+        normalized["status_code"] = 204
+        normalized["body"] = b""
+        return normalized
+
+    if body is None:
+        body = getattr(ctx, "result", None)
+    if isinstance(body, (bytes, bytearray)):
+        try:
+            body = json.loads(bytes(body).decode("utf-8"))
+        except Exception:
+            body = bytes(body).decode("utf-8", errors="replace")
+
+    if isinstance(body, list):
+        normalized["status_code"] = 200
+        normalized["body"] = body
+        return normalized
+
+    request_id = _jsonrpc_request_id(ctx)
+    if request_id is None and _is_jsonrpc_notification(ctx):
+        normalized["status_code"] = 204
+        normalized["body"] = b""
+        return normalized
+
+    if isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
+        normalized["status_code"] = 200
+        normalized["body"] = body
+        return normalized
+
+    if not (isinstance(body, Mapping) and body.get("jsonrpc") == "2.0"):
+        if status_code >= 400:
+            from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
+
+            rpc_code = _HTTP_TO_RPC.get(status_code, -32603)
+            message = ERROR_MESSAGES.get(rpc_code, "Internal error")
+            if isinstance(body, Mapping):
+                detail = body.get("detail")
+                if detail == UNMATCHED_RUNTIME_DETAIL:
+                    rpc_code = -32601
+                    message = "Method not found"
+                    data = {"detail": "Method not found"}
+                elif isinstance(detail, str) and detail:
+                    message = detail
+                    data = dict(body)
+                else:
+                    data = dict(body)
+            else:
+                data = {"detail": body}
+            body = {
+                "jsonrpc": "2.0",
+                "error": {"code": rpc_code, "message": message, "data": data},
+                "id": request_id,
+            }
+        else:
+            body = {"jsonrpc": "2.0", "result": body, "id": request_id}
+
+    normalized["status_code"] = 200
+    normalized["body"] = body
+    return normalized
+
+
+def _run(obj: object | None, ctx: Any) -> None:
+    del obj
+    temp = _ensure_temp(ctx)
+    egress = temp.setdefault("egress", {})
+
+    existing = egress.get("transport_response")
+    if isinstance(existing, dict):
+        if _is_jsonrpc_request(ctx):
+            normalized = _normalize_jsonrpc_transport_response(ctx, existing)
+            egress["transport_response"] = normalized
+            setattr(ctx, "transport_response", normalized)
+        return
+
+    body = egress.get("enveloped")
+    if body is None:
+        body = egress.get("wire_payload")
+    if body is None:
+        body = getattr(ctx, "result", None)
+    if body is None:
+        response_ns = getattr(ctx, "response", None)
+        if response_ns is not None:
+            body = getattr(response_ns, "result", None)
+
+    headers_obj = egress.get("headers", getattr(ctx, "response_headers", {})) or {}
+    if isinstance(headers_obj, dict):
+        headers = dict(headers_obj)
+    else:
+        data = getattr(headers_obj, "__dict__", None)
+        if isinstance(data, dict):
+            headers = dict(data)
+        else:
+            try:
+                headers = dict(headers_obj)
+            except Exception:
+                headers = {}
+
+    status_code = int(
+        egress.get("status_code", getattr(ctx, "status_code", 200)) or 200
+    )
+    response = {
+        "status_code": status_code,
+        "headers": headers,
+        "body": body,
+    }
+    if _is_jsonrpc_request(ctx):
+        response = _normalize_jsonrpc_transport_response(ctx, response)
+
+    egress["transport_response"] = response
+    setattr(ctx, "transport_response", response)
+
+
+class AtomImpl(Atom[Encoded, Emitting, Exception]):
+    name = "egress.to_transport_response"
+    anchor = ANCHOR
+
+    async def __call__(self, obj: object | None, ctx: Ctx[Encoded]) -> Ctx[Emitting]:
+        _run(obj, ctx)
+        return ctx.promote(EmittingCtx)
+
+
+INSTANCE = AtomImpl()
+
+__all__ = ["ANCHOR", "INSTANCE"]

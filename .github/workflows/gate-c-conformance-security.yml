@@ -28,7 +28,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip uv
           uv sync --all-groups --no-install-workspace --frozen
-          uv pip install --no-deps -e pkgs/00_typing/tigrbl_typing
+          uv pip install --no-deps -e pkgs/000_typing/tigrbl_typing
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -46,7 +46,7 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/050_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Validate Gate C conformance/security closure
@@ -55,17 +55,17 @@ jobs:
       - name: Run Gate C conformance/security tests
         run: >-
           uv run --no-sync python -m pytest --noconftest -q
-          pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
-          pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
-          pkgs/97_tests/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
-          pkgs/97_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py
-          pkgs/97_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
-          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
-          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
-          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
-          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
-          pkgs/97_tests/tigrbl_tests/tests/security/test_schemes.py
+          pkgs/210_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
+          pkgs/210_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
+          pkgs/210_tests/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
+          pkgs/210_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py
+          pkgs/210_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
+          pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
+          pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
+          pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
+          pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
+          pkgs/210_tests/tigrbl_tests/tests/security/test_schemes.py
           tools/ci/tests/test_http_auth_challenges.py
-          pkgs/97_tests/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py
+          pkgs/210_tests/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py
           tools/ci/tests/test_gate_c_conformance_security.py
           -p no:cacheprovider

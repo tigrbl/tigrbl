@@ -110,7 +110,7 @@ so serialization cannot add a default for an omitted key. The hook adds
 `cost_basis` only for the owner. The example checks the actual REST and
 JSON-RPC responses for a mixed-permission list, an authorized `null`, and a
 policy error that returns no row data. See the
-[runnable field authorization example](../../pkgs/96_examples/tigrbl_examples/tigrbl_examples/21_expert_security/test_07_per_row_field_authorization.py).
+[runnable field authorization example](../../pkgs/170_examples/tigrbl_examples/tigrbl_examples/21_expert_security/test_07_per_row_field_authorization.py).
 
 Scope row visibility in the query before pagination and counts. Apply field
 permissions to filtering, sorting, and aggregates wherever those operations

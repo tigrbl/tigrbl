@@ -1,196 +1,228 @@
 schema_version = "1.1.0"
 
 [[layers]]
-id = "00_typing"
+id = "000_typing"
 order = 0
-path = "pkgs/00_typing"
-description = "Typing"
+path = "pkgs/000_typing"
+description = "Shared types, protocols, and field definitions, including native trace identity and execution fields."
 same_layer_dependencies = "allowed"
 allowed_dependency_layers = []
 
 [[layers]]
-id = "01_spec"
+id = "001_spec"
 order = 1
-path = "pkgs/01_spec"
-description = "Spec"
+path = "pkgs/001_spec"
+description = "Declarative specifications and schemas for framework contracts."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing"]
+allowed_dependency_layers = ["000_typing"]
 
 [[layers]]
-id = "02_model"
+id = "002_model"
 order = 2
-path = "pkgs/02_model"
-description = "Model"
+path = "pkgs/002_model"
+description = "Model definitions and metadata used by the framework."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec"]
+allowed_dependency_layers = ["000_typing", "001_spec"]
 
 [[layers]]
-id = "10_core"
+id = "010_core"
 order = 10
-path = "pkgs/10_core"
-description = "Core"
+path = "pkgs/010_core"
+description = "Reusable framework primitives and shared trace wire validation, timeline projection, and rollups."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model"]
 
 [[layers]]
-id = "20_base"
+id = "020_base"
 order = 20
-path = "pkgs/20_base"
-description = "Base"
+path = "pkgs/020_base"
+description = "Base classes and interfaces for apps, routers, tables, hooks, engines, and sessions."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core"]
 
 [[layers]]
-id = "30_orm"
+id = "030_orm"
 order = 30
-path = "pkgs/30_orm"
-description = "ORM"
+path = "pkgs/030_orm"
+description = "ORM mappings, persistence metadata, and database integration primitives."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base"]
 
 [[layers]]
-id = "40_atoms"
+id = "040_atoms"
 order = 40
-path = "pkgs/40_atoms"
-description = "Atoms"
+path = "pkgs/040_atoms"
+description = "Execution steps for ingress, validation, storage, transactions, and egress."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm"]
 
 [[layers]]
-id = "45_kernel"
+id = "045_kernel"
 order = 45
-path = "pkgs/45_kernel"
-description = "Kernel"
+path = "pkgs/045_kernel"
+description = "Execution planning, protocol chains, lifecycle sequencing, and kernel trace instrumentation."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms"]
 
 [[layers]]
-id = "50_runtime"
+id = "050_runtime"
 order = 50
-path = "pkgs/50_runtime"
-description = "Runtime"
+path = "pkgs/050_runtime"
+description = "Runtime dispatch, plan execution, and delivery of trace samples."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel"]
 
 [[layers]]
-id = "60_ops"
+id = "060_ops"
 order = 60
-path = "pkgs/60_ops"
-description = "Operations"
+path = "pkgs/060_ops"
+description = "Built-in CRUD, analytical, realtime, and transport operation families."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime"]
 
 [[layers]]
-id = "70_concrete"
+id = "070_concrete"
 order = 70
-path = "pkgs/70_concrete"
-description = "Concrete"
+path = "pkgs/070_concrete"
+description = "Concrete app, router, table, and column implementations and their binding machinery."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops"]
 
 [[layers]]
-id = "80_facade"
+id = "080_facade"
 order = 80
-path = "pkgs/80_facade"
-description = "Facade"
+path = "pkgs/080_facade"
+description = "Public Python entry points for the supported Tigrbl authoring API."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete"]
 
 [[layers]]
-id = "90_engines"
+id = "090_engines"
 order = 90
-path = "pkgs/90_engines"
-description = "Engines"
+path = "pkgs/090_engines"
+description = "Engine providers, drivers, and adapters, including PostgreSQL and SQLite."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete", "80_facade"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade"]
 
 [[layers]]
-id = "95_client"
-order = 95
-path = "pkgs/95_client"
-description = "Client"
+id = "110_backend"
+order = 110
+path = "pkgs/110_backend"
+description = "Server applications built on Tigrbl and its engines, including the Trace Lab collector, timeline storage, authentication, and query API."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete", "80_facade", "90_engines"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines"]
 
 [[layers]]
-id = "96_examples"
-order = 96
-path = "pkgs/96_examples"
-description = "Examples"
+id = "130_frontend"
+order = 130
+path = "pkgs/130_frontend"
+description = "Browser applications built against backend APIs, including the Trace Lab explorer, correlation views, and waterfall."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete", "80_facade", "90_engines", "95_client"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend"]
 
 [[layers]]
-id = "97_tests"
-order = 97
-path = "pkgs/97_tests"
-description = "Test Suite"
+id = "150_client"
+order = 150
+path = "pkgs/150_client"
+description = "Outbound clients, including the trace exporter and its batching, retry, and shutdown behavior."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete", "80_facade", "90_engines", "95_client", "96_examples"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend"]
 
 [[layers]]
-id = "98_experimental"
-order = 98
-path = "pkgs/98_experimental"
-description = "Experimental"
+id = "170_examples"
+order = 170
+path = "pkgs/170_examples"
+description = "Runnable public examples, including Notes Pilot and a Trace Lab walkthrough that runs from public source."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete", "80_facade", "90_engines", "95_client", "96_examples", "97_tests"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend", "150_client"]
 
 [[layers]]
-id = "99_deprecated"
-order = 99
-path = "pkgs/99_deprecated"
-description = "Deprecated"
+id = "210_tests"
+order = 210
+path = "pkgs/210_tests"
+description = "Shared test tooling and framework integration, architecture, and conformance suites."
 same_layer_dependencies = "allowed"
-allowed_dependency_layers = ["00_typing", "01_spec", "02_model", "10_core", "20_base", "30_orm", "40_atoms", "45_kernel", "50_runtime", "60_ops", "70_concrete", "80_facade", "90_engines", "95_client", "96_examples", "97_tests", "98_experimental"]
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend", "150_client", "170_examples"]
+
+[[layers]]
+id = "800_experimental"
+order = 800
+path = "pkgs/800_experimental"
+description = "Prototypes under evaluation for promotion into a supported layer."
+same_layer_dependencies = "allowed"
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend", "150_client", "170_examples", "210_tests"]
+
+[[layers]]
+id = "990_deprecated_unpublished"
+order = 990
+path = "pkgs/990_deprecated_unpublished"
+description = "Retired packages with no prior registry publication. Excluded from first publication."
+same_layer_dependencies = "allowed"
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend", "150_client"]
+
+[[layers]]
+id = "997_deprecated_pending_migration"
+order = 997
+path = "pkgs/997_deprecated_pending_migration"
+description = "Previously published packages awaiting a release that announces deprecation and provides migration or retirement instructions."
+same_layer_dependencies = "allowed"
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend", "150_client"]
+
+[[layers]]
+id = "999_deprecated_dead"
+order = 999
+path = "pkgs/999_deprecated_dead"
+description = "Retired packages whose final deprecation-and-migration release has been published. Source and migration records are retained for reference."
+same_layer_dependencies = "allowed"
+allowed_dependency_layers = ["000_typing", "001_spec", "002_model", "010_core", "020_base", "030_orm", "040_atoms", "045_kernel", "050_runtime", "060_ops", "070_concrete", "080_facade", "090_engines", "110_backend", "130_frontend", "150_client"]
 
 [[packages]]
 id = "tigrbl_typing"
 name = "tigrbl-typing"
-layer = "00_typing"
+layer = "000_typing"
 order = 0
-path = "pkgs/00_typing/tigrbl_typing"
+path = "pkgs/000_typing/tigrbl_typing"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_spec"
 name = "tigrbl_spec"
-layer = "01_spec"
+layer = "001_spec"
 order = 0
-path = "pkgs/01_spec/tigrbl_spec"
+path = "pkgs/001_spec/tigrbl_spec"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_model"
 name = "tigrbl_model"
-layer = "02_model"
+layer = "002_model"
 order = 0
-path = "pkgs/02_model/tigrbl_model"
+path = "pkgs/002_model/tigrbl_model"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_core"
 name = "tigrbl-core"
-layer = "10_core"
+layer = "010_core"
 order = 0
-path = "pkgs/10_core/tigrbl_core"
+path = "pkgs/010_core/tigrbl_core"
 ecosystem = "pypi"
 dependencies = ["tigrbl_spec", "tigrbl_typing"]
 
 [[packages]]
 id = "tigrbl_migrations"
 name = "tigrbl-migrations"
-layer = "10_core"
+layer = "010_core"
 order = 0
-path = "pkgs/10_core/tigrbl_migrations"
+path = "pkgs/010_core/tigrbl_migrations"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_base"
 name = "tigrbl-base"
-layer = "20_base"
+layer = "020_base"
 order = 0
-path = "pkgs/20_base/tigrbl_base"
+path = "pkgs/020_base/tigrbl_base"
 ecosystem = "pypi"
 dependencies = ["tigrbl_core"]
 
@@ -200,17 +232,17 @@ tigrbl_atoms = "Existing batch/session helper coupling predates this layer index
 [[packages]]
 id = "tigrbl_orm"
 name = "tigrbl-orm"
-layer = "30_orm"
+layer = "030_orm"
 order = 0
-path = "pkgs/30_orm/tigrbl_orm"
+path = "pkgs/030_orm/tigrbl_orm"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_atoms"
 name = "tigrbl-atoms"
-layer = "40_atoms"
+layer = "040_atoms"
 order = 0
-path = "pkgs/40_atoms/tigrbl_atoms"
+path = "pkgs/040_atoms/tigrbl_atoms"
 ecosystem = "pypi"
 dependencies = ["tigrbl_core", "tigrbl_typing"]
 
@@ -223,393 +255,435 @@ tigrbl_ops_webtransport = "Existing atom test/runtime coupling predates this lay
 [[packages]]
 id = "tigrbl_kernel"
 name = "tigrbl-kernel"
-layer = "45_kernel"
+layer = "045_kernel"
 order = 0
-path = "pkgs/45_kernel/tigrbl_kernel"
+path = "pkgs/045_kernel/tigrbl_kernel"
 ecosystem = "pypi"
 dependencies = ["tigrbl_atoms", "tigrbl_core", "tigrbl_typing"]
 
 [[packages]]
 id = "tigrbl_runtime"
 name = "tigrbl-runtime"
-layer = "50_runtime"
+layer = "050_runtime"
 order = 0
-path = "pkgs/50_runtime/tigrbl_runtime"
+path = "pkgs/050_runtime/tigrbl_runtime"
 ecosystem = "pypi"
 dependencies = ["tigrbl_atoms", "tigrbl_base", "tigrbl_core", "tigrbl_kernel", "tigrbl_typing"]
 
 [[packages]]
 id = "tigrbl_ops_olap"
 name = "tigrbl-ops-olap"
-layer = "60_ops"
+layer = "060_ops"
 order = 0
-path = "pkgs/60_ops/tigrbl_ops_olap"
+path = "pkgs/060_ops/tigrbl_ops_olap"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_ops_oltp"
 name = "tigrbl-ops-oltp"
-layer = "60_ops"
+layer = "060_ops"
 order = 0
-path = "pkgs/60_ops/tigrbl_ops_oltp"
+path = "pkgs/060_ops/tigrbl_ops_oltp"
 ecosystem = "pypi"
 dependencies = ["tigrbl_base", "tigrbl_core", "tigrbl_orm"]
 
 [[packages]]
 id = "tigrbl_ops_realtime"
 name = "tigrbl-ops-realtime"
-layer = "60_ops"
+layer = "060_ops"
 order = 0
-path = "pkgs/60_ops/tigrbl_ops_realtime"
+path = "pkgs/060_ops/tigrbl_ops_realtime"
 ecosystem = "pypi"
 dependencies = ["tigrbl_typing"]
 
 [[packages]]
 id = "tigrbl_ops_webtransport"
 name = "tigrbl-ops-webtransport"
-layer = "60_ops"
+layer = "060_ops"
 order = 0
-path = "pkgs/60_ops/tigrbl_ops_webtransport"
+path = "pkgs/060_ops/tigrbl_ops_webtransport"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_concrete"
 name = "tigrbl-concrete"
-layer = "70_concrete"
+layer = "070_concrete"
 order = 0
-path = "pkgs/70_concrete/tigrbl_concrete"
+path = "pkgs/070_concrete/tigrbl_concrete"
 ecosystem = "pypi"
 dependencies = ["tigrbl_atoms", "tigrbl_base", "tigrbl_core", "tigrbl_ops_olap", "tigrbl_ops_oltp", "tigrbl_ops_realtime", "tigrbl_ops_webtransport", "tigrbl_runtime", "tigrbl_typing"]
 
 [[packages]]
 id = "tigrbl"
 name = "tigrbl"
-layer = "80_facade"
+layer = "080_facade"
 order = 0
-path = "pkgs/80_facade/tigrbl"
+path = "pkgs/080_facade/tigrbl"
 ecosystem = "pypi"
 dependencies = ["tigrbl_atoms", "tigrbl_base", "tigrbl_concrete", "tigrbl_core", "tigrbl_kernel", "tigrbl_ops_oltp", "tigrbl_orm", "tigrbl_runtime"]
-
-[packages.metadata.tigrbl.legacy_dependency_exceptions]
-tigrbl_canon = "Legacy facade compatibility import retained while deprecated canon paths are retired."
 
 [[packages]]
 id = "tigrbl_engine_bigquery"
 name = "tigrbl_engine_bigquery"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_bigquery"
+path = "pkgs/090_engines/tigrbl_engine_bigquery"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_clickhouse"
 name = "tigrbl_engine_clickhouse"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_clickhouse"
+path = "pkgs/090_engines/tigrbl_engine_clickhouse"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_csv"
 name = "tigrbl_engine_csv"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_csv"
+path = "pkgs/090_engines/tigrbl_engine_csv"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_engine_pandas"]
 
 [[packages]]
 id = "tigrbl_engine_dataframe"
 name = "tigrbl_engine_dataframe"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_dataframe"
+path = "pkgs/090_engines/tigrbl_engine_dataframe"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_duckdb"
 name = "tigrbl_engine_duckdb"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_duckdb"
+path = "pkgs/090_engines/tigrbl_engine_duckdb"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_inmemcache"
 name = "tigrbl_engine_inmemcache"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_inmemcache"
+path = "pkgs/090_engines/tigrbl_engine_inmemcache"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_inmemory"
 name = "tigrbl_engine_inmemory"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_inmemory"
+path = "pkgs/090_engines/tigrbl_engine_inmemory"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_membloom"
 name = "tigrbl_engine_membloom"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_membloom"
+path = "pkgs/090_engines/tigrbl_engine_membloom"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_memdedupe"
 name = "tigrbl_engine_memdedupe"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_memdedupe"
+path = "pkgs/090_engines/tigrbl_engine_memdedupe"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_memkv"
 name = "tigrbl_engine_memkv"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_memkv"
+path = "pkgs/090_engines/tigrbl_engine_memkv"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_memlru"
 name = "tigrbl_engine_memlru"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_memlru"
+path = "pkgs/090_engines/tigrbl_engine_memlru"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_mempubsub"
 name = "tigrbl_engine_mempubsub"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_mempubsub"
+path = "pkgs/090_engines/tigrbl_engine_mempubsub"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_memqueue"
 name = "tigrbl_engine_memqueue"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_memqueue"
+path = "pkgs/090_engines/tigrbl_engine_memqueue"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_memrate"
 name = "tigrbl_engine_memrate"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_memrate"
+path = "pkgs/090_engines/tigrbl_engine_memrate"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_mariadb"
 name = "tigrbl_engine_mariadb"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_mariadb"
+path = "pkgs/090_engines/tigrbl_engine_mariadb"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_numpy"
 name = "tigrbl_engine_numpy"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_numpy"
+path = "pkgs/090_engines/tigrbl_engine_numpy"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_pandas"
 name = "tigrbl_engine_pandas"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_pandas"
+path = "pkgs/090_engines/tigrbl_engine_pandas"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_pgsqli_wal"
 name = "tigrbl_engine_pgsqli_wal"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_pgsqli_wal"
+path = "pkgs/090_engines/tigrbl_engine_pgsqli_wal"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_engine_postgres"
 name = "tigrbl_engine_postgres"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_postgres"
+path = "pkgs/090_engines/tigrbl_engine_postgres"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_pyspark"
 name = "tigrbl_engine_pyspark"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_pyspark"
+path = "pkgs/090_engines/tigrbl_engine_pyspark"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_redis"
 name = "tigrbl_engine_redis"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_redis"
+path = "pkgs/090_engines/tigrbl_engine_redis"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_ops_realtime"]
 
 [[packages]]
 id = "tigrbl_engine_rediscachethrough"
 name = "tigrbl_engine_rediscachethrough"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_rediscachethrough"
+path = "pkgs/090_engines/tigrbl_engine_rediscachethrough"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_rom"
 name = "tigrbl_engine_rom"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_rom"
+path = "pkgs/090_engines/tigrbl_engine_rom"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_s3"
 name = "tigrbl_engine_s3"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_s3"
+path = "pkgs/090_engines/tigrbl_engine_s3"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_s3fs"
 name = "tigrbl_engine_s3fs"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_s3fs"
+path = "pkgs/090_engines/tigrbl_engine_s3fs"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_snowflake"
 name = "tigrbl_engine_snowflake"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_snowflake"
+path = "pkgs/090_engines/tigrbl_engine_snowflake"
 ecosystem = "pypi"
 
 [[packages]]
 id = "tigrbl_engine_sqlite"
 name = "tigrbl_engine_sqlite"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_sqlite"
+path = "pkgs/090_engines/tigrbl_engine_sqlite"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_engine_xlsx"
 name = "tigrbl_engine_xlsx"
-layer = "90_engines"
+layer = "090_engines"
 order = 0
-path = "pkgs/90_engines/tigrbl_engine_xlsx"
+path = "pkgs/090_engines/tigrbl_engine_xlsx"
 ecosystem = "pypi"
 dependencies = ["tigrbl"]
 
 [[packages]]
 id = "tigrbl_client"
 name = "tigrbl_client"
-layer = "95_client"
+layer = "150_client"
 order = 0
-path = "pkgs/95_client/tigrbl_client"
+path = "pkgs/150_client/tigrbl_client"
 ecosystem = "pypi"
+
+[[packages]]
+id = "tigrbl_trace_transport"
+name = "tigrbl-trace-transport"
+layer = "150_client"
+order = 1
+path = "pkgs/150_client/tigrbl_trace_transport"
+ecosystem = "pypi"
+dependencies = ["tigrbl_trace"]
 
 [[packages]]
 id = "equivalence_contracts"
 name = "tigrbl-equivalence-contracts"
-layer = "96_examples"
+layer = "170_examples"
 order = 0
-path = "pkgs/96_examples/equivalence_contracts"
+path = "pkgs/170_examples/equivalence_contracts"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_core"]
 
 [[packages]]
 id = "tigrbl_examples"
 name = "tigrbl-examples"
-layer = "96_examples"
+layer = "170_examples"
 order = 0
-path = "pkgs/96_examples/tigrbl_examples"
+path = "pkgs/170_examples/tigrbl_examples"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_client"]
 
 [[packages]]
 id = "transport_surface_matrix_demo"
 name = "tigrbl-transport-surface-matrix-demo"
-layer = "96_examples"
+layer = "170_examples"
 order = 0
-path = "pkgs/96_examples/transport_surface_matrix_demo"
+path = "pkgs/170_examples/transport_surface_matrix_demo"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_core", "tigrbl_kernel"]
 
 [[packages]]
 id = "websocket_realtime_ops"
 name = "tigrbl-websocket-realtime-ops-demo"
-layer = "96_examples"
+layer = "170_examples"
 order = 0
-path = "pkgs/96_examples/websocket_realtime_ops"
+path = "pkgs/170_examples/websocket_realtime_ops"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_core"]
 
 [[packages]]
 id = "tigrbl_tests"
 name = "tigrbl_tests"
-layer = "97_tests"
+layer = "210_tests"
 order = 0
-path = "pkgs/97_tests/tigrbl_tests"
+path = "pkgs/210_tests/tigrbl_tests"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_client", "tigrbl_examples"]
 
 [[packages]]
 id = "tigrbl_mcp"
 name = "tigrbl-mcp"
-layer = "98_experimental"
+layer = "800_experimental"
 order = 0
-path = "pkgs/98_experimental/tigrbl_mcp"
+path = "pkgs/800_experimental/tigrbl_mcp"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_core"]
 
 [[packages]]
 id = "tigrbl_canon"
 name = "tigrbl-canon"
-layer = "99_deprecated"
+layer = "997_deprecated_pending_migration"
 order = 0
-path = "pkgs/99_deprecated/tigrbl_canon"
+path = "pkgs/997_deprecated_pending_migration/tigrbl_canon"
 ecosystem = "pypi"
 dependencies = ["tigrbl", "tigrbl_atoms", "tigrbl_base", "tigrbl_concrete", "tigrbl_core", "tigrbl_ops_oltp", "tigrbl_runtime"]
+
+[[packages]]
+id = "tigrbl_trace"
+name = "tigrbl-trace"
+layer = "010_core"
+order = 99
+path = "pkgs/010_core/tigrbl_trace"
+ecosystem = "pypi"
+dependencies = ["tigrbl_typing"]
+
+[[packages]]
+id = "trace_lab_server"
+name = "tigrbl-transport-trace-lab"
+layer = "110_backend"
+order = 99
+path = "pkgs/110_backend/trace-lab-server"
+ecosystem = "pypi"
+dependencies = ["tigrbl", "tigrbl_core", "tigrbl_engine_postgres", "tigrbl_trace"]
+
+[[packages]]
+id = "trace_lab_ui"
+name = "@tigrbl/trace-lab-ui"
+layer = "130_frontend"
+order = 99
+path = "pkgs/130_frontend/trace-lab-ui"
+ecosystem = "npm"
+dependencies = ["trace_lab_server"]
+
+[[packages]]
+id = "trace_lab_demo"
+name = "tigrbl-trace-lab-demo"
+layer = "170_examples"
+order = 99
+path = "pkgs/170_examples/trace-lab-demo"
+ecosystem = "pypi"
+dependencies = ["trace_lab_server", "tigrbl", "tigrbl_core", "tigrbl_engine_postgres", "tigrbl_engine_sqlite", "tigrbl_ops_realtime", "tigrbl_trace", "tigrbl_trace_transport"]

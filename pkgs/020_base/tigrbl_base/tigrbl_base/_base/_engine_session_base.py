@@ -1,0 +1,238 @@
+from __future__ import annotations
+
+import asyncio
+import inspect
+from collections import deque
+from datetime import datetime, timezone
+from time import perf_counter_ns
+from uuid import uuid4
+from dataclasses import fields
+from typing import Any, Callable, List
+
+from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
+
+
+class EngineSessionBase(EngineSessionSpec):
+    """Base contract and guardrails for engine database sessions."""
+
+    _has_transaction_boundary = True
+
+    def __init__(self, spec: EngineSessionSpec | None = None) -> None:
+        resolved = spec or EngineSessionSpec()
+        super().__init__(
+            **{
+                field.name: getattr(resolved, field.name)
+                for field in fields(EngineSessionSpec)
+            }
+        )
+        self._spec: EngineSessionSpec = self
+        self._open = False
+        self._dirty = False
+        self._pending: List[asyncio.Task] = []
+        self.engine_session_id = uuid4().hex
+        self.transaction_id: str | None = None
+        self._observes_provider_begin = False
+        self._transaction_start: tuple[int, str] | None = None
+        self._transaction_events: deque[dict[str, str | float]] = deque(maxlen=256)
+        self._flush_events: deque[dict[str, str | float]] = deque(maxlen=256)
+
+    def transaction_events(self) -> tuple[dict[str, str | float], ...]:
+        return tuple(dict(event) for event in self._transaction_events)
+
+    def flush_events(self) -> tuple[dict[str, str | float], ...]:
+        return tuple(dict(event) for event in self._flush_events)
+
+    def _begin_transaction_identity(self) -> None:
+        if self.transaction_id is None:
+            self.transaction_id = uuid4().hex
+            self._transaction_start = (perf_counter_ns(), datetime.now(timezone.utc).isoformat())
+            self._record_transaction_event("begin")
+
+    def _record_transaction_event(self, outcome: str) -> None:
+        if self.transaction_id is not None:
+            event: dict[str, str | float] = {
+                "engine_session_id": self.engine_session_id,
+                "transaction_id": self.transaction_id,
+                "outcome": outcome,
+            }
+            if self._transaction_start is not None:
+                started_ns, started_at = self._transaction_start
+                if outcome == "begin":
+                    event["source_started_at"] = started_at
+                elif outcome in {"committed", "rolled_back"}:
+                    event.update(
+                        measured_duration_ms=(perf_counter_ns() - started_ns) / 1_000_000,
+                        source_started_at=started_at,
+                        source_ended_at=datetime.now(timezone.utc).isoformat(),
+                        timing_boundary=(
+                            "db_tx_begin_to_commit" if outcome == "committed"
+                            else "db_tx_begin_to_rollback"
+                        ),
+                        clock_domain="engine_monotonic",
+                    )
+            self._transaction_events.append(event)
+
+    def _end_transaction_identity(self, outcome: str) -> None:
+        self._record_transaction_event(outcome)
+        self.transaction_id = None
+        self._transaction_start = None
+
+    def apply_spec(self, spec: EngineSessionSpec | None) -> None:
+        resolved = spec or EngineSessionSpec()
+        for field in fields(EngineSessionSpec):
+            object.__setattr__(self, field.name, getattr(resolved, field.name))
+        self._spec = self
+
+    async def run_sync(self, fn: Callable[[Any], Any]) -> Any:
+        rv = fn(self)
+        if inspect.isawaitable(rv):
+            return await rv
+        return rv
+
+    async def begin(self) -> None:
+        await self._tx_begin_impl()
+        self._open = True
+        if self._has_transaction_boundary and not self._observes_provider_begin:
+            self._begin_transaction_identity()
+
+    async def commit(self) -> None:
+        if self._spec and self._spec.read_only and self._dirty:
+            raise RuntimeError("read-only session: writes detected before commit")
+        await self.flush()
+        try:
+            await self._tx_commit_impl()
+        except BaseException:
+            if self.transaction_id is not None and not self.in_transaction():
+                self._end_transaction_identity("unknown")
+            raise
+        self._end_transaction_identity("committed")
+        self._open = False
+        self._dirty = False
+
+    async def rollback(self) -> None:
+        for t in self._pending:
+            try:
+                t.cancel()
+            except Exception:
+                pass
+        self._pending.clear()
+        await self._tx_rollback_impl()
+        self._end_transaction_identity("rolled_back")
+        self._open = False
+        self._dirty = False
+
+    def in_transaction(self) -> bool:
+        return bool(self._open)
+
+    def add(self, obj: Any) -> None:
+        if self._spec and self._spec.read_only:
+            raise RuntimeError("write attempted in read-only engine session (add)")
+        self._dirty = True
+        rv = self._add_impl(obj)
+        if inspect.isawaitable(rv):
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                asyncio.run(rv)
+            else:
+                self._pending.append(loop.create_task(rv))
+
+    async def delete(self, obj: Any) -> None:
+        if self._spec and self._spec.read_only:
+            raise RuntimeError("write attempted in read-only engine session (delete)")
+        self._dirty = True
+        await self._delete_impl(obj)
+
+    async def flush(self) -> None:
+        started_ns, started_at = perf_counter_ns(), datetime.now(timezone.utc).isoformat()
+        transaction_id = self.transaction_id
+        outcome = "failed"
+        try:
+            if self._pending:
+                done, _ = await asyncio.wait(
+                    self._pending, return_when=asyncio.ALL_COMPLETED
+                )
+                self._pending = []
+                for t in done:
+                    _ = t.result()
+            await self._flush_impl()
+            outcome = "ok"
+        finally:
+            event: dict[str, str | float] = {
+                "flush_id": uuid4().hex,
+                "engine_session_id": self.engine_session_id,
+                "outcome": outcome,
+                "source_started_at": started_at,
+                "source_ended_at": datetime.now(timezone.utc).isoformat(),
+                "measured_duration_ms": (perf_counter_ns() - started_ns) / 1_000_000,
+                "timing_boundary": "db_flush_monotonic",
+                "clock_domain": "engine_monotonic",
+            }
+            transaction_id = transaction_id or self.transaction_id
+            if transaction_id is not None:
+                event["transaction_id"] = transaction_id
+            self._flush_events.append(event)
+
+    async def refresh(self, obj: Any) -> None:
+        await self._refresh_impl(obj)
+
+    async def get(self, model: type, ident: Any) -> Any | None:
+        return await self._get_impl(model, ident)
+
+    async def execute(self, stmt: Any) -> Any:
+        return await self._execute_impl(stmt)
+
+    async def executeloop(self, statements: Any) -> Any:
+        return await self._executeloop_impl(statements)
+
+    async def executemany(self, stmt: Any, parameter_sets: Any) -> Any:
+        return await self._executemany_impl(stmt, parameter_sets)
+
+    async def close(self) -> None:
+        for t in self._pending:
+            try:
+                t.cancel()
+            except Exception:
+                pass
+        self._pending = []
+        await self._close_impl()
+        self._end_transaction_identity("unknown")
+
+    async def _tx_begin_impl(self) -> None:
+        raise NotImplementedError
+
+    async def _tx_commit_impl(self) -> None:
+        raise NotImplementedError
+
+    async def _tx_rollback_impl(self) -> None:
+        raise NotImplementedError
+
+    def _add_impl(self, obj: Any) -> Any:
+        raise NotImplementedError
+
+    async def _delete_impl(self, obj: Any) -> None:
+        raise NotImplementedError
+
+    async def _flush_impl(self) -> None:
+        return
+
+    async def _refresh_impl(self, obj: Any) -> None:
+        return
+
+    async def _get_impl(self, model: type, ident: Any) -> Any | None:
+        raise NotImplementedError
+
+    async def _execute_impl(self, stmt: Any) -> Any:
+        raise NotImplementedError
+
+    async def _executeloop_impl(self, statements: Any) -> Any:
+        raise NotImplementedError
+
+    async def _executemany_impl(self, stmt: Any, parameter_sets: Any) -> Any:
+        raise NotImplementedError
+
+    async def _close_impl(self) -> None:
+        return
+
+
+__all__ = ["EngineSessionBase"]

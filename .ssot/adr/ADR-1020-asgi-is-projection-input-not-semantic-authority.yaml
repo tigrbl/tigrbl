@@ -8,13 +8,25 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Decision: Tigrbl shall treat ASGI scope, receive, and send messages as projection inputs into canonical runtime events, metadata, and identities. ASGI message shapes may inform projection but must not bypass kernel taxonomy, runtime lifecycle rules, operation identity, or transport delivery contracts. Valid scenarios include projecting websocket.receive to message.received, HTTP request body frames to request or stream events by binding kind, and server metadata to allowlisted normalized runtime metadata. Invalid scenarios include unknown ASGI messages becoming semantic runtime events without a rule, server-specific extension fields becoming canonical state by accident, or ASGI carrier details implying delivery guarantees not declared by Tigrbl."
+summary: "Tigrbl projects ASGI scope and messages into canonical runtime events, metadata, and identities. The tigrbl_atoms ingress projector exclusively reads the raw ASGI scope type for framework dispatch. Kernel plans govern semantic dispatch and lifecycle behavior."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
   Decision: Tigrbl shall treat ASGI scope, receive, and send messages as projection inputs into canonical runtime events, metadata, and identities. ASGI message shapes may inform projection but must not bypass kernel taxonomy, runtime lifecycle rules, operation identity, or transport delivery contracts. Valid scenarios include projecting websocket.receive to message.received, HTTP request body frames to request or stream events by binding kind, and server metadata to allowlisted normalized runtime metadata. Invalid scenarios include unknown ASGI messages becoming semantic runtime events without a rule, server-specific extension fields becoming canonical state by accident, or ASGI carrier details implying delivery guarantees not declared by Tigrbl.
+
+  ## ASGI scope projection ownership
+
+  For each inbound ASGI scope entering Tigrbl framework dispatch, the designated ingress projector in `tigrbl_atoms` is the sole reader of the raw `scope["type"]` discriminator. It reads the discriminator once and projects it into a typed scope context. SPEC-1003 governs validation and error handling at this boundary. SPEC-2100 defines the supported ASGI scope kinds.
+
+  The kernel calls the atoms projector after receiving the original ASGI scope, receive, and send from the runtime forwarder under ADR-1000. The kernel uses the projected scope context with compiled bindings to select and drive the execution path under ADR-1047. Packed and fallback execution, trace classification, transport completion, and internal re-entry for the same inbound scope consume the original projection. They may read its typed discriminator. Raw scope fields can still pass through existing ASGI interfaces for carrier interoperability.
+
+  This rule covers the inbound ASGI scope discriminator in Tigrbl framework dispatch. ASGI receive and send message discriminators remain inputs to their respective projection contracts.
+
+  ## Verification
+
+  The scope projector tests exercise supported and invalid discriminators. A package-wide architecture check detects raw scope discriminator reads outside the designated projector in Tigrbl dispatch code. A public app integration test verifies one projection per inbound scope, including internal re-entry, and verifies that kernel selection consumes the projected value.
 
   ## Draft transport identity extension
 

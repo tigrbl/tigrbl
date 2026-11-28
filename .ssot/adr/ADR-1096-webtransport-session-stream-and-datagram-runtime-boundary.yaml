@@ -46,6 +46,14 @@ body: |-
   12. Table operations may bind to different WebTransport carriers under the same session. The operation binding must identify the selected carrier and, when needed, a lane name or purpose such as `control`, `events`, `upload`, or `presence`.
   13. When a WebTransport table declares a control stream, the first bidirectional stream may be reserved as the control stream. Control-stream reservation is protocol topology, while the selected control-stream payload shape remains a lane-local framing spec such as `JsonRpcFramingSpec`.
   
+  ## Outer session ownership
+
+  The kernel plan owns the outer WebTransport session loop across control streams, other bidirectional streams, unidirectional streams, and datagrams. It decides which events admit or continue a session, which events dispatch an operation, and which events terminate a stream or session. Runtime enters the selected session plan once per inbound ASGI session and drives it with the projected scope and carrier callables. Transport, framing, and cleanup atoms perform the effects selected by the plan. Concrete supplies binding registrations, handlers, lifecycle hooks, and configured broker and hub instances.
+
+  Operation completion, stream termination, and session termination are distinct transitions. An operation can emit a reply while its stream remains open. Stream termination releases state attached to that stream and leaves other lanes available. Session termination runs the ordered cleanup defined by ADR-1139 for remaining streams, subscriptions, and sinks. Attachment cleanup follows the ownership and generation rules in ADR-1209.
+
+  ADR-1202 governs the inner control-stream record loop. A control stream may dispatch multiple operations over its lifetime, including when carrier reads split or coalesce application records.
+
   ## Context
   
   WebTransport is visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport events to be represented explicitly while keeping native WT structure clear.

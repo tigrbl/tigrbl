@@ -26,7 +26,7 @@ class GeneratedBlock:
 
 
 def _add_workspace_paths() -> None:
-    candidates = [ROOT, ROOT / "pkgs" / "96_examples" / "equivalence_contracts" / "src"]
+    candidates = [ROOT, ROOT / "pkgs" / "170_examples" / "equivalence_contracts" / "src"]
     for base in sorted((ROOT / "pkgs").iterdir()):
         if not base.is_dir():
             continue
@@ -81,7 +81,7 @@ def _format_status(missing: list[str]) -> str:
 
 
 def _facade_exports() -> set[str]:
-    facade = ROOT / "pkgs" / "80_facade" / "tigrbl" / "tigrbl" / "__init__.py"
+    facade = ROOT / "pkgs" / "080_facade" / "tigrbl" / "tigrbl" / "__init__.py"
     tree = ast.parse(facade.read_text(encoding="utf-8"))
     exports: set[str] = set()
     for node in tree.body:
@@ -143,8 +143,8 @@ def render_authoring_public_surface() -> str:
         [
             _generated_note(
                 [
-                    "pkgs/80_facade/tigrbl/tigrbl/__init__.py",
-                    "pkgs/10_core/tigrbl_core/tigrbl_core/_spec/",
+                    "pkgs/080_facade/tigrbl/tigrbl/__init__.py",
+                    "pkgs/010_core/tigrbl_core/tigrbl_core/_spec/",
                 ]
             ),
             _markdown_table(
@@ -199,8 +199,8 @@ def render_router_table_public_surface() -> str:
         [
             _generated_note(
                 [
-                    "pkgs/80_facade/tigrbl/tigrbl/__init__.py",
-                    "pkgs/10_core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py",
+                    "pkgs/080_facade/tigrbl/tigrbl/__init__.py",
+                    "pkgs/010_core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py",
                 ]
             ),
             _markdown_table(
@@ -233,7 +233,7 @@ def render_table_profile_snapshot() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py"]
+                ["pkgs/010_core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py"]
             ),
             _markdown_table(
                 [
@@ -288,7 +288,7 @@ def render_transport_binding_support() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
+                ["pkgs/010_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
             ),
             _markdown_table(
                 ["Binding kind", "Allowed app-level framing", "Allowed exchanges"],
@@ -320,7 +320,7 @@ def render_webtransport_lane_support() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
+                ["pkgs/010_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
             ),
             _markdown_table(
                 ["Lane", "Runtime family", "Allowed inner framing", "Required exchange"],
@@ -354,7 +354,7 @@ def _parse_project_name(pyproject: Path) -> str:
 
 def render_engine_package_snapshot() -> str:
     rows = []
-    for pyproject in sorted((ROOT / "pkgs" / "90_engines").glob("*/pyproject.toml")):
+    for pyproject in sorted((ROOT / "pkgs" / "090_engines").glob("*/pyproject.toml")):
         package_name = _parse_project_name(pyproject)
         rows.append(
             [
@@ -366,7 +366,7 @@ def render_engine_package_snapshot() -> str:
         )
     return "\n\n".join(
         [
-            _generated_note(["pkgs/90_engines/*/pyproject.toml"]),
+            _generated_note(["pkgs/090_engines/*/pyproject.toml"]),
             _markdown_table(
                 ["Package", "Engine entry points", "Import root", "Repository path"],
                 rows,
@@ -410,7 +410,7 @@ def render_datatype_lowering_matrix() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
+                ["pkgs/010_core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
             ),
             _markdown_table(headers, rows),
         ]
@@ -441,7 +441,7 @@ def render_reflection_hints() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
+                ["pkgs/010_core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
             ),
             _markdown_table(["Engine family", "Physical names", "Logical hint"], rows),
         ]
@@ -470,9 +470,9 @@ def render_certifiable_equivalence_matrix() -> str:
         [
             _generated_note(
                 [
-                    "pkgs/96_examples/equivalence_contracts/src/tigrbl_equivalence_contracts/contracts.py",
-                    "pkgs/96_examples/equivalence_contracts/src/tigrbl_equivalence_contracts/equivalences/",
-                    "pkgs/96_examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
+                    "pkgs/170_examples/equivalence_contracts/src/tigrbl_equivalence_contracts/contracts.py",
+                    "pkgs/170_examples/equivalence_contracts/src/tigrbl_equivalence_contracts/equivalences/",
+                    "pkgs/170_examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
                 ]
             ),
             _markdown_table(

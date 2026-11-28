@@ -1,0 +1,357 @@
+from __future__ import annotations
+
+from collections import deque
+import inspect
+from typing import Any, Mapping
+
+from tigrbl_core._spec.hook_spec import HookSpec
+from tigrbl_atoms.atoms.transport.asgi_channel import (
+    message_payload as _message_payload,
+    payload_size as _webtransport_payload_size,
+    webtransport_scope_session_id,
+    webtransport_scope_state,
+)
+from tigrbl_kernel.channel_taxonomy import (
+    select_webtransport_hooks,
+    webtransport_event_metadata as _webtransport_event_metadata,
+)
+from tigrbl_atoms.atoms.ingress.identity import stream_correlation_id, webtransport_lane_identity
+from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
+from tigrbl_kernel.webtransport_session_plan import (
+    STREAM_TERMINATION_EVENTS,
+    WebTransportSessionPlan,
+)
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
+from tigrbl_typing.channel import OpChannel
+
+def _webtransport_scope_state(env: Any) -> dict[str, Any]:
+    scope = getattr(env, "scope", None)
+    return webtransport_scope_state(scope) if isinstance(scope, dict) else {}
+
+
+def _webtransport_scope_session_id(env: Any) -> Any:
+    scope = getattr(env, "scope", None)
+    return webtransport_scope_session_id(scope) if isinstance(scope, Mapping) else None
+
+
+def _enrich_webtransport_message(
+    env: Any, message: Mapping[str, Any]
+) -> dict[str, Any]:
+    enriched = dict(message)
+    if enriched.get("session_id") is None:
+        session_id = _webtransport_scope_session_id(env)
+        if session_id is not None:
+            enriched["session_id"] = session_id
+    return enriched
+
+
+def _trace_webtransport_event(
+    shared_state: dict[str, Any],
+    *,
+    direction: str,
+    phase: str,
+    message: Mapping[str, Any],
+) -> None:
+    trace = shared_state.setdefault("trace", [])
+    if not isinstance(trace, list):
+        trace = []
+        shared_state["trace"] = trace
+    entry: dict[str, Any] = {
+        "direction": direction,
+        "phase": phase,
+        "type": message.get("type"),
+    }
+    entry.update(
+        {
+            key: value
+            for key, value in _webtransport_event_metadata(
+                direction=direction,
+                message=message,
+            ).items()
+            if value is not None
+        }
+    )
+    for key in (
+        "session_id",
+        "stream_id",
+        "stream_direction",
+        "datagram_id",
+        "framing",
+        "more",
+        "code",
+    ):
+        if message.get(key) is not None:
+            entry[key] = message.get(key)
+    payload_size = _webtransport_payload_size(message)
+    if payload_size is not None:
+        entry["payload_bytes"] = payload_size
+    for key, value in shared_state.get("identity", {}).items():
+        if key not in {"stream_id", "stream_correlation_id", "datagram_id"}:
+            entry.setdefault(key, value)
+    if "stream_id" in entry and "correlation_id" in entry:
+        stream_correlations = shared_state.setdefault("stream_correlations", {})
+        entry["stream_correlation_id"] = stream_correlation_id(stream_correlations, entry["stream_id"])
+    trace.append(entry)
+
+
+def _iter_webtransport_hooks(ctx: Any) -> tuple[HookSpec, ...]:
+    hooks: list[HookSpec] = []
+    seen: set[int] = set()
+    for owner_key in ("app", "router"):
+        getter = getattr(ctx, "get", None)
+        owner = getter(owner_key) if callable(getter) else None
+        if owner is None:
+            owner = getattr(ctx, owner_key, None)
+        for item in _iter_hook_candidates(getattr(owner, "hooks", ())):
+            if id(item) in seen:
+                continue
+            if isinstance(item, HookSpec):
+                hooks.append(item)
+                seen.add(id(item))
+            elif isinstance(item, Mapping):
+                hook = HookSpec(**item)
+                hooks.append(hook)
+                seen.add(id(item))
+    return tuple(sorted(hooks, key=lambda hook: int(getattr(hook, "order", 0))))
+
+
+def _iter_hook_candidates(value: Any) -> tuple[Any, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, Mapping):
+        return tuple(value.values())
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return tuple(value)
+    data = getattr(value, "__dict__", None)
+    if isinstance(data, Mapping):
+        return tuple(data.values())
+    return ()
+
+
+async def _call_webtransport_hook(hook: HookSpec, ctx: Any) -> None:
+    fn = hook.fn
+    try:
+        result = fn(ctx=ctx)
+    except TypeError as first_exc:
+        try:
+            result = fn(ctx)
+        except TypeError:
+            try:
+                result = fn(None, ctx)
+            except TypeError:
+                raise first_exc
+    if inspect.isawaitable(result):
+        await result
+
+
+def _webtransport_context_payload(
+    *,
+    message: Mapping[str, Any],
+    metadata: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "session_id": message.get("session_id"),
+        "stream_id": message.get("stream_id"),
+        "stream_direction": message.get("stream_direction"),
+        "datagram_id": message.get("datagram_id"),
+        "framing": message.get("framing"),
+        "lane": metadata.get("lane"),
+        "family": metadata.get("family"),
+        "exchange": metadata.get("exchange"),
+        "event_type": message.get("type"),
+        "subevent": metadata.get("subevent"),
+        "event": dict(message),
+    }
+
+
+async def _run_webtransport_hooks(
+    env: Any,
+    ctx: Any,
+    *,
+    direction: str,
+    message: Mapping[str, Any],
+) -> None:
+    shared_state = _webtransport_scope_state(env)
+    metadata = _webtransport_event_metadata(direction=direction, message=message)
+    hook_specs = _iter_webtransport_hooks(ctx)
+    if hook_specs:
+        shared_state["hooks"] = hook_specs
+    elif isinstance(shared_state.get("hooks"), tuple):
+        hook_specs = shared_state["hooks"]
+    hooks = select_webtransport_hooks(
+        hook_specs,
+        direction=direction,
+        metadata=metadata,
+    )
+    if not hooks:
+        return
+    hook_trace = shared_state.setdefault("hook_trace", [])
+    if not isinstance(hook_trace, list):
+        hook_trace = []
+        shared_state["hook_trace"] = hook_trace
+    webtransport_ctx = _webtransport_context_payload(message=message, metadata=metadata)
+    ctx["webtransport"] = webtransport_ctx
+    ctx["webtransport_hook_trace"] = hook_trace
+    for hook in hooks:
+        await _call_webtransport_hook(hook, ctx)
+        hook_trace.append(
+            {
+                "hook": hook.name or getattr(hook.fn, "__name__", repr(hook.fn)),
+                "phase": str(getattr(hook.phase, "value", hook.phase)),
+                "session_id": message.get("session_id"),
+                "stream_id": message.get("stream_id"),
+                "datagram_id": message.get("datagram_id"),
+                "stream_direction": message.get("stream_direction"),
+                "lane": metadata.get("lane"),
+                "family": metadata.get("family"),
+                "exchange": metadata.get("exchange"),
+                "event_type": message.get("type"),
+                "subevent": metadata.get("subevent"),
+                "framing": message.get("framing"),
+            }
+        )
+
+
+async def _receive_webtransport_session_messages(
+    env: Any,
+    channel: OpChannel,
+    ctx: Any,
+) -> None:
+    receive = getattr(env, "receive", None)
+    if not callable(receive):
+        return
+
+    state = channel.state
+    shared_state = _webtransport_scope_state(env)
+    queue: deque[Mapping[str, Any]] = deque()
+    session: WebTransportSessionState | None = None
+
+    session_plan = shared_state.get("session_plan")
+    if not isinstance(session_plan, WebTransportSessionPlan):
+        session_plan = WebTransportSessionPlan()
+        shared_state["session_plan"] = session_plan
+
+    def _ensure_session(message: Mapping[str, Any]) -> WebTransportSessionState | None:
+        nonlocal session
+        session_id = message.get("session_id") or _webtransport_scope_session_id(env)
+        if session_id is None:
+            return session
+        state.setdefault("session_id", session_id)
+        existing_session = shared_state.get("session")
+        if isinstance(
+            existing_session, WebTransportSessionState
+        ) and existing_session.session_id == str(session_id):
+            session = existing_session
+        elif session is None:
+            session = WebTransportSessionState(session_id=str(session_id))
+            shared_state["session"] = session
+        state["webtransport_session"] = session
+        return session
+
+    async def _record_payload_message(message: Mapping[str, Any]) -> None:
+        message = _enrich_webtransport_message(env, message)
+        state["last_event"] = message
+        message_type = str(message.get("type") or "")
+        shared_state["last_event_type"] = message_type
+        identity = ctx.get("temp", {}).get("identity")
+        if identity:
+            scope = getattr(env, "scope", {})
+            if (
+                message_type == "webtransport.connect"
+                and message.get("session_id") is not None
+                and _webtransport_scope_session_id(env) is None
+                and "tigr.transport_identity" not in (scope.get("extensions") or {})
+            ):
+                scope["session_id"] = message["session_id"]
+                identity = dict(identity, transport_session_id=str(message["session_id"]))
+                scope["state"]["_tigrbl_transport_identity"] = identity.copy()
+            projected_identity = webtransport_lane_identity(scope, message, identity)
+            shared_state["stream_correlations"] = scope["state"].setdefault("_tigrbl_stream_correlations", {})
+            ctx["temp"]["identity"] = projected_identity
+            shared_state["identity"] = projected_identity
+            state["identity"] = projected_identity
+        _trace_webtransport_event(
+            shared_state,
+            direction="receive",
+            phase="ctx.channel_message",
+            message=message,
+        )
+        if message_type.startswith("webtransport.message"):
+            raise ValueError("WebTransport message is not a native transport lane")
+        current_session = _ensure_session(message)
+        if message_type in STREAM_TERMINATION_EVENTS:
+            stream_id = message.get("stream_id")
+            if stream_id is not None:
+                await session_plan.terminate_stream(env.scope, str(stream_id))
+            await _run_webtransport_hooks(env, ctx, direction="receive", message=message)
+            return
+        if message_type == "webtransport.connect":
+            state["connected"] = True
+            shared_state["connected"] = True
+            await _run_webtransport_hooks(
+                env,
+                ctx,
+                direction="receive",
+                message=message,
+            )
+            return
+        if message_type in {
+            "webtransport.stream.receive",
+            "webtransport.datagram.receive",
+        }:
+            projection = validate_webtransport_event_payload(
+                event=message_type,
+                channel="receive",
+                payload={**message, "session_id": state.get("session_id")},
+            )
+            state["event_projection"] = dict(projection)
+            ctx["channel_event_projection"] = dict(projection)
+            if current_session is not None:
+                current_session.apply_event(
+                    event=message_type,
+                    channel="receive",
+                    payload={**message, "session_id": state.get("session_id")},
+                    projection=projection,
+                )
+            queue.append(message)
+            for key in (
+                "session_id",
+                "stream_id",
+                "stream_direction",
+                "datagram_id",
+                "framing",
+            ):
+                if message.get(key) is not None:
+                    state[key] = message.get(key)
+            if "body" not in ctx:
+                ctx["body"] = _message_payload(message)
+            ctx["channel_message"] = message
+            await _run_webtransport_hooks(
+                env,
+                ctx,
+                direction="receive",
+                message=message,
+            )
+            return
+        if message_type == "webtransport.disconnect":
+            state["disconnected"] = True
+            shared_state["disconnected"] = True
+            state["disconnect_event"] = message
+            if "channel_message" not in ctx:
+                ctx["channel_message"] = message
+            await _run_webtransport_hooks(
+                env,
+                ctx,
+                direction="receive",
+                message=message,
+            )
+            return
+        ctx["channel_message"] = message
+
+    await session_plan.receive_unit(
+        receive,
+        _record_payload_message,
+        eager_drain=shared_state.get("eager_drain") is True,
+    )
+
+    state["receive_queue"] = queue

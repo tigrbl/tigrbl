@@ -1,0 +1,31 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2211"
+number: 2211
+slug: "callback-trace-and-correlation"
+title: "Callback Trace and Correlation"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Correlate callback deliveries, attempts, responses, and persistence with the originating invocation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Contract
+
+  1. Link the source operation and available correlation, invocation, trace, and span IDs to the logical delivery ID and each attempt ID. A worker attempt creates its own span linked to the source. Preserve engine-reported transaction identities for the source transaction and outcome write where applicable.
+  2. Record preparation or queuing, attempt start, response observation or transport failure, retry scheduling, and outcome persistence success or failure. Reuse callback.delivery.emit and callback.delivery.emit_complete with explicit per-attempt ordering and outcome semantics. A timeout is an indeterminate remote outcome when receipt cannot be established.
+  3. Make phase placement, attempt number, destination reference, timing policy, duration, HTTP status when observed, and failure class inspectable. Keep callback completion distinct from original-response POST_EMIT and from durable result persistence.
+  4. Trace and diagnostic attributes exclude signing material, authorization headers, and raw request or response bodies. Correlation metadata confers no authorization.
+
+  ## Governed feature
+
+  feat:callback-spec-authoring-and-execution
+spec_kind: "normative"
+adr_ids:
+  - "adr:1210"
+  - "adr:1184"
+  - "adr:1068"

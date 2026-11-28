@@ -13,22 +13,22 @@ from pathlib import Path
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
-PACKAGE_DIR = ROOT / 'pkgs' / '80_facade' / 'tigrbl'
-NATIVE_PY_PATH = ROOT / 'pkgs' / '50_runtime' / 'tigrbl_runtime'
+PACKAGE_DIR = ROOT / 'pkgs' / '080_facade' / 'tigrbl'
+NATIVE_PY_PATH = ROOT / 'pkgs' / '050_runtime' / 'tigrbl_runtime'
 CORE_INSTALL_DIRS = [
-    ROOT / 'pkgs' / '00_typing' / 'tigrbl_typing',
-    ROOT / 'pkgs' / '01_spec' / 'tigrbl_spec',
-    ROOT / 'pkgs' / '20_base' / 'tigrbl_base',
-    ROOT / 'pkgs' / '10_core' / 'tigrbl_core',
-    ROOT / 'pkgs' / '99_deprecated' / 'tigrbl_canon',
-    ROOT / 'pkgs' / '40_atoms' / 'tigrbl_atoms',
-    ROOT / 'pkgs' / '45_kernel' / 'tigrbl_kernel',
-    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_olap',
-    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_oltp',
-    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_realtime',
-    ROOT / 'pkgs' / '60_ops' / 'tigrbl_ops_webtransport',
-    ROOT / 'pkgs' / '30_orm' / 'tigrbl_orm',
-    ROOT / 'pkgs' / '70_concrete' / 'tigrbl_concrete',
+    ROOT / 'pkgs' / '000_typing' / 'tigrbl_typing',
+    ROOT / 'pkgs' / '001_spec' / 'tigrbl_spec',
+    ROOT / 'pkgs' / '020_base' / 'tigrbl_base',
+    ROOT / 'pkgs' / '010_core' / 'tigrbl_core',
+    ROOT / 'pkgs' / '997_deprecated_pending_migration' / 'tigrbl_canon',
+    ROOT / 'pkgs' / '040_atoms' / 'tigrbl_atoms',
+    ROOT / 'pkgs' / '045_kernel' / 'tigrbl_kernel',
+    ROOT / 'pkgs' / '060_ops' / 'tigrbl_ops_olap',
+    ROOT / 'pkgs' / '060_ops' / 'tigrbl_ops_oltp',
+    ROOT / 'pkgs' / '060_ops' / 'tigrbl_ops_realtime',
+    ROOT / 'pkgs' / '060_ops' / 'tigrbl_ops_webtransport',
+    ROOT / 'pkgs' / '030_orm' / 'tigrbl_orm',
+    ROOT / 'pkgs' / '070_concrete' / 'tigrbl_concrete',
 ]
 TARGET_DEPS = [
     'sqlalchemy>=2.0',
@@ -256,7 +256,7 @@ def main() -> None:
             'wheel_entry_points': wheel_eps,
             'sdist_contents': sdist_info,
             'install_mode': 'isolated target install root',
-            'rust_binding_support': 'source-path fallback via pkgs/50_runtime/tigrbl_runtime',
+            'rust_binding_support': 'source-path fallback via pkgs/050_runtime/tigrbl_runtime',
             'installed_cli': {
                 'commands': capabilities['commands'],
                 'flags': capabilities['flags'],

@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "`tigrbl_concrete` provides concrete authoring, route, docs, dependency, and response surfaces. The kernel is a lower execution authority and must remain behind `tigrbl_runtime` so concrete surfaces cannot bypass runtime compilation or own kernel lifecycle details."
+summary: "Concrete supplies declarations and configured handlers. At ASGI ingress, tigrbl_runtime forwards the original scope, receive, and send directly to the configured kernel entry point."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -30,6 +30,16 @@ body: |-
   
   `tigrbl_concrete` provides concrete authoring, route, docs, dependency, and response surfaces. The kernel is a lower execution authority and must remain behind `tigrbl_runtime` so concrete surfaces cannot bypass runtime compilation or own kernel lifecycle details.
   
+  ## ASGI entry point
+
+  Concrete supplies app configuration, route registrations, lifecycle handlers, and public compatibility adapters before ingress. `TigrblApp.__call__` delegates the inbound ASGI call to `tigrbl_runtime`. For each call, `tigrbl_runtime` only forwards the original `scope`, `receive`, and `send` to the configured kernel ASGI entry point. It must pass the same objects without projection, mutation, or wrapping.
+
+  The kernel invokes the atoms scope projector under ADR-1020, selects the execution path under ADR-1047, and directs lifecycle execution under ADR-1139. Atoms perform the effects selected by the kernel. ADR-1203 applies this handoff to authored route handlers.
+
+  ## Verification
+
+  Keep the source import, package dependency, and isolated package import checks. Add a behavioral check through the public app entry point that verifies identity-preserving runtime forwarding, kernel-led atoms projection, and kernel selection for HTTP, WebSocket, WebTransport, and lifespan. The check observes the resulting response, session events, or lifecycle notifications.
+
   ## Consequences
   
   - Concrete package code remains an authoring/projection layer, not a kernel integration layer.

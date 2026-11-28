@@ -1,0 +1,77 @@
+name: Verify public Trace Lab
+
+on:
+  pull_request:
+    paths:
+      - "pkgs/010_core/tigrbl_trace/**"
+      - "pkgs/110_backend/**"
+      - "pkgs/130_frontend/**"
+      - "pkgs/150_client/tigrbl_trace_transport/**"
+      - "pkgs/170_examples/trace-lab-demo/**"
+      - "pnpm-*.yaml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/trace-lab-public.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-trace-lab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: trace
+          POSTGRES_PASSWORD: trace-ci
+          POSTGRES_DB: trace
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U trace -d trace"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      TRACE_OPERATOR_USER: operator
+      TRACE_OPERATOR_PASSWORD: trace-ci
+      TRACE_INGEST_TOKEN: trace-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "11.25.0"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - run: uv sync --locked --package tigrbl-trace-lab-demo --group dev
+      - run: .venv/bin/python tools/checkout_trace_lab_sources.py
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @tigrbl/trace-lab-ui lint
+      - run: pnpm --filter @tigrbl/trace-lab-ui build
+      - name: Verify scenario and collector
+        env:
+          TRACE_TEST_POSTGRES_URL: postgresql+psycopg://trace:trace-ci@127.0.0.1:${{ job.services.postgres.ports[5432] }}/trace
+        run: |
+          .venv/bin/pytest -q pkgs/010_core/tigrbl_trace/tests \
+            pkgs/110_backend/trace-lab-server/tests \
+            pkgs/150_client/tigrbl_trace_transport/tests \
+            pkgs/170_examples/trace-lab-demo/tests
+          .venv/bin/tigrbl-trace-lab-demo --port 0 --smoke
+      - name: Verify the Notes Pilot waterfall
+        env:
+          TRACE_DATABASE_URL: postgresql+psycopg://trace:trace-ci@127.0.0.1:${{ job.services.postgres.ports[5432] }}/trace
+        run: |
+          export TRACE_VERIFY_CHROME="$(command -v google-chrome)"
+          .venv/bin/tigrbl-trace-lab --frontend pkgs/130_frontend/trace-lab-ui/dist \
+            >"$RUNNER_TEMP/trace-collector.log" 2>&1 &
+          collector=$!
+          trap 'kill "$collector" 2>/dev/null || true; cat "$RUNNER_TEMP/trace-collector.log"' EXIT
+          uv run --locked --package tigrbl-trace-lab-demo --with playwright==1.56.0 \
+            python -m trace_lab_demo.verify_notes --browser

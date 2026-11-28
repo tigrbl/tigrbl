@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1203"
+number: 1203
+slug: "compiled-route-handler-execution"
+title: "Compiled route-handler execution"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The concrete route handler bridge currently looks up the selected operation's route again by alias, inspects the handler signature during invocation, owns dependency generator cleanup, and writes response flags. The compiled operation must carry the information that its execution needs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  1. Concrete registers the authored callable, canonical operation identity, dependency declarations, and the compatibility adapters that the handler needs. Setup binds the registered app configuration to the kernel entry point.
+  2. At ASGI ingress, tigrbl_runtime forwards exactly the original scope, receive, and send to the configured kernel entry point. The kernel invokes the atoms scope projector once per inbound scope under ADR-1020, then selects the lifecycle and compiled operation. The atoms projector is the sole reader of scope["type"] for framework dispatch.
+  3. The kernel compiles each authored operation's callable and argument sources into the KernelPlan. The plan owns the order and lifetime of binding, invocation, cleanup, and egress. Packed and fallback execution use this same contract. Compilation resolves the handler reference and inspects the signature. Inbound routing selects the compiled operation once, and invocation uses the compiled handler reference and argument sources.
+  4. Atoms bind invocation inputs from the selected operation context, resolve the configured dependency override, invoke the handler, and clean up handler-scoped dependencies at the established handler boundary. Preserve sync and async handlers, supported request and context injection, and generator cleanup on success, failure, and cancellation. The kernel schedules operation-level security dependencies and dependencies under ADR-1078.
+  5. Atoms project the handler result through canonical egress. Preserve response status, headers, body or stream, and exactly-once emission. The existing operation lifecycle and carrier completion fence govern the timing of hooks and completion.
+
+  ## Context
+
+  The concrete route handler bridge currently looks up the selected operation's route again by alias, inspects the handler signature during invocation, owns dependency generator cleanup, and writes response flags. The compiled operation must carry the information that its execution needs.
+
+  ## Verification
+
+  Exercise the public ASGI app entry point through packed and fallback execution. Assert that runtime forwards the original objects, the kernel calls the scope projector, and the same compiled handler and argument bindings drive both paths. Cover exact and templated routes, dependency override selection and teardown, response-like and streaming returns, and exactly-once emission.
+
+  ## Related decisions
+
+  ADR-1000 defines the import and ASGI handoff boundary. ADR-1020 defines scope projection ownership. ADR-1047 governs dispatch. ADR-1059 and ADR-1078 govern dependency declaration and timing. ADR-1068 governs transport completion. ADR-1125 governs compiled executors.

@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2210"
+number: 2210
+slug: "callback-attempt-persistence-and-recovery"
+title: "Callback Attempt Persistence and Recovery"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define optional durability, transaction boundaries, and recovery for the single CallbackAttempt table."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Contract
+
+  1. Separate preparation, attempt start, response observation, and outcome persistence. A delivery ID identifies one event and destination and is reused as its idempotency key. An attempt ID identifies one try. The pair (delivery_id, attempt_number) is unique.
+  2. No durability persists neither attempt starts nor results. Results-only persists observed outcomes and cannot recover interrupted sends. Attempts-only persists the intent and attempt or claim lifecycle and can recover eligible work without retaining the observed response. Attempts-and-results persists both. A started attempt without an observed outcome can represent an unknown remote result.
+  3. CallbackAttempt is the only built-in table. Each row has an attempt identity and state. Store the canonical request or an immutable reference sufficient for reconstruction, scheduling and claim fields when applicable, and response or error fields when results are enabled. Applications may project results onto resource fields or define their own foreign keys or association tables.
+  4. For transactional durable intent, stage the first eligible or fence-gated attempt with CallbackAttempt.handlers.create.core in the source session. The normal source transaction owns commit and rollback. A rolled-back intent never becomes eligible. Callbacks gated on response emission become eligible only under the declared completion/failure policy.
+  5. Claim eligible work atomically. Apply the per-attempt timeout and configured retry/backoff policy. Keep network I/O outside database transactions for after-commit delivery. After sending, persist state and any configured result with CallbackAttempt.handlers.update.core in a fresh transaction. Fence updates and retry scheduling against the current claim. Finish the current attempt and create its retry atomically where durable retries are enabled.
+  6. Recovery must handle stale claims and the gap between remote response and local persistence. An indeterminate outcome may be retried only under the declared policy, with the original delivery ID. Do not claim exactly-once remote delivery. Terminal failure, exhaustion, and unknown outcome must remain distinguishable.
+  7. An outcome can be part of the initial commit only when it was observed before that commit under an explicit policy. That mode can leave a remote side effect after local rollback. An after-commit outcome write always uses a subsequent transaction even when updating the primary resource row.
+
+  ## Governed feature
+
+  feat:callback-attempt-persistence-and-recovery
+spec_kind: "normative"
+adr_ids:
+  - "adr:1210"
+  - "adr:1184"

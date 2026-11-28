@@ -24,6 +24,8 @@ ALLOWED_ROOT_ENTRIES = {
     "index.toml",
     "perf.sqlite",
     "pkgs",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
     "pyproject.toml",
     "tests",
     "tools",
@@ -55,6 +57,8 @@ EXCLUDED_ROOTS = {
     ROOT / ".pytest_cache",
     ROOT / ".venv",
     ROOT / ".tmp",
+    ROOT / ".sources",
+    ROOT / "pkgs" / "130_frontend" / "trace-lab-ui" / "dist",
     ROOT / ".uv-cache",
     ROOT / ".uv-pytest",
     ROOT / ".uv-pytest-tigrbl-tests",
@@ -67,6 +71,7 @@ EXCLUDED_DIR_NAMES = {
     "__pycache__",
     ".venv",
     ".pytest_cache",
+    "node_modules",
 }
 
 

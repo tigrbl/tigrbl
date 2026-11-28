@@ -30,6 +30,7 @@ body: |-
   4. REST and JSON-RPC transports that execute the semantic operation must preserve the same dependency ordering and transaction boundary.
   5. Dependency placement must be operation-level behavior, not transport-local behavior.
   6. Diagnostics may report dependency placement, but diagnostics output must not be treated as a substitute for actual execution ordering.
+  7. Signature-injected route dependencies use the handler-scoped lifetime in SPEC-1155. A dependency runs as a pre-transaction gate when explicitly declared in the operation's `secdeps` or `deps`.
   
   ## Related Decisions
   
@@ -42,7 +43,7 @@ body: |-
   - Tests should prove security dependencies run before ordinary dependencies.
   - Tests should prove failures occur before `START_TX`.
   - Tests should verify REST and JSON-RPC behavior separately when both transports execute the semantic operation.
-  - `pkgs/97_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` is the legacy package edge-row verification for the direct kernel/runtime boundary.
+  - `pkgs/210_tests/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` is the legacy package edge-row verification for the direct kernel/runtime boundary.
   
   ## Traceability
   

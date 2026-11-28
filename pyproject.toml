@@ -20,7 +20,7 @@ norecursedirs = [
 ]
 
 [tool.readme_standards]
-exclude = ["pkgs/deprecated", "pkgs/99_deprecated", "docs/notes/archive", "docs/examples/package-maintenance/src"]
+exclude = ["pkgs/deprecated", "pkgs/997_deprecated_pending_migration", "docs/notes/archive", "docs/examples/package-maintenance/src"]
 [dependency-groups]
 dev = [
   "aiosqlite>=0.19.0",
@@ -59,27 +59,28 @@ dev = [
 
 [tool.uv.workspace]
 members = [
-  "pkgs/00_typing/*",
-  "pkgs/01_spec/*",
-  "pkgs/02_model/*",
-  "pkgs/10_core/*",
-  "pkgs/20_base/*",
-  "pkgs/30_orm/*",
-  "pkgs/40_atoms/*",
-  "pkgs/45_kernel/*",
-  "pkgs/50_runtime/*",
-  "pkgs/60_ops/*",
-  "pkgs/70_concrete/*",
-  "pkgs/80_facade/*",
-  "pkgs/90_engines/*",
-  "pkgs/95_client/*",
-  "pkgs/96_examples/*",
-  "pkgs/97_tests/*",
-  "pkgs/98_experimental/*",
-  "pkgs/99_deprecated/*",
+  "pkgs/000_typing/*",
+  "pkgs/001_spec/*",
+  "pkgs/002_model/*",
+  "pkgs/010_core/*",
+  "pkgs/020_base/*",
+  "pkgs/030_orm/*",
+  "pkgs/040_atoms/*",
+  "pkgs/045_kernel/*",
+  "pkgs/050_runtime/*",
+  "pkgs/060_ops/*",
+  "pkgs/070_concrete/*",
+  "pkgs/080_facade/*",
+  "pkgs/090_engines/*",
+  "pkgs/110_backend/*",
+  "pkgs/150_client/*",
+  "pkgs/170_examples/*",
+  "pkgs/210_tests/*",
+  "pkgs/800_experimental/*",
+  "pkgs/997_deprecated_pending_migration/*",
 ]
 exclude = [
-  "pkgs/96_examples/equivalence_contracts",
-  "pkgs/96_examples/transport_surface_matrix_demo",
-  "pkgs/96_examples/websocket_realtime_ops",
+  "pkgs/170_examples/equivalence_contracts",
+  "pkgs/170_examples/transport_surface_matrix_demo",
+  "pkgs/170_examples/websocket_realtime_ops",
 ]

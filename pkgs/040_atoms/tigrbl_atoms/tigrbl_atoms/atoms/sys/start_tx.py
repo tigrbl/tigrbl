@@ -1,0 +1,57 @@
+from __future__ import annotations
+
+from typing import Any
+
+from ...types import Atom, Ctx, ExecutingCtx
+from ...stages import Guarded, Executing
+
+from ... import events as _ev
+from .._temp import _ensure_temp
+from ._db import _in_transaction, _is_async_db, _resolve_db_handle
+
+ANCHOR = _ev.SYS_TX_BEGIN
+
+
+async def _run(obj: object | None, ctx: Any) -> None:
+    del obj
+    temp = _ensure_temp(ctx)
+    if temp.get("batch_resident_admitted") or temp.get("batch_resident_handled"):
+        temp["__sys_tx_open__"] = False
+        return
+    db = _resolve_db_handle(ctx)
+    temp["__sys_tx_open__"] = False
+
+    if db is None:
+        return
+    temp["__sys_tx_joined__"] = _in_transaction(db)
+    if temp["__sys_tx_joined__"]:
+        return
+
+    # Sync SQLAlchemy sessions auto-open transactions on first write.
+    # Avoid an explicit begin() call in hot paths to reduce per-request
+    # transaction setup overhead.
+    if not _is_async_db(db):
+        return
+
+    begin = getattr(db, "begin_for_operation", None)
+    if not callable(begin):
+        begin = getattr(db, "begin", None)
+    if callable(begin):
+        rv = begin()
+        if hasattr(rv, "__await__"):
+            await rv
+        temp["__sys_tx_open__"] = True
+
+
+class AtomImpl(Atom[Guarded, Executing, Exception]):
+    name = "sys.start_tx"
+    anchor = ANCHOR
+
+    async def __call__(self, obj: object | None, ctx: Ctx[Guarded]) -> Ctx[Executing]:
+        await _run(obj, ctx)
+        return ctx.promote(ExecutingCtx)
+
+
+INSTANCE = AtomImpl()
+
+__all__ = ["ANCHOR", "INSTANCE"]

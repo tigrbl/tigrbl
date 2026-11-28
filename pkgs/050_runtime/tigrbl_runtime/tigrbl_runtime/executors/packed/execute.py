@@ -1,0 +1,393 @@
+from __future__ import annotations
+
+from tigrbl_atoms.atoms.ingress.identity import invocation_identity
+from tigrbl_kernel.asgi_dispatch import select_asgi_operation_miss
+from tigrbl_kernel.trace import (
+    AtomTrace,
+    OperationTrace,
+    operation_trace_scope,
+    record_execution,
+    transaction_history,
+)
+
+from ._shared import *
+from ...channel._asgi_jsonrpc import _jsonrpc_error_payload
+
+
+class _PackedExecuteMixin:
+    async def _execute_packed(
+        self,
+        env: Any,
+        ctx: _Ctx,
+        plan: KernelPlan,
+        packed: PackedKernel,
+        execution: OperationTrace | None = None,
+    ) -> None:
+        _send_json, _send_transport_response = self._resolve_transport_senders()
+        StatusDetailError, create_standardized_error = self._resolve_error_helpers()
+
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            ctx.temp = {}
+            temp = ctx.temp
+
+        hot = self._ensure_hot_ctx(ctx, env)
+        ctx.plan = plan
+        ctx.kernel_plan = plan
+        if hot.method and getattr(ctx, "method", None) in (None, ""):
+            ctx.method = hot.method
+        if hot.path and getattr(ctx, "path", None) in (None, ""):
+            ctx.path = hot.path
+        if (
+            hot.scope_type == "http"
+            and str(hot.method or "").upper() == "POST"
+            and self._resolve_jsonrpc_endpoint_for_path(ctx, hot)
+        ):
+            request = self._ensure_hot_request(ctx, hot)
+            body_bytes = await self._ensure_body_bytes(ctx, hot)
+            if (
+                request is not None
+                and body_bytes is not None
+                and hasattr(request, "body")
+            ):
+                request.body = body_bytes
+            if not hot.parsed_json_loaded:
+                parsed = None
+                if body_bytes:
+                    try:
+                        parsed = json.loads(body_bytes)
+                    except Exception:
+                        parsed = None
+                hot.parsed_json = parsed
+                hot.parsed_json_loaded = True
+            if (
+                isinstance(hot.parsed_json, Mapping)
+                and hot.parsed_json.get("jsonrpc") == "2.0"
+            ):
+                raw_identity = temp.get("identity")
+                if raw_identity:
+                    temp["identity"] = invocation_identity(
+                        raw_identity, rpc_envelope=hot.parsed_json,
+                    )
+                params = hot.parsed_json.get("params", {})
+                if isinstance(params, Mapping) and set(params) == {"params"}:
+                    egress = temp.setdefault("egress", {})
+                    if isinstance(egress, dict):
+                        egress["transport_response"] = {
+                            "status_code": 204,
+                            "body": b"",
+                        }
+                    hot.route_short_circuit = True
+                    hot.route_rpc_envelope = dict(hot.parsed_json)
+                    hot.dispatch_rpc_envelope = dict(hot.parsed_json)
+                    await _send_transport_response(env, ctx)
+                    return
+            if isinstance(hot.parsed_json, list):
+                await _send_json(
+                    env,
+                    200,
+                    await self._execute_jsonrpc_batch(ctx, hot, hot.parsed_json),
+                )
+                return
+
+        if hot.scope_type == "webtransport":
+            program_id = self._prime_webtransport_program(ctx, env, plan, packed)
+        else:
+            program_id = self._require_program_id_from_ctx(ctx)
+        if program_id < 0 and hot.scope_type != "webtransport":
+            program_id = self._prime_exact_route_program(ctx, env, packed)
+        if program_id < 0 and hot.scope_type != "webtransport":
+            program_id = await self._prime_exact_jsonrpc_program(ctx, env, plan, packed)
+        if program_id < 0 and hot.scope_type != "webtransport":
+            program_id = self._prime_exact_channel_program(ctx, env, plan, packed)
+        wt_selection = temp.get("webtransport_selection")
+        disposition = getattr(wt_selection, "disposition", None)
+        if program_id < 0 and disposition != "lifecycle":
+            try:
+                program_id = await self._probe_ingress_for_program(ctx, plan, packed)
+            except StatusDetailError as exc:
+                if hot.scope_type != "http":
+                    raise
+                temp.setdefault("egress", {})["transport_response"] = {
+                    "status_code": exc.status_code,
+                    "headers": exc.headers,
+                    "body": {"detail": exc.detail},
+                }
+        if program_id < 0:
+            rpc_envelope = getattr(wt_selection, "rpc_envelope", None)
+            if disposition in {"method_not_found", "invalid_jsonrpc"}:
+                ctx.result = _jsonrpc_error_payload(
+                    -32601 if disposition == "method_not_found" else -32600,
+                    "Method not found" if disposition == "method_not_found" else "Invalid Request",
+                    rpc_envelope.get("id") if isinstance(rpc_envelope, Mapping) else None,
+                )
+            if disposition in {"lifecycle", "method_not_found", "invalid_jsonrpc"} or isinstance(hot.egress_transport_response, dict):
+                await _send_transport_response(env, ctx)
+                return
+
+            miss = select_asgi_operation_miss(
+                hot.scope_type, method_not_allowed=hot.route_method_not_allowed
+            )
+            if miss.close_event is not None:
+                send = getattr(env, "send", None)
+                if callable(send):
+                    await send({"type": miss.close_event, "code": miss.status_code})
+            else:
+                await _send_json(env, miss.status_code, {"detail": miss.detail})
+            return
+
+        temp["program_id"] = program_id
+        current_identity = temp.get("identity")
+        if current_identity and hot.scope_type in {"http", "webtransport"}:
+            if hot.scope_type == "http" or str((ctx.get("channel_message") or {}).get("type", "")).endswith(".receive"):
+                temp["identity"] = invocation_identity(current_identity)
+
+        hot_op_plan = (
+            packed.hot_op_plans[program_id]
+            if program_id < len(getattr(packed, "hot_op_plans", ()))
+            else None
+        )
+        self._seed_batch_policy_from_hot_plan(ctx, hot_op_plan)
+        self._seed_batch_scheduler(ctx, hot_op_plan, env)
+        program_hot_runner_id = self._resolve_program_hot_runner_id(
+            packed, program_id, hot_op_plan
+        )
+
+        if program_id >= len(plan.opmeta):
+            await _send_json(
+                env, 404, {"detail": "No runtime operation matched request."}
+            )
+            return
+        if hot_op_plan is not None:
+            ctx.model = hot_op_plan.model
+            ctx.op = hot_op_plan.alias
+            ctx.target = hot_op_plan.target
+        else:
+            meta = plan.opmeta[program_id]
+            ctx.model = getattr(meta, "model", None)
+            ctx.op = getattr(meta, "alias", None)
+            ctx.target = getattr(meta, "target", None)
+        if execution is not None:
+            execution.start(ctx.model, ctx.op)
+        env_ref = ctx.get("env")
+        if env_ref is None:
+            ctx["env"] = SimpleNamespace(method=ctx.op)
+        elif getattr(env_ref, "method", None) in (None, "", "unknown"):
+            try:
+                setattr(env_ref, "method", ctx.op)
+            except Exception:
+                ctx["env"] = SimpleNamespace(method=ctx.op)
+        release_db = None
+        acquire_db = None
+        batch_policy = self._batch_policy_mapping(hot_op_plan)
+        batch_enabled = bool(batch_policy.get("enabled", False))
+        if (
+            program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT
+            and getattr(ctx, "_raw_db", None) is None
+        ):
+            try:
+                acquire_db = self._resolve_db_acquire(plan, program_id, hot_op_plan)
+                ctx.temp["batch_db_acquire"] = acquire_db
+                ctx.batch_db_acquire = acquire_db
+                if not batch_enabled:
+                    db, release_db = acquire_db(ctx)
+                    ctx._raw_db = db
+                    if getattr(ctx, "db", None) is None:
+                        ctx.db = db
+                    ctx.owns_tx = True
+                    if getattr(self.runtime, "trace_sink", None) is not None:
+                        ctx.temp["_trace_transaction_baseline"] = transaction_history(db)
+                        ctx.temp["_trace_flush_baseline"] = transaction_history(
+                            db, event_source="flush_events"
+                        )
+            except Exception:
+                release_db = None
+        if (
+            program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT
+            and hot_op_plan is not None
+            and hot_op_plan.opview is not None
+        ):
+            ctx.opview = hot_op_plan.opview
+        elif program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT:
+            app = getattr(ctx, "app", None)
+            if app is not None and ctx.model is not None and isinstance(ctx.op, str):
+                opview_key = (id(plan), program_id)
+                opview = self._opview_cache.get(opview_key)
+                if opview is None:
+                    opview = self.runtime.kernel.get_opview(app, ctx.model, ctx.op)
+                    self._opview_cache[opview_key] = opview
+                ctx.opview = opview
+
+        try:
+            if hot_op_plan is not None:
+                error_phase_segments = hot_op_plan.error_segment_ids
+            else:
+                error_phase_segments = self._resolve_error_segments(
+                    packed,
+                    program_id,
+                )
+
+            try:
+                if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(
+                    hot.parsed_json, dict
+                ):
+                    opview = getattr(ctx, "opview", None)
+                    schema_in = getattr(opview, "schema_in", None)
+                    field_names = tuple(getattr(schema_in, "fields", ()) or ())
+                    if field_names:
+                        self._reject_jsonrpc_wrapper_keys(
+                            hot.parsed_json.get("params", {}),
+                            field_names=field_names,
+                        )
+                await self._resolve_program_runner(
+                    packed,
+                    program_id,
+                    hot_op_plan,
+                )(ctx)
+            except StatusDetailError as exc:
+                if temp.get("session_failure") is exc:
+                    raise
+                detail = (
+                    exc.detail
+                    if getattr(exc, "detail", None) not in (None, "")
+                    else str(exc)
+                )
+                error_phase = await self._prepare_error_edge(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    exc,
+                )
+                fallback_phase = "ON_ERROR"
+                await self._run_error_segments(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    error_phase,
+                    fallback_phase,
+                )
+                if execution is not None:
+                    execution.finish("failed")
+                status_code = int(getattr(exc, "status_code", 500) or 500)
+                payload = self._jsonrpc_error_payload(ctx, status_code, detail)
+                await _send_json(
+                    env,
+                    200 if payload is not None else status_code,
+                    payload or {"detail": detail},
+                    headers=getattr(exc, "headers", None),
+                )
+                return
+            except Exception as exc:
+                if temp.get("session_failure") is exc:
+                    raise
+                std = create_standardized_error(exc)
+                detail = (
+                    std.detail
+                    if getattr(std, "detail", None) not in (None, "")
+                    else str(std)
+                )
+                error_phase = await self._prepare_error_edge(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    exc,
+                )
+                fallback_phase = "ON_ERROR"
+                await self._run_error_segments(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    error_phase,
+                    fallback_phase,
+                )
+                if execution is not None:
+                    execution.finish("failed")
+                status_code = int(getattr(std, "status_code", 500) or 500)
+                persistence_error = self._is_persistence_exception(exc)
+                if persistence_error:
+                    if status_code >= 500:
+                        status_code = 500
+                        detail = "Internal error"
+                    else:
+                        detail = (
+                            "Conflict"
+                            if status_code == 409
+                            else "Persistence constraint failed"
+                        )
+                payload = self._jsonrpc_error_payload(
+                    ctx,
+                    status_code,
+                    detail,
+                    sanitize_detail=persistence_error,
+                )
+                await _send_json(
+                    env,
+                    200 if payload is not None else status_code,
+                    payload or {"detail": detail},
+                    headers=getattr(std, "headers", None),
+                )
+                return
+
+            if execution is not None:
+                execution.finish("ok")
+            if program_hot_runner_id == _HOT_RUNNER_WS_UNARY_TEXT:
+                return
+            if isinstance(temp, dict) and temp.get("_tigrbl_hot_direct_create") is True:
+                status = int(getattr(ctx, "status_code", 201) or 201)
+                payload = self._serialize_model_row(getattr(ctx, "result", None))
+                await _send_json(env, status, payload)
+                return
+            if hot.route_short_circuit and hot.egress_transport_response:
+                await _send_transport_response(env, ctx)
+                return
+
+            await _send_transport_response(env, ctx)
+        finally:
+            if callable(release_db):
+                try:
+                    cleanup = release_db()
+                    if inspect.isawaitable(cleanup):
+                        await cleanup
+                except Exception:
+                    pass
+
+    async def invoke(
+        self,
+        *,
+        runtime: Any,
+        env: Any,
+        ctx: Any,
+        plan: Any,
+        packed_plan: Any | None = None,
+    ) -> Any:
+        if not isinstance(plan, KernelPlan):
+            raise TypeError("PackedPlanExecutor requires a KernelPlan instance")
+        if not isinstance(packed_plan, PackedKernel):
+            raise TypeError("PackedPlanExecutor requires a PackedKernel instance")
+
+        base_ctx = _Ctx.ensure(
+            request=ctx.get("request") if isinstance(ctx, Mapping) else None,
+            db=ctx.get("db") if isinstance(ctx, Mapping) else None,
+            seed=ctx,
+        )
+        sink = getattr(runtime, "trace_sink", None)
+        scope = getattr(env, "scope", None)
+        execution = (
+            OperationTrace() if sink is not None and isinstance(scope, Mapping) else None
+        )
+        if execution is not None and getattr(runtime, "trace_atoms", False):
+            execution.atoms = AtomTrace()
+        try:
+            with operation_trace_scope(execution):
+                await self._execute_packed(env, base_ctx, plan, packed_plan, execution)
+        finally:
+            if execution is not None:
+                execution.finish("failed")
+                hot = base_ctx.temp.get("hot_ctx")
+                record_execution(
+                    sink, scope, base_ctx,
+                    jsonrpc=getattr(hot, "transport_kind_id", None) == _TRANSPORT_KIND_JSONRPC,
+                    owned_session=getattr(base_ctx, "_raw_db", None),
+                    execution=execution,
+                )
+        return base_ctx.get("result")

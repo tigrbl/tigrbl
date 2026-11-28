@@ -1,0 +1,43 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+PKGS_ROOT = Path(__file__).resolve().parents[4]
+PKG = PKGS_ROOT / "080_facade" / "tigrbl" / "tigrbl"
+RUNTIME_PKG = PKGS_ROOT / "050_runtime" / "tigrbl_runtime" / "tigrbl_runtime"
+
+
+def test_dependency_invoke_is_runtime_event_anchor():
+    system = (RUNTIME_PKG / "runtime" / "system.py").read_text()
+    phase_runner = (RUNTIME_PKG / "executors" / "phase_runner.py").read_text()
+    executors_init = (RUNTIME_PKG / "executors" / "__init__.py").read_text()
+    assert not (RUNTIME_PKG / "executors" / "invoke.py").exists()
+    assert "DEP_EXTRA" in system
+    assert '"SECURITY"' in system
+    assert '"DEPENDENCIES"' in system
+    assert '"PRE_TX_BEGIN"' in phase_runner
+    assert "invoke_op" not in executors_init
+    assert "tigrbl_ops_oltp" not in phase_runner
+
+
+def test_runtime_gateway_owns_runtime_entrypoint_and_send():
+    runtime_source = (RUNTIME_PKG / "runtime" / "runtime.py").read_text()
+    executor_source = (RUNTIME_PKG / "executors" / "kernel_executor.py").read_text()
+    packed_source = (RUNTIME_PKG / "executors" / "packed" / "execute.py").read_text()
+    channel_source = (RUNTIME_PKG / "channel" / "websocket.py").read_text()
+
+    assert "kernel.kernel_plan(app)" in runtime_source
+    assert "await _invoke(" in executor_source
+    assert "_send_transport_response" in packed_source
+    assert "dispatch_legacy_websocket" not in packed_source
+    assert "class RuntimeWebSocket" in channel_source
+
+
+def test_docs_facades_delegate_to_canonical_generators():
+    from tigrbl.system.docs.openapi.schema import openapi
+    from tigrbl.system.docs.openrpc import build_openrpc_spec
+    from tigrbl_concrete.system.docs.openapi.schema import openapi as canonical_openapi
+    from tigrbl_concrete.system.docs.openrpc import build_openrpc_spec as canonical_openrpc
+
+    assert openapi is canonical_openapi
+    assert build_openrpc_spec is canonical_openrpc

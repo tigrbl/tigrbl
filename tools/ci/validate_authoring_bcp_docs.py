@@ -9,7 +9,7 @@ ROOT = repo_root()
 
 BCP_DOC = ROOT / "docs" / "developer" / "AUTHORING_BCP.md"
 ROOT_README = ROOT / "README.md"
-FACADE_README = ROOT / "pkgs" / "80_facade" / "tigrbl" / "README.md"
+FACADE_README = ROOT / "pkgs" / "080_facade" / "tigrbl" / "README.md"
 BCP_TITLE = "Convenient Authoring Path and Best Current Practice (BCP)"
 README_BCP_HEADING = f"## {BCP_TITLE}"
 BCP_BEGIN = "<!-- tigrbl:authoring-bcp:begin -->"
@@ -63,31 +63,31 @@ MAIN_README_REQUIRED_PHRASES = [
 ]
 
 BOUNDARY_README_REQUIREMENTS = {
-    Path("pkgs/10_core/tigrbl_core/README.md"): [
+    Path("pkgs/010_core/tigrbl_core/README.md"): [
         "Authoring BCP for this boundary:",
         "Do treat `ColumnSpec`",
         "Do not move application route authoring",
         "Avoid duplicating spec fields",
     ],
-    Path("pkgs/20_base/tigrbl_base/README.md"): [
+    Path("pkgs/020_base/tigrbl_base/README.md"): [
         "Authoring BCP for this boundary:",
         "Do use `tigrbl-base`",
         "Do not put route registration side effects",
         "Avoid treating SQLAlchemy materialization",
     ],
-    Path("pkgs/70_concrete/tigrbl_concrete/README.md"): [
+    Path("pkgs/070_concrete/tigrbl_concrete/README.md"): [
         "Authoring BCP for this boundary:",
         "Do use `tigrbl-concrete`",
         "Do not teach application users",
         "Avoid hard-coded documentation",
     ],
-    Path("pkgs/50_runtime/tigrbl_runtime/README.md"): [
+    Path("pkgs/050_runtime/tigrbl_runtime/README.md"): [
         "Runtime authoring BCP:",
         "Do use this package for executing compiled kernel plans",
         "Do not bypass kernel plans",
         "Avoid hiding behavior",
     ],
-    Path("pkgs/30_orm/tigrbl_orm/README.md"): [
+    Path("pkgs/030_orm/tigrbl_orm/README.md"): [
         README_BCP_HEADING,
         "- Do:",
         "- Do not:",
