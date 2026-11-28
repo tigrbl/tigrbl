@@ -4081,7 +4081,7 @@ wheels = [
 
 [[package]]
 name = "tigrbl"
-version = "0.4.6.dev3"
+version = "0.4.6.dev4"
 source = { editable = "pkgs/080_facade/tigrbl" }
 dependencies = [
     { name = "aiosqlite" },
@@ -4205,7 +4205,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-atoms"
-version = "0.4.6.dev2"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/040_atoms/tigrbl_atoms" }
 dependencies = [
     { name = "jinja2" },
@@ -4254,7 +4254,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-base"
-version = "0.4.6.dev2"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/020_base/tigrbl_base" }
 dependencies = [
     { name = "pydantic" },
@@ -4373,7 +4373,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-concrete"
-version = "0.4.6.dev2"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/070_concrete/tigrbl_concrete" }
 dependencies = [
     { name = "orjson" },
@@ -4393,6 +4393,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "httpx" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'" },
@@ -4418,6 +4419,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "httpx" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "readme-standards", marker = "python_full_version >= '3.11'", specifier = "==0.1.3" },
@@ -4426,7 +4428,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-core"
-version = "0.4.6.dev3"
+version = "0.4.6.dev4"
 source = { editable = "pkgs/010_core/tigrbl_core" }
 dependencies = [
     { name = "pydantic" },
@@ -5420,7 +5422,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-kernel"
-version = "0.4.6.dev2"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/045_kernel/tigrbl_kernel" }
 dependencies = [
     { name = "tigrbl-atoms" },
@@ -5684,7 +5686,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-runtime"
-version = "0.4.6.dev3"
+version = "0.4.6.dev4"
 source = { editable = "pkgs/050_runtime/tigrbl_runtime" }
 dependencies = [
     { name = "tigrbl-atoms" },
@@ -5912,7 +5914,7 @@ requires-dist = [
 
 [[package]]
 name = "tigrbl-typing"
-version = "0.4.6.dev2"
+version = "0.4.6.dev3"
 source = { editable = "pkgs/000_typing/tigrbl_typing" }
 dependencies = [
     { name = "pydantic" },
