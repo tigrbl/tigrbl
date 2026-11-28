@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ...types import Atom, Ctx, EmittingCtx
+from ...types import Atom, Ctx, EmittingCtx, is_response_like
 from ...stages import Encoded, Emitting
 
 import json
@@ -11,6 +11,25 @@ from .._temp import _ensure_temp
 
 ANCHOR = _ev.EGRESS_TO_TRANSPORT_RESPONSE
 UNMATCHED_RUNTIME_DETAIL = "No runtime operation matched request."
+
+
+def project_handler_result(ctx: Any, result: Any) -> None:
+    temp = _ensure_temp(ctx)
+    egress = temp.setdefault("egress", {})
+    if is_response_like(result):
+        # Keep the response object for canonical raw headers and streaming.
+        transport = {
+            "status_code": int(result.status_code or 200),
+            "headers": {},
+            "body": result,
+        }
+        temp.setdefault("route", {})["short_circuit"] = True
+        egress["transport_response"] = transport
+        egress["suppress_asgi_send"] = True
+        ctx.transport_response = transport
+    else:
+        ctx.result = result
+        egress["result"] = result
 
 
 def _jsonrpc_request_id(ctx: Any) -> Any:

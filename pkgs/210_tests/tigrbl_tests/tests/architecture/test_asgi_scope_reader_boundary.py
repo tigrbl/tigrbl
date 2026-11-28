@@ -139,3 +139,18 @@ def test_scope_reader_guard_tracks_aliases_and_mapping_patterns():
         '    message["type"]\n'
     )
     assert _scope_read_lines(tree) == {4, 5, 7}
+
+
+def test_runtime_does_not_call_asgi_scope_projector():
+    packages = Path(__file__).resolve().parents[4]
+    runtime = packages / "050_runtime/tigrbl_runtime/tigrbl_runtime"
+    violations = []
+    for file in sorted(runtime.rglob("*.py")):
+        tree = ast.parse(file.read_text(encoding="utf-8-sig"))
+        for node in ast.walk(tree):
+            if (
+                isinstance(node, ast.Attribute) and node.attr == "project_asgi_scope"
+                or isinstance(node, ast.alias) and node.name == "project_asgi_scope"
+            ):
+                violations.append(f"{file.relative_to(packages)}:{node.lineno}")
+    assert not violations, "\n".join(violations)
