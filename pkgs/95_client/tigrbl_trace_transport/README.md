@@ -241,6 +241,11 @@ Use remote export for an independent collector. Use the Tigrbl `Timeline` sink f
 
 See Trace Lab's workspace guide for deployment and collector configuration.
 
+This README is the package-local distribution entry point. See the repository
+[documentation](../../../docs/README.md), [current conformance target](../../../docs/conformance/CURRENT_TARGET.md),
+[package catalog](../../../docs/developer/PACKAGE_CATALOG.md), [package layout](../../../docs/developer/PACKAGE_LAYOUT.md),
+and [SSOT registry](../../../.ssot/registry.json).
+
 ### Related Packages
 
 `tigrbl-typing` defines native trace fields, and `tigrbl` owns instrumentation and the in-process `Timeline` sink.
