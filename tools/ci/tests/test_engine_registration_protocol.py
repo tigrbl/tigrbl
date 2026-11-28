@@ -10,7 +10,7 @@ except ImportError:  # pragma: no cover - exercised on Python 3.10
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ENGINE_ROOT = REPO_ROOT / "pkgs" / "90_engines"
+ENGINE_ROOT = REPO_ROOT / "pkgs" / "090_engines"
 CANONICAL_GROUP = "tigrbl.engine_plugins"
 LEGACY_GROUP = "tigrbl.engine"
 

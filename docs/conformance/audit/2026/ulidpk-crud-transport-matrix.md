@@ -11,7 +11,7 @@ GitHub issue #43. Local run on the proposed integration test and the existing RE
 Ruff format and lint passed for the new integration test. The combined pytest run reported 37 passed, 5 existing skips, and 9 strict expected failures. The expected failures reproduce scalar HTTP write persistence, WebSocket bulk write persistence, and malformed HTTP member handling. A control run using `GUIDPk` also reproduced scalar HTTP update and replace persistence failures.
 
 ```text
-python -m pytest -q pkgs/97_tests/tigrbl_tests/tests/i9n/test_v3_default_rest_ops.py pkgs/97_tests/tigrbl_tests/tests/i9n/test_v3_default_rpc_ops.py pkgs/97_tests/tigrbl_tests/tests/i9n/test_ulidpk_crud_transports.py pkgs/97_tests/tigrbl_tests/tests/unit/test_ulidpk_mixin.py
+python -m pytest -q pkgs/210_tests/tigrbl_tests/tests/i9n/test_v3_default_rest_ops.py pkgs/210_tests/tigrbl_tests/tests/i9n/test_v3_default_rpc_ops.py pkgs/210_tests/tigrbl_tests/tests/i9n/test_ulidpk_crud_transports.py pkgs/210_tests/tigrbl_tests/tests/unit/test_ulidpk_mixin.py
 ```
 
 ## Linux CI investigation

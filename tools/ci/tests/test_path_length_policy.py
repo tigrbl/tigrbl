@@ -25,7 +25,7 @@ def test_example_local_virtualenv_is_excluded() -> None:
     path = (
         REPO_ROOT
         / 'pkgs'
-        / '96_examples'
+        / '170_examples'
         / 'equivalence_contracts'
         / '.venv'
         / 'Lib'

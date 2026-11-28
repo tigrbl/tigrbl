@@ -16,57 +16,57 @@ jobs:
           - lane: unit
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_cli_cmds.py
               tools/ci/tests/test_evidence_registry.py
               -p no:cacheprovider
           - lane: integration
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
-              pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
+              pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
+              pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
               -p no:cacheprovider
           - lane: spec-conformance
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
               -p no:cacheprovider
           - lane: security-negative
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/security/test_schemes.py
+              pkgs/210_tests/tigrbl_tests/tests/security/test_schemes.py
               tools/ci/tests/test_http_auth_challenges.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py
               -p no:cacheprovider
           - lane: docs-ui-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
-              pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
-              pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
-              pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
+              pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
+              pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
+              pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
+              pkgs/210_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
               -p no:cacheprovider
           - lane: cli-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_cli_cmds.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_cli_srv.py
               -p no:cacheprovider
           - lane: operator-surface-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_closure.py
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_operator_surface_closure.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
               -p no:cacheprovider
           - lane: server-compat-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
+              pkgs/210_tests/tigrbl_tests/tests/unit/test_cli_srv.py
               -p no:cacheprovider
           - lane: clean-room-package
             cmd: >-
@@ -74,16 +74,16 @@ jobs:
           - lane: next-target-datatypes
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/10_core/tigrbl_core/tests/test_semantic_datatype_core.py
-              pkgs/10_core/tigrbl_core/tests/test_column_datatype_integration.py
-              pkgs/10_core/tigrbl_core/tests/test_adapter_registry_contract.py
-              pkgs/10_core/tigrbl_core/tests/test_engine_bridge_lowering.py
-              pkgs/10_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
-              pkgs/10_core/tigrbl_core/tests/test_engine_family_alignment.py
-              pkgs/10_core/tigrbl_core/tests/test_table_portability_contract.py
-              pkgs/10_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
-              pkgs/20_base/tigrbl_base/tests/test_column_datatype_lowering.py
-              pkgs/95_client/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
+              pkgs/010_core/tigrbl_core/tests/test_semantic_datatype_core.py
+              pkgs/010_core/tigrbl_core/tests/test_column_datatype_integration.py
+              pkgs/010_core/tigrbl_core/tests/test_adapter_registry_contract.py
+              pkgs/010_core/tigrbl_core/tests/test_engine_bridge_lowering.py
+              pkgs/010_core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+              pkgs/010_core/tigrbl_core/tests/test_engine_family_alignment.py
+              pkgs/010_core/tigrbl_core/tests/test_table_portability_contract.py
+              pkgs/010_core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+              pkgs/020_base/tigrbl_base/tests/test_column_datatype_lowering.py
+              pkgs/150_client/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
               -p no:cacheprovider
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -100,7 +100,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip uv
           uv sync --all-groups --no-install-workspace --frozen
-          uv pip install --no-deps -e pkgs/00_typing/tigrbl_typing
+          uv pip install --no-deps -e pkgs/000_typing/tigrbl_typing
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -118,7 +118,7 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/050_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Run ${{ matrix.lane }} lane

@@ -57,7 +57,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip uv
           uv sync --all-groups --no-install-workspace --frozen
-          uv pip install --no-deps -e pkgs/00_typing/tigrbl_typing
+          uv pip install --no-deps -e pkgs/000_typing/tigrbl_typing
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -75,7 +75,7 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/050_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Run branch coverage
@@ -87,13 +87,13 @@ jobs:
           export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
           export TEMP="${GITHUB_WORKSPACE}/.tmp"
           export TMP="${GITHUB_WORKSPACE}/.tmp"
-          uv pip install --no-deps -e pkgs/80_facade/tigrbl -e pkgs/50_runtime/tigrbl_runtime
+          uv pip install --no-deps -e pkgs/080_facade/tigrbl -e pkgs/050_runtime/tigrbl_runtime
           COVERAGE_ARGS=()
           if [[ "${COVERAGE_FAIL_UNDER}" != "0" ]]; then
             COVERAGE_ARGS+=(--cov-fail-under="${COVERAGE_FAIL_UNDER}")
           fi
           uv run --with pytest-cov --no-sync python -m pytest -q \
-            pkgs/97_tests/tigrbl_tests \
+            pkgs/210_tests/tigrbl_tests \
             -k "${PYTEST_FILTER}" \
             --cov \
             --cov-branch \
