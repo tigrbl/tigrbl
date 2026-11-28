@@ -6,7 +6,7 @@
 <p align="center">Execution bridge for compiled Tigrbl kernel plans and narrow runtime context/carrier compatibility.</p>
 <p align="center">
 <a href="https://pypi.org/project/tigrbl-runtime/"><img alt="pypi: tigrbl-runtime" src="https://img.shields.io/pypi/v/tigrbl-runtime?labelColor=1E293B&amp;color=1D4ED8"></a>
-<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/050_runtime/tigrbl_runtime/pyproject.toml"><img alt="Source version: 0.4.6.dev3" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.4.6.dev3&amp;labelColor=1E293B&amp;color=4338CA"></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/050_runtime/tigrbl_runtime/pyproject.toml"><img alt="Source version: 0.4.6.dev4" src="https://img.shields.io/static/v1?label=Source%20version&amp;message=0.4.6.dev4&amp;labelColor=1E293B&amp;color=4338CA"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/050_runtime/tigrbl_runtime/pyproject.toml"><img alt="Python: &gt;=3.10,&lt;3.15" src="https://img.shields.io/static/v1?label=Python&amp;message=%3E%3D3.10%2C%3C3.15&amp;labelColor=1E293B&amp;color=0F766E"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/050_runtime/tigrbl_runtime/pyproject.toml"><img alt="Layer: 050_runtime" src="https://img.shields.io/static/v1?label=Layer&amp;message=050_runtime&amp;labelColor=1E293B&amp;color=6D28D9"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/050_runtime/tigrbl_runtime/README.md#lifecycle-and-migration"><img alt="Lifecycle: active" src="https://img.shields.io/static/v1?label=Lifecycle&amp;message=active&amp;labelColor=1E293B&amp;color=166534"></a>
