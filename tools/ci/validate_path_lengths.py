@@ -14,6 +14,7 @@ EXCLUDED_ROOTS = {
     ROOT / '.ssot',
     ROOT / '.venv',
     ROOT / '.tmp',
+    ROOT / '.sources',
     ROOT / '.uv-cache',
     ROOT / '.uv-cache-codex',
     ROOT / '.pip-cache',
@@ -28,6 +29,7 @@ EXCLUDED_NAMES = {
     '.pytest_cache',
     '.ruff_cache',
     '.mypy_cache',
+    'node_modules',
 }
 
 EXCLUDED_SUFFIXES = {

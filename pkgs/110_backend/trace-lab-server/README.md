@@ -18,7 +18,7 @@
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/README.md"><img alt="README hits: tigrbl-transport-trace-lab" src="https://hits.sh/github.com/tigrbl/tigrbl/pkgs/110_backend/trace-lab-server/README.md.svg?label=README%20hits&amp;labelColor=1E293B&amp;color=0E7490"></a>
 </p>
 <p align="center">
-<a href="https://github.com/tigrbl/tigrbl/actions/workflows/verify.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;labelColor=1E293B&amp;color=1D4ED8"></a>
+<a href="https://github.com/tigrbl/tigrbl/actions/workflows/trace-lab-public.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;labelColor=1E293B&amp;color=1D4ED8"></a>
 <a href="https://github.com/tigrbl/tigrbl/tree/master/pkgs/110_backend/trace-lab-server/tests"><img alt="Tests: pytest suite" src="https://img.shields.io/static/v1?label=Tests&amp;message=pytest%20suite&amp;labelColor=1E293B&amp;color=0F766E"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/110_backend/trace-lab-server/README.md#certification-status"><img alt="Certification: not certified" src="https://img.shields.io/static/v1?label=Certification&amp;message=not%20certified&amp;labelColor=1E293B&amp;color=92400E"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json"><img alt="Governance: registry" src="https://img.shields.io/static/v1?label=Governance&amp;message=registry&amp;labelColor=1E293B&amp;color=4338CA"></a>
@@ -228,6 +228,8 @@ Repeat the smoke test after updating upstream source pins or snapshot normalizat
 ## Documentation and Related Packages
 
 ### More Documentation
+
+This README is the package-local distribution entry point. See the [workspace docs](../../../docs/README.md), [current target](../../../docs/conformance/CURRENT_TARGET.md), [package catalog](../../../docs/developer/PACKAGE_CATALOG.md), and [layer layout](../../../docs/developer/PACKAGE_LAYOUT.md).
 
 See the [public walkthrough](../../170_examples/trace-lab-demo/README.md) for setup and operational commands.
 

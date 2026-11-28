@@ -18,7 +18,7 @@
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/170_examples/trace-lab-demo/README.md"><img alt="README hits: tigrbl-trace-lab-demo" src="https://hits.sh/github.com/tigrbl/tigrbl/pkgs/170_examples/trace-lab-demo/README.md.svg?label=README%20hits&amp;labelColor=1E293B&amp;color=0E7490"></a>
 </p>
 <p align="center">
-<a href="https://github.com/tigrbl/tigrbl/actions/workflows/verify.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;labelColor=1E293B&amp;color=1D4ED8"></a>
+<a href="https://github.com/tigrbl/tigrbl/actions/workflows/trace-lab-public.yml"><img alt="README standards: CI gate" src="https://img.shields.io/static/v1?label=README%20standards&amp;message=CI%20gate&amp;labelColor=1E293B&amp;color=1D4ED8"></a>
 <a href="https://github.com/tigrbl/tigrbl/tree/master/pkgs/170_examples/trace-lab-demo/tests"><img alt="Tests: pytest suite" src="https://img.shields.io/static/v1?label=Tests&amp;message=pytest%20suite&amp;labelColor=1E293B&amp;color=0F766E"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/170_examples/trace-lab-demo/README.md#certification-status"><img alt="Certification: not certified" src="https://img.shields.io/static/v1?label=Certification&amp;message=not%20certified&amp;labelColor=1E293B&amp;color=92400E"></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json"><img alt="Governance: registry" src="https://img.shields.io/static/v1?label=Governance&amp;message=registry&amp;labelColor=1E293B&amp;color=4338CA"></a>
@@ -245,7 +245,7 @@ The demo and trace collector are development tooling. The workspace has no certi
 
 ### Evidence
 
-The [verification workflow](.github/workflows/verify.yml) runs the package tests and transport smoke check. The [SSOT registry](.ssot/registry.json) records implementation and test evidence.
+The [verification workflow](.github/workflows/trace-lab-public.yml) runs the package tests and transport smoke check. The [SSOT registry](.ssot/registry.json) records implementation and test evidence.
 
 ---
 
@@ -268,6 +268,8 @@ Run the PostgreSQL integration test when changing the collector's schema, authen
 ## Documentation and Related Packages
 
 ### More Documentation
+
+This README is the package-local distribution entry point. See the [workspace docs](../../../docs/README.md), [current target](../../../docs/conformance/CURRENT_TARGET.md), [package catalog](../../../docs/developer/PACKAGE_CATALOG.md), and [layer layout](../../../docs/developer/PACKAGE_LAYOUT.md).
 
 The [backend guide](pkgs/110_backend/trace-lab-server/README.md) describes the command, endpoints, and exporter import.
 
