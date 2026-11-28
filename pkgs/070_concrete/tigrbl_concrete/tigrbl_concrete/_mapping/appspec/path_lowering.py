@@ -8,7 +8,6 @@ from typing import Any
 from tigrbl_core._spec.docs_spec import DocsPayloadSpec, DocsUixSpec
 from tigrbl_core._spec import HttpRestBindingSpec, JsonRpcFramingSpec, WebhookSpec
 from tigrbl_concrete._concrete._route import upsert_route_opspec
-from tigrbl_concrete.factories.webhook import lower_webhook
 from tigrbl_core._spec.path_spec import PathSpec
 from tigrbl_core._spec.well_known_spec import well_known_path
 from tigrbl_concrete._concrete import engine_resolver as _resolver
@@ -62,6 +61,8 @@ def lower_appspec_routers(app: Any, spec: Any) -> None:
 def mount_webhook(owner: Any, webhook: Any) -> None:
     """Install a declared webhook through canonical REST registration."""
     if isinstance(webhook, WebhookSpec):
+        from tigrbl_concrete.factories.webhook import lower_webhook
+
         webhook = lower_webhook(webhook)
     webhook = getattr(webhook, "__tigrbl_webhook_path_spec__", webhook)
     if not isinstance(webhook, PathSpec) or len(webhook.ops) != 1:
