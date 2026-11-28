@@ -12,7 +12,7 @@ on:
 
 jobs:
   governance:
-    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.number == 62 || (github.event.pull_request.number == 82 && github.event.pull_request.head.ref == 'refactor/callback-attempt-atom')))) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     env:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
@@ -43,7 +43,7 @@ jobs:
           -p no:cacheprovider
 
   next-target-python:
-    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.number == 62 || (github.event.pull_request.number == 82 && github.event.pull_request.head.ref == 'refactor/callback-attempt-atom')))) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     needs: governance
     env:
       PYTHONDONTWRITEBYTECODE: "1"
@@ -96,7 +96,7 @@ jobs:
           -p no:cacheprovider
 
   evidence-lanes:
-    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.number == 62 || (github.event.pull_request.number == 82 && github.event.pull_request.head.ref == 'refactor/callback-attempt-atom')))) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     needs: governance
     strategy:
       fail-fast: false
@@ -173,7 +173,7 @@ jobs:
         run: uv run --no-sync ${{ matrix.cmd }}
 
   bundle-dry-run:
-    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.number == 62 || (github.event.pull_request.number == 82 && github.event.pull_request.head.ref == 'refactor/callback-attempt-atom')))) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     needs:
       - governance
     env:
@@ -223,7 +223,7 @@ jobs:
 
   release-publish:
     if: github.event_name == 'release'
-    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.number == 62 || (github.event.pull_request.number == 82 && github.event.pull_request.head.ref == 'refactor/callback-attempt-atom')))) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     needs:
       - governance
       - bundle-dry-run

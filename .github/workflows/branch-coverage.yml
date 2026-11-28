@@ -35,7 +35,7 @@ concurrency:
 
 jobs:
   branch-coverage:
-    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.number == 62 && github.event.pull_request.head.repo.full_name == github.repository)) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
+    runs-on: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/docs/readme-standards-20261119' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.number == 62 || (github.event.pull_request.number == 82 && github.event.pull_request.head.ref == 'refactor/callback-attempt-atom')))) && fromJSON('["sad-lewin","shortlived","testing","trusted-public-ci","Linux","X64"]') || 'ubuntu-24.04' }}
     strategy:
       fail-fast: false
       matrix:
