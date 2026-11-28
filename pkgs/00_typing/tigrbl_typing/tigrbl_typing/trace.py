@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
 import logging
 import math
+from collections.abc import Callable, Mapping
 from datetime import datetime, timedelta
 from typing import Any
 
 TraceSink = Callable[[str, str, Mapping[str, Any]], None]
 AtomTiming = tuple[str, str, int, int, str, str | None, str | None]
 
-_FIELDS = (
+TRACE_ID_FIELDS = (
     "connection_id",
     "transport_session_id",
     "session_id",
@@ -23,44 +23,52 @@ _FIELDS = (
     "stream_correlation_id",
     "datagram_id",
     "subscription_id",
-    "attachment_generation",
     "lease_id",
     "invocation_id",
     "attempt_id",
     "rpc_id",
-    "rpc_item_index",
-    "trace_id",
-    "span_id",
-    "parent_span_id",
     "engine_session_id",
     "transaction_id",
     "flush_id",
     "publication_id",
     "delivery_id",
-    "attempt_number",
-    "callback_event",
-    "source_op",
-    "duration_ms",
-    "failure_class",
     "origin_invocation_id",
-    "origin_transaction_id",
     "origin_correlation_id",
-    "outcome",
-    "status",
-    "path",
+    "attachment_generation",
+)
+
+TRACE_EXECUTION_FIELDS = (
     "op_model",
     "op_alias",
     "hook_name",
     "hook_phase",
     "atom_label",
     "atom_phase",
-    "atom_ordinal",
-    "atom_trace_dropped",
     "source_started_at",
     "source_ended_at",
-    "measured_duration_ms",
     "timing_boundary",
     "clock_domain",
+)
+
+_FIELDS = (
+    *TRACE_ID_FIELDS,
+    *TRACE_EXECUTION_FIELDS,
+    "rpc_item_index",
+    "trace_id",
+    "span_id",
+    "parent_span_id",
+    "attempt_number",
+    "callback_event",
+    "source_op",
+    "duration_ms",
+    "failure_class",
+    "origin_transaction_id",
+    "outcome",
+    "status",
+    "path",
+    "atom_ordinal",
+    "atom_trace_dropped",
+    "measured_duration_ms",
 )
 _LOG = logging.getLogger(__name__)
 

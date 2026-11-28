@@ -552,6 +552,15 @@ path = "pkgs/95_client/tigrbl_client"
 ecosystem = "pypi"
 
 [[packages]]
+id = "tigrbl_trace_transport"
+name = "tigrbl-trace-transport"
+layer = "95_client"
+order = 1
+path = "pkgs/95_client/tigrbl_trace_transport"
+ecosystem = "pypi"
+dependencies = ["tigrbl_typing"]
+
+[[packages]]
 id = "equivalence_contracts"
 name = "tigrbl-equivalence-contracts"
 layer = "96_examples"
